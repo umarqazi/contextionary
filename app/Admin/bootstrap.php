@@ -17,6 +17,9 @@
  * Admin::js('/packages/prettydocs/js/main.js');
  *
  */
+use Encore\Admin\Form;
+use App\Admin\Extensions\Form\CKEditor;
 
 Encore\Admin\Form::forget(['map', 'editor']);
 app('view')->prependNamespace('admin', resource_path('views/admin'));
+Form::extend('ckeditor', CKEditor::class);
