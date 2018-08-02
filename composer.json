@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "techverx/Contextionary",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": ["Techverx", "Contextionary"],
     "license": "MIT",
     "type": "project",
     "require": {

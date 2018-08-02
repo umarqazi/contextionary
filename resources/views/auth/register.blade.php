@@ -60,6 +60,13 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="role" class="col-md-4 control-label">User Type</label>
+                            <div class="col-md-6">
+                                <label class="radio-inline"><input type="radio" name="role" value="User">User</label>
+                                <label class="radio-inline"><input type="radio" name="role" value="Contributor">Contributor</label>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">

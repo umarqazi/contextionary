@@ -18,3 +18,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//Route::get('/admin', 'AdminController@login')->name('Admin Login');
+//Route::post('/admin/authenticate', 'AdminController@authenticate')->name('Admin Authentication');
+//Route::get('/admin/dashboard', 'AdminController@index')->name('Admin Dashboard');
+
+
+Route::get('profile',  'UsersController@profile')->name('profile');
+Route::get('edit-profile',  'UsersController@edit')->name('edit profile');
+Route::patch('update-profile', 'UsersController@update');
+//->name('update profile');
