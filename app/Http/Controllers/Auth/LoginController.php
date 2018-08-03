@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App;
 
 class LoginController extends Controller
 {
@@ -32,8 +33,13 @@ class LoginController extends Controller
      *
      * @return void
      */
+     protected function credentials(\Illuminate\Http\Request $request)
+     {
+         return ['email' => $request->email, 'password' => $request->password, 'status' => 1];
+     }
     public function __construct()
     {
+        $this->redirectTo = lang_route('home');
         $this->middleware('guest')->except('logout');
     }
 }
