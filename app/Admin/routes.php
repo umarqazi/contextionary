@@ -12,4 +12,6 @@ Route::group([
     $router->resource('auth/simple-users', 'UserController');
     $router->resource('auth/simple-users-roles', 'RoleController');
     $router->resource('auth/simple-users-permissions', 'PermissionController');
+    $router->resource('auth/packages', 'PackagesController');
+    $router->resource('auth/points', 'PointsController');
 });
