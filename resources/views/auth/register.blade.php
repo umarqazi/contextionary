@@ -103,7 +103,7 @@
 
       <div class="col-md-6">
         <div class="customForm-group">
-          {!! Form::select('native_language', ['Hindi'=>'Hindi', 'French'=>'French', 'Spanish'=>'Spanish', 'English'=>'English'],null, ['class'=>'customSelect w-100', 'placeholder'=>t('Language')]) !!}
+          {!! Form::select('native_language', Config::get('constant.Native Language'),null, ['class'=>'customSelect w-100', 'placeholder'=>t('Native Language')]) !!}
         </div>
       </div>
 

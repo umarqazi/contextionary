@@ -1,45 +1,50 @@
-@extends('layouts.app')
+@extends('layouts.secured_header')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                @if (Session::has('message'))
-                    <div class="alert alert-info">{{ Session::get('message') }}</div>
-                @endif
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                            <h4>Profile <a href="{{route('edit profile')}}" class="btn btn-sm btn-primary pull-right">Edit Profile</a></h4>
-                    </div>
-
-                    <div class="panel-body">
-                            <div>
-                                <label for="name" class="col-md-4 control-label">Name</label>
-                                <div class="col-md-6">
-                                    <p>{{$user->name}}</p>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-                                <div class="col-md-6">
-                                    <p>{{$user->email}}</p>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="role" class="col-md-4 control-label">User Type</label>
-                                <div class="col-md-6">
-                                    <p>{{ ucfirst($user->getRoleNames()[0]) }}</p>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="role" class="col-md-4 control-label">Joined On</label>
-                                <div class="col-md-6">
-                                    <p>{{ $user->created_at }}</p>
-                                </div>
-                            </div>
-                    </div>
+<div class="container-fluid contributorMain userProfile">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabsContainer">
+                <ul class="customTabs">
+                    <li class="active title">My profile <a href="#"><i class="fas fa-pencil-alt"></i></a></li>
+                </ul>
+                <div class="searchHolder light">
+                    <i class="fa fa-search"></i>
+                    <input type="search" class="fld" placeholder="Search">
                 </div>
             </div>
         </div>
+        @if (Session::has('message'))
+            <div class="alert alert-info">{{ Session::get('message') }}</div>
+        @endif
+        <div class="col-md-8 col-lg-8">
+            <div class="userBlock">
+                <div class="img-holder">
+                    <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+                </div>
+                <div class="basicInfo">
+                    <ul>
+                        <li>First Name: <span>{!! $user['first_name']!!}</span></li>
+                        <li>Last Name: <span>>{!! $user['last_name']!!}</span></li>
+                        <li>Pseudonyme: <span>{!! $user['user_profile']['pseudonyme']!!}</span></li>
+                        <li>Sex: <span>{!! $user['user_profile']['gender']!!}</span></li>
+                        <li>Age: <span>38</span></li>
+                        <li>Phone No: <span>{!! $user['user_profile']['phone_number']!!}</span></li>
+                        <li>Native Language: <span>{!! $user['user_profile']['native_language']!!}</span></li>
+                        <li>Country: <span>US</span></li>
+                        <li>Address: <span>719 Quincy St, Hancock, MI, 49930 </span></li>
+                        <li>Email: <span>{!! $user['email']!!}</span></li>
+                    </ul>
+                </div>
+                @if($user['user_profile']['bio'])
+                  <div class="bio">
+                      <p><strong>Bio:</strong></p>
+                      <p>{!! $user['user_profile']['bio']!!}</p>
+                  </div>
+                @endif
+            </div>
+        </div>
+
     </div>
+</div>
 @endsection
