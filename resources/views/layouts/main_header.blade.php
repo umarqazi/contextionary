@@ -25,7 +25,7 @@
               </a>
             </li>
             <li>
-              <a href="#">
+              <a href="{!! lang_route('profile') !!}">
                 <div class="img-holder"><img src="{!! asset('assets/images/view-profile-icon.png') !!}"></div> View Profile
               </a>
             </li>

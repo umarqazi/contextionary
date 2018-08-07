@@ -299,6 +299,14 @@ li {
   background: #fff;
   bottom: 0;
 }
+.mCSB_inside > .mCSB_container {
+  margin-right: 0;
+}
+.mCSB_scrollTools .mCSB_draggerRail {
+  background-color: rgba(0, 0, 0, 0);
+  filter: "alpha(opacity=0)";
+  -ms-filter: "alpha(opacity=0)";
+}
 /*login pages style*/
 .loginContainer {
   background: url(../images/login-bg.jpg) no-repeat center center;
@@ -1214,6 +1222,13 @@ aside .topLinks {
 .tabsContainer .customTabs li.active:after {
   width: 100%;
 }
+.tabsContainer .customTabs li.active {
+  font-weight: 600;
+  font-size: 18px;
+}
+.tabsContainer .customTabs li a {
+  padding-left: 10px;
+}
 .tabsContainer .searchHolder {
   float: right;
   width: 270px;
@@ -1233,6 +1248,24 @@ aside .topLinks {
   background: transparent;
   outline: none;
   font-size: 14px;
+}
+.tabsContainer .searchHolder.light {
+  background: rgba(255, 255, 255, 0.58);
+}
+.tabsContainer .searchHolder.light .fld::-webkit-input-placeholder {
+  color: #fff;
+}
+.tabsContainer .searchHolder.light .fld::-moz-placeholder {
+  color: #fff;
+}
+.tabsContainer .searchHolder.light .fld:-ms-input-placeholder {
+  color: #fff;
+}
+.tabsContainer .searchHolder.light .fld:-moz-placeholder {
+  color: #fff;
+}
+.tabsContainer .searchHolder.light .fld {
+  color: #fff;
 }
 .categeoryBlock {
   display: block;
@@ -1453,4 +1486,47 @@ aside .topLinks {
   background: #f7941d;
   text-align: center;
   display: inline-block;
+}
+/*user profile*/
+.userProfile {
+  background: url(../images/user-profile-bg.jpg) no-repeat center top;
+  background-size: cover;
+}
+.userProfile .userBlock {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  margin-top: 20px;
+}
+.userProfile .userBlock .img-holder {
+  display: inline-block;
+  vertical-align: top;
+  width: 120px;
+  margin-right: 10px;
+}
+.userProfile .userBlock .img-holder img {
+  max-width: 100%;
+}
+.userProfile .userBlock .basicInfo {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(100% - 135px);
+}
+.userProfile .userBlock .basicInfo ul {
+  margin-bottom: 0;
+}
+.userProfile .userBlock .basicInfo ul li {
+  display: inline-block;
+  vertical-align: top;
+  width: 49%;
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.userProfile .userBlock .basicInfo ul li span {
+  font-weight: 600;
+}
+.userProfile .userBlock p {
+  color: #fff;
+  font-size: 16px;
 }

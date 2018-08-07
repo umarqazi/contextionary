@@ -26,19 +26,14 @@
     {!! Form::password('password',['id'=>'password','class'=>'customInput', 'placeholder'=>'Password']) !!}
     <span class="focus-border"></span>
     <i class="fa fa-lock"></i>
-    @if ($errors->has('password'))
-        <span class="help-block">
-            <strong>{{ $errors->first('password') }}</strong>
-        </span>
-    @endif
   </div>
   <div class="customForm-group form-group{{ $errors->has('password') ? ' has-error' : '' }}">
     {!! Form::password('password_confirmation',['id'=>'password-confirm','class'=>'customInput', 'placeholder'=>'Confirm Password']) !!}
     <span class="focus-border"></span>
     <i class="fa fa-lock"></i>
-    @if ($errors->has('password_confirmation'))
+    @if ($errors->has('password'))
         <span class="help-block">
-            <strong>{{ $errors->first('password_confirmation') }}</strong>
+            <strong>{{ $errors->first('password') }}</strong>
         </span>
     @endif
   </div>

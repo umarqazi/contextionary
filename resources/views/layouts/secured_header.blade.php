@@ -6,10 +6,11 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
   <meta name="author" content="">
+  {!! HTML::style('assets/css/jquery.mCustomScrollbar.min.css') !!}
   {!! HTML::style('assets/css/bootstrap.min.css') !!}
   {!! HTML::style('assets/css/mdb.min.css') !!}
-  {!! HTML::style('assets/css/main.css') !!}
   {!! HTML::style('assets/css/responsive.css') !!}
+  {!! HTML::style('assets/css/main.css') !!}
   {!! HTML::style('assets/css/style.css') !!}
   {!! HTML::style('assets/css/shards.css') !!}
   {!! HTML::style('https://use.fontawesome.com/releases/v5.1.1/css/all.css') !!}
@@ -32,5 +33,6 @@
   {!! HTML::script('assets/js/mdb.min.js') !!}
   {!! HTML::script('assets/js/shards.min.js') !!}
   {!! HTML::script('assets/js/custom.js') !!}
+  {!! HTML::script('assets/js/jquery.mCustomScrollbar.concat.min.js') !!}
 </body>
 </html>
