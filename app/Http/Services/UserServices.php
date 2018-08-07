@@ -1,7 +1,15 @@
 <?php
-
 namespace App\Http\Services;
 
+/**
+ * Copyright (c) 2018, fahad-shehzad.com All rights reserved.
+ *
+ * @author Fahad Shehzad
+ * @since Feb 23, 2018
+ * @package app.contextionary.services
+ * @project starzplay
+ *
+ */
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,8 +20,11 @@ use Config;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class UserServices
+class UserServices extends AbstractDBService implements IDBService, IUserService
 {
+    /**
+     * @return int
+     */
     public function countUsers(){
         return User::all()->count();
     }
@@ -55,4 +66,47 @@ class UserServices
       $assignRole=$user->assignRole($package_name);
       return true;
     }
+
+    /**
+     *
+     */
+    public function persist($params)
+    {
+        // TODO: Implement persist() method.
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function findById($id)
+    {
+        // TODO: Implement findById() method.
+    }
+
+    /**
+     * @param $params
+     * @return mixed
+     */
+    public function update($params)
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function remove($id)
+    {
+        // TODO: Implement remove() method.
+    }
+
+    /**
+     * Paginated data based on params.
+     * @param $params
+     * @return mixed
+     */
+    public function search($params)
+    {
+        // TODO: Implement search() method.
+    }
+
+
 }
