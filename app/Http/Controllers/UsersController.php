@@ -6,7 +6,7 @@ use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
 use App\User;
 use App\TransactionHistory;
-use App\Http\Services\UserServices;
+use App\Services\UserServices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
