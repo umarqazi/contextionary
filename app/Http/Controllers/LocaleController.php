@@ -23,8 +23,4 @@ class LocaleController extends Controller
       $url=lang_URL('home');
       return redirect::to($url);
     }
-    public function dashboard(){
-      die();
-      return view::make('index');
-    }
 }

@@ -30,7 +30,7 @@ class StripeController extends Controller
         if($payment['user']){
           $user=Auth::login($payment['user']);
           if(Auth::check()){
-            return Redirect::to('/home');
+            return Redirect::to('/dashboard');
           }
         }
       }else{
