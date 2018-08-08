@@ -6,7 +6,7 @@
  * Time: 3:56 PM
  */
 
-namespace App\Http\Services;
+namespace App\Services;
 
 
 interface IDBService

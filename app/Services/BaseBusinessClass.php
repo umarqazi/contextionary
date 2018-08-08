@@ -6,7 +6,7 @@
  * Time: 6:05 PM
  */
 
-namespace App\Http\Services;
+namespace App\Services;
 
 
 abstract class BaseBusinessClass

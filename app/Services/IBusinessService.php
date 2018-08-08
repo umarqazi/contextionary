@@ -6,7 +6,7 @@
  * Time: 6:02 PM
  */
 
-namespace App\Http\Services;
+namespace App\Services;
 
 
 interface IBusinessService
