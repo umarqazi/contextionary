@@ -11,7 +11,7 @@ use App\User;
 use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
 use Auth;
-use App\Http\Services\StripeServices;
+use App\Services\StripeServices;
 
 class StripeController extends Controller
 {
