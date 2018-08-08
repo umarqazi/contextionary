@@ -77,7 +77,7 @@ class PermissionController extends Controller
                 $filter->like('name');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
-//                $actions->append('<a href="/"><i class="fa fa-eye"></i></a>');
+                $actions->disableView();
             });
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
