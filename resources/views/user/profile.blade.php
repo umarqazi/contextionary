@@ -26,13 +26,11 @@
                     <ul>
                         <li>First Name: <span>{!! $user['first_name']!!}</span></li>
                         <li>Last Name: <span>>{!! $user['last_name']!!}</span></li>
-                        <li>Pseudonyme: <span>{!! $user['user_profile']['pseudonyme']!!}</span></li>
-                        <li>Sex: <span>{!! $user['user_profile']['gender']!!}</span></li>
-                        <li>Age: <span>38</span></li>
-                        <li>Phone No: <span>{!! $user['user_profile']['phone_number']!!}</span></li>
-                        <li>Native Language: <span>{!! $user['user_profile']['native_language']!!}</span></li>
-                        <li>Country: <span>US</span></li>
-                        <li>Address: <span>719 Quincy St, Hancock, MI, 49930 </span></li>
+                        <li>Pseudonyme: <span>{!! $user['userProfile']['pseudonyme']!!}</span></li>
+                        <li>Sex: <span>{!! $user['userProfile']['gender']!!}</span></li>
+                        <li>Phone No: <span>{!! $user['userProfile']['phone_number']!!}</span></li>
+                        <li>Native Language: <span>{!! $user['userProfile']['native_language']!!}</span></li>
+                        <li>Country: <span>{!! $user['userProfile']['country']!!}</span></li>
                         <li>Email: <span>{!! $user['email']!!}</span></li>
                     </ul>
                 </div>

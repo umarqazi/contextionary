@@ -70,7 +70,7 @@ body {
   box-sizing: border-box !important;
 }
 p {
-  font-size: 20px;
+  font-size: 16px;
   color: #000000;
   font-weight: 400;
   margin-bottom: 10px;
@@ -123,7 +123,7 @@ p {
   background: #f7941d;
   padding: 10px 40px;
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   font-weight: 500;
   font-size: 14px;
   color: #ffffff;
@@ -1529,4 +1529,120 @@ aside .topLinks {
 .userProfile .userBlock p {
   color: #fff;
   font-size: 16px;
+}
+/*Landing pages style*/
+.landingPage {
+  background: url(../images/landingPage-bg2.jpg) no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;
+}
+.landingPage .logo {
+  position: absolute;
+  right: 2%;
+  top: 3%;
+}
+.landingPage .content {
+  position: absolute;
+  top: 50%;
+  width: 1000px;
+  left: 20%;
+  transform: translateY(-50%);
+}
+.landingPage .content .companyName {
+  font-size: 58px;
+  line-height: normal;
+  padding-bottom: 0;
+  margin-bottom: 0px;
+  font-weight: bold;
+  color: #000;
+  text-align: left;
+}
+.landingPage .content .companyName:after {
+  display: none;
+}
+.landingPage .content .tagLine {
+  font-weight: 600;
+  font-size: 16px;
+  color: #3a3a3c;
+}
+.landingPage .content .companyMission {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+}
+.landingPage .content .companyMission .title {
+  width: 260px;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  color: #3a3a3c;
+  font-size: 56px;
+  text-align: right;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.landingPage .content .companyMission .text {
+  display: inline-block;
+  width: calc(100% - 275px);
+  vertical-align: middle;
+  font-weight: 500;
+  font-size: 18px;
+}
+.landingPage .content .companyMission:last-child {
+  margin-bottom: 0;
+}
+.landingPage .exploreSection {
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+  width: 550px;
+  text-align: center;
+}
+.landingPage .exploreSection ul {
+  margin: 15px 0px 0px;
+  text-align: center;
+  width: 100%;
+}
+.landingPage .exploreSection ul li {
+  margin: 0px 5px;
+  display: inline-block;
+}
+.landingPage .exploreSection ul li a {
+  color: #3a3a3c;
+  font-size: 22px;
+  font-weight: 500;
+  position: relative;
+  padding: 5px;
+  display: inline-block;
+}
+.landingPage .exploreSection ul li a:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  left: 0;
+  width: 0;
+  transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  background: #f7941d;
+}
+.landingPage .exploreSection ul li a:hover:after {
+  width: 100%;
+}
+.landingPage .exploreSection ul li a:hover {
+  color: #f7941d;
+}
+.landingPage .exploreSection ul li.active a {
+  transform: scale(1.1);
+  color: #f7941d;
+}
+.landingPage .exploreSection ul li.active a:after {
+  width: 100%;
+}
+.landingPage .exploreSection .orangeBtn {
+  font-size: 18px;
+  padding: 12px 50px;
 }

@@ -24,7 +24,9 @@ class UsersController extends Controller
     {
         $this->userServices = $userServices;
     }
-
+    public function home(){
+      return view::make('index');
+    }
     public function userCount(){
         $countUsers = $this->userServices->countUsers();
         return view('admin::dashboard.blocks',
