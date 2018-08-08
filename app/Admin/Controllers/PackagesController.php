@@ -94,21 +94,13 @@ class PackagesController extends Controller
      */
     public function form($id = null)
     {
-//        $user = User::find($id);
-//        if($user){
-//            $current_role = $user->getRoleNames()->first();
-//        }else{
-//            $current_role = '';
-//        }
-//        $roles = Role::all()->pluck('name','name');
-//        use ($id, $roles, $user, $current_role)
         return Admin::form(Package::class, function (Form $form) use ($id) {
             $form->display('id', 'ID');
             $form->text('name', trans('Name'))->rules('required')->placeholder('Enter Name...');
             $form->currency('price', trans('Price'))->rules('required')->placeholder('Enter Price...');
             $form->multipleSelect('points', trans('Points'))->options(function () {
                 return Point::all()->pluck('slug', 'id');
-            })->rules('required')->placeholder('Select Role...');
+            })->rules('required')->placeholder('Select Points...');
             $form->saved(function (Form $form) use ($id) {
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
