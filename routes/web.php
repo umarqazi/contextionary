@@ -13,11 +13,12 @@
 MultiLang::routeGroup(function($router) {
   Route::group(['middleware' => ['locale']], function(){
     Route::get('/', function () {
-      return view('index');
+      return view('landing');
     })->name('homescreen');
+    Route::get('/home', 'UsersController@home')->name('home');
     Auth::routes();
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/dashboard', 'HomeController@index')->name('dashboard');
     Route::get('profile',  'UsersController@profile')->name('profile');
     Route::get('edit-profile',  'UsersController@edit')->name('edit profile');
     Route::get('selectPlan/{token}',  'UsersController@selectPlan')->name('selectPlan');
@@ -27,4 +28,5 @@ MultiLang::routeGroup(function($router) {
     Route::patch('update-profile', 'UsersController@update');
   });
   Route::get('locale/{locale}',  'LocaleController@locale')->name('locale');
+  Route::get('switchLanguage/{locale}',  'LocaleController@switchLanguage')->name('switchLanguage');
 });
