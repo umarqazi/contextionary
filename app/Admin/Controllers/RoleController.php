@@ -10,6 +10,7 @@ use Encore\Admin\Layout\Content;
 use App\User;
 use App\Services\UserServices;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -70,13 +71,14 @@ class RoleController extends Controller
         return Admin::grid(Role::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
             $grid->name()->sortable();
+            $grid->permissions()->pluck('name')->label();
             $grid->column('created_at','Created at')->sortable();
             $grid->column('updated_at','Last Modified at')->sortable();
             $grid->filter(function ($filter){
                 $filter->like('name');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
-//                $actions->append('<a href="/"><i class="fa fa-eye"></i></a>');
+                $actions->disableView();
             });
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
@@ -96,6 +98,9 @@ class RoleController extends Controller
         return Admin::form(Role::class, function (Form $form) {
             $form->display('id', 'ID');
             $form->text('name', trans('Name'))->rules('required')->placeholder('Enter Name...');
+            $form->multipleSelect('permissions', trans('Permissions'))->options(function () {
+                return Permission::all()->pluck('name', 'id');
+            })->rules('required')->placeholder('Select Permissions...');
         });
     }
 
