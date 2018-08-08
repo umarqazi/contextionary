@@ -80,7 +80,7 @@ return [
     |
      */
     'exclude_segments'  => [
-        //
+        'admin',
     ],
 
     /*
@@ -105,7 +105,7 @@ return [
     |
      */
     'cache'             => [
-        'enabled'  => true,
+        'enabled'  => false,
         'store'    => env('CACHE_DRIVER', 'default'),
         'lifetime' => 1440,
     ],
