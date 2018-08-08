@@ -31,3 +31,11 @@ function readURL(input) {
 $("#profile-img").change(function(){
   readURL(this);
 });
+$(".pricing-palden .pricing-item").hover(function () {
+  $(this).siblings().removeClass('active');
+  $(this).addClass('active');
+});
+$(".pricing-palden .pricing-item").mouseleave(function () {
+  $('.pricing-palden .pricing-item').siblings().removeClass('active');
+  $('.pricing-item.pricing__item--featured').addClass('active');
+});
