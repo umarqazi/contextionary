@@ -5,6 +5,6 @@
     @if(Auth::user()->hasRole(['basic plan', 'premium plan', 'advance plan']))
       @include('layouts.user_sidebar')
     @else
-      @include('layouts.contributor.sidebar')
+      @include('layouts.contributor_sidebar')
     @endif
 </aside>
