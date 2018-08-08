@@ -20,7 +20,7 @@ use Config;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class UserServices extends AbstractDBService implements IDBService, IUserService
+class UserServices
 {
     /**
      * @return int
