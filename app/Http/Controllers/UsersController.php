@@ -5,12 +5,18 @@ namespace App\Admin\Controllers;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
 use App\User;
+use App\TransactionHistory;
+use App\Http\Services\UserServices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use App\Services\UserServices;
+use View;
+use Carbon;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 
 class UsersController extends Controller
 {
@@ -21,7 +27,6 @@ class UsersController extends Controller
     public function __construct(UserServices $userServices)
     {
         $this->userServices = $userServices;
-        $this->middleware('auth');
     }
 
     public function userCount(){
@@ -63,7 +68,8 @@ class UsersController extends Controller
             return Redirect::to('/edit-profile')
                 ->withErrors($validator)
                 ->withInput(Input::except('password'));
-        } else {
+        }
+        else {
             // update
             $user = Auth::user();
             $user->name       = Input::get('name');
@@ -78,6 +84,7 @@ class UsersController extends Controller
             return Redirect::to('profile');
         }
     }
+
 
     /**
      * Display a listing of the resource.
@@ -165,6 +172,40 @@ class UsersController extends Controller
     {
         // delete
         $user = User::find($id);
-        $user->delete();
+        UserServices::delete($user);
+    }
+
+    public function selectPlan($token){
+      $user=Session::get('user');
+      $authenticateToken= UserServices::authenticateToken($user->id, $token);
+      if($authenticateToken==false):
+        return Redirect::to('/register');
+      endif;
+
+      $updateToken=UserServices::updateToken($user->id);
+      return view::make('user.user_plan.select_plan')->with(['user'=>$user, 'token'=>$updateToken]);
+    }
+
+    public function userPlan($id, $token){
+      $authenticateToken=UserServices::authenticateToken($id, $token);
+      if($authenticateToken==false):
+        return Redirect::to('/register');
+      endif;
+      $updateToken=UserServices::updateToken($id);
+      return view::make('user.user_plan.user_plan')->with(['id'=> $id, 'token'=>$updateToken]);
+    }
+
+    public function showPaymentInfo($id, $plan, $token){
+      $authenticateToken=UserServices::authenticateToken($id, $token);
+      if($authenticateToken==false):
+        return Redirect::to('/register');
+      endif;
+      return view::make('user.user_plan.pay_with_stripe')->with(['id'=>$id, 'plan'=>$plan, 'token'=>$token]);
+    }
+
+    public static function updateTransaction($transaction, $user_id, $package_id){
+      $pTransaction=UserServices::pTransaction($transaction, $user_id, $package_id);
+      $assignRole=UserServices::assignRole($user_id, $package_id);
+      return $pTransaction;
     }
 }

@@ -1,0 +1,55 @@
+.help-block{
+  width:100%;
+  text-align: left;
+  color: red;
+  display: block;
+  margin-top: 10px;
+}
+.orangeBtn{
+  color:#FFF !important;
+}
+.stripe-logo{
+  width:20%;
+}
+.card-container{
+  width:50%;
+  display: inline-block;
+  text-align: center;
+  margin-top:40px;
+}
+.control-label{
+  width:100%;
+  display: block;
+  text-align: left;
+  color:#FFF;
+  font-weight: bold;
+}
+.form-row1{
+  width:100%;
+  display:inline-block;
+}
+.form-row1 > div{
+  float:left;
+}
+.back-button{
+  display: inline !important;
+  padding-top:11px;
+  padding-bottom:11px;
+}
+.checkbox{
+  width:50%;
+  float:left;
+  text-align: left;
+  color: #f7941d;
+  font-size: 15px;
+}
+input{
+  padding:0px 10px;
+}
+.expiryDate{
+  margin-bottom: 15px;
+text-align: center;
+font-size: 16px;
+font-weight: 500;
+color: #f7953a;
+}

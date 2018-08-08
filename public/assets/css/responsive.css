@@ -1,0 +1,283 @@
+@media screen and (min-width: 66.25em) {
+    .pricing-palden .pricing-item {
+        margin: 1em -0.5em;
+    }
+
+    .pricing-palden .pricing__item--featured {
+        margin: 0;
+        z-index: 10;
+        -webkit-box-shadow: 0 0 20px rgba(46, 59, 125, 0.23);
+        box-shadow: 0 0 20px rgba(46, 59, 125, 0.23);
+    }
+
+    .userPlan .pricing-item {
+        margin: 1em 1.5em;
+    }
+}
+
+@media (max-width: 1279px) {
+    aside {
+        left: -300px;
+        position: fixed;
+        z-index: 999999;
+        height: 100vh !important;
+    }
+    .dashBoard-container {
+        width: 100% !important;
+    }
+    .dashBoard-container .userHeader .menuIcon {
+        display: none;
+    }
+
+    .dashBoard-container .userHeader .mobileIcon {
+        display: inline-block;
+    }
+
+    .closeMenu {
+        color: #fff;
+        position: absolute;
+        right: 10px;
+        font-size: 18px;
+        top: 10px;
+    }
+
+    .dashBoard-container .topLinks {
+        display: none;
+    }
+
+    aside .topLinks {
+        display: block;
+        text-align: center;
+        padding: 15px 0px;
+        background: #000;
+    }
+
+    aside .topLinks a {
+        display: inline-block;
+        font-weight: 600;
+        color: #fff;
+        padding: 0px 10px;
+    }
+
+}
+
+@media (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+    }
+
+    header .mainMenu li {
+        margin-right: 5px;
+    }
+
+    header .mainMenu li a {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1023px) {
+    header #menu {
+        display: inline-block;
+        background: #f7941d;
+        color: #fff;
+        border: none;
+        line-height: normal;
+        padding: 8px 12px;
+        margin-top: 4px;
+        margin-right: 15px;
+    }
+
+    header .mainMenu {
+        position: fixed;
+        background: rgba(0, 0, 0, 0.91);
+        left: 0;
+        top: 0;
+        margin-top: 0;
+        width: 200px;
+        height: 100vh;
+        z-index: 99;
+        padding: 15px;
+        left: -250px;
+    }
+
+    header .mainMenu li {
+        margin-right: 0;
+        display: block;
+        text-align: left;
+    }
+
+    header .mainMenu li a {
+        font-size: 14px;
+        display: block;
+        color: #fff;
+    }
+
+    header .closeMenu {
+        display: inline-block;
+        color: #fff;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 992px) {
+    .loginWrapper .logo {
+        width: 200px;
+    }
+
+    .loginWrapper .loginBlock {
+        width: calc(100% - 400px);
+    }
+}
+
+@media (max-width: 768px) {
+    .loginWrapper .loginBlock {
+        width: 100%;
+    }
+
+    .loginWrapper .loginIcon {
+        display: none;
+    }
+
+    .loginWrapper {
+        padding: 60px 0px
+    }
+
+    .loginWrapper .logo {
+        margin-bottom: 40px;
+    }
+
+    .loginWrapper .loginBlock {
+        padding: 30px 15px;
+    }
+}
+
+@media (max-width: 767px) {
+    .planBlock .btn {
+        margin-bottom: 30px;
+    }
+    header #menu {
+        position: absolute;
+        top: -44px;
+        right: 0;
+    }
+    header .searchWrapper {
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .mainPageContainer .companyWrapper p {
+        font-size: 13px;
+    }
+
+    .mainPageContainer .companyWrapper .companyName {
+        font-size: 26px;
+    }
+
+    .mainPageContainer footer .title {
+        font-size: 16px;
+    }
+
+    .tabsContainer .customTabs {
+        text-align: center;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .tabsContainer .searchHolder {
+        float: none;
+        width: 100%;
+    }
+
+    .companyName {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+    #owl-demo .sliderBlock h2 {
+        font-size: 20px;
+    }
+
+    #owl-demo .owl-wrapper-outer {
+        min-height: inherit;
+    }
+
+    #owl-demo .iconsListing li .circle {
+        width: 60px;
+        line-height: 60px;
+
+    }
+
+    #owl-demo .iconsListing li .circle img {
+        width: 30px;
+    }
+
+    .contributorMain {
+        padding-bottom: 30px;
+    }
+
+}
+
+@media (max-width: 576px) {
+    .topHeader {
+        text-align: center;
+    }
+
+    .topHeader .text-right {
+        text-align: center !important;
+        margin-top: 5px;
+    }
+
+    .topHeader .phoneNumber {
+        margin-top: 0;
+    }
+    .userHeader,
+    .userHeader .text-right {
+        text-align: center !important;
+    }
+
+    .userHeader .text-right {
+        margin-top: 15px;
+    }
+
+    .dashBoard-container .dropDown-block {
+        top: 55px;
+        right: -35px;
+    }
+
+    .dashBoard-container .dropDown-block:before {
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+    }
+
+    .dashBoard-container .userHeader .rightMenu .rightDropdown {
+        width: 280px;
+    }
+
+    .tabsContainer .customTabs li {
+        font-size: 14px;
+        margin-right: 0;
+    }
+
+    .customPagination .numbers {
+        margin: 0px 5px;
+    }
+
+    .customPagination .perv .fa {
+        padding-right: 0;
+    }
+
+    .customPagination .next .fa {
+        padding-left: 0;
+    }
+
+    .customPagination .numbers li {
+        margin: 0px 0px;
+    }
+
+    .customPagination .numbers li a {
+        padding: 0px 5px;
+        background: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+}

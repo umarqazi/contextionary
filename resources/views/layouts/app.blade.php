@@ -1,84 +1,42 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+  <meta charset="utf-8">
+  <title>@yield('title')</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="author" content="">
+  {!! HTML::style('assets/css/bootstrap.min.css') !!}
+  {!! HTML::style('assets/css/mdb.min.css') !!}
+  {!! HTML::style('assets/css/main.css') !!}
+  {!! HTML::style('assets/css/responsive.css') !!}
+  {!! HTML::style('assets/css/style.css') !!}
+  {!! HTML::style('assets/css/shards.css') !!}
+  {!! HTML::style('https://use.fontawesome.com/releases/v5.1.1/css/all.css') !!}
+  @yield('head_css')
+  {{-- End head css --}}
+  {!! HTML::script('assets/js/jquery-3.3.1.min.js') !!}
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('profile') }}">
-                                            Profile
-                                        </a>
-
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
+  <section class="loginContainer">
+    <div class="loginWrapper">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-12 text-center">
+            <a href="{!! lang_url('/') !!}"><img src="{!! asset('assets/images/logo.png')!!}" class="logo wow bounceIn" data-wow-delay="0.2s"></a>
+            <div class="loginIcon wow fadeIn" data-wow-delay="0.4s">
+              <img src="{!! asset('assets/images/login-icon.png')!!}">
             </div>
-        </nav>
-
-        @yield('content')
+            @yield('content')
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+  </section>
+  {!! HTML::script('assets/js/popper.min.js') !!}
+  {!! HTML::script('assets/js/bootstrap.min.js') !!}
+  {!! HTML::script('assets/js/mdb.min.js') !!}
+  {!! HTML::script('assets/js/shards.min.js') !!}
+  {!! HTML::script('assets/js/custom.js') !!}
 </body>
 </html>
