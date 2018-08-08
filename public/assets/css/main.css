@@ -307,6 +307,10 @@ li {
   filter: "alpha(opacity=0)";
   -ms-filter: "alpha(opacity=0)";
 }
+.whiteBlock {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 15px;
+}
 /*login pages style*/
 .loginContainer {
   background: url(../images/login-bg.jpg) no-repeat center center;
@@ -539,9 +543,6 @@ li {
   -moz-transition: all 0.5s ease;
   -webkit-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
-}
-.userPlan .pricing-item:hover {
-  transform: scale(1.1);
 }
 .userPlan .pricing-item.active {
   transform: scale(1.1);
@@ -805,6 +806,8 @@ aside .logBg {
 aside .logBg img {
   position: relative;
   top: 50%;
+  display: block;
+  margin: 0 auto;
   transform: translateY(-50%);
 }
 aside .menuCate {
@@ -1229,7 +1232,18 @@ aside .topLinks {
 .tabsContainer .customTabs li a {
   padding-left: 10px;
 }
-.tabsContainer .searchHolder {
+.tabsContainer .customTabs.tabsView li a {
+  color: #fff;
+  font-size: 18px;
+  padding: 0px 5px;
+}
+.tabsContainer .customTabs.tabsView li.active a {
+  color: #f7941d;
+}
+.tabsContainer .customTabs.tabsView li:hover a {
+  color: #f7941d;
+}
+.searchHolder {
   float: right;
   width: 270px;
   line-height: 45px;
@@ -1237,34 +1251,34 @@ aside .topLinks {
   -moz-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
 }
-.tabsContainer .searchHolder .fa {
+.searchHolder .fa {
   color: #f7941d;
   font-size: 13px;
   padding: 0px 5px 0px 10px;
 }
-.tabsContainer .searchHolder .fld {
+.searchHolder .fld {
   width: calc(100% - 38px);
   border: none;
   background: transparent;
   outline: none;
   font-size: 14px;
 }
-.tabsContainer .searchHolder.light {
+.searchHolder.light {
   background: rgba(255, 255, 255, 0.58);
 }
-.tabsContainer .searchHolder.light .fld::-webkit-input-placeholder {
+.searchHolder.light .fld::-webkit-input-placeholder {
   color: #fff;
 }
-.tabsContainer .searchHolder.light .fld::-moz-placeholder {
+.searchHolder.light .fld::-moz-placeholder {
   color: #fff;
 }
-.tabsContainer .searchHolder.light .fld:-ms-input-placeholder {
+.searchHolder.light .fld:-ms-input-placeholder {
   color: #fff;
 }
-.tabsContainer .searchHolder.light .fld:-moz-placeholder {
+.searchHolder.light .fld:-moz-placeholder {
   color: #fff;
 }
-.tabsContainer .searchHolder.light .fld {
+.searchHolder.light .fld {
   color: #fff;
 }
 .categeoryBlock {
@@ -1645,4 +1659,9 @@ aside .topLinks {
 .landingPage .exploreSection .orangeBtn {
   font-size: 18px;
   padding: 12px 50px;
+}
+/*Contact Page style*/
+.contactPage {
+  background: url(../images/contactBg.jpg) no-repeat center center;
+  background-size: cover;
 }
