@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Services;
+namespace App\Services;
 
 /**
  * Copyright (c) 2018, fahad-shehzad.com All rights reserved.
