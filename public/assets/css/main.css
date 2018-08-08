@@ -806,8 +806,6 @@ aside .logBg {
 aside .logBg img {
   position: relative;
   top: 50%;
-  display: block;
-  margin: 0 auto;
   transform: translateY(-50%);
 }
 aside .menuCate {
