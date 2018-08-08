@@ -150,7 +150,6 @@ class UserController extends Controller
                 }
             });
             $form->saved(function (Form $form) use ($id) {
-                dd($form->model()->id);
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
                 }else{
