@@ -8,7 +8,7 @@
       <div class="col-md-12 wow zoomIn" data-wow-delay="0.4s">
         <div class="companyWrapper">
           <div class="companyName">
-            Contextionary
+            {!! t('Contextionary') !!}
           </div>
           <p>{!! t('Guest User Description')!!}</p>
           @if(!Auth::check())
