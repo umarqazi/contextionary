@@ -103,7 +103,7 @@
 
       <div class="col-md-6">
         <div class="customForm-group">
-          {!! Form::select('native_language', ['Hindi'=>'Hindi', 'French'=>'French', 'Spanish'=>'Spanish', 'English'=>'English'],null, ['class'=>'customSelect w-100', 'placeholder'=>t('Language')]) !!}
+          {!! Form::select('native_language', Config::get('constant.Native Language'),null, ['class'=>'customSelect w-100', 'placeholder'=>t('Native Language')]) !!}
         </div>
       </div>
 
@@ -113,7 +113,7 @@
           <span class="focus-border"></span>
           <label class="d-inline">
             <i class="fa fa-paperclip"></i>
-            <input type="file" name="profile_image" style="display: none;">
+            <input type="file" id="profile-img" name="profile_image" style="display: none;">
           </label>
           @if ($errors->has('profile_image'))
           <span class="help-block">
@@ -146,7 +146,7 @@
       </div>
 
     </div>
-
+    <img src="" id="profile-img-tag" width="200px" class="img-thumbnail" />
     <div class="mt-4">
       <button type="submit" class="orangeBtn waves-effect waves-light">SIGN UP</button>
     </div>

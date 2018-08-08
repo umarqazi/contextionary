@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.secured_header')
 
 @section('content')
     <div class="container">
