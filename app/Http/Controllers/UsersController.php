@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Controllers;
+namespace App\Http\Controllers;
 
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
