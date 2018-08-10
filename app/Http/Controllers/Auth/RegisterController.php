@@ -6,7 +6,7 @@ use App\User;
 use App\UserProfile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\vClasses\RegistersUsers;
 use Spatie\Permission\Models\Role;
 use Input;
 use Image;

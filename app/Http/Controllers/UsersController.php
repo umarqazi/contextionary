@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\TransactionHistory;
 use App\Services\UserServices;
+use App\Services\RoleServices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -16,20 +17,22 @@ use View;
 use Carbon;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use App\Repositories\UserRepo;
 
 class UsersController extends Controller
 {
 
     use ModelForm;
     protected  $userServices;
+    protected  $userRoles;
 
-    public function __construct(UserServices $userServices)
+    public function __construct(UserServices $userServices, RoleServices $role)
     {
         $this->userServices = $userServices;
+        $this->userRoles = $role;
     }
     public function home(){
-      return view::make('index');
+        return view::make('index');
     }
     public function userCount(){
         $countUsers = $this->userServices->countUsers();
@@ -88,78 +91,6 @@ class UsersController extends Controller
         }
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         // delete
@@ -175,40 +106,34 @@ class UsersController extends Controller
     {
         // delete
         $user = User::find($id);
-        UserServices::delete($user);
+        $this->userServices->delete($user);
     }
 
     public function selectPlan($token){
-      $user=Session::get('user');
-      $authenticateToken= UserServices::authenticateToken($user->id, $token);
-      if($authenticateToken==false):
-        return Redirect::to('/register');
-      endif;
+        $user=Session::get('user');
+        $authenticateToken= $this->userServices->authenticateToken($user->id, $token);
+        if($authenticateToken==false):
+            return Redirect::to('/register');
+        endif;
 
-      $updateToken=UserServices::updateToken($user->id);
-      return view::make('user.user_plan.select_plan')->with(['user'=>$user, 'token'=>$updateToken]);
+        $updateToken=$this->userServices->updateToken($user->id);
+        return view::make('user.user_plan.select_plan')->with(['user'=>$user, 'token'=>$updateToken]);
     }
 
     public function userPlan($id, $token){
-      $authenticateToken=UserServices::authenticateToken($id, $token);
-      if($authenticateToken==false):
-        return Redirect::to('/register');
-      endif;
-      $updateToken=UserServices::updateToken($id);
-      return view::make('user.user_plan.user_plan')->with(['id'=> $id, 'token'=>$updateToken]);
+        $authenticateToken=$this->userServices->authenticateToken($id, $token);
+        if($authenticateToken==false):
+            return Redirect::to('/register');
+        endif;
+        $updateToken=$this->userServices->updateToken($id);
+        return view::make('user.user_plan.user_plan')->with(['id'=> $id, 'token'=>$updateToken]);
     }
 
     public function showPaymentInfo($id, $plan, $token){
-      $authenticateToken=UserServices::authenticateToken($id, $token);
-      if($authenticateToken==false):
-        return Redirect::to('/register');
-      endif;
-      return view::make('user.user_plan.pay_with_stripe')->with(['id'=>$id, 'plan'=>$plan, 'token'=>$token]);
-    }
-
-    public static function updateTransaction($transaction, $user_id, $package_id){
-      $pTransaction=UserServices::pTransaction($transaction, $user_id, $package_id);
-      $assignRole=UserServices::assignRole($user_id, $package_id);
-      return $pTransaction;
+        $authenticateToken=$this->userServices->authenticateToken($id, $token);
+        if($authenticateToken==false):
+            return Redirect::to('/register');
+        endif;
+        return view::make('user.user_plan.pay_with_stripe')->with(['id'=>$id, 'plan'=>$plan, 'token'=>$token]);
     }
 }

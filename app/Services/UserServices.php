@@ -19,12 +19,19 @@ use Carbon;
 use Config;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Repositories\UserRepo;
 
 class UserServices
 {
     /**
      * @return int
      */
+     protected $user;
+
+     public function __construct(UserRepo $user)
+     {
+         $this->user = $user;
+     }
     public function countUsers(){
         return User::all()->count();
     }
@@ -39,22 +46,17 @@ class UserServices
         return $user->delete();
     }
 
-    public static function pTransaction($transaction, $user_id, $package_id){
-      $new_transaction=new TransactionHistory;
-      $new_transaction->transaction_id=$transaction['id'];
-      $new_transaction->user_id=$user_id;
-      $new_transaction->package_id=$package_id;
-      $new_transaction->save();
-      $updateUser=User::find($user_id);
-      $updateUser->status=1;
-      $updateUser->expiry_date=strtotime(Carbon::now()->addMonth());
-      $updateUser->save();
+    public function pTransaction($transaction, $user_id, $package_id){
+      $data=['transaction_id'=>$transaction['id'], 'user_id'=>$user_id, 'package_id'=>$package_id];
+      $new_transaction=$this->user->pTransaction($data);
+      $updateUser=$this->user->PostOfId($user_id);
       $updateUser->notify(new InvoicePaid($new_transaction));
+      $assignRoleToUser=self::assignUserRole($user_id, $package_id);
       return $updateUser;
     }
 
-    public static function authenticateToken($id, $token){
-      $user=User::find($id);
+    public function authenticateToken($id, $token){
+      $user=$this->user->PostOfId($id);
       if($user){
         if($user->token==$token){
           return true;
@@ -66,60 +68,17 @@ class UserServices
       }
     }
 
-    public static function updateToken($id){
+    public function updateToken($id){
       $user=User::find($id);
       $user->token=md5(microtime());
       $user->save();
       return $user->token;
     }
-
-    public static function assignRole($user_id, $package_id){
-      $package_name=strtolower(Config::get('constant.packages.'.$package_id));
-      $getRoleName=Role::where('name',$package_name)->first();
-      $user=User::find($user_id);
-      $assignRole=$user->assignRole($package_name);
-      return true;
-    }
-
-    /**
-     *
-     */
-    public function persist($params)
-    {
-        // TODO: Implement persist() method.
-    }
-
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function findById($id)
-    {
-        // TODO: Implement findById() method.
-    }
-
-    /**
-     * @param $params
-     * @return mixed
-     */
-    public function update($params)
-    {
-        // TODO: Implement update() method.
-    }
-
-    public function remove($id)
-    {
-        // TODO: Implement remove() method.
-    }
-
-    /**
-     * Paginated data based on params.
-     * @param $params
-     * @return mixed
-     */
-    public function search($params)
-    {
-        // TODO: Implement search() method.
+    public function assignUserRole($user_id, $package_id){
+        $package_name=strtolower(Config::get('constant.packages.'.$package_id));
+        $user=$this->user->PostOfId($user_id);
+        $assignRole=$user->assignRole($package_name);
+        return true;
     }
 
 
