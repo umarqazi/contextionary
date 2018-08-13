@@ -13,10 +13,11 @@ class CreateTransactionHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('transaction_histories', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('transaction_id')->nullable();
-            $table->integer('package_id')->nullable();
+            $table->string('transaction_id');
+            $table->integer('package_id');
+            $table->string('expiry_date')->nullable();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
@@ -30,6 +31,6 @@ class CreateTransactionHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaction_histories');
+        Schema::dropIfExists('transactions');
     }
 }

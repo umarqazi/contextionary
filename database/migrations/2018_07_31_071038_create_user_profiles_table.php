@@ -18,7 +18,7 @@ class CreateUserProfilesTable extends Migration
             $table->string('pseudonyme');
             $table->string('date_birth');
             $table->string('gender');
-            $table->integer('phone_number');
+            $table->string('phone_number');
             $table->string('country');
             $table->string('native_language');
             $table->integer('user_id')->unsigned();

@@ -24,7 +24,7 @@
           <div class="container">
               <div class="row justify-content-center signUpRow">
                   <div class="col-md-12 text-center">
-                      <a href="{!! lang_route('homescreen') !!}"><img src="{!! asset('assets/images/logo.png') !!}" class="logo wow bounceIn" data-wow-delay="0.2s"></a>
+                      <a href="{!! lang_route('home') !!}"><img src="{!! asset('assets/images/logo.png') !!}" class="logo wow bounceIn" data-wow-delay="0.2s"></a>
                   </div>
             @yield('content')
           </div>

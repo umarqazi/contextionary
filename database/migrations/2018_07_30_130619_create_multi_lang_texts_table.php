@@ -26,12 +26,13 @@ class CreateMultiLangTextsTable extends Migration
     public function up()
     {
         Schema::create($this->table, function (Blueprint $table) {
+            $table->increments('id');
             $table->char('key');
             $table->char('lang', 2);
             $table->longText('value');
             $table->enum('scope', ['admin', 'site', 'global'])->default('global');
             $table->timestamps();
-            $table->primary(['key', 'lang', 'scope']);
+            $table->unique(['key', 'lang', 'scope']);
         });
     }
 
