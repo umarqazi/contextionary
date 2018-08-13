@@ -17,9 +17,6 @@
           </div>
           <ul class="userMenu">
             <li>
-              <p class="expiryDate"> <i class="fa fa-clock"></i> Expire in: <span id="expiryDate"></span></p>
-            </li>
-            <li>
               <a href="#">
                 <div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> User Plan
               </a>

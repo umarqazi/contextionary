@@ -13,32 +13,41 @@ namespace App\Services;
 
 use App\User;
 use App\Notifications\InvoicePaid;
-use App\TransactionHistory;
+use App\Transaction;
 use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
 use App\Http\Controllers\UsersController;
+use App\TransactionDetail;
+use Carbon;
+use App\Repositories\TransactionRepo;
 
-class StripeServices
+class TransactionService
 {
-    protected $userController;
+    protected $role;
     protected $userServices;
-    public function __construct(UsersController $controller, UserServices $services){
-        $this->userController= $controller;
+    protected $transactionDetail;
+    protected $transactionRepo;
+
+    public function __construct(RoleService $roles,TransactionRepo $transaction_repo, UserService $services){
         $this->userServices= $services;
+        $this->transactionRepo= $transaction_repo;
+        $this->role=$roles;
     }
     public function paymentProcess($request){
         $input=$request->all();
         $input = array_except($input,array('_token'));
         $stripe = Stripe::make(env('STRIPE_SECRET'));
         try {
+            $cardInfo=[
+                'number' => $request->get('card_no'),
+                'exp_month' => $request->get('ccExpiryMonth'),
+                'exp_year' => $request->get('ccExpiryYear'),
+                'cvc' => $request->get('cvvNumber'),
+            ];
             $token = $stripe->tokens()->create([
-                'card' => [
-                    'number' => $request->get('card_no'),
-                    'exp_month' => $request->get('ccExpiryMonth'),
-                    'exp_year' => $request->get('ccExpiryYear'),
-                    'cvc' => $request->get('cvvNumber'),
-                ],
+                'card' => $cardInfo
             ]);
+            $cardInfo['user_id']=$request->user_id;
             if (!isset($token['id'])) {
                 return redirect()->route('addmoney.paywithstripe');
             }
@@ -53,8 +62,9 @@ class StripeServices
                 /**
                  * Write Here Your Database insert logic.
                  */
-                $updateTransaction=$this->userServices->pTransaction($charge, $request->user_id, $request->package_id);
-                return ['status'=>true, 'user'=>$updateTransaction];
+                $updateTransaction=$this->success($charge, $request->user_id, $request->package_id);
+                $notify=$this->userServices->notifyUser($request->user_id, $updateTransaction);
+                return ['status'=>true, 'user'=>$notify];
 
             } else {
                 $notification = array(
@@ -82,5 +92,11 @@ class StripeServices
             );
             return ['status'=>false, 'notification'=>$notification];
         }
+    }
+    public function success($transaction, $user_id, $package_id){
+        $data=['transaction_id'=>$transaction['id'], 'user_id'=>$user_id, 'package_id'=>$package_id, 'expiry_date'=>Carbon::parse()->addMonth()];
+        $new_transaction=$this->transactionRepo->create($data);
+        $assignRoleToUser=$this->role->assign($user_id, $package_id);
+        return $new_transaction;
     }
 }

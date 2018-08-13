@@ -7,12 +7,12 @@ use App\User;
 use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
 use Auth;
-use App\Services\StripeServices;
+use App\Services\TransactionService;
 
 class StripeController extends Controller
 {
     public $stripe;
-    public function __construct(StripeServices $stripe){
+    public function __construct(TransactionService $stripe){
         $this->stripe=$stripe;
     }
     public function postPaymentWithStripe(StripePayment $stripe)

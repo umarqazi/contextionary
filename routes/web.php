@@ -15,10 +15,10 @@ MultiLang::routeGroup(function($router) {
     Route::get('/', function () {
       return view('landing');
     })->name('homescreen');
-    Route::get('/home', 'UsersController@home')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
     Auth::routes();
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+    Route::get('/dashboard', 'UsersController@index')->name('dashboard');
     Route::get('profile',  'UsersController@profile')->name('profile');
     Route::get('edit-profile',  'UsersController@edit')->name('edit profile');
     Route::get('selectPlan/{token}',  'UsersController@selectPlan')->name('selectPlan');

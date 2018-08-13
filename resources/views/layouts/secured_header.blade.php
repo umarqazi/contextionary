@@ -1,6 +1,6 @@
 @include('layouts.base_header')
   <script type="text/javascript">
-    var expireDate="<?php echo  date('M d Y h:i:s', Auth::user()->expiry_date); ?>";
+    var expireDate="<?php echo  date('M d Y h:i:s'); ?>";
     </script>
     @include('layouts.sidebar')
     <section class="dashBoard-container">

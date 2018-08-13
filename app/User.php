@@ -35,4 +35,7 @@ class User extends Authenticatable
     public function userProfile(){
        return $this->hasOne('App\UserProfile');
     }
+    public function userTransaction(){
+        return $this->hasOne('App\Transaction');
+    }
 }

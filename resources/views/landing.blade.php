@@ -1,47 +1,48 @@
-@include('layouts.base_header')
+@extends('layouts.base_header')
+@section('title')
+  {!! t('Contextionary') !!}
+@stop
 <!--Login section-->
 <section class="landingPage">
   <img src="{!! asset('assets/images/landing-logo.png')!!}" class="logo">
   <div class="content">
-    <h1 class="companyName">Contextionary</h1>
-    <p class="tagLine mb-3">Your illustrated reading comprehension assistant</p>
+    <h1 class="companyName">{!! t('Contextionary') !!}</h1>
+    <p class="tagLine mb-3">{!! t('Your illustrated reading comprehension assistant') !!}</p>
     <div class="companyMission">
       <div class="title">
-        Vision
+        {!! t('Vision') !!}
       </div>
       <div class="text">
-        Unite the world<br> around a universal<br> tongue.
+        {!! t('Unite the world<br> around a universal<br> tongue') !!}
       </div>
     </div>
     <div class="companyMission">
       <div class="title">
-        Mission
+        {!! t('Mission') !!}
       </div>
       <div class="text">
-        Accelerate vocabulary learning through lexical sets.<br> Share specialized knowledge across languages and cultures.<br> Make the world jargon intelligibleUnite the world around a universal tongue.<br>
+        {!! t('Accelerate vocabulary learning through lexical sets.<br> Share specialized knowledge across languages and cultures.<br> Make the world jargon intelligibleUnite the world around a universal tongue.') !!}
       </div>
     </div>
     <div class="companyMission">
       <div class="title">
-        Vision
+        {!! t('Vision') !!}
       </div>
       <div class="text">
-        Unite the world<br> around a universal<br> tongue.
+        {!! t('Unite the world<br> around a universal<br> tongue.') !!}
       </div>
     </div>
 
   </div>
-
   <div class="exploreSection">
     <a href="{{lang_route('switchLanguage', ['lang'=>'en'])}}" class="orangeBtn waves-light">Explore</a>
     <ul class="language">
-      <li><a href="{{lang_route('switchLanguage', ['lang'=>'ch'])}}">中文</a></li>
-      <li><a href="{{lang_route('switchLanguage', ['lang'=>'sp'])}}">ESPAÑOL</a></li>
-      <li><a href="{{lang_route('switchLanguage', ['lang'=>'en'])}}">ENGLISH</a></li>
-      <li><a href="{{lang_route('switchLanguage', ['lang'=>'hi'])}}">हिन्दी</a></li>
-      <li><a href="{{lang_route('switchLanguage', ['lang'=>'fr'])}}">FRANÇAIS</a></li>
+      <li @if(Config::get('app.locale')==Config::get('multilang.locales.ch.locale')) class="active" @endif><a href="{{lang_route('switchLanguage', ['lang'=>'ch'])}}">中文</a></li>
+      <li @if(Config::get('app.locale')==Config::get('multilang.locales.sp.locale')) class="active" @endif><a href="{{lang_route('switchLanguage', ['lang'=>'sp'])}}">ESPAÑOL</a></li>
+      <li @if(Config::get('app.locale')==Config::get('multilang.locales.en.locale')) class="active" @endif><a href="{{lang_route('switchLanguage', ['lang'=>'en'])}}">ENGLISH</a></li>
+      <li @if(Config::get('app.locale')==Config::get('multilang.locales.hi.locale')) class="active" @endif><a href="{{lang_route('switchLanguage', ['lang'=>'hi'])}}">हिन्दी</a></li>
+      <li @if(Config::get('app.locale')==Config::get('multilang.locales.fr.locale')) class="active" @endif><a href="{{lang_route('switchLanguage', ['lang'=>'fr'])}}">FRANÇAIS</a></li>
     </ul>
   </div>
 
 </section>
-@include('layouts.base_footer')

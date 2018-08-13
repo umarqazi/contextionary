@@ -52,5 +52,4 @@
   </div>
 </div>
 {!! HTML::script('assets/owl-carousel/owl.carousel.js') !!}
-{!! HTML::script('assets/js/user/dashboard.js') !!}
 @endsection

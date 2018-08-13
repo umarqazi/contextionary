@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
 use App\User;
-use App\TransactionHistory;
-use App\Services\UserServices;
-use App\Services\RoleServices;
+use App\Transaction;
+use App\Services\UserService;
+use App\Services\AuthService;
+use App\Services\RoleService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -25,14 +26,16 @@ class UsersController extends Controller
     use ModelForm;
     protected  $userServices;
     protected  $userRoles;
+    protected  $authService;
 
-    public function __construct(UserServices $userServices, RoleServices $role)
+    public function __construct(UserService $userServices, RoleService $role, AuthService $authService)
     {
         $this->userServices = $userServices;
         $this->userRoles = $role;
+        $this->authService = $authService;
     }
-    public function home(){
-        return view::make('index');
+    public function index(){
+        return view::make('home');
     }
     public function userCount(){
         $countUsers = $this->userServices->countUsers();
@@ -59,38 +62,6 @@ class UsersController extends Controller
         return view('user.profile', compact('user'));
     }
 
-    public function profileUpdate()
-    {
-        // validate
-        $rules = array(
-            'name'       => 'required',
-            'email'      => 'required|email',
-            'password'   => 'nullable|min:6|confirmed'
-        );
-        $validator = Validator::make(Input::all(), $rules);
-
-        // process the login
-        if ($validator->fails()) {
-            return Redirect::to('/edit-profile')
-                ->withErrors($validator)
-                ->withInput(Input::except('password'));
-        }
-        else {
-            // update
-            $user = Auth::user();
-            $user->name       = Input::get('name');
-            $user->email      = Input::get('email');
-            if(Input::get('password') != ''){
-                $user->password = bcrypt(Input::get('password'));
-            }
-            $user->save();
-
-            // redirect
-            Session::flash('message', 'Successfully updated your Profile!');
-            return Redirect::to('profile');
-        }
-    }
-
     public function destroy($id)
     {
         // delete
@@ -102,35 +73,28 @@ class UsersController extends Controller
         return back();
     }
 
-    public function destroyAJAX($id)
-    {
-        // delete
-        $user = User::find($id);
-        $this->userServices->delete($user);
-    }
-
     public function selectPlan($token){
         $user=Session::get('user');
-        $authenticateToken= $this->userServices->authenticateToken($user->id, $token);
+        $authenticateToken= $this->authService->authenticateToken($user->id, $token);
         if($authenticateToken==false):
             return Redirect::to('/register');
         endif;
 
-        $updateToken=$this->userServices->updateToken($user->id);
+        $updateToken=$this->authService->updateToken($user->id);
         return view::make('user.user_plan.select_plan')->with(['user'=>$user, 'token'=>$updateToken]);
     }
 
     public function userPlan($id, $token){
-        $authenticateToken=$this->userServices->authenticateToken($id, $token);
+        $authenticateToken=$this->authService->authenticateToken($id, $token);
         if($authenticateToken==false):
             return Redirect::to('/register');
         endif;
-        $updateToken=$this->userServices->updateToken($id);
+        $updateToken=$this->authService->updateToken($id);
         return view::make('user.user_plan.user_plan')->with(['id'=> $id, 'token'=>$updateToken]);
     }
 
     public function showPaymentInfo($id, $plan, $token){
-        $authenticateToken=$this->userServices->authenticateToken($id, $token);
+        $authenticateToken=$this->authService->authenticateToken($id, $token);
         if($authenticateToken==false):
             return Redirect::to('/register');
         endif;
