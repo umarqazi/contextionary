@@ -54,7 +54,7 @@
             {!! Form::hidden('package_id', $plan, []) !!}
           </div>
           <div class="mt-4">
-            <a href="{!! lang_route('userPlan', ['id'=>$id, 'token'=>$token])!!}" class="back-button orangeBtn waves-effect waves-light">Back</a>
+            <a href="{!! lang_route('userPlan')!!}" class="back-button orangeBtn waves-effect waves-light">Back</a>
             <button type="submit" class="orangeBtn waves-effect waves-light">Pay with Stripe</button>
           </div>
         </form>

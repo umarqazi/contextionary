@@ -9,7 +9,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use App\User;
-use App\Services\UserServices;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -17,7 +17,7 @@ class UserController extends Controller
 {
     protected  $userServices;
 
-    public function __construct(UserServices $userServices)
+    public function __construct(UserService $userServices)
     {
         $this->userServices = $userServices;
     }

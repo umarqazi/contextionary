@@ -8,10 +8,10 @@
   <meta name="author" content="">
   {!! HTML::style('assets/css/bootstrap.min.css') !!}
   {!! HTML::style('assets/css/mdb.min.css') !!}
+    {!! HTML::style('assets/css/shards.css') !!}
   {!! HTML::style('assets/css/main.css') !!}
   {!! HTML::style('assets/css/responsive.css') !!}
   {!! HTML::style('assets/css/style.css') !!}
-  {!! HTML::style('assets/css/shards.css') !!}
   {!! HTML::style('https://use.fontawesome.com/releases/v5.1.1/css/all.css') !!}
   <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
   @yield('head_css')

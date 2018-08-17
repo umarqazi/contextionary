@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-2">
-      <a href="{!! lang_url('/') !!}"><img src="{!! asset('assets/images/logo2.png') !!}" class="logo wow bounceInLeft" data-wow-delay="0.2s"></a>
+      <a href="@if(Auth::check()) {!! lang_url('dashboard') !!} @else {!! lang_url('home') !!} @endif"><img src="{!! asset('assets/images/logo2.png') !!}" class="logo wow bounceInLeft" data-wow-delay="0.2s"></a>
     </div>
     <div class="col-md-10 text-right wow fadeIn" data-wow-delay="0.4s">
       <button id="menu"><i class="fa fa-bars"></i></button>

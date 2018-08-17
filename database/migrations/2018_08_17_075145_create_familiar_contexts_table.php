@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserProfilesTable extends Migration
+class CreateFamiliarContextsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,11 @@ class CreateUserProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_profiles', function (Blueprint $table) {
+        Schema::create('familiar_contexts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('pseudonyme');
-            $table->string('date_birth');
-            $table->string('gender');
-            $table->string('phone_number');
-            $table->string('country');
-            $table->string('native_language');
-            $table->string('language_proficiency')->nullable();
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
+            $table->integer('context_id');
         });
     }
 
@@ -35,6 +28,6 @@ class CreateUserProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_profiles');
+        Schema::dropIfExists('familiar_contexts');
     }
 }

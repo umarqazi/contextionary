@@ -1,4 +1,4 @@
-@include('layouts.base_header')
+@include('layouts.body')
   <header>
     @include('layouts.header')
   </header>
@@ -8,4 +8,4 @@
       @include('layouts.footer')
     </footer>
   </section>
-@include('layouts.base_footer')
+@include('layouts.body_footer')

@@ -33,7 +33,7 @@
                 <li class='pricing-feature'>A game of context </li>
 
               </ul>
-              <a href="{!! lang_route('payment', ['id'=>$id, 'plan'=>'1', 'token'=>$token]) !!}" class='orangeBtn mb-4'>Choose plan</a>
+              <a href="{!! lang_route('payment', ['plan'=>'1']) !!}" class='orangeBtn mb-4'>Choose plan</a>
             </div>
             <div class='pricing-item pricing__item--featured active'>
               <div class='pricing-deco'>
@@ -60,7 +60,7 @@
                 <li class='pricing-feature'>Learning center </li>
 
               </ul>
-              <a href="{!! lang_route('payment', ['id'=>$id, 'plan'=>'2', 'token'=>$token]) !!}" class='orangeBtn mb-4'>Choose plan</a>
+              <a href="{!! lang_route('payment', ['plan'=>'2']) !!}" class='orangeBtn mb-4'>Choose plan</a>
             </div>
             <div class='pricing-item'>
               <div class='pricing-deco'>
@@ -85,7 +85,7 @@
                 <li class='pricing-feature'>A game of context </li>
 
               </ul>
-              <a href="{!! lang_route('payment', ['id'=>$id, 'plan'=>'3', 'token'=>$token]) !!}" class='orangeBtn mb-4'>Choose plan</a>
+              <a href="{!! lang_route('payment', ['plan'=>'3']) !!}" class='orangeBtn mb-4'>Choose plan</a>
             </div>
           </div>
 

@@ -1,10 +1,21 @@
 <aside>
     <div class="logBg">
-        <a href="{!! lang_route('dashboard') !!}"> <img src="{!! asset('assets/images/logo2.png') !!}"> </a>
+        <a href="@if(Auth::check()) {!! lang_url('dashboard') !!} @else {!! lang_url('home') !!} @endif"> <img src="{!! asset('assets/images/logo2.png') !!}"> </a>
     </div>
-    @if(Auth::user()->hasRole(['basic plan', 'premium plan', 'advance plan']))
-      @include('layouts.user_sidebar')
-    @else
-      @include('layouts.contributor_sidebar')
+    @if(Auth::check())
+        @if(Auth::user()->hasRole(['basic plan', 'premium plan', 'advance plan']))
+            @include('layouts.user_sidebar')
+        @else
+            @include('layouts.contributor_sidebar')
+        @endif
     @endif
+    <div class="menuCate">
+        <div class="title">
+            {!! t('Contact Us')!!}
+
+        </div>
+        <ul class="menuListing">
+            <li><a href="{!! lang_route('contactUs') !!}"><span>Contact Us</span></a></li>
+        </ul>
+    </div>
 </aside>
