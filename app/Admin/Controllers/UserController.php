@@ -9,7 +9,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use App\User;
-use App\Services\UserServices;
+use App\Profile;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -17,13 +18,13 @@ class UserController extends Controller
 {
     protected  $userServices;
 
-    public function __construct(UserServices $userServices)
+    public function __construct(UserService $userServices)
     {
         $this->userServices = $userServices;
     }
 
     public function userCount(){
-        $countUsers = $this->userServices->countUsers();
+        $countUsers = $this->userServices->count();
         return view('admin::dashboard.blocks',
             [
                 'value'      => $countUsers,
@@ -49,18 +50,32 @@ class UserController extends Controller
     }
 
     /**
-     * Edit interface.
+     * Make a grid builder.
      *
-     * @param $id
-     *
-     * @return Content
+     * @return Grid
      */
-    public function edit($id)
+    protected function grid()
     {
-        return Admin::content(function (Content $content) use ($id) {
-            $content->header('Users');
-            $content->description('Edit User');
-            $content->body($this->form($id)->edit($id));
+        return Admin::grid(User::class, function (Grid $grid) {
+            $grid->id('ID')->sortable();
+            $grid->column('Name')->display(function () {
+                return $this->first_name . ' ' . $this->last_name;
+            });
+            $grid->column('email','Email');
+            $grid->roles()->pluck('name')->label();
+            $grid->column('profile.native_language')->display(function () {
+                return $this->profile['native_language'];
+            });
+            $grid->filter(function ($filter){
+                $filter->like('name');
+                $filter->like('email');
+            });
+            $grid->actions(function (Grid\Displayers\Actions $actions) {});
+            $grid->tools(function (Grid\Tools $tools) {
+                $tools->batch(function (Grid\Tools\BatchActions $actions) {
+                    $actions->disableDelete();
+                });
+            });
         });
     }
 
@@ -79,31 +94,18 @@ class UserController extends Controller
     }
 
     /**
-     * Make a grid builder.
+     * Edit interface.
      *
-     * @return Grid
+     * @param $id
+     *
+     * @return Content
      */
-    protected function grid()
+    public function edit($id)
     {
-        return Admin::grid(User::class, function (Grid $grid) {
-            $grid->id('ID')->sortable();
-            $grid->name()->sortable();
-            $grid->column('email','Email');
-            $grid->roles()->pluck('name')->label();
-            $grid->column('created_at','Created at')->sortable();
-            $grid->column('updated_at','Last Updated at')->sortable();
-            $grid->filter(function ($filter){
-                $filter->like('name');
-                $filter->like('email');
-            });
-            $grid->actions(function (Grid\Displayers\Actions $actions) {
-                $actions->append('<a href="'.$actions->getResource().'/'.$actions->getKey().'/"><i class="fa fa-eye"></i></a>');
-            });
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+        return Admin::content(function (Content $content) use ($id) {
+            $content->header('Users');
+            $content->description('Edit User');
+            $content->body($this->form($id)->edit($id));
         });
     }
 
@@ -124,7 +126,8 @@ class UserController extends Controller
         $roles = Role::all()->pluck('name','name');
         return Admin::form(User::class, function (Form $form) use ($id, $roles, $user, $current_role) {
             $form->display('id', 'ID');
-            $form->text('name', trans('Name'))->rules('required')->placeholder('Enter Name...');
+            $form->text('first_name', trans('First Name'))->rules('required')->placeholder('Enter Name...');
+            $form->text('last_name', trans('Last Name'))->rules('required')->placeholder('Enter Name...');
             $form->email('email', trans('Email'))->rules('required')->placeholder('Enter Email...');
             $form->password('password', trans('Password'))->rules('required|confirmed')
                 ->default(function ($form) {
@@ -134,11 +137,13 @@ class UserController extends Controller
                 ->default(function ($form) {
                     return $form->model()->password;
                 })->placeholder('Confirm Password...');
-//            $form->multipleSelect('roles', trans('Roles'))->options(function () {
-//                return Role::all()->pluck('name', 'id');
-//            })->rules('required')->placeholder('Select Role...');
             $form->radio('role', trans('Roles'))->options($roles)->default($current_role);
-//            $form->html('<b>Note*:</b> Please do not enter more than one Role.');
+            $form->display('profile.pseudonyme', 'Pseudonyme');
+            $form->display('profile.gender', 'Gender');
+            $form->date('profile.date_birth', 'Date of Birth');
+            $form->display('profile.phone_number', 'Phone #');
+            $form->display('profile.native_language', 'Language');
+            $form->display('profile.country', 'Country');
             $form->ignore(['password_confirmation', 'role']);
             $form->saving(function (Form $form) use ($user){
                 if ($form->password && $form->model()->password != $form->password) {
@@ -149,7 +154,7 @@ class UserController extends Controller
                     $user->syncRoles([$role]);
                 }
             });
-            $form->saved(function (Form $form) use ($id) {
+            $form->saved(function () use ($id) {
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
                 }else{
@@ -160,28 +165,6 @@ class UserController extends Controller
         });
     }
 
-    /**
-     * Make a display form builder.
-     *
-     * @param $id
-     *
-     * @return Form
-     */
-    public function displayForm($id = null)
-    {
-        return Admin::form(User::class, function (Form $form) {
-            $form->display('id', 'ID');
-            $form->display('name', trans('Name'));
-            $form->display('email', trans('Email'));
-            $form->multipleSelect('roles', trans('Roles'))->options(function () {
-                return Role::all()->pluck('name', 'id');
-            })->rules('required')->placeholder('Select Role...')->attribute(['disabled'=>'true']);
-            $form->display('created_at', trans('Created at'));
-            $form->display('updated_at', trans('Last Updated at'));
-            $form->disableSubmit();
-            $form->disableReset();
-        });
-    }
 
     /**
      * Display the specified resource.
@@ -196,6 +179,42 @@ class UserController extends Controller
             $content->header('Users');
             $content->description('User profile');
             $content->body($this->displayForm($id)->view($id));
+        });
+    }
+
+
+
+    /**
+     * Make a display form builder.
+     *
+     * @param $id
+     *
+     * @return Form
+     */
+    public function displayForm($id = null)
+    {
+        return Admin::form(User::class, function (Form $form) {
+            $form->image('profile_image', 'Profile Image')->setWidth(12);
+            $form->display('id', 'ID')->setWidth(8,4);
+            $form->display('first_name', trans('First Name'))->setWidth(8,4);
+            $form->display('last_name', trans('Last Name'))->setWidth(8,4);
+            $form->display('email', trans('Email'))->setWidth(8,4);
+            $form->display('profile.pseudonyme', 'Pseudonyme')->setWidth(8,4);
+            $form->display('profile.gender', 'Gender')->setWidth(8,4);
+            $form->display('profile.date_birth', 'Date of Birth')->setWidth(8,4);
+            $form->display('profile.phone_number', 'Phone #')->setWidth(8,4);
+            $form->display('profile.native_language', 'Language')->setWidth(8,4);
+            $form->display('profile.country', 'Country')->setWidth(8,4);
+            $form->multipleSelect('roles', trans('Roles'))->options(function () {
+                return Role::all()->pluck('name', 'id');
+            })->rules('required')->placeholder('Select Role...')->attribute(['disabled'=>'true'])->setWidth(8,4);
+//            echo '<pre>';
+//            print_r($form->getRelations());
+            $form->setView('admin.profile');
+//            $form->display('created_at', trans('Created at'));
+//            $form->display('updated_at', trans('Last Updated at'));
+            $form->disableSubmit();
+            $form->disableReset();
         });
     }
 
