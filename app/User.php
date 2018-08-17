@@ -7,11 +7,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-//use App\User;
+use App\Profile;
+use App\Transaction;
 
 class User extends Authenticatable
 {
     use Notifiable, HasRoles;
+
 
     /**
      * The attributes that are mass assignable.
@@ -32,10 +34,11 @@ class User extends Authenticatable
     ];
 
 
-    public function userProfile(){
-       return $this->hasOne('App\UserProfile');
+    public function profile(){
+       return $this->hasOne(Profile::class);
     }
+
     public function userTransaction(){
-        return $this->hasOne('App\Transaction');
+        return $this->hasOne(Transaction::class);
     }
 }
