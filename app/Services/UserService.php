@@ -6,7 +6,7 @@ namespace App\Services;
  * @author Muhammad Adeel
  * @since Feb 23, 2018
  * @package contextionary
- * @project starzplay
+ * @project Contextionary
  *
  */
 use App\User;
@@ -25,14 +25,14 @@ class UserService
     /**
      * @return int
      */
-     protected $user;
-     protected  $transactionRepo;
+    protected $user;
+    protected  $transactionRepo;
 
-     public function __construct(UserRepo $user, TransactionRepo $transaction_repo)
-     {
-         $this->user = $user;
-         $this->transactionRepo=$transaction_repo;
-     }
+    public function __construct(UserRepo $user, TransactionRepo $transaction_repo)
+    {
+        $this->user = $user;
+        $this->transactionRepo=$transaction_repo;
+    }
     public function count(){
         return User::all()->count();
     }
@@ -40,6 +40,11 @@ class UserService
     public function roles(User $user)
     {
         return $user->roles->pluck('name');
+    }
+
+    public function profile(User $user)
+    {
+        return $user->userProfile();
     }
 
     public function delete(User $user)

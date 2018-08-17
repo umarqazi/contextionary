@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
-use App\UserProfile;
+use App\Profile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\vClasses\RegistersUsers;
@@ -102,7 +102,7 @@ class RegisterController extends Controller
       'user_id ' =>$user->id,
       'status ' =>0,
     ];
-    $userProfile = new UserProfile;
+    $userProfile = new Profile;
     $userProfile->pseudonyme = $data['pseudonyme'];
     $userProfile->date_birth=strtotime($data['date_birth']);
     $userProfile->gender= $data['gender'];
