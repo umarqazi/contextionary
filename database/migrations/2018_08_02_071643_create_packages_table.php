@@ -44,12 +44,12 @@ class CreatePackagesTable extends Migration
      */
     public function down()
     {
-        Schema::table('package_point', function (Blueprint $table) {
-            $table->dropForeign('package_point_package_id_foreign');
-            $table->dropForeign('package_point_point_id_foreign');
+        Schema::table('packages_points', function (Blueprint $table) {
+            $table->dropForeign('packages_points_package_id_foreign');
+            $table->dropForeign('packages_points_point_id_foreign');
         });
-        Schema::dropIfExists('package_point');
-        Schema::dropIfExists('package');
+        Schema::dropIfExists('packages_points');
+        Schema::dropIfExists('packages');
         Schema::dropIfExists('points');
     }
 }
