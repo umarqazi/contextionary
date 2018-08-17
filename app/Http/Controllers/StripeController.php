@@ -21,10 +21,7 @@ class StripeController extends Controller
         $payment=$this->stripe->paymentProcess($stripe);
         if($payment['status']==true){
             if($payment['user']){
-                $user=Auth::login($payment['user']);
-                if(Auth::check()){
-                    return Redirect::to('/dashboard');
-                }
+                return Redirect::to('/dashboard');
             }
         }else{
             return Redirect::back()->with($payment['notification']);

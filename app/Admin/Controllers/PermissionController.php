@@ -8,7 +8,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use App\User;
-use App\Services\UserServices;
+use App\Services\UserService;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 

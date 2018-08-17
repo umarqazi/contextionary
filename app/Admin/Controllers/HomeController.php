@@ -11,14 +11,14 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Encore\Admin\Grid;
 use App\User;
-use App\Services\UserServices;
+use App\Services\UserService;
 
 class HomeController extends Controller
 {
     public function index()
     {
 
-        $userServices = new UserServices();
+        $userServices = new UserService();
         $usersController = new UserController($userServices);
         return Admin::content(function (Content $content) use ($usersController){
             $content->header('Dashboard');

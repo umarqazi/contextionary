@@ -25,8 +25,10 @@ class UserRepo {
         $this->user->flush();
     }
 
-    public function update(User $user, $data)
+    public function update($id, $data)
     {
+        $user=$this->findById($id);
+        return $user->update($data);
     }
 
     public function findById($id)

@@ -10,8 +10,8 @@
   {!! HTML::style('assets/css/bootstrap.min.css') !!}
   {!! HTML::style('assets/css/mdb.min.css') !!}
   {!! HTML::style('assets/css/main.css') !!}
-  {!! HTML::style('assets/css/style.css') !!}
   {!! HTML::style('assets/css/responsive.css') !!}
+  {!! HTML::style('assets/css/style.css') !!}
   {!! HTML::style('https://use.fontawesome.com/releases/v5.1.1/css/all.css') !!}
   @yield('head_css')
   {{-- End head css --}}
