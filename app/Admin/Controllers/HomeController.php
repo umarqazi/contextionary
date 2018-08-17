@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Admin\Controllers\UserController;
+use App\Services\UserService;
 use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Column;
@@ -11,15 +12,20 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Encore\Admin\Grid;
 use App\User;
-use App\Services\UserServices;
 
 class HomeController extends Controller
 {
+    protected $userService;
+    protected $userController;
+    public function __construct(UserService $service, UserController $userController)
+    {
+        $this->userService     =   $service;
+        $this->userController  =   $userController;
+    }
+
     public function index()
     {
-
-        $userServices = new UserServices();
-        $usersController = new UserController($userServices);
+        $usersController = $this->userController;
         return Admin::content(function (Content $content) use ($usersController){
             $content->header('Dashboard');
             $content->description('Admin Dashboard');
