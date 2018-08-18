@@ -12,26 +12,25 @@ use Session;
 use App\Services\AuthService;
 use Redirect;
 use View;
-use Auth;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ContributorController
 {
     protected $contributor;
-    protected  $authService;
+    protected $authService;
     protected $user;
 
     public function __construct(AuthService $authService, ContributorService $contributor)
     {
         $this->authService = $authService;
         $this->contributor = $contributor;
-        $this->user=Auth::user();
     }
 
     public function contributorPlan(){
         try{
             $contextList=$this->contributor->getParentContextList();
+            $this->user= Auth::user();
             return view::make('user.contributor.select_role')->with(['contextList'=>$contextList,'id'=> $this->user->id]);
 
         }catch (\Exception $e){

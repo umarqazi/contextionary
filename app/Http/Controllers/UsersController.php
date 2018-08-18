@@ -34,7 +34,6 @@ class UsersController extends Controller
         $this->userServices = $userServices;
         $this->userRoles = $role;
         $this->authService = $authService;
-        $this->user=Auth::user();
     }
     public function validateRole(){
         if(Auth::check()){
@@ -63,13 +62,13 @@ class UsersController extends Controller
     }
     public function profileEdit()
     {
-        $user = $this->user;
+        $user = Auth::user();
         return view('user.edit', compact('user'));
     }
 
     public function profile()
     {
-        $user = $this->user;
+        $user = Auth::user();
         $user = User::with('userProfile')->find($user->id);
         return view('user.profile', compact('user'));
     }
@@ -86,14 +85,17 @@ class UsersController extends Controller
     }
 
     public function selectPlan(){
+        $this->user = Auth::user();
         return view::make('user.user_plan.select_plan')->with(['user'=>$this->user]);
     }
 
     public function userPlan(){
+        $this->user = Auth::user();
         return view::make('user.user_plan.user_plan')->with(['id'=> $this->user->id]);
     }
 
     public function showPaymentInfo($plan){
+        $this->user = Auth::user();
         return view::make('user.user_plan.pay_with_stripe')->with(['id'=>$this->user->id, 'plan'=>$plan]);
     }
 }
