@@ -7,6 +7,7 @@
  */
 
 namespace App\Services;
+use App\Repositories\ProfileRepo;
 use App\Repositories\FamiliarContextRepo;
 use App\Repositories\ContextRepo;
 use App\Repositories\RoleRepo;
@@ -19,13 +20,15 @@ class ContributorService
     protected $familiarContext;
     protected $userRepo;
     protected $userService;
-    public function __construct(UserService $userService, UserRepo $userRepo, FamiliarContextRepo $familiarContext,ContextRepo $context, RoleRepo $role)
+    protected $profile;
+    public function __construct(ProfileRepo $profile, UserService $userService, UserRepo $userRepo, FamiliarContextRepo $familiarContext,ContextRepo $context, RoleRepo $role)
     {
         $this->contextRepo=$context;
         $this->roleRepo=$role;
         $this->familiarContext=$familiarContext;
         $this->userRepo=$userRepo;
         $this->userService=$userService;
+        $this->profile=$profile;
     }
     public function getParentContextList(){
         return $this->contextRepo->getLimitedRecords();
@@ -37,7 +40,7 @@ class ContributorService
             $familiarContext[$key]=['user_id'=>$data['user_id'], 'context_id'=>$context];
         }
         $this->familiarContext->create($familiarContext);
-        $this->userRepo->update($data['user_id'], ['language_proficiency'=>$data['language']]);
+        $this->profile->update($data['user_id'], ['language_proficiency'=>$data['language']]);
         $this->userService->verificationEmail($data['user_id']);
         return true;
     }

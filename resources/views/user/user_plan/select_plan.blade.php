@@ -18,7 +18,7 @@
       </div>
       <div class="col-md-6">
         <div class="planBlock">
-          <h3>{!! t('Contributor Plan') !!}</h3>
+          <h3 class="BlueBackground">{!! t('Contributor Plan') !!}</h3>
           <p>{!! t('Contributor Plan Description') !!}</p>
           <a href="{!! lang_route('contributorPlan')!!}" class="orangeBtn mt-4 waves-light">{!! t('continue') !!}</a>
         </div>
