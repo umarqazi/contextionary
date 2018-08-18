@@ -96,8 +96,8 @@
                                     </div>
 
                                 </div>
-                                <a href="#" class="orangeBtn mt-4 waves-light back-to">{!! t('Back') !!}</a>
-                                <button type="submit" class="orangeBtn mt-4 waves-light">{!! t('Subscribe') !!}</button>
+                                <a href="#" class="orangeBtn mt-4 waves-light back-to make-vertical ">{!! t('Back') !!}</a>
+                                <button type="submit" class="orangeBtn mt-4 waves-light make-vertical">{!! t('Subscribe') !!}</button>
                             </div>
                         </div>
                     </div>

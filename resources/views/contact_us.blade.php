@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="col-md-12 text-center mb-5 mt-2">
-                        <button type="submit" class="orangeBtn">Submit</button>
+                        <input type="submit" class="orangeBtn submit-button">
                     </div>
                 </div>
                 {!! Form::close() !!}

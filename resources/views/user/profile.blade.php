@@ -26,11 +26,11 @@
                     <ul>
                         <li>First Name: <span>{!! $user['first_name']!!}</span></li>
                         <li>Last Name: <span>>{!! $user['last_name']!!}</span></li>
-                        <li>Pseudonyme: <span>{!! $user['userProfile']['pseudonyme']!!}</span></li>
-                        <li>Sex: <span>{!! $user['userProfile']['gender']!!}</span></li>
-                        <li>Phone No: <span>{!! $user['userProfile']['phone_number']!!}</span></li>
-                        <li>Native Language: <span>{!! $user['userProfile']['native_language']!!}</span></li>
-                        <li>Country: <span>{!! $user['userProfile']['country']!!}</span></li>
+                        <li>Pseudonyme: <span>{!! $user['profile']['pseudonyme']!!}</span></li>
+                        <li>Sex: <span>{!! $user['profile']['gender']!!}</span></li>
+                        <li>Phone No: <span>{!! $user['profile']['phone_number']!!}</span></li>
+                        <li>Native Language: <span>{!! $user['profile']['native_language']!!}</span></li>
+                        <li>Country: <span>{!! $user['profile']['country']!!}</span></li>
                         <li>Email: <span>{!! $user['email']!!}</span></li>
                     </ul>
                 </div>

@@ -87,3 +87,12 @@ color: #f7953a;
   display: block;
   margin-top: 10px;
 }
+.make-vertical{
+  vertical-align: middle;
+}
+.planBlock h3{
+  background: #f7941d;
+}
+.submit-button{
+  cursor:pointer;
+}

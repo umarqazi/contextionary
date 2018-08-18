@@ -14,11 +14,11 @@
                     @foreach($getFunFacts as $record)
                         <div class="funFact-listing">
                             <div class="img-holder">
-                                <img src="{!! asset('assets/images/funfact-img1.jpg') !!}">
+                                <img src="{!! asset('storage/'.$record['thumbnail']) !!}">
                             </div>
                             <div class="info">
                                 <h3>{!! $record['title'] !!}</h3>
-                                <p>{!! $record['description'] !!}</p>
+                                <p>{!! substr($record['description'],0,150) !!}</p>
                             </div>
                             <a href="#" class="readMore"><img src="{!! asset('assets/images/readMore.png') !!}"></a>
                         </div>
