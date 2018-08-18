@@ -208,11 +208,7 @@ class UserController extends Controller
             $form->multipleSelect('roles', trans('Roles'))->options(function () {
                 return Role::all()->pluck('name', 'id');
             })->rules('required')->placeholder('Select Role...')->attribute(['disabled'=>'true'])->setWidth(8,4);
-//            echo '<pre>';
-//            print_r($form->getRelations());
             $form->setView('admin.profile');
-//            $form->display('created_at', trans('Created at'));
-//            $form->display('updated_at', trans('Last Updated at'));
             $form->disableSubmit();
             $form->disableReset();
         });

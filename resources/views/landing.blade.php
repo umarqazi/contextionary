@@ -1,4 +1,4 @@
-@extends('layouts.base_header')
+@extends('layouts.body')
 @section('title')
   {!! t('Contextionary') !!}
 @stop

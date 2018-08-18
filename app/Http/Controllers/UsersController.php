@@ -27,12 +27,25 @@ class UsersController extends Controller
     protected  $userServices;
     protected  $userRoles;
     protected  $authService;
+    protected  $user;
 
     public function __construct(UserService $userServices, RoleService $role, AuthService $authService)
     {
         $this->userServices = $userServices;
         $this->userRoles = $role;
         $this->authService = $authService;
+        $this->user=Auth::user();
+    }
+    public function validateRole(){
+        if(Auth::check()){
+            $userRole=$this->userRoles->checkRole(Auth::user()->id);
+            if(!$userRole->isEmpty()){
+                return Redirect::to(lang_route('dashboard'));
+            }else{
+                return Redirect::to(lang_route('selectPlan'));
+            }
+        }
+
     }
     public function index(){
         return view::make('home');
@@ -48,16 +61,15 @@ class UsersController extends Controller
             ]
         );
     }
-
     public function profileEdit()
     {
-        $user = Auth::user();
+        $user = $this->user;
         return view('user.edit', compact('user'));
     }
 
     public function profile()
     {
-        $user = Auth::user();
+        $user = $this->user;
         $user = User::with('userProfile')->find($user->id);
         return view('user.profile', compact('user'));
     }
@@ -73,31 +85,15 @@ class UsersController extends Controller
         return back();
     }
 
-    public function selectPlan($token){
-        $user=Session::get('user');
-        $authenticateToken= $this->authService->authenticateToken($user->id, $token);
-        if($authenticateToken==false):
-            return Redirect::to('/register');
-        endif;
-
-        $updateToken=$this->authService->updateToken($user->id);
-        return view::make('user.user_plan.select_plan')->with(['user'=>$user, 'token'=>$updateToken]);
+    public function selectPlan(){
+        return view::make('user.user_plan.select_plan')->with(['user'=>$this->user]);
     }
 
-    public function userPlan($id, $token){
-        $authenticateToken=$this->authService->authenticateToken($id, $token);
-        if($authenticateToken==false):
-            return Redirect::to('/register');
-        endif;
-        $updateToken=$this->authService->updateToken($id);
-        return view::make('user.user_plan.user_plan')->with(['id'=> $id, 'token'=>$updateToken]);
+    public function userPlan(){
+        return view::make('user.user_plan.user_plan')->with(['id'=> $this->user->id]);
     }
 
-    public function showPaymentInfo($id, $plan, $token){
-        $authenticateToken=$this->authService->authenticateToken($id, $token);
-        if($authenticateToken==false):
-            return Redirect::to('/register');
-        endif;
-        return view::make('user.user_plan.pay_with_stripe')->with(['id'=>$id, 'plan'=>$plan, 'token'=>$token]);
+    public function showPaymentInfo($plan){
+        return view::make('user.user_plan.pay_with_stripe')->with(['id'=>$this->user->id, 'plan'=>$plan]);
     }
 }

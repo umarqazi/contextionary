@@ -19,6 +19,7 @@ use Config;
 use App\Repositories\UserRepo;
 use App\Services\RoleService;
 use App\Repositories\TransactionRepo;
+use App\Jobs\SendVerificationEmail;
 
 class UserService
 {
@@ -59,5 +60,9 @@ class UserService
     }
     public function updateStatus($id){
          return $this->user->makeActive($id);
+    }
+    public function verificationEmail($id){
+        $user=$this->user->findById($id);
+        return SendVerificationEmail::dispatch($user);
     }
 }
