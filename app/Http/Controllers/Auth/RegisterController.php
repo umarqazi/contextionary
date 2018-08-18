@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Services\UserService;
 use App\User;
-use App\UserProfile;
+use App\Profile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\vClasses\RegistersUsers;
@@ -123,6 +123,7 @@ class RegisterController extends Controller
             return Redirect::back()->with($notification);
         }
     }
+  
     public function sendVerificationEmail($id){
         $this->userServices->verificationEmail($id);
         $notification = array(
@@ -131,6 +132,7 @@ class RegisterController extends Controller
         );
         return Redirect::to('/login')->with($notification);
     }
+  
     public function verifyEmail($token){
         $getUser=User::where('email_token', $token)->first();
         if($getUser){
