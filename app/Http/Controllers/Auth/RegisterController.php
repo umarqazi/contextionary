@@ -103,7 +103,7 @@ class RegisterController extends Controller
             /**
              * Update User Profile
              */
-            $userProfile = new UserProfile;
+            $userProfile = new Profile;
             $userProfile->pseudonyme = $data['pseudonyme'];
             $userProfile->date_birth=strtotime($data['date_birth']);
             $userProfile->gender= $data['gender'];

@@ -11,10 +11,11 @@
     @endif
     <div class="menuCate">
         <div class="title">
-            {!! t('Contact Us')!!}
+            {!! t('Miscellaneous')!!}
 
         </div>
         <ul class="menuListing">
+            <li><a href="{!! lang_route('funFacts') !!}"><span>Fun Facts</span></a></li>
             <li><a href="{!! lang_route('contactUs') !!}"><span>Contact Us</span></a></li>
         </ul>
     </div>
