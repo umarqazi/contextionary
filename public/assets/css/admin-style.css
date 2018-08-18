@@ -1,0 +1,29 @@
+.profile-page .box-solid {
+    border: none !important;
+    box-shadow: none;
+}
+.profile-image label {
+    display: none;
+}
+.profile-image .file-caption-main{
+    display: none;
+}
+.profile-image .file-preview {
+    border:none;
+}
+.profile-image .fileinput-remove {
+    display:none;
+}
+.profile-image .file-upload-indicator {
+    display:none;
+}
+.profile-page .select2-selection.select2-selection--multiple{
+    border: none;
+    background: #fff;
+}
+.profile-page .select2-selection__clear{
+    display: none;
+}
+.profile-personal-details .form-group{
+    margin-bottom: 0px;
+}
