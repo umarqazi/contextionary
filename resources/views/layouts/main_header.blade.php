@@ -37,9 +37,10 @@
         </div>
         @if(Auth::user()->hasRole(['writer', 'illustrator', 'translator']))
           <div class="topLinks">
-            <a href="#">Writer</a>
-            <a href="#">illustrator</a>
-            <a href="#">Translator</a>
+            <?php $roles = Auth::user()->roles->pluck('name');?>
+            @foreach($roles as $role)
+              <a href="#">{!! $role !!} @if($role==Config::get('constant.contributorRole.translator')) ({!! Auth::user()->profile->language_proficiency !!}) @endif</a>
+            @endforeach
           </div>
         @endif
       @endif

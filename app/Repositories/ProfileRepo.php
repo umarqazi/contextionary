@@ -29,6 +29,6 @@ class ProfileRepo
     }
     public function update($id, $data)
     {
-        return $this->profile->where('user_id', $id)gi ->update($data);
+        return $this->profile->where('user_id', $id)->update($data);
     }
 }
