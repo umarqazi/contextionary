@@ -6,12 +6,13 @@
 
 <div class="col-md-10 text-center">
   <div class="blockStyle wow fadeIn" data-wow-delay="0.6s">
+    @include('layouts.toaster')
     <h2>{!! t('SIGN UP') !!}</h2>
     {!! Form::open(['url'=>lang_route("register"),'enctype'=>'multipart/form-data', 'method'=>'post']) !!}
     <div class="row">
       <div class="col-md-6">
         <div class="customForm-group">
-          {!! Form::text('first_name', null, ['class'=>'customInput', 'placeholder'=>t('First Name')]) !!}
+          {!! Form::text('first_name', Input::old('first_name'), ['class'=>'customInput', 'placeholder'=>t('First Name')]) !!}
           <span class="focus-border"></span>
           <i class="fa fa-user"></i>
           @if ($errors->has('first_name'))
@@ -23,7 +24,7 @@
       </div>
       <div class="col-md-6">
         <div class="customForm-group">
-          {!! Form::text('last_name', null, ['class'=>'customInput', 'placeholder'=>'Last Name']) !!}
+          {!! Form::text('last_name', Input::old('last_name'), ['class'=>'customInput', 'placeholder'=>'Last Name']) !!}
           <span class="focus-border"></span>
           <i class="fa fa-user"></i>
           @if ($errors->has('last_name'))
@@ -36,7 +37,7 @@
 
       <div class="col-md-6">
         <div class="customForm-group">
-          {!! Form::text('pseudonyme', null, ['class'=>'customInput', 'placeholder'=>t('Pseudonyme')]) !!}
+          {!! Form::text('pseudonyme', Input::old('pseudonyme'), ['class'=>'customInput', 'placeholder'=>t('Pseudonyme')]) !!}
           <span class="focus-border"></span>
           <i class="fa fa-user"></i>
           @if ($errors->has('pseudonyme'))
@@ -50,7 +51,7 @@
       <div class="col-md-6">
         <div class="customForm-group">
           <div class="input-group with-addon-icon-left customDatePicker">
-            <input type="text" name="date_birth" class="form-control custom-fld" id="datepicker-example-1" placeholder="Date of birth">
+            <input type="text" value="{!! Input::old('date_birth') !!}" name="date_birth" class="form-control custom-fld" id="datepicker-example-1" placeholder="Date of birth">
             <span class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></span>
           </div>
         </div>
@@ -69,7 +70,7 @@
 
       <div class="col-md-6">
         <div class="customForm-group">
-          {!! Form::text('email', null, ['class'=>'customInput', 'placeholder'=>'Email']) !!}
+          {!! Form::text('email', Input::old('email'), ['class'=>'customInput', 'placeholder'=>'Email']) !!}
           <span class="focus-border"></span>
           <i class="fa fa-envelope"></i>
           @if ($errors->has('email'))
@@ -82,7 +83,7 @@
 
       <div class="col-md-6">
         <div class="customForm-group">
-          {!! Form::text('phone_number', null, ['class'=>'customInput', 'placeholder'=>'Phone']) !!}
+          {!! Form::text('phone_number', Input::old('phone_number'), ['class'=>'customInput', 'placeholder'=>'Phone']) !!}
           <span class="focus-border"></span>
           <i class="fa fa-phone"></i>
           @if ($errors->has('phone_number'))
@@ -95,7 +96,7 @@
 
       <div class="col-md-6">
         <div class="customForm-group">
-          {!! Form::text('country', null, ['class'=>'customInput', 'placeholder'=>t('Country of residence')]) !!}
+          {!! Form::text('country', Input::old('country'), ['class'=>'customInput', 'placeholder'=>t('Country of residence')]) !!}
           <span class="focus-border"></span>
           <i class="fa fa-globe"></i>
         </div>

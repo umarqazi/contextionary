@@ -23,6 +23,7 @@ class HomeController extends Controller
         $this->userController  =   $userController;
     }
 
+
     public function index()
     {
         $usersController = $this->userController;

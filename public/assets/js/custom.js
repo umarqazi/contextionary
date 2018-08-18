@@ -37,11 +37,16 @@ $(document).ready(function () {
             $(get_parent).find('.active').html('').append(get_value + "<i class='fa fa-chevron-down'></i>");
         });
     });
-
+    //    $(window).on('resize orientationChange', function (event) {
+    //        $('.slider').slick('reinit');
+    //    });
     //Dashboard menu
     $(".menuIcon").click(function () {
+
         $("aside").toggleClass('compressMenu');
         $(".dashBoard-container").toggleClass('dashboardLrg');
+        $('.contributorSlider')[0].slick.refresh();
+
     });
 
     //Height script
@@ -94,6 +99,40 @@ $(document).ready(function () {
         event.stopPropagation();
     });
 
+    $(".exploreSection ul li").click(function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+    });
+
+    //plan effect
+    $(".pricing-palden .pricing-item").hover(function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $(".pricing-palden .pricing-item").mouseleave(function () {
+        $('.pricing-palden .pricing-item').siblings().removeClass('active');
+        $('.pricing-item.pricing__item--featured').addClass('active');
+    });
+
+    //Add minus coins
+    $('.add').click(function () {
+        $(".coins").val(+$(this).prev().val() + 1);
+    });
+
+    $('.sub').click(function () {
+        $(".coins").val(+$(this).next().val() - 1);
+    });
+
+    $(".enter-phrase").keypress(function () {
+        $(".bidBtn").removeClass('disabled');
+    });
+
+    $(".voteMeaningBg .contextListing li a").click(function () {
+        $(this).parent().siblings().removeClass('active');
+        $(this).parent().addClass('active');
+    });
+
 });
 
 //custom scroll bar
@@ -103,3 +142,17 @@ $(document).ready(function () {
         $("aside").mCustomScrollbar();
     });
 })(jQuery);
+
+
+$(document).ready(function () {
+
+    $('.contributorSlider').slick({
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        adaptiveHeight: true
+    });
+
+
+});

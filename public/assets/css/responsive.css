@@ -117,6 +117,40 @@
         color: #fff;
         font-size: 14px;
     }
+
+    .contactPage .contactInfo li {
+        width: 100%;
+        border: none;
+        text-align: center;
+        padding: 15px 0px;
+        border-bottom: #a5a8aa solid 1px;
+    }
+
+    .contactPage .contactInfo li .img-holder {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .contactPage .contactInfo li .img-holder img {
+        max-width: 50px;
+    }
+
+    .tabsContainer .customTabs {
+        text-align: center;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .contactPage .contactInfo li .info {
+        width: 100%;
+    }
+
+    .tabsContainer .searchHolder {
+        float: none;
+        width: 100%;
+    }
+
 }
 
 @media (max-width: 992px) {
@@ -126,6 +160,13 @@
 
     .loginWrapper .loginBlock {
         width: calc(100% - 400px);
+    }
+    .contextRow {
+        text-align: center;
+    }
+
+    .definePage .selectPhrase .form-control {
+        width: calc(100% - 122px);
     }
 }
 
@@ -177,12 +218,6 @@
         font-size: 16px;
     }
 
-    .tabsContainer .customTabs {
-        text-align: center;
-        display: block;
-        margin-bottom: 15px;
-    }
-
     .tabsContainer .searchHolder {
         float: none;
         width: 100%;
@@ -212,6 +247,41 @@
 
     .contributorMain {
         padding-bottom: 30px;
+    }
+
+    .coinsWrapper {
+        display: block;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .funfact .funFact-listing .img-holder {
+        width: 100%;
+        max-height: inherit;
+    }
+
+    .funfact .funFact-listing .img-holder img {
+        width: 100%;
+    }
+
+    .funfact .funFact-listing .info {
+        width: 100%;
+        padding: 15px 15px 70px 15px;
+    }
+
+    .funfact .funFact-listing .readMore {
+        right: 0;
+        width: 100%;
+        text-align: center;
+        height: auto;
+        padding: 12px 0px;
+        bottom: -0px;
+    }
+
+    .funfact .funFact-listing .readMore img {
+        top: inherit;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
     }
 
 }
@@ -256,6 +326,7 @@
     .tabsContainer .customTabs li {
         font-size: 14px;
         margin-right: 0;
+        display: block;
     }
 
     .customPagination .numbers {
@@ -288,4 +359,34 @@
     .userProfile .userBlock .basicInfo ul li {
         width: 100%;
     }
+
+    .contactPage .map {
+        height: 320px;
+    }
+
+    .actionsBtn .orangeBtn {
+        display: block;
+        margin-bottom: 15px;
+        margin-left: 0 !important;
+        width: 100%;
+    }
+
+    .voteMeaningBg .contextListing li {
+        width: calc(100% / 2 - 16.2px);
+    }
+
+    .voteMeaningBg .contextListing li:nth-child(3n + 0) {
+        margin-right: 20px;
+    }
+
+    .voteMeaningBg .contextListing li:nth-child(2n + 0) {
+        margin-right: 0;
+    }
+
+    .blueHeading .orangeBtn.float-right {
+        float: left !important;
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+
 }

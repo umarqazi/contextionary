@@ -12,6 +12,7 @@ namespace App\Services;
 use App\Repositories\UserRepo;
 use Illuminate\Support\Facades\Config;
 use App\Repositories\RoleRepo;
+use Spatie\Permission\Models\Role;
 
 class RoleService extends BaseService implements IRoleService
 {
@@ -42,5 +43,10 @@ class RoleService extends BaseService implements IRoleService
         $user           =   $this->user->findById($user_id);
         $assignRole     =   $user->assignRole($package_name);
         return true;
+    }
+    public function checkRole($user_id){
+        $user=$this->user->findById($user_id);
+        $user->hasAnyRole(Role::all());
+        return $user['roles'];
     }
 }

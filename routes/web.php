@@ -11,22 +11,30 @@
 |
 */
 MultiLang::routeGroup(function($router) {
-  Route::group(['middleware' => ['locale']], function(){
-    Route::get('/', function () {
-      return view('landing');
-    })->name('homescreen');
-    Route::get('/home', 'HomeController@index')->name('home');
-    Auth::routes();
-    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
-    Route::get('/dashboard', 'UsersController@index')->name('dashboard');
-    Route::get('profile',  'UsersController@profile')->name('profile');
-    Route::get('edit-profile',  'UsersController@edit')->name('edit profile');
-    Route::get('selectPlan/{token}',  'UsersController@selectPlan')->name('selectPlan');
-    Route::get('userPlan/{id}/{token}',  'UsersController@userPlan')->name('userPlan');
-    Route::get('payment/{id}/{plan}/{token}',  'UsersController@showPaymentInfo')->name('payment');
-    Route::post('addmoney/stripe', array('as' => 'addmoney.stripe','uses' => 'StripeController@postPaymentWithStripe'));
-    Route::patch('update-profile', 'UsersController@update');
-  });
-  Route::get('locale/{locale}',  'LocaleController@locale')->name('locale');
-  Route::get('switchLanguage/{locale}',  'LocaleController@switchLanguage')->name('switchLanguage');
+    Route::group(['middleware' => ['locale']], function(){
+        Auth::routes();
+        Route::get('/', function () {return view('landing');})->name('homescreen');
+        Route::get('/home', 'HomeController@index')->name('home');
+        Route::get('verificationEmail/{id}', 'Auth\RegisterController@sendVerificationEmail');
+        Route::get('/verifyEmail/{token}', 'Auth\RegisterController@verifyEmail');
+        Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+        Route::group(['middleware'=>['auth']], function(){
+            Route::get('validateRole', 'UsersController@validateRole')->name('validate');
+            Route::get('/dashboard', 'UsersController@index')->name('dashboard');
+            Route::get('profile',  'UsersController@profile')->name('profile');
+            Route::get('edit-profile',  'UsersController@edit')->name('edit profile');
+            Route::get('selectPlan',  'UsersController@selectPlan')->name('selectPlan');
+            Route::get('userPlan',  'UsersController@userPlan')->name('userPlan');
+            Route::get('payment/{plan}',  'UsersController@showPaymentInfo')->name('payment');
+            Route::post('addmoney/stripe', array('as' => 'addmoney.stripe','uses' => 'StripeController@postPaymentWithStripe'));
+            Route::patch('update-profile', 'UsersController@update');
+            Route::get('contributorPlan',  'ContributorController@contributorPlan')->name('contributorPlan');
+            Route::post('saveContributor', 'ContributorController@saveContributor')->name('saveContributor');
+        });
+        Route::get('funFacts',  'SettingController@funFacts')->name('funFacts');
+        Route::get('contactUs',  'SettingController@contactUs')->name('contactUs');
+        Route::post('contactUs',  'SettingController@sendMessage')->name('contactUs');
+    });
+    Route::get('locale/{locale}',  'LocaleController@locale')->name('locale');
+    Route::get('switchLanguage/{locale}',  'LocaleController@switchLanguage')->name('switchLanguage');
 });

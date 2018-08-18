@@ -5,6 +5,7 @@
 @section('content')
 
 <div class="loginBlock wow fadeIn" data-wow-delay="0.6s">
+  @include('layouts.toaster')
   <h2>{!! t('Log in')!!}</h2>
   {!! Form::open(['url'=>lang_route('login'), 'method'=>'post'])!!}
   <div class="customForm-group">

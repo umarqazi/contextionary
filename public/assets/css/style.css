@@ -65,3 +65,25 @@ color: #f7953a;
   top: -15px;
   left: 5px;
 }
+.contactForm .fld{
+  margin-bottom:10px !important;
+}
+.contactForm .help-block{
+  margin-bottom: 20px !important;
+}
+.blue-color{
+    background-color: #105197 !important;
+}
+.form-container {
+    display: none;
+}
+
+.form-container.active {
+    display: block;
+}
+.record-message{
+  width:100%;
+  color: red;
+  display: block;
+  margin-top: 10px;
+}

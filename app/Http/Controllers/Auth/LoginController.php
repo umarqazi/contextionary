@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/dashboard';
+    protected $redirectTo = '/validateRole';
 
     /**
      * Create a new controller instance.
@@ -41,7 +41,7 @@ class LoginController extends Controller
      }
     public function __construct()
     {
-        $this->redirectTo = lang_route('dashboard');
+        $this->redirectTo = lang_url('validateRole');
         $this->middleware('guest')->except('logout');
     }
     public function logout(){
