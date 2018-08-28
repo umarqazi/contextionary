@@ -14,6 +14,9 @@ use Redirect;
 use View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use Illuminate\Support\Facades\Storage;
+use Config;
 
 class ContributorController
 {
@@ -57,5 +60,20 @@ class ContributorController
             );
             return Redirect::back()->with($notification);
         }
+    }
+    /*
+     * Get context from postgres for definition
+     */
+    public function define(){
+        $bucketURL = Storage::disk('local')->url(Config::get('constant.ContextImages'));
+        $contextList=$this->contributor->getPaginatedContent();
+        return view::make('user.contributor.define')->with(['contextList'=>$contextList, 'bucketUrl'=>$bucketURL]);
+    }
+    public function purchaseCoins(){
+        return view::make('user.contributor.purchase_coins');
+    }
+    public function addCoins(Request $request){
+        $coin=$request->coins;
+        return view::make('user.contributor.pay_with_stripe')->with(['id'=>Auth::user()->id, 'plan'=>'1']);
     }
 }

@@ -33,4 +33,7 @@ class SettingController extends Controller
         $getFunFacts=FunFact::paginate();
         return view::make('fun_facts')->with('getFunFacts',$getFunFacts);
     }
+    public function fDetail(FunFact $fact){
+        return view::make('detail_fun_facts')->with('detail', $fact);
+    }
 }
