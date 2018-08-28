@@ -177,51 +177,10 @@ class FunFactsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function store()
     {
         return $this->form()->store();
     }
-
-//    /**
-//     * Destroy data entity and remove files.
-//     *
-//     * @param $id
-//     *
-//     * @return mixed
-//     */
-//    public function destroy($id)
-//    {
-//        $ids = explode(',', $id);
-//
-//        foreach ($ids as $id) {
-//            if (empty($id)) {
-//                continue;
-//            }
-//            $this->deleteFilesAndImages($id);
-//            $this->model->find($id)->delete();
-//        }
-//
-//        return true;
-//    }
-//
-//    /**
-//     * Remove files or images in record.
-//     *
-//     * @param $id
-//     */
-//    protected function deleteFilesAndImages($id)
-//    {
-//        $data = $this->model->with($this->getRelations())
-//            ->findOrFail($id)->toArray();
-//
-//        $this->builder->fields()->filter(function ($field) {
-//            return $field instanceof Field\File;
-//        })->each(function (File $file) use ($data) {
-//            $file->setOriginal($data);
-//
-//            $file->destroy();
-//        });
-//    }
 }
