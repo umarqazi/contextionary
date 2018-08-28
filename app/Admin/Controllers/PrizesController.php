@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\FunFact;
+use App\Prize;
 use \Illuminate\Database\Eloquent\Model;
 use Encore\Admin\Controllers\ModelForm;
 use Encore\Admin\Facades\Admin;
@@ -10,9 +10,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 
-class FunFactsController extends Controller
+class PrizesController extends Controller
 {
     /**
      * Index interface.
@@ -22,8 +21,8 @@ class FunFactsController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('Fun Facts'));
-            $content->description(trans('Fun Facts List'));
+            $content->header(trans('Prizes'));
+            $content->description(trans('Prizes List'));
             $content->body($this->grid()->render());
         });
     }
@@ -38,8 +37,8 @@ class FunFactsController extends Controller
     public function edit($id)
     {
         return Admin::content(function (Content $content) use ($id) {
-            $content->header('Fun Facts');
-            $content->description('Edit fun fact');
+            $content->header('Prizes');
+            $content->description('Edit Prize');
             $content->body($this->form($id)->edit($id));
         });
     }
@@ -52,8 +51,8 @@ class FunFactsController extends Controller
     public function create()
     {
         return Admin::content(function (Content $content) {
-            $content->header('Fun Facts');
-            $content->description('Create a new fun fact');
+            $content->header('Prizes');
+            $content->description('Create a new prize');
             $content->body($this->form());
         });
     }
@@ -65,25 +64,20 @@ class FunFactsController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(FunFact::class, function (Grid $grid) {
+        return Admin::grid(Prize::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
-            $grid -> option('useWidth', true);
-            $grid->thumbnail()->display(function ($thumbnail) {
-                $thumbnail = explode("/", $thumbnail);
-                return "<img class='img-thumbnail' src='/storage/{$thumbnail[1]}/{$thumbnail[2]}' />";
-            })->setAttributes(["style" => "width:10% !important;"]);
+            $grid->option('useWidth', true);
             $grid->image()->display(function ($image) {
                 $image = explode("/", $image);
                 return "<img class='img-thumbnail' src='/storage/{$image[1]}/{$image[2]}' />";
             })->setAttributes(["style" => "width:10% !important;"]);
-            $grid->title()->sortable();
-            $grid->author()->sortable();
-            $grid->description();
+            $grid->prize()->sortable();
+            $grid->coins()->sortable();
             $grid->column('created_at','Created at')->sortable();
             $grid->column('updated_at','Last Updated at')->sortable();
             $grid->filter(function ($filter){
-                $filter->like('title');
-                $filter->like('author');
+                $filter->like('prize');
+                $filter->like('coins');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
             });
@@ -103,20 +97,18 @@ class FunFactsController extends Controller
      */
     public function form($id = null)
     {
-        return Admin::form(FunFact::class, function (Form $form) use ($id) {
+        return Admin::form(Prize::class, function (Form $form) use ($id) {
             $form->display('id', 'ID');
-            $form->image('thumbnail');
             $form->image('image');
-            $form->text('title', trans('Title'))->rules('required')->placeholder('Enter Title...');
-            $form->text('author', trans('Author'));
-            $form->textarea('description', trans('Description'))->rules('required')->placeholder('Enter Description...');
+            $form->text('prize', trans('Prize'))->rules('required')->placeholder('Enter Prize...');
+            $form->text('coins', trans('Coins'))->rules('required')->placeholder('Enter Coins...');
             $form->saved(function (Form $form) use ($id) {
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
                 }else{
-                    admin_toastr(trans('New Fun Fact created successfully!'));
+                    admin_toastr(trans('New Prize created successfully!'));
                 }
-                return redirect(admin_base_path('auth/fun-facts'));
+                return redirect(admin_base_path('auth/prizes'));
             });
         });
     }
@@ -131,8 +123,8 @@ class FunFactsController extends Controller
     public function show($id)
     {
         return Admin::content(function (Content $content) use ($id) {
-            $content->header('Fun Facts');
-            $content->description('View fun facts');
+            $content->header('Prizes');
+            $content->description('View Prize');
             $content->body($this->form($id)->view($id));
         });
     }
@@ -159,7 +151,7 @@ class FunFactsController extends Controller
      */
     public function destroy($id)
     {
-        $package = FunFact::find($id);
+        $package = Prize::find($id);
         if ($package->delete()) {
             admin_toastr(trans('admin.delete_succeeded'));
             return response()->json([
