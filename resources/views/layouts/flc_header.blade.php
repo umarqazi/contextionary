@@ -1,3 +1,4 @@
+@if (in_array(Route::current()->getName(), [Config::get('app.locale').'.funFacts',Config::get('app.locale').'.contactUs',]))
 <div class="col-md-12">
     <div class="tabsContainer">
         <ul class="customTabs tabsView">
@@ -7,9 +8,21 @@
             @endif
             <li class="{{ Request::path() == Config::get('app.locale').'/contactUs' ? 'active' : '' }}"><a href="{!! lang_route('contactUs') !!}">Contact us</a></li>
         </ul>
-        <div class="searchHolder light">
-            <i class="fa fa-search"></i>
-            <input type="search" class="fld" placeholder="Search">
+        @include('search')
+    </div>
+</div>
+@endif
+@if (in_array(Route::current()->getName(), [Config::get('app.locale').'.coins']))
+<div class="row">
+    <div class="col-md-12">
+        <div class="tabsContainer">
+            <ul class="customTabs tabsView">
+                <li class="active"><a href="#">Purchase coins</a></li>
+                <li><a href="#">redeem points</a></li>
+                <li><a href="#">Summary</a></li>
+            </ul>
+            @include('search')
         </div>
     </div>
 </div>
+@endif

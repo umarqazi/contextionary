@@ -1,12 +1,14 @@
 @extends('layouts.secured_header')
-
+@section('title')
+    {!! t('Profile') !!}
+@stop
 @section('content')
 <div class="container-fluid contributorMain userProfile">
     <div class="row">
         <div class="col-md-12">
             <div class="tabsContainer">
                 <ul class="customTabs">
-                    <li class="active title">My profile <a href="#"><i class="fas fa-pencil-alt"></i></a></li>
+                    <li class="active title">{!! t('My Profile') !!} <a href="{!! lang_route('edit profile') !!}"><i class="fas fa-pencil-alt"></i></a></li>
                 </ul>
                 <div class="searchHolder light">
                     <i class="fa fa-search"></i>
@@ -14,9 +16,9 @@
                 </div>
             </div>
         </div>
-        @if (Session::has('message'))
-            <div class="alert alert-info">{{ Session::get('message') }}</div>
-        @endif
+        <div class="col-md-12">
+            @include('layouts.toaster')
+        </div>
         <div class="col-md-8 col-lg-8">
             <div class="userBlock">
                 <div class="img-holder">
@@ -24,20 +26,20 @@
                 </div>
                 <div class="basicInfo">
                     <ul>
-                        <li>First Name: <span>{!! $user['first_name']!!}</span></li>
-                        <li>Last Name: <span>>{!! $user['last_name']!!}</span></li>
-                        <li>Pseudonyme: <span>{!! $user['profile']['pseudonyme']!!}</span></li>
-                        <li>Sex: <span>{!! $user['profile']['gender']!!}</span></li>
-                        <li>Phone No: <span>{!! $user['profile']['phone_number']!!}</span></li>
-                        <li>Native Language: <span>{!! $user['profile']['native_language']!!}</span></li>
-                        <li>Country: <span>{!! $user['profile']['country']!!}</span></li>
-                        <li>Email: <span>{!! $user['email']!!}</span></li>
+                        <li>{!! t('First Name') !!}: <span>{!! $user['first_name']!!}</span></li>
+                        <li>{!! t('Last Name') !!}: <span>{!! $user['last_name']!!}</span></li>
+                        <li>{!! t('Pseudonyme') !!}: <span>{!! $user['profile']['pseudonyme']!!}</span></li>
+                        <li>{!! t('Sex') !!}: <span>{!! $user['profile']['gender']!!}</span></li>
+                        <li>{!! t('Phone No') !!}: <span>{!! $user['profile']['phone_number']!!}</span></li>
+                        <li>{!! t('Native Language') !!}: <span>{!! $user['profile']['native_language']!!}</span></li>
+                        <li>{!! t('Country') !!}: <span>{!! $user['profile']['country']!!}</span></li>
+                        <li>{!! t('Email') !!}: <span>{!! $user['email']!!}</span></li>
                     </ul>
                 </div>
-                @if($user['user_profile']['bio'])
+                @if($user->profile->bio)
                   <div class="bio">
                       <p><strong>Bio:</strong></p>
-                      <p>{!! $user['user_profile']['bio']!!}</p>
+                      <p>{!! $user->profile->bio!!}</p>
                   </div>
                 @endif
             </div>

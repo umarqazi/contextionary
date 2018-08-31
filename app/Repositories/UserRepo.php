@@ -27,8 +27,7 @@ class UserRepo {
 
     public function update($id, $data)
     {
-        $user=$this->findById($id);
-        return $user->update($data);
+        return $user=$this->user->where('id', $id)->update($data);
     }
 
     public function findById($id)

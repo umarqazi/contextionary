@@ -35,7 +35,7 @@
             </ul>
           </div>
         </div>
-        @if(Auth::user()->hasRole(['writer', 'illustrator', 'translator']))
+        @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
           <div class="topLinks">
             <?php $roles = Auth::user()->roles->pluck('name');?>
             @foreach($roles as $role)
@@ -56,7 +56,7 @@
         </ul>
       </div>
       @if(Auth::check())
-        @if(Auth::user()->hasRole(['writer', 'illustrator', 'translator']))
+        @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
           <div class="rightMenu">
             <a href="#" class="menu"></a>
             <div class="rightDropdown">
@@ -64,31 +64,31 @@
               <table class="customTable">
                 <tr>
                   <td class="name"></td>
-                  <td><img src="images/statistics-icon1.png"></td>
-                  <td><img src="images/statistics-icon2.png"></td>
-                  <td><img src="images/statistics-icon3.png"></td>
+                  <td><img src="{!! asset('assets/images/statistics-icon1.png') !!}"></td>
+                  <td><img src="{!! asset('assets/images/statistics-icon2.png') !!}"></td>
+                  <td><img src="{!! asset('assets/images/statistics-icon3.png') !!}"></td>
                 </tr>
                 <tr>
-                  <td class="name">My Coins</td>
+                  <td class="name">{!! t('My Coins') !!}</td>
+                  <td>{!! $coins !!}</td>
+                  <td>2</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td class="name">{!! t('My Points') !!}</td>
                   <td>5</td>
                   <td>2</td>
                   <td>1</td>
                 </tr>
                 <tr>
-                  <td class="name">My Points</td>
+                  <td class="name">{!! t('My Earning') !!}</td>
                   <td>5</td>
                   <td>2</td>
                   <td>1</td>
                 </tr>
                 <tr>
-                  <td class="name">My Earning</td>
-                  <td>5</td>
-                  <td>2</td>
-                  <td>1</td>
-                </tr>
-                <tr>
-                  <td class="name">My Contributions</td>
-                  <td>5</td>
+                  <td class="name">{!! t('My Contributions') !!}</td>
+                  <td>{!! $Contributions !!}</td>
                   <td>2</td>
                   <td>1</td>
                 </tr>
@@ -109,9 +109,9 @@
               <table class="customTable">
                 <tr>
                   <td class="name"></td>
-                  <td><img src="images/statistics-icon1.png"></td>
-                  <td><img src="images/statistics-icon2.png"></td>
-                  <td><img src="images/statistics-icon3.png"></td>
+                  <td><img src="{!! asset('assets/images/statistics-icon1.png') !!}"></td>
+                  <td><img src="{!! asset('assets/images/statistics-icon2.png') !!}"></td>
+                  <td><img src="{!! asset('assets/images/statistics-icon3.png') !!}"></td>
                 </tr>
                 <tr>
                   <td class="name">Highest Coins</td>

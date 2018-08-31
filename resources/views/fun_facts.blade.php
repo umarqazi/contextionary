@@ -20,7 +20,7 @@
                                 <h3>{!! $record['title'] !!}</h3>
                                 <p>{!! substr($record['description'],0,150) !!}</p>
                             </div>
-                            <a href="#" class="readMore"><img src="{!! asset('assets/images/readMore.png') !!}"></a>
+                            <a href="{!! lang_url('fDetail', ['id'=>$record['id']]) !!}" class="readMore"><img src="{!! asset('assets/images/readMore.png') !!}"></a>
                         </div>
                     @endforeach
                 @else

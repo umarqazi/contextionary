@@ -18,10 +18,24 @@ class StripeController extends Controller
     public function postPaymentWithStripe(StripePayment $stripe)
     {
         $validator = $stripe->validated();
-        $payment=$this->stripe->paymentProcess($stripe);
+        $cardInfo=[
+            'card_no' => $stripe->card_no,
+            'ccExpiryMonth' => $stripe->ccExpiryMonth,
+            'ccExpiryYear' => $stripe->ccExpiryYear,
+            'cvvNumber' => $stripe->cvvNumber,
+            'user_id'=>$stripe->user_id,
+            'price'=>$stripe->price,
+            'package_id'=>$stripe->package_id,
+            'type'=>$stripe->type,
+        ];
+        $payment=$this->stripe->paymentProcess($cardInfo);
         if($payment['status']==true){
-            if($payment['user']){
-                return Redirect::to('/dashboard');
+            if($stripe->type=='purchase_coins'){
+                return Redirect::to(lang_route('coins'))->with(['alert_type'=>'success', 'message'=>'Coins has been added in your profile']);
+            }else{
+                if($payment['user']){
+                    return Redirect::to('/dashboard');
+                }
             }
         }else{
             return Redirect::back()->with($payment['notification']);

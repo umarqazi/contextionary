@@ -1,32 +1,40 @@
 
 <div class="menuCate">
   <div class="title">
-    A Game of Context
+    {!! t('A Game of Context') !!}
   </div>
   <ul class="menuListing">
-    <li><a href="#"><span>Define</span></a></li>
-    <li><a href="#" class="menu2"><span>Illustrate</span></a></li>
-    <li><a href="#" class="menu3"><span>Translate</span></a></li>
+    @if(Auth::check())
+      @if(Auth::user()->hasRole(Config::get('constant.contributorRole.definition')))
+        <li><a href="{!! lang_route('define') !!}"><span>{!! t('Define') !!}</span></a></li>
+      @endif
+      @if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrator')))
+        <li><a href="#" class="menu2"><span>{!! t('Illustrate') !!}</span></a></li>
+      @endif
+      @if(Auth::user()->hasRole(Config::get('constant.contributorRole.translator')))
+        <li><a href="#" class="menu3"><span>{!! t('Translate') !!}</span></a></li>
+      @endif
+    @endif
   </ul>
 </div>
 <div class="menuCate">
   <div class="title">
-    Earn Bonus Coins
+    {!! t('Earn Bonus Coins') !!}
   </div>
   <ul class="menuListing">
-    <li><a href="#" class="menu4"><span>Vote Meanings</span></a></li>
-    <li><a href="#" class="menu4"><span>Vote Meanings</span></a></li>
-    <li><a href="#" class="menu4"><span>Vote Meanings</span></a></li>
+    <li><a href="#" class="menu4"><span>{!! t('Vote Meanings') !!}</span></a></li>
+    <li><a href="#" class="menu4"><span>{!! t('Vote Illustration') !!}</span></a></li>
+    <li><a href="#" class="menu4"><span>{!! t('Vote Translations')!!}</span></a></li>
   </ul>
 </div>
 
 <div class="menuCate">
   <div class="title">
-    Transactions
+    {!! t('Transactions') !!}
   </div>
   <ul class="menuListing">
-    <li><a href="#" class="menu5"><span>Purchase Coins</span></a></li>
-    <li><a href="#" class="menu6"><span>Redeem points</span></a></li>
-    <li><a href="#" class="menu7"><span>Summary</span></a></li>
+    <li><a href="{!! lang_url('purchaseCoins') !!}" class="menu5"><span>{!! t('Purchase Coins') !!}</span></a></li>
+    <li><a href="#" class="menu6"><span>{!! t('Redeem points') !!}</span></a></li>
+    <li><a href="#" class="menu7"><span>{!! t('Summary') !!}</span></a></li>
   </ul>
 </div>

@@ -9,6 +9,8 @@ namespace App\Services;
  * @project Contextionary
  *
  */
+
+use App\Repositories\CoinsRepo;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,12 +29,13 @@ class UserService
      * @return int
      */
     protected $user;
-    protected  $transactionRepo;
-
-    public function __construct(UserRepo $user, TransactionRepo $transaction_repo)
+    protected $transactionRepo;
+    protected $coin;
+    public function __construct(UserRepo $user, TransactionRepo $transaction_repo, CoinsRepo $coin)
     {
         $this->user = $user;
         $this->transactionRepo=$transaction_repo;
+        $this->coin=$coin;
     }
     public function count(){
         return User::all()->count();

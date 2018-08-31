@@ -87,15 +87,7 @@ class RegisterController extends Controller
             ]);
             if (Input::hasFile('profile_image')) {
                 $image      = Input::file('profile_image');
-                $fileName   = time() . '.' . $image->getClientOriginalExtension();
-
-                $img = Image::make($image->getRealPath());
-                $img->resize(120, 120, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-                $img->stream();
-                $fileName='images/'.$user->id.'/profile_image/'.$fileName;
-                Storage::disk('public')->put($fileName, $img);
+                $fileName=$this->uploadImage($image, $user->id);
             }
             $user->profile_image=$fileName;
             $user->email_token= base64_encode($data['email']);
@@ -150,5 +142,17 @@ class RegisterController extends Controller
             );
             return Redirect::to('/login')->with($notification);
         }
+    }
+    public function uploadImage($data, $user_id){
+        $fileName   = time() . '.' . $data->getClientOriginalExtension();
+
+        $img = Image::make($data->getRealPath());
+        $img->resize(120, 120, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->stream();
+        $fileName='images/'.$user_id.'/profile_image/'.$fileName;
+        Storage::disk('public')->put($fileName, $img);
+        return $fileName;
     }
 }

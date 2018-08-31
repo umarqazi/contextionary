@@ -18,7 +18,6 @@ class TransactionRepo
     }
 
     public function create($data){
-
         return Transaction::create($data);
     }
 }
