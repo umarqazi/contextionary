@@ -27,3 +27,17 @@
 .profile-personal-details .form-group{
     margin-bottom: 0px;
 }
+.contact-msg-menu-item{
+    font-size: 9px !important;
+    font-weight: bold !important;
+    margin-left: -11px !important;
+    margin-top: -12px !important;
+    padding: 1px !important;
+    padding-left: 1px !important;
+    border-radius: 3px !important;
+    background-color: red;
+}
+.user-panel>.info>p {
+    font-weight: 600;
+    margin-bottom: 5px !important;
+}
