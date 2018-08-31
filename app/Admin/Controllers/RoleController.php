@@ -78,7 +78,6 @@ class RoleController extends Controller
                 $filter->like('name');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
-                $actions->disableView();
             });
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {

@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Coin;
+use Illuminate\Support\Facades\Storage;
 use \Illuminate\Database\Eloquent\Model;
 use Encore\Admin\Controllers\ModelForm;
 use Encore\Admin\Facades\Admin;
@@ -68,8 +69,8 @@ class CoinsController extends Controller
             $grid->id('ID')->sortable();
             $grid->option('useWidth', true);
             $grid->image()->display(function ($image) {
-                $image = explode("/", $image);
-                return "<img class='img-thumbnail' src='/storage/{$image[1]}/{$image[2]}' />";
+                $image= Storage::disk(config("admin.upload.disk"))->url($image);
+                return "<img class='img-thumbnail' src='{$image}' />";
             })->setAttributes(["style" => "width:10% !important;"]);
             $grid->price()->sortable();
             $grid->coins()->sortable();
@@ -80,10 +81,12 @@ class CoinsController extends Controller
                 $filter->like('coins');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
+                $action = "".$actions->getResource()."/".$actions->getKey()."";
+                $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
+//                    $actions->disableDelete();
                 });
             });
         });
@@ -97,12 +100,17 @@ class CoinsController extends Controller
      */
     public function form($id = null)
     {
-        return Admin::form(Coin::class, function (Form $form) use ($id) {
+        $dir ='images/coin';
+        return Admin::form(Coin::class, function (Form $form) use ($id, $dir) {
             $form->display('id', 'ID');
-            $form->image('image');
+            $form->image('image')->move($dir);
             $form->text('price', trans('Price'))->rules('required')->placeholder('Enter Price...');
             $form->text('coins', trans('Coins'))->rules('required')->placeholder('Enter Coins...');
             $form->saved(function (Form $form) use ($id) {
+                $image_name = explode('/',$form->model()->image);
+                $coin = Coin::find($form->model()->id);
+                $coin->image = 'images/coin/'.$image_name[2];
+                $coin->update();
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
                 }else{

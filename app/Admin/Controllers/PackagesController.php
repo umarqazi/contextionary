@@ -77,6 +77,8 @@ class PackagesController extends Controller
                 $filter->like('name');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
+                $action = "".$actions->getResource()."/".$actions->getKey()."";
+                $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {

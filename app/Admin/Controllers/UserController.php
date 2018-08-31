@@ -70,7 +70,10 @@ class UserController extends Controller
                 $filter->like('name');
                 $filter->like('email');
             });
-            $grid->actions(function (Grid\Displayers\Actions $actions) {});
+            $grid->actions(function (Grid\Displayers\Actions $actions) {
+                $action = "".$actions->getResource()."/".$actions->getKey()."";
+                $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
+            });
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
                     $actions->disableDelete();
@@ -138,12 +141,12 @@ class UserController extends Controller
                     return $form->model()->password;
                 })->placeholder('Confirm Password...');
             $form->radio('role', trans('Roles'))->options($roles)->default($current_role);
-            $form->display('profile.pseudonyme', 'Pseudonyme');
-            $form->display('profile.gender', 'Gender');
+            $form->text('profile.pseudonyme', 'Pseudonyme');
+            $form->radio('profile.gender', trans('Gender'))->options(['Male'=>'Male','Female'=>'Female']);
             $form->date('profile.date_birth', 'Date of Birth');
-            $form->display('profile.phone_number', 'Phone #');
-            $form->display('profile.native_language', 'Language');
-            $form->display('profile.country', 'Country');
+            $form->mobile('profile.phone_number', 'Phone #');
+            $form->radio('profile.native_language', trans('Language'))->options(['English'=>'English','French'=>'French','Spanish'=>'Spanish','Hindi'=>'Hindi','Chinese'=>'Chinese']);
+            $form->text('profile.country', 'Country');
             $form->ignore(['password_confirmation', 'role']);
             $form->saving(function (Form $form) use ($user){
                 if ($form->password && $form->model()->password != $form->password) {
