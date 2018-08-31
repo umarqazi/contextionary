@@ -99,3 +99,29 @@ color: #f7953a;
 .BlueBackground{
   background: #105197 !important;
 }
+.click-coins{
+  cursor: pointer;
+}
+.customPagination .pagination .active{
+  background: #f7941d;
+  color: #fff;
+  padding: 4px 11px;
+}
+.definePage .enter-phrase{
+  height: 150px;
+  resize: none;
+}
+.defineMeaningBackground{
+  background: rgba(0,0,0,0.8);
+}
+.coinsWrapper button{
+  cursor:pointer;
+}
+.bio{
+  margin-top: 10px;
+}
+.tabsContainer{
+  margin-bottom: 15px;
+}
+.make-left{
+}

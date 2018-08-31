@@ -15,8 +15,8 @@
 
         </div>
         <ul class="menuListing">
-            <li><a href="{!! lang_route('funFacts') !!}"><span>Fun Facts</span></a></li>
-            <li><a href="{!! lang_route('contactUs') !!}"><span>Contact Us</span></a></li>
+            <li><a href="{!! lang_route('funFacts') !!}" class="menu12"><span>Fun Facts</span></a></li>
+            <li><a href="{!! lang_route('contactUs') !!}" class="menu13"><span>Contact Us</span></a></li>
         </ul>
     </div>
 </aside>

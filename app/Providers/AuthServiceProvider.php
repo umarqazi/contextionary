@@ -24,7 +24,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
+        // include view composers
+        require __DIR__ . "/../Composers/Contributors.php";
     }
 }

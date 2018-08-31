@@ -27,34 +27,35 @@ class TransactionService
     protected $userServices;
     protected $transactionDetail;
     protected $transactionRepo;
+    protected $contService;
 
-    public function __construct(RoleService $roles,TransactionRepo $transaction_repo, UserService $services){
+    public function __construct(RoleService $roles,TransactionRepo $transaction_repo, UserService $services, ContributorService $contributorService){
         $this->userServices= $services;
         $this->transactionRepo= $transaction_repo;
         $this->role=$roles;
+        $this->contService=$contributorService;
     }
     public function paymentProcess($request){
-        $input=$request->all();
-        $input = array_except($input,array('_token'));
+        $input = array_except($request,array('_token'));
         $stripe = Stripe::make(env('STRIPE_SECRET'));
         try {
             $cardInfo=[
-                'number' => $request->get('card_no'),
-                'exp_month' => $request->get('ccExpiryMonth'),
-                'exp_year' => $request->get('ccExpiryYear'),
-                'cvc' => $request->get('cvvNumber'),
+                'number' => $request['card_no'],
+                'exp_month' => $request['ccExpiryMonth'],
+                'exp_year' => $request['ccExpiryYear'],
+                'cvc' => $request['cvvNumber'],
             ];
             $token = $stripe->tokens()->create([
                 'card' => $cardInfo
             ]);
-            $cardInfo['user_id']=$request->user_id;
+            $cardInfo['user_id']=$request['user_id'];
             if (!isset($token['id'])) {
                 return redirect()->route('addmoney.paywithstripe');
             }
             $charge = $stripe->charges()->create([
                 'card' => $token['id'],
                 'currency' => 'USD',
-                'amount' => $request->price,
+                'amount' => $request['price'],
                 'description' => 'Add in wallet',
             ]);
 
@@ -62,9 +63,15 @@ class TransactionService
                 /**
                  * Write Here Your Database insert logic.
                  */
-                $updateTransaction=$this->success($charge, $request->user_id, $request->package_id);
-                $notify=$this->userServices->notifyUser($request->user_id, $updateTransaction);
-                return ['status'=>true, 'user'=>$notify];
+                $data=['transaction_id'=>$charge['id'], 'user_id'=>$request['user_id'], 'package_id'=>$request['package_id'], 'type'=>$request['type']];
+                $updateTransaction=$this->success($data);
+                if($request['type']=='purchase_coins'){
+                    $updateUser=$this->contService->updateCoins($request['user_id'], $request['package_id']);
+                    return ['status'=>true];
+                }else{
+                    $notify=$this->userServices->notifyUser($request['user_id'], $updateTransaction);
+                    return ['status'=>true, 'user'=>$notify];
+                }
 
             } else {
                 $notification = array(
@@ -93,10 +100,12 @@ class TransactionService
             return ['status'=>false, 'notification'=>$notification];
         }
     }
-    public function success($transaction, $user_id, $package_id){
-        $data=['transaction_id'=>$transaction['id'], 'user_id'=>$user_id, 'package_id'=>$package_id, 'expiry_date'=>Carbon::parse()->addMonth()];
+    public function success($params){
+        $data=['transaction_id'=>$params['transaction_id'], 'purchase_type'=>$params['type'],'user_id'=>$params['user_id'], ($params['type']=='purchase_coins')?'coin_id':'package_id'=>$params['package_id'], 'expiry_date'=>Carbon::parse()->addMonth()];
         $new_transaction=$this->transactionRepo->create($data);
-        $assignRoleToUser=$this->role->assign($user_id, $package_id);
+        if($params['type']=='buy_package'):
+            $assignRoleToUser=$this->role->assign($params['user_id'], $params['package_id']);
+        endif;
         return $new_transaction;
     }
 }

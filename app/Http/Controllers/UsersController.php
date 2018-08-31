@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\RegisterController;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
 use App\User;
 use App\Transaction;
+use App\Profile;
 use App\Services\UserService;
 use App\Services\AuthService;
 use App\Services\RoleService;
@@ -28,12 +30,14 @@ class UsersController extends Controller
     protected  $userRoles;
     protected  $authService;
     protected  $user;
+    protected $register;
 
-    public function __construct(UserService $userServices, RoleService $role, AuthService $authService)
+    public function __construct(RegisterController $registerController, UserService $userServices, RoleService $role, AuthService $authService)
     {
         $this->userServices = $userServices;
         $this->userRoles = $role;
         $this->authService = $authService;
+        $this->register=$registerController;
     }
     public function validateRole(){
         if(Auth::check()){
@@ -60,10 +64,57 @@ class UsersController extends Controller
             ]
         );
     }
-    public function profileEdit()
-    {
+    public function edit(){
         $user = Auth::user();
-        return view('user.edit', compact('user'));
+        return view::make('user.edit')->with('user', $user);
+    }
+    public function profileUpdate(Request $request)
+    {
+        // validate
+        $rules = array(
+            'first_name'       => 'required',
+            'last_name'       => 'required',
+            'email'      => 'required|email',
+            'password'   => 'nullable|min:6|confirmed'
+        );
+        $validator = Validator::make(Input::all(), $rules);
+        // process the login
+        if ($validator->fails()) {
+            return Redirect::to('/edit-profile')
+                ->withErrors($validator)
+                ->withInput(Input::except('password'));
+        } else {
+            // update
+            $user = Auth::user();
+            $user->first_name       = Input::get('first_name');
+            $user->last_name       = Input::get('last_name');
+            $user->email      = Input::get('email');
+            $fileName=$user->profile_image;
+            if(Input::get('password') != ''){
+                $user->password = bcrypt(Input::get('password'));
+            }
+
+            if (Input::hasFile('profile_image')) {
+                $image      = Input::file('profile_image');
+                $fileName=$this->register->uploadImage($image, $user->id);
+            }
+            $user->profile_image=$fileName;
+            $user->save();
+            $updateProfile=Profile::find($user->id);
+            $updateProfile->phone_number=Input::get('phone_number');
+            $updateProfile->gender=Input::get('gender');
+            $updateProfile->country=Input::get('country');
+            $updateProfile->native_language=Input::get('native_language');
+            $updateProfile->pseudonyme=Input::get('pseudonyme');
+            $updateProfile->bio=Input::get('bio');
+            $updateProfile->save();
+            // redirect
+            $notification = array(
+                'message' => 'Successfully updated your Profile!',
+                'alert_type' => 'success'
+            );
+            return Redirect::to('profile')->with($notification);
+        }
     }
 
     public function profile()
