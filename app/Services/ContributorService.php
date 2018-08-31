@@ -13,7 +13,7 @@ use App\Repositories\ContextRepo;
 use App\Repositories\RoleRepo;
 use App\Repositories\UserRepo;
 
-class ContributorService
+class ContributorService implements IService
 {
     protected $contextRepo;
     protected $roleRepo;
