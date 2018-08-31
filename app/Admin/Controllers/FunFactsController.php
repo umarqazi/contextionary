@@ -10,6 +10,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
 class FunFactsController extends Controller
@@ -69,12 +70,12 @@ class FunFactsController extends Controller
             $grid->id('ID')->sortable();
             $grid -> option('useWidth', true);
             $grid->thumbnail()->display(function ($thumbnail) {
-                $thumbnail = explode("/", $thumbnail);
-                return "<img class='img-thumbnail' src='/storage/{$thumbnail[1]}/{$thumbnail[2]}' />";
+                $thumbnail= Storage::disk(config("admin.upload.disk"))->url($thumbnail);
+                return "<img class='img-thumbnail' src='{$thumbnail}' />";
             })->setAttributes(["style" => "width:10% !important;"]);
             $grid->image()->display(function ($image) {
-                $image = explode("/", $image);
-                return "<img class='img-thumbnail' src='/storage/{$image[1]}/{$image[2]}' />";
+                $image= Storage::disk(config("admin.upload.disk"))->url($image);
+                return "<img class='img-thumbnail' src='{$image}' />";
             })->setAttributes(["style" => "width:10% !important;"]);
             $grid->title()->sortable();
             $grid->author()->sortable();
@@ -86,6 +87,8 @@ class FunFactsController extends Controller
                 $filter->like('author');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
+                $action = "".$actions->getResource()."/".$actions->getKey()."";
+                $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
@@ -103,14 +106,22 @@ class FunFactsController extends Controller
      */
     public function form($id = null)
     {
-        return Admin::form(FunFact::class, function (Form $form) use ($id) {
+        $dir1 ='images/fun-fact/thumb';
+        $dir2 ='images/fun-fact/img';
+        return Admin::form(FunFact::class, function (Form $form) use ($id, $dir1, $dir2) {
             $form->display('id', 'ID');
-            $form->image('thumbnail');
-            $form->image('image');
+            $form->image('thumbnail')->move($dir1);
+            $form->image('image')->move($dir2);
             $form->text('title', trans('Title'))->rules('required')->placeholder('Enter Title...');
             $form->text('author', trans('Author'));
             $form->textarea('description', trans('Description'))->rules('required')->placeholder('Enter Description...');
             $form->saved(function (Form $form) use ($id) {
+                $thumb_name = explode('/',$form->model()->thumbnail);
+                $image_name = explode('/',$form->model()->image);
+                $funfact = FunFact::find($form->model()->id);
+                $funfact->thumbnail = 'images/fun-fact/thumb/'.$thumb_name[3];
+                $funfact->image = 'images/fun-fact/img/'.$image_name[3];
+                $funfact->update();
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
                 }else{

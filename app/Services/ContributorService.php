@@ -17,7 +17,7 @@ use App\Repositories\RoleRepo;
 use App\Repositories\UserRepo;
 use Auth;
 
-class ContributorService
+class ContributorService implements IService
 {
     protected $contextRepo;
     protected $roleRepo;

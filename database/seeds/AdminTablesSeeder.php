@@ -163,6 +163,16 @@ class AdminTablesSeeder extends Seeder
             'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  18,
+            'parent_id'     =>  0,
+            'order'         =>  13,
+            'title'         =>  'Tutorials',
+            'icon'          =>  'fa-question-circle',
+            'uri'           =>  'auth/tutorials/1',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
 
         // admin_permissions
         DB::table('admin_permissions')->insert([
