@@ -3,11 +3,9 @@
     {!! t('Define a Meaning') !!}
 @stop
 @section('content')
-    <div class="container-fluid contributorMain definePage" style="background: url({!! Storage::disk('local')->url('Contexts') !!}/{!! $data['context_picture'] !!}); background-size:cover">
+    <div class="container-fluid contributorMain definePage" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $data['context_picture'] !!}); background-size:cover">
         <div class="wrapperMask"></div>
-        <div class="row">
-            @include('user.contributor.contributor_heading')
-        </div>
+        @include('layouts.flc_header')
         {!! Form::open(['url'=>lang_route('postContextMeaning'), 'method'=>'post']) !!}
         <div class="row">
             @include('layouts.toaster')
@@ -34,7 +32,7 @@
             <div class="col-md-12">
                 <label class="customLabel">Phrase Meaning</label>
                 @if(!$data['id'])
-                    {!! Form::textarea('meaning', $data['meaning'], ['class'=>'enter-phrase', 'readonly'=>'readonly' ,'placeholder'=>'Enter Phrase Meaning']) !!}
+                    {!! Form::textarea('meaning', $data['meaning'], ['class'=>'enter-phrase' ,'placeholder'=>'Enter Phrase Meaning']) !!}
                     <p class="text-right white-text">{!! t('Characters') !!} 0/2500</p>
                     @if ($errors->has('meaning'))
                         <div class="help-block"><strong>{{ $errors->first('meaning') }}</strong></div>

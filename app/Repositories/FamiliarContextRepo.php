@@ -14,8 +14,9 @@ use App\FamiliarContext;
 class FamiliarContextRepo
 {
     protected $familiarContext;
-    public function __construct(FamiliarContext $context)
+    public function __construct()
     {
+        $context= new FamiliarContext();
         $this->familiarContext=$context;
     }
     public function create($data){

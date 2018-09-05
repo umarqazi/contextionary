@@ -37,6 +37,11 @@ MultiLang::routeGroup(function($router) {
             Route::post('addCoins',  'ContributorController@addCoins')->name('addCoins');
             Route::get('addCoins',  'ContributorController@addCoins')->name('addCoins');
             Route::post('applyBidding',  'ContributorController@applyBidding')->name('applyBidding');
+            Route::get('voteMeaning',  'VoteController@voteMeaning')->name('voteMeaning');
+            Route::post('vote',  'VoteController@vote')->name('vote');
+            Route::group(array('prefix' => 'cron'), function(){
+                Route::get('meaning',  'CronController@meaningToVote')->name('meaning');
+            });
         });
         Route::get('funFacts',  'SettingController@funFacts')->name('funFacts');
         Route::get('fDetail/{fact}',  'SettingController@fDetail')->name('fDetail');

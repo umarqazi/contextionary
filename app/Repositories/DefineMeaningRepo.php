@@ -11,13 +11,22 @@ namespace App\Repositories;
 
 use App\DefineMeaning;
 use Auth;
+use DB;
+use Carbon\Carbon;
+use App\Repositories\ContextPhraseRepo;
 
 class DefineMeaningRepo
 {
-    protected $message;
-    public function __construct(DefineMeaning $meaning)
+    protected $meaning;
+    protected $userRepo;
+    protected $contextPhrase;
+
+    public function __construct()
     {
+        $meaning=new DefineMeaning();
         $this->meaning=$meaning;
+        $users=new UserRepo();
+        $this->userRepo=$users;
     }
     /*
      * save function
@@ -39,7 +48,7 @@ class DefineMeaningRepo
         return $this->meaning->where('id', $meaning_id)->update($data);
     }
     public function contributions($user_id){
-        return $this->meaning->where('user_id',$user_id)->where('bid', '!=', NULL);
+        return $this->meaning->where('user_id',$user_id)->where('coins', '!=', NULL);
     }
     /*
      * fetch total numbers of contributions of user
@@ -52,5 +61,61 @@ class DefineMeaningRepo
      */
     public function getAllContributedMeaning(){
        return $this->contributions(Auth::user()->id)->get();
+    }
+    /*
+     * get group of context and phrase
+     */
+    public function fetchContextPhraseMeaning(){
+        return $records=$this->meaning->where('coins','!=', NULL)->leftJoin('bidding_expiry', function ($query){
+            $query->on('define_meanings.context_id', '=', 'bidding_expiry.context_id');
+            $query->on('define_meanings.phrase_id', '=', 'bidding_expiry.phrase_id');
+        })->select('*', DB::raw('count(*) as total'))->groupBy('define_meanings.context_id', 'define_meanings.phrase_id')->get();
+    }
+
+    public function getRecords($context_id, $phrase_id){
+        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id]);
+    }
+    /**
+     * @param $meaning_id
+     * @return bool
+     */
+    public function addExpiry($meaning_id){
+        $getContextInfo=$this->meaning->where('id', $meaning_id)->first();
+        if($getContextInfo):
+            $checkContextPhrase=$this->getRecords($getContextInfo->context_id, $getContextInfo->phrase_id)->first();
+            if($checkContextPhrase->id==$meaning_id):
+                $date=Carbon::now()->addMonths(1);
+                DB::table('bidding_expiry')->insert(['context_id'=>$getContextInfo->context_id, 'phrase_id'=>$getContextInfo->phrase_id, 'expiry_date'=>$date]);
+            endif;
+        endif;
+        return true;
+    }
+    /*
+     * update status except first 9
+     */
+    public function updateMeaningStatus($context_id, $phrase_id){
+
+        /**update status for vote of first 9 contributor*/
+
+        $records=$this->getRecords($context_id, $phrase_id)->limit(1)->update(['status'=>'1']);
+
+        /** update status for refund of contributor */
+
+        $rejectedUsers=$this->getRecords($context_id, $phrase_id)->where(['status'=>'0'])->update(['status'=>'2']);
+
+        /** update coins in user tables */
+        $getUsers=$this->getRecords($context_id, $phrase_id)->where(['status'=>'2'])->get();
+        foreach($getUsers as $user):
+            if($user['coins']!=NULL):
+                $this->userRepo->updateCoins($user['coins'], $user['user_id']);
+            endif;
+        endforeach;
+        return true;
+    }
+    /**
+     * get Meaning for Vote
+     */
+    public function getAllVoteMeaning($context_id,  $phrase_id){
+        return $this->getRecords($context_id, $phrase_id)->where('status', '1')->get();
     }
 }

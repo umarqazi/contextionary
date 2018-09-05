@@ -18,8 +18,10 @@ class RoleService extends BaseService implements IRoleService
 {
     protected $roles;
     protected $user;
-    public function __construct(UserRepo $user, RoleRepo $role)
+    public function __construct()
     {
+        $user= new UserRepo();
+        $role= new RoleRepo();
         $this->roles=$role;
         $this->user=$user;
     }
