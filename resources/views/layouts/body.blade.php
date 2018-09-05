@@ -9,6 +9,7 @@
   {!! HTML::style('assets/css/jquery.mCustomScrollbar.min.css') !!}
   {!! HTML::style('assets/css/bootstrap.min.css') !!}
   {!! HTML::style('assets/css/mdb.min.css') !!}
+  {!! HTML::style('assets/css/shards.css') !!}
   {!! HTML::style('assets/css/main.css') !!}
   {!! HTML::style('assets/css/responsive.css') !!}
   {!! HTML::style('assets/css/style.css') !!}

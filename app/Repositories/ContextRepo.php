@@ -13,8 +13,9 @@ use App\Context;
 class ContextRepo
 {
     protected $context;
-    public function __construct(Context $context)
+    public function __construct()
     {
+        $context= new Context();
         $this->context=$context;
     }
     public function list(){

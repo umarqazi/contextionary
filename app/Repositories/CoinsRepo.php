@@ -21,8 +21,9 @@ class CoinsRepo
      */
     private $coin;
 
-    public function __construct(Coin $coin)
+    public function __construct()
     {
+        $coin= new Coin();
         $this->coin = $coin;
     }
 

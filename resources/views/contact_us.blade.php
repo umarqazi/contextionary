@@ -5,8 +5,8 @@
 @section('content')
     <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <div class="container-fluid contributorMain contactPage">
+        @include('layouts.flc_header')
         <div class="row">
-            @include('layouts.flc_header')
             <div class="col-md-12 mt-4">
                 <div class="whiteBlock">
                     <div class="contactInfo">

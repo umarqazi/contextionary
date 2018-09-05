@@ -14,8 +14,9 @@ use App\Profile;
 class ProfileRepo
 {
     protected $profile;
-    public function __construct(Profile $profile)
+    public function __construct()
     {
+        $profile=new Profile();
         $this->profile = $profile;
     }
 

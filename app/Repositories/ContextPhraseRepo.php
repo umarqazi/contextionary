@@ -17,8 +17,10 @@ class ContextPhraseRepo
     protected $contextPhrase;
     protected $defineMeaningRepo;
 
-    public function __construct(ContextPhrase $contextPhrase, DefineMeaningRepo $defineMeaningRepo)
+    public function __construct()
     {
+        $contextPhrase= new ContextPhrase();
+        $defineMeaningRepo=new DefineMeaningRepo();
         $this->contextPhrase=$contextPhrase;
         $this->defineMeaningRepo=$defineMeaningRepo;
     }

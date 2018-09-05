@@ -31,8 +31,11 @@ class UserService
     protected $user;
     protected $transactionRepo;
     protected $coin;
-    public function __construct(UserRepo $user, TransactionRepo $transaction_repo, CoinsRepo $coin)
+    public function __construct()
     {
+        $user= new UserRepo();
+        $transaction_repo= new TransactionRepo();
+        $coin= new CoinsRepo();
         $this->user = $user;
         $this->transactionRepo=$transaction_repo;
         $this->coin=$coin;

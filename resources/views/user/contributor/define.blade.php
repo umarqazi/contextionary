@@ -4,8 +4,11 @@
 @stop
 @section('content')
     <div class="container-fluid">
+        @include('layouts.flc_header')
         <div class="row">
-            @include('user.contributor.contributor_heading')
+            @include('layouts.toaster')
+        </div>
+        <div class="row">
             @if($contextList)
                 @foreach($contextList as $context)
                     <div class="col-sm-6 col-md-4 col-lg-4">

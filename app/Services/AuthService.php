@@ -12,8 +12,9 @@ use App\Repositories\UserRepo;
 
 class AuthService
 {
-    public function __construct(UserRepo $user)
+    public function __construct()
     {
+        $user=new UserRepo();
         $this->user = $user;
     }
     public function authenticateToken($id, $token){
