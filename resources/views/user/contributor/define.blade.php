@@ -15,7 +15,7 @@
                         <a @if($context['status']!='disabled') href="{!! lang_route('defineMeaning', ['context_id'=>$context['context_id'],'phrase_id'=>$context['phrase_id']]) !!}" @endif>
                             <div class="categeoryBlock">
                                 <div class="mask"></div>
-                                <img src="{!! Storage::disk('local')->url('Contexts') !!}/{!! $context['context_picture'] !!}" class="mainImg">
+                                <img src="{!! Storage::disk('local')->lang_url('Contexts') !!}/{!! $context['context_picture'] !!}" class="mainImg">
                                 <div class="info">
                                     <h1>{!! t($context['context_name']) !!} </h1>
                                     <p>{!! t($context['phrase_text']) !!}</p>
