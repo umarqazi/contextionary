@@ -150,3 +150,6 @@ color: #f7953a;
 .voteMeaningBg .contextListing li{
     cursor:pointer;
 }
+.custom-checkbox .custom-control-label{
+  text-align: left;
+}
