@@ -23,6 +23,8 @@ class CreateVoteMeaningsTable extends Migration
             $table->integer('part_of_speech')->nullable();
             $table->integer('is_poor')->nullable();
             $table->integer('vote')->nullable();
+            $table->integer('context_id');
+            $table->integer('phrase_id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
