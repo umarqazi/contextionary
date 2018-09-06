@@ -17,8 +17,8 @@
                                 <div class="mask"></div>
                                 <img src="{!!asset('storage/Contexts') !!}/{!! $context['context_picture'] !!}" class="mainImg">
                                 <div class="info">
-                                    <h1>{!! t($context['context_name']) !!} </h1>
-                                    <p>{!! t($context['phrase_text']) !!}</p>
+                                    <h1>@if($context['context_name']) {!! t($context['context_name']) !!} @endif </h1>
+                                    <p>@if($context['phrase_text']){!! t($context['phrase_text']) !!} @endif</p>
                                     {!! t('Open') !!} <i class="fa fa-angle-right"></i>
                                 </div>
                             </div>
