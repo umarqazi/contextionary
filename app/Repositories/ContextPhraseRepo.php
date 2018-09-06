@@ -41,6 +41,7 @@ class ContextPhraseRepo
         $contributedMeaning=$this->defineMeaningRepo->getAllContributedMeaning();
         foreach($contextPhrases as $key=>$record):
             foreach ($contributedMeaning as $meaning):
+                $contextPhrases[$key]['status']='';
                 if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
                     $contextPhrases[$key]['status']='disabled';
                 endif;
