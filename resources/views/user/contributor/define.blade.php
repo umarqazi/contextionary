@@ -12,7 +12,7 @@
             @if($contextList)
                 @foreach($contextList as $context)
                     <div class="col-sm-6 col-md-4 col-lg-4">
-                        <a>
+                        <a @if($context['status']!='disabled') href="{!! lang_route('defineMeaning', ['context_id'=>$context['context_id'],'phrase_id'=>$context['phrase_id']]) !!}" @endif>
                             <div class="categeoryBlock">
                                 <div class="mask"></div>
                                 <img src="{!! Storage::disk('local')->url('Contexts') !!}/{!! $context['context_picture'] !!}" class="mainImg">
@@ -28,7 +28,7 @@
             @endif
             <div class="col-md-12 mt-4 mb-4 text-center">
                 <div class="customPagination">
-                    {!! $contextList->links() !!}
+                    
                 </div>
             </div>
         </div>
