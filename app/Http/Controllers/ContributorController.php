@@ -132,7 +132,7 @@ class ContributorController
      * contributors define menus
      */
     public function defineMenus(){
-        return ['define'=>'Define', 'Illustrator'=>'Illustrator', 'Translator'=>'Translator'];
+        return ['define'=>'Define', 'define'=>'Illustrator', 'define'=>'Translator'];
     }
     /**
      * contributor vote Menus
