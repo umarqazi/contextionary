@@ -128,11 +128,9 @@ $(document).ready(function () {
         $(".bidBtn").removeClass('disabled');
     });
 });
-
-//custom scroll bar
-
 (function ($) {
     $(window).on("load", function () {
         $("aside").mCustomScrollbar();
     });
 })(jQuery);
+
