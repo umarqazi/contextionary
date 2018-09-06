@@ -40,8 +40,8 @@ class ContextPhraseRepo
         $contextPhrases=$this->getList()->orderBy('context_phrase.work_order', 'ASC')->paginate(9);
         $contributedMeaning=$this->defineMeaningRepo->getAllContributedMeaning();
         foreach($contextPhrases as $key=>$record):
+            $contextPhrases[$key]['status']='';
             foreach ($contributedMeaning as $meaning):
-                $contextPhrases[$key]['status']='';
                 if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
                     $contextPhrases[$key]['status']='disabled';
                 endif;
