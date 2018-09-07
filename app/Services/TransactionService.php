@@ -41,7 +41,7 @@ class TransactionService
     }
     public function paymentProcess($request){
         $input = array_except($request,array('_token'));
-        $stripe = Stripe::make('sk_test_v1HvFX0FFpIikIB48jsUwETa');
+        $stripe = Stripe::make(env('STRIPE_SECRET'));
         try {
             $cardInfo=[
                 'number' => $request['card_no'],
