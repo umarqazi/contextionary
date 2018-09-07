@@ -123,5 +123,33 @@ color: #f7953a;
 .tabsContainer{
   margin-bottom: 15px;
 }
-.make-left{
+
+.voteMeaningBg .contextListing li input[type="radio"]{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  z-index: 5;
+  display: block;
+}
+
+.voteMeaningBg .contextListing li a{
+  line-height: 130px;
+}
+
+.voteMeaningBg .contextContent{
+  height: 160px;
+}
+
+.voteMeaningBg .contextContent .tab-pane.current{
+  display: inherit;
+}
+
+.voteMeaningBg .contextListing li{
+    cursor:pointer;
+}
+.custom-checkbox .custom-control-label{
+  text-align: left;
 }

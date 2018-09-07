@@ -4,10 +4,7 @@
 @stop
 @section('content')
     <div class="container-fluid contributorMain funfact">
-        <div class="row">
-            @include('layouts.flc_header')
-
-        </div>
+        @include('layouts.flc_header')
         <div class="row mt-4">
             <div class="col-md-12">
                 @if(!$fun_facts->isEmpty())

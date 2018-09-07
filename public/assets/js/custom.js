@@ -127,32 +127,10 @@ $(document).ready(function () {
     $(".enter-phrase").keypress(function () {
         $(".bidBtn").removeClass('disabled');
     });
-
-    $(".voteMeaningBg .contextListing li a").click(function () {
-        $(this).parent().siblings().removeClass('active');
-        $(this).parent().addClass('active');
-    });
-
 });
-
-//custom scroll bar
-
 (function ($) {
     $(window).on("load", function () {
         $("aside").mCustomScrollbar();
     });
 })(jQuery);
 
-
-$(document).ready(function () {
-
-    $('.contributorSlider').slick({
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        adaptiveHeight: true
-    });
-
-
-});

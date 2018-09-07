@@ -52,4 +52,5 @@
     </div>
   </div>
   {!! HTML::script('assets/js/slick.js') !!}
+  {!! HTML::script('assets/js/user/dashboard.js') !!}
 @endsection

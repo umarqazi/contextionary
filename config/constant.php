@@ -11,5 +11,7 @@ return [
     'Native Language'=>['Hindi'=>'Hindi', 'French'=>'French', 'Spanish'=>'Spanish', 'English'=>'English', 'Chinese'=>'Chinese', 'Other'=>'Other'],
     'ContextImages'=>'context_images',
     'PhraseType'=>[''=>'Select Phrase Type','Proper noun', 'Common noun', 'Verb', 'Adjective', 'Adverb', 'Other'],
+    'Storage'=>'local',
+    'status'=>['0'=>'in Progress', '1'=>'Ready for Voting', '2'=>'Cancelled', '3'=>'Voting Done']
 ];
 ?>

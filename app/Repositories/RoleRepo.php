@@ -13,8 +13,10 @@ class RoleRepo
 {
     private $role;
     protected $user;
-    public function __construct(Role $role, UserRepo $user)
+    public function __construct()
     {
+        $role= new Role();
+        $user= new UserRepo();
         $this->role = $role;
         $this->user = $user;
     }
