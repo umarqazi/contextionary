@@ -2,7 +2,7 @@
 <div class="col-md-12">
     <div class="tabsContainer">
         <ul class="customTabs tabsView">
-            <li class="{{ Request::path() == Config::get('app.locale').'/funFacts' ? 'active' : '' }}"><a href="{!! lang_route('funFacts') !!}">Fun facts</a></li>
+            <li class="{{ Request::path() == Config::get('app.locale').'/funFacts' ? 'active' : '' }}"><a href="{!! lang_route('fun-facts') !!}">Fun Facts</a></li>
             @if(Auth::check())
                 <li class="{{ Request::path() == Config::get('app.locale').'/learning' ? 'active' : '' }}"><a href="#">Learning center</a></li>
             @endif
