@@ -114,7 +114,7 @@ class FunFactsController extends Controller
             $form->image('image')->move($dir2);
             $form->text('title', trans('Title'))->rules('required')->placeholder('Enter Title...');
             $form->text('author', trans('Author'));
-            $form->textarea('description', trans('Description'))->rules('required')->placeholder('Enter Description...');
+            $form->ckeditor('description', trans('Description'))->rules('required')->placeholder('Enter Description...');
             $form->saved(function (Form $form) use ($id) {
                 $thumb_name = explode('/',$form->model()->thumbnail);
                 $image_name = explode('/',$form->model()->image);
