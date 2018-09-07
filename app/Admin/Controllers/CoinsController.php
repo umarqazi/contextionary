@@ -68,10 +68,6 @@ class CoinsController extends Controller
         return Admin::grid(Coin::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
             $grid->option('useWidth', true);
-            $grid->image()->display(function ($image) {
-                $image= Storage::disk(config("admin.upload.disk"))->url($image);
-                return "<img class='img-thumbnail' src='{$image}' />";
-            })->setAttributes(["style" => "width:10% !important;"]);
             $grid->price()->sortable();
             $grid->coins()->sortable();
             $grid->column('created_at','Created at')->sortable();
