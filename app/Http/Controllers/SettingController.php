@@ -4,22 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactUs;
 use App\Services\ContactUsService;
+use App\Setting;
 use Illuminate\Http\Request;
 use View;
 use Redirect;
-use App\FunFact;
 
 class SettingController extends Controller
 {
+    /**
+     * @var ContactUsService
+     */
     protected $contactUs;
-    public function __construct(ContactUsService $contactUs)
+
+    /**
+     * SettingController constructor.
+     * @param ContactUsService $contactUs
+     */
+    public function __construct()
     {
+        $contactUs = new ContactUsService();
         $this->contactUs=$contactUs;
     }
 
+    /**
+     * @return mixed
+     */
     public function contactUs(){
-        return view::make('contact_us');
+        $settings = Setting::all();
+        return view::make('contact_us')->with('settings', $settings);
     }
+
+    /**
+     * @param ContactUs $request
+     * @return mixed
+     */
     public function sendMessage(ContactUs $request){
         $request->validate();
         $contactUs=$this->contactUs->saveMessage($request);
@@ -28,12 +46,5 @@ class SettingController extends Controller
             'alert_type' => 'success'
         );
         return Redirect::back()->with($notification);
-    }
-    public function funFacts(){
-        $getFunFacts=FunFact::paginate();
-        return view::make('fun_facts')->with('getFunFacts',$getFunFacts);
-    }
-    public function fDetail(FunFact $fact){
-        return view::make('detail_fun_facts')->with('detail', $fact);
     }
 }
