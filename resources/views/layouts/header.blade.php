@@ -10,7 +10,7 @@
         <li class="active"><a href="#">{!! t('A Game of Context') !!}</a></li>
         <li><a href="#">{!! t('Reading Assistant') !!}</a></li>
         <li><a href="#">{!! t('Glossary Catalog') !!}</a></li>
-        <li><a href="{!! lang_route('funFacts') !!}">{!! t('Fun Facts') !!}</a></li>
+        <li><a href="{!! lang_route('fun-facts') !!}">{!! t('Fun Facts') !!}</a></li>
         <li><a href="{!! lang_route('contactUs') !!}">{!! t('Contact Us') !!}</a></li>
       </ul>
       <div class="searchWrapper">

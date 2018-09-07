@@ -2546,6 +2546,8 @@ aside .topLinks {
     font-size: 18px;
     margin-bottom: 15px;
     font-weight: 600;
+    width: 100%;
+    border: none;
 }
 .pictionaryQuiz .gameOption.active {
     background: #f7941d;
@@ -2779,4 +2781,125 @@ aside .topLinks {
     /*green*/
     border: 1px solid #f7941d;
     /*orange*/
+}
+.pictionaryQuizLanding {
+    background: url(../images/pictionaryQuizLanding.jpg) no-repeat center center;
+    background-size: cover;
+}
+.spotIntruderQuizLanding {
+    background: url(../images/spotIntruderQuizLanding.jpg) no-repeat center center;
+    background-size: cover;
+}
+.tut-div h1, .tut-div h2, .tut-div h3, .tut-div h4, .tut-div h5, .tut-div h6{
+    color: blue;
+}
+.tut-div p, .tut-div li {
+    color: #fff;
+}
+.gameOption:hover {
+    background-color: yellow;
+    color: black;
+    cursor: pointer;
+}
+.gameOption:active {
+    background-color: orange;
+    color: black;
+    cursor: pointer;
+}
+.hidden{
+    display: none;
+}
+.correct-div {
+    padding: 30px;
+    background: #a1ff8e;
+}
+.correct-div-image {
+    margin-top: 14px;
+    padding-right: 57px;
+    padding-left: 57px;
+}
+.correct-div-text {
+    padding-top: 60px;
+}
+.correct-div-text h2{
+    color: #6ac259;
+}
+.wrong-div {
+    padding: 30px;
+    background: #fda790;
+}
+.wrong-div-image {
+    margin-top: 14px;
+    padding-right: 57px;
+    padding-left: 57px;
+}
+.wrong-div-text {
+    padding-top: 60px;
+}
+.wrong-div-text h2{
+    color: #f05229;
+}
+.wrong-div-text p{
+    color: #1b730a;
+}
+.correct-div-text a span{
+    font-size: 15px;
+    font-weight: bold;
+    padding: 30px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    background-color: #6ac259;
+    border-radius: 30px;
+    color: #9bee8e;
+}
+.wrong-div-text a span{
+    font-size: 15px;
+    font-weight: bold;
+    padding: 30px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    background-color: #f05229;
+    border-radius: 30px;
+    color: #f8a690;
+}
+.resultPage {
+    min-height: calc(100vh - 76px);
+    position: relative;
+}
+.resultPage .learningModule {
+    position: relative;
+    min-height: calc(100vh - 200px);
+}
+.resultPage .learningModule .wrapper {
+    position: absolute;
+    left: 0;
+    margin: 0 auto;
+    padding: 34px;
+    right: 0;
+    top: 50%;
+    text-align: center;
+    max-width: 620px;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.65);
+}
+.resultPage .learningModule .wrapper .companyName {
+    font-size: 25px;
+}
+.resultPage .learningModule .wrapper .companyName:after {
+    width: 90px;
+}
+.resultPage .learningModule .wrapper p {
+    color: #fff;
+    font-size: 20px;
+}
+.resultPage .learningModule .wrapper p span {
+    background: #f7941d;
+    padding: 5px 8px;
+    border-radius: 2px;
+}
+.resultPage .orangeBtn{
+    padding: 10px;
+}
+.score .orangeBtn{
+    padding: 10px;
 }

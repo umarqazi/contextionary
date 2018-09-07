@@ -18,4 +18,18 @@ class FunFact extends Model
         'image', 'thumbnail', 'title', 'author', 'description',
     ];
 
+    /**
+     * @return mixed
+     */
+    public function listing(){
+        return self::paginate();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function get($id){
+        return self::find($id);
+    }
 }
