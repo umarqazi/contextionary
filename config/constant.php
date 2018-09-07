@@ -10,6 +10,6 @@ return [
             '3'=>'6.99'],
     'Native Language'=>['Hindi'=>'Hindi', 'French'=>'French', 'Spanish'=>'Spanish', 'English'=>'English', 'Chinese'=>'Chinese', 'Other'=>'Other'],
     'ContextImages'=>'context_images',
-    'PhraseType'=>[''=>'Select Phrase Type','Proper noun', 'Common noun', 'Verb', 'Adjective', 'Adverb', 'Other']
+    'PhraseType'=>[''=>'Select Phrase Type','Proper noun', 'Common noun', 'Verb', 'Adjective', 'Adverb', 'Other'],
 ];
 ?>

@@ -26,6 +26,9 @@ class UpdateCoinIdInTransaction extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('transactions', function(Blueprint $table) {
+            $table->dropForeign('transactions_coin_id_foreign');
+            $table->dropColumn('coin_id');
+        });
     }
 }
