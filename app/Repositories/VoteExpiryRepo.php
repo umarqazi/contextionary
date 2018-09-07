@@ -38,6 +38,14 @@ class VoteExpiryRepo
     public function checkRecords($context_id, $phrase_id){
         return $this->voteExpiry->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->first();
     }
+    public function votes($type){
+        return $this->voteExpiry->where('vote_type', $type)->whereDate('expiry_date', '>=', Carbon::today())
+            ->leftJoin('vote_meanings', function ($query){
+                $query->on('vote_expiries.context_id', '=', 'vote_meanings.context_id');
+                $query->on('vote_expiries.phrase_id', '=', 'vote_meanings.phrase_id')->where('vote_meanings.user_id', Auth::user()->id);
+
+            })->where('vote_meanings.user_id', '=', NULL)->select('vote_expiries.*');
+    }
     /**
      * get latest pharse for vote
      *
@@ -45,8 +53,7 @@ class VoteExpiryRepo
      * table # 2: define_meaning RELATION :
      * table # 3: vote_meaning
      */
-    public function getLatest($type){
-        $latestPosts =$this->voteMeaning->where('user_id', Auth::user()->id)->get();
+    public function getPhraseMeaning($type, $data){
         return $this->voteExpiry->where('vote_type', $type)->whereDate('expiry_date', '>=', Carbon::today())
             ->leftJoin('vote_meanings', function ($query){
                 $query->on('vote_expiries.context_id', '=', 'vote_meanings.context_id');
@@ -55,6 +62,13 @@ class VoteExpiryRepo
             })->select('vote_expiries.*')
             ->where('vote_meanings.user_id', '=', NULL)
             ->orderby('vote_expiries.id', 'ASC')->first();
+    }
+
+    /**
+     * get all votes
+     */
+    public function getAllVotes($type){
+        return $this->votes($type)->paginate(9);
     }
 
 }

@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\VoteMeaning;
+use Auth;
 
 class VoteMeaningRepo
 {
@@ -24,4 +25,10 @@ class VoteMeaningRepo
         return $this->voteMeaning->create($data);
     }
 
+    /**
+     * check login user vote
+     */
+    public function checkUserVote($data){
+        return $this->voteMeaning->where(['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'], 'user_id'=>Auth::user()->id])->first();
+    }
 }

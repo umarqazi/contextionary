@@ -132,13 +132,13 @@ class ContributorController
      * contributors define menus
      */
     public function defineMenus(){
-        return ['define'=>'Define', 'define'=>'Illustrator', 'define'=>'Translator'];
+        return ['define'=>'Define', 'illustrator'=>'Illustrator', 'translator'=>'Translator'];
     }
     /**
      * contributor vote Menus
      */
     public function voteMenus(){
-        return ['voteMeaning'=>'Vote Meaning'];
+        return ['plist'=>'Vote Meaning'];
     }
     /**
      * contributor coins menus
