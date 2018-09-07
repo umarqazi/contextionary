@@ -14,14 +14,19 @@
                             <div class="img-holder"><img src="{!! asset('assets/images/map-icon.png') !!}"></div>
                             <div class="info">
                                 <h2>Location</h2>
-                                <p>1646 McIntyre Street Ann Arbor, MI 48105 United States</p>
+                                <p>{{$settings->where('keys', 'Address')->first()->values}}</p>
                             </div>
                         </li>
                         <li>
                             <div class="img-holder"><img src="{!! asset('assets/images/clock-icon.png') !!}"></div>
                             <div class="info">
                                 <h2>Office hours</h2>
-                                <p>Monday : 8am–6pm<br> Tuesday : 8am–6pm<br> Wednesday : 8am–6pm<br> Thursday : 8am–6pm<br> Friday : 10am–4pm<br>
+                                <p>
+                                    {{$settings->where('keys', 'Office Hours Monday')->first()->values}}<br>
+                                    {{$settings->where('keys', 'Office Hours Tuesday')->first()->values}}<br>
+                                    {{$settings->where('keys', 'Office Hours Wednesday')->first()->values}}<br>
+                                    {{$settings->where('keys', 'Office Hours Thursday')->first()->values}}<br>
+                                    {{$settings->where('keys', 'Office Hours Friday')->first()->values}}
                                 </p>
                             </div>
                         </li>
@@ -30,8 +35,13 @@
                             <div class="img-holder"><img src="{!! asset('assets/images/phone-icon.png') !!}"></div>
                             <div class="info">
                                 <h2>email & phone</h2>
-                                <p><a href="mailto:gfotso@contextionary.com">gfotso@contextionary.com</a></p>
-                                <p>+1 734-747-4294</p>
+                                <p><a href="mailto:{{$settings->where('keys', 'Email')->first()->values}}">
+                                        {{$settings->where('keys', 'Email')->first()->values}}
+                                    </a>
+                                </p>
+                                <p>
+                                    {{$settings->where('keys', 'Phone')->first()->values}}
+                                </p>
                             </div>
                         </li>
                     </div>

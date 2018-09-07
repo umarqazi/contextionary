@@ -5,8 +5,8 @@
 
         </div>
         <ul class="menuListing">
-            <li><a href="#"><span>Pictionary</span></a></li>
-            <li><a href="#" class="menu2"><span>Spot the Intruder</span></a></li>
+            <li><a href="{!! lang_route('start-pictionary') !!}"><span>Pictionary</span></a></li>
+            <li><a href="{!! lang_route('start-spot-the-intruder') !!}" class="menu2"><span>Spot the Intruder</span></a></li>
             <li><a href="#" class="menu3"><span>Hangman</span></a></li>
         </ul>
     </div>

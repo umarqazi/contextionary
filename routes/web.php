@@ -37,14 +37,23 @@ MultiLang::routeGroup(function($router) {
             Route::post('addCoins',  'ContributorController@addCoins')->name('addCoins');
             Route::get('addCoins',  'ContributorController@addCoins')->name('addCoins');
             Route::post('applyBidding',  'ContributorController@applyBidding')->name('applyBidding');
+            Route::get('start-pictionary',  'PictionaryController@index')->name('start-pictionary');
+            Route::get('reset-pictionary',  'PictionaryController@reset')->name('reset-pictionary');
+            Route::get('pictionary',  'PictionaryController@getQuestion')->name('pictionary');
+            Route::post('verify-pictionary',  'PictionaryController@verifyAnswer');
+            Route::get('start-spot-the-intruder',  'SpotIntruderController@index')->name('start-spot-the-intruder');
+            Route::get('reset-spot-the-intruder',  'SpotIntruderController@reset')->name('reset-spot-the-intruder');
+            Route::get('spot-the-intruder',  'SpotIntruderController@getQuestion')->name('spot-the-intruder');
+            Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
+            Route::get('tutorials',  'TutorialsController@index');
             Route::get('voteMeaning',  'VoteController@voteMeaning')->name('voteMeaning');
             Route::post('vote',  'VoteController@vote')->name('vote');
             Route::group(array('prefix' => 'cron'), function(){
                 Route::get('meaning',  'CronController@meaningToVote')->name('meaning');
             });
         });
-        Route::get('funFacts',  'SettingController@funFacts')->name('funFacts');
-        Route::get('fDetail/{fact}',  'SettingController@fDetail')->name('fDetail');
+        Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');
+        Route::get('fun-facts/{id}',  'FunFactsController@get');
         Route::get('contactUs',  'SettingController@contactUs')->name('contactUs');
         Route::post('contactUs',  'SettingController@sendMessage')->name('contactUs');
     });
