@@ -36,7 +36,7 @@ MultiLang::routeGroup(function($router) {
             Route::get('purchaseCoins',  'ContributorController@purchaseCoins')->name('coins');
             Route::post('addCoins',  'ContributorController@addCoins')->name('addCoins');
             Route::get('addCoins',  'ContributorController@addCoins')->name('addCoins');
-            Route::post('applyBidding',  'ContributorController@applyBidding')->name('applyBidding');
+            Route::post('applyBidding',  'ContributorController@applyBidding')->name('applyBidding');          
             Route::get('start-pictionary',  'PictionaryController@index')->name('start-pictionary');
             Route::get('reset-pictionary',  'PictionaryController@reset')->name('reset-pictionary');
             Route::get('pictionary',  'PictionaryController@getQuestion')->name('pictionary');
@@ -46,7 +46,10 @@ MultiLang::routeGroup(function($router) {
             Route::get('spot-the-intruder',  'SpotIntruderController@getQuestion')->name('spot-the-intruder');
             Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
             Route::get('tutorials',  'TutorialsController@index');
+            Route::get('plist',  'VoteController@phraseList')->name('plist');
+            Route::get('voteMeaning/{context_id}/{phrase_id}',  'VoteController@voteMeaning')->name('voteMeaning');
             Route::get('voteMeaning',  'VoteController@voteMeaning')->name('voteMeaning');
+          
             Route::post('vote',  'VoteController@vote')->name('vote');
             Route::group(array('prefix' => 'cron'), function(){
                 Route::get('meaning',  'CronController@meaningToVote')->name('meaning');

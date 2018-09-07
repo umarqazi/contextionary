@@ -3,7 +3,7 @@
         <a href="@if(Auth::check()) {!! lang_url('dashboard') !!} @else {!! lang_url('home') !!} @endif"> <img src="{!! asset('assets/images/logo2.png') !!}"> </a>
     </div>
     @if(Auth::check())
-        @if(Auth::user()->hasRole(['basic plan', 'premium plan', 'advance plan']))
+        @if(Auth::user()->hasRole(Config::get('constant.userRole')))
             @include('layouts.user_sidebar')
         @else
             @include('layouts.contributor_sidebar')

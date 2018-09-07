@@ -22,10 +22,26 @@ class VoteController extends Controller
         $contributorController=new ContributorController();
         $this->contributor=$contributorController;
     }
-
-    public function voteMeaning(){
+    /**
+     * get all votes
+     */
+    public function phraseList(){
         $this->pageMenu=$this->contributor->voteMenus();
-        $meanings=$this->voteService->getVoteMeaning();
+        $meanings=$this->voteService->getVoteList();
+        return view::make('user.contributor.votes.phrase_list')->with(['contextList'=>$meanings,'pageMenu'=>$this->pageMenu]);
+    }
+    public function voteMeaning(Request $request){
+        $data=['context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id];
+        $this->pageMenu=$this->contributor->voteMenus();
+        $meanings=$this->voteService->getVoteMeaning($data);
+        if($meanings==false){
+            $notification = array(
+                'message' => 'You already cast your vote against this phrase',
+                'alert_type' => 'danger',
+            );
+            $url=lang_url('plist');
+            return Redirect::to($url)->with($notification);
+        }
         return view::make('user.contributor.vote_meaning')->with(['phraseMeaning'=>$meanings,'pageMenu'=>$this->pageMenu]);
     }
     /**
@@ -40,7 +56,7 @@ class VoteController extends Controller
                 'message' => 'Vote has been added Successfully',
                 'alert_type' => 'success',
             );
-            $redirect=lang_url('define');
+            $redirect=lang_url('plist');
         }
         return Redirect::to($redirect)->with($notification);
     }

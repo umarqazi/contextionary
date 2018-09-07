@@ -45,17 +45,30 @@ Class VoteService{
         return true;
     }
     /**
-     * get meanings for vote
+     * get meanings for allVotes
      */
-    public function getVoteMeaning(){
-        $records='';
-        $contextPhrase=$getLatestVote=$this->voteExpiry->getLatest('meaning');
+    public function getVoteList(){
+        $records=[];
+        $contextPhrase=$getLatestVote=$this->voteExpiry->getAllVotes('meaning');
         if($contextPhrase):
-            $records=$this->contextPhrase->getContext($contextPhrase->context_id, $contextPhrase->phrase_id);
-            $records['allMeaning']=$this->defineMeaning->getAllVoteMeaning($contextPhrase->context_id, $contextPhrase->phrase_id);
-            return $records;
+            foreach($contextPhrase as $key=>$context):
+                $contextPhrase[$key]['context_info']=$this->contextPhrase->getContext($context->context_id, $context->phrase_id);
+            endforeach;
+            return $contextPhrase;
         endif;
         return $records;
+    }
+    /**
+     * get meanings for vote
+     */
+    public function getVoteMeaning($data){
+        $checkVote=$this->voteMeaning->checkUserVote($data);
+        if(empty($checkVote)):
+            $records=$this->contextPhrase->getContext($data['context_id'], $data['phrase_id']);
+            $records['allMeaning']=$this->defineMeaning->getAllVoteMeaning($data['context_id'], $data['phrase_id']);
+            return $records;
+        endif;
+        return false;
     }
     /**
      * add vote
