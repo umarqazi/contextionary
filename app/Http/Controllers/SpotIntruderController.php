@@ -41,7 +41,7 @@ class SpotIntruderController extends Controller
      */
     public function index()
     {
-        return View::make('spot_intruder_index');
+        return View::make('user.user_plan.games.spot_intruder_index');
     }
 
     /**
@@ -56,19 +56,19 @@ class SpotIntruderController extends Controller
             $game = $this->spot_the_intruder_game_service->create($user_id);
             $this->spot_the_intruder_game_service->addQuestion($game->id, $question->id);
             $game = $this->spot_the_intruder_game_service->get($game->id);
-            return View::make('spot_intruder')->with('question', $question)->with('game',$game);
+            return View::make('user.user_plan.games.spot_intruder')->with('question', $question)->with('game',$game);
         }else{
             if($game->question_count < 20) {
                 $question = $this->spot_the_intruder_service->getRandom(explode(',', $game->questions));
                 $game = $this->spot_the_intruder_game_service->addQuestionCount($game->id);
                 $game = $this->spot_the_intruder_game_service->addQuestion($game->id, $question->id);
                 $game = $this->spot_the_intruder_game_service->get($game->id);
-                return View::make('spot_intruder')->with('question', $question)->with('game',$game);
+                return View::make('user.user_plan.games.spot_intruder')->with('question', $question)->with('game',$game);
             }else{
                 $game = $this->spot_the_intruder_game_service->complete($game->id);
                 $game = $this->spot_the_intruder_game_service->get($game->id);
                 $high_score = $this->spot_the_intruder_game_service->getHighScore($user_id);
-                return View::make('spot_intruder_result')->with('game', $game)->with('high_score', $high_score);
+                return View::make('user.user_plan.games.spot_intruder_result')->with('game', $game)->with('high_score', $high_score);
             }
         }
     }
@@ -103,6 +103,6 @@ class SpotIntruderController extends Controller
     public function reset(){
         $game = $this->spot_the_intruder_game_service->incompleteUserGame(Auth::user()->id);
         $this->spot_the_intruder_game_service->complete($game->id);
-        return View::make('pictionary_index');
+        return View::make('user.user_plan.games.spot_intruder_index');
     }
 }
