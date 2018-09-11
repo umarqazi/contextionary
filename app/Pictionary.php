@@ -14,6 +14,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pictionary extends Model
 {
+    /**
+     * @var array
+     */
     protected $fillable = ['pic1', 'pic2', 'pic3', 'pic4', 'option1', 'option2', 'option3', 'option4', 'question','answer'];
 
+    /**
+     * @return mixed
+     */
+    public function getRandom($exclude){
+        return self::inRandomOrder()->whereNotIn('id', $exclude)->get()->first();
+    }
 }
