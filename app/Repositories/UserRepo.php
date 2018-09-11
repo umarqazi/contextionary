@@ -14,8 +14,9 @@ class UserRepo {
      */
     private $user;
 
-    public function __construct(User $user)
+    public function __construct()
     {
+        $user= new User();
         $this->user = $user;
     }
 
@@ -57,6 +58,15 @@ class UserRepo {
     }
     public function makeActive($id){
         return $this->user->where('id', $id)->update(['status'=>'1']);
+    }
+    /**
+     * update coins
+     */
+    public function updateCoins($coins, $user_id){
+        $user=$this->findById($user_id);
+        $sumCoins=['coins'=>$coins+$user->coins];
+        return $this->update($user_id, $sumCoins);
+
     }
 }
 ?>

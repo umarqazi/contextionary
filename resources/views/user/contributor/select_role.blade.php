@@ -45,18 +45,22 @@
                     </div>
                     <div class="col-md-12 form-container select-fimiliar">
                         <div class="planBlock ">
-                            <h3 class="BlueBackground">Select Familiar contexts</h3>
+                            <h3 class="BlueBackground">{!! t('Select Familiar contexts') !!}</h3>
                             <div class="row">
-                                @foreach($contextList as $key=>$context)
-                                    <div class="col-md-4">
-                                        <div class="md-form ml-4 mt-0">
-                                            <div class="custom-control custom-checkbox">
-                                                {!! Form::checkbox('context[]',$context['context_id'],null,['class'=>'custom-control-input', 'id'=>'checkBox'.$key]) !!}
-                                                <label class="custom-control-label" for="checkBox{!! $key !!}">{!! t($context['context_name']) !!}</label>
+                                @if($contextList)
+                                    @foreach($contextList as $key=>$context)
+                                        @if($context['context_id'] >= 4)
+                                            <div class="col-md-4">
+                                                <div class="md-form ml-4 mt-0">
+                                                    <div class="custom-control custom-checkbox">
+                                                        {!! Form::checkbox('context[]',$context['context_id'],null,['class'=>'custom-control-input', 'id'=>'checkBox'.$key]) !!}
+                                                        <label class="custom-control-label" for="checkBox{!! $key !!}">{!! t($context['context_name']) !!}</label>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                @endforeach
+                                        @endif
+                                    @endforeach
+                                @endif
                             </div>
                             <a href="#" class="orangeBtn mt-4 waves-light back-to">{!! t('Back') !!}</a>
                             <a href="#" class="orangeBtn mt-4 waves-light goto-lang">{!! t('Continue') !!}</a>

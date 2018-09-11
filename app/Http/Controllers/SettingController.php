@@ -15,7 +15,7 @@ class SettingController extends Controller
      * @var ContactUsService
      */
     protected $contactUs;
-
+    protected $pageMenu;
     /**
      * SettingController constructor.
      * @param ContactUsService $contactUs
@@ -31,7 +31,8 @@ class SettingController extends Controller
      */
     public function contactUs(){
         $settings = Setting::all();
-        return view::make('contact_us')->with('settings', $settings);
+        $this->pageMenu=$this->gMenu();
+        return view::make('contact_us')->with(['pageMenu'=>$this->pageMenu, 'settings'=> $settings]);
     }
 
     /**
@@ -46,5 +47,11 @@ class SettingController extends Controller
             'alert_type' => 'success'
         );
         return Redirect::back()->with($notification);
+    }
+    /**
+     * fun facts menus
+     */
+    public function gMenu(){
+        return ['funFacts'=>'Fun Facts', 'Illustrator'=>'Learning Center', 'contactUs'=>'Contact Us'];
     }
 }

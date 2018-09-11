@@ -46,6 +46,11 @@ MultiLang::routeGroup(function($router) {
             Route::get('spot-the-intruder',  'SpotIntruderController@getQuestion')->name('spot-the-intruder');
             Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
             Route::get('tutorials',  'TutorialsController@index');
+            Route::get('voteMeaning',  'VoteController@voteMeaning')->name('voteMeaning');
+            Route::post('vote',  'VoteController@vote')->name('vote');
+            Route::group(array('prefix' => 'cron'), function(){
+                Route::get('meaning',  'CronController@meaningToVote')->name('meaning');
+            });
         });
         Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');
         Route::get('fun-facts/{id}',  'FunFactsController@get');

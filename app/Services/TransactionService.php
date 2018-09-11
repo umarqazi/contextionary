@@ -29,7 +29,11 @@ class TransactionService
     protected $transactionRepo;
     protected $contService;
 
-    public function __construct(RoleService $roles,TransactionRepo $transaction_repo, UserService $services, ContributorService $contributorService){
+    public function __construct(){
+        $roles= new RoleService();
+        $transaction_repo= new TransactionRepo();
+        $services= new UserService();
+        $contributorService= new ContributorService();
         $this->userServices= $services;
         $this->transactionRepo= $transaction_repo;
         $this->role=$roles;
@@ -37,7 +41,7 @@ class TransactionService
     }
     public function paymentProcess($request){
         $input = array_except($request,array('_token'));
-        $stripe = Stripe::make('sk_test_v1HvFX0FFpIikIB48jsUwETa');
+        $stripe = Stripe::make(env('STRIPE_SECRET'));
         try {
             $cardInfo=[
                 'number' => $request['card_no'],

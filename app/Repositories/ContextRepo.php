@@ -13,8 +13,9 @@ use App\Context;
 class ContextRepo
 {
     protected $context;
-    public function __construct(Context $context)
+    public function __construct()
     {
+        $context= new Context();
         $this->context=$context;
     }
     public function list(){
@@ -29,7 +30,7 @@ class ContextRepo
         return $this->context;
     }
     public function getLimitedRecords(){
-        return $this->list()->take(25);
+        return $this->list()->take(10);
     }
     public function getPaginatedRecord(){
         return $this->getRecords()->paginate(9);

@@ -25,9 +25,12 @@ class ContributorController
     protected $contributor;
     protected $authService;
     protected $user;
+    protected $pageMenu;
 
-    public function __construct(AuthService $authService, ContributorService $contributor)
+    public function __construct()
     {
+        $authService=new AuthService();
+        $contributor= new ContributorService();
         $this->authService = $authService;
         $this->contributor = $contributor;
     }
@@ -67,13 +70,15 @@ class ContributorController
      * Get context from postgres for definition
      */
     public function define(){
+        $this->pageMenu=$this->defineMenus();
         $bucketURL = Storage::disk('local')->url(Config::get('constant.ContextImages'));
         $contextList=$this->contributor->getAllContextPhrase();
-        return view::make('user.contributor.define')->with(['contextList'=>$contextList, 'bucketUrl'=>$bucketURL]);
+        return view::make('user.contributor.define')->with(['contextList'=>$contextList, 'bucketUrl'=>$bucketURL, 'pageMenu'=>$this->pageMenu]);
     }
     public function purchaseCoins(){
+        $this->pageMenu=$this->coinsMenu();
         $getCoinsList=Coin::all();
-        return view::make('user.contributor.purchase_coins')->with('coins', $getCoinsList);
+        return view::make('user.contributor.purchase_coins')->with(['coins'=> $getCoinsList, 'pageMenu'=>$this->pageMenu]);
     }
     public function addCoins(Request $request){
         $coin=$request->coins;
@@ -84,15 +89,16 @@ class ContributorController
      * define Meaning view
      */
     public function defineMeaning($context_id, $phrase_id){
+        $this->pageMenu=$this->defineMenus();
         $contextList=$this->contributor->getContextPhrase($context_id, $phrase_id);
-        return view::make('user.contributor.add_meaning')->with('data', $contextList);
+        return view::make('user.contributor.add_meaning')->with(['data'=>$contextList, 'pageMenu'=>$this->pageMenu]);
     }
     /*
      * add context meaning in database
      */
     public function postContextMeaning(AddContextMeaning $addContextMeaning){
         $addContextMeaning->validate();
-        $meaningData=['meaning'=>$addContextMeaning['meaning'], 'context_id'=>$addContextMeaning['context_id'], 'phrase_id'=>$addContextMeaning['phrase_id'],'phrase_type'=>$addContextMeaning['phrase_type'], 'user_id'=>$addContextMeaning['user_id']];
+        $meaningData=['status'=>'0','meaning'=>$addContextMeaning['meaning'], 'context_id'=>$addContextMeaning['context_id'], 'phrase_id'=>$addContextMeaning['phrase_id'],'phrase_type'=>$addContextMeaning['phrase_type'], 'user_id'=>$addContextMeaning['user_id']];
         $saveRecord=$this->contributor->saveContextMeaning($meaningData);
         $notification = array(
             'message' => 'Your Meaning has been added against phrase. You can bid now',
@@ -105,13 +111,39 @@ class ContributorController
      * place bid against their meaning
      */
     public function applyBidding(Request $request){
-        $data=['bid'=>$request->bid];
+        $data=['coins'=>$request->bid];
         $updateRecord=$this->contributor->bidding($data, $request->meaning_id);
-        $notification = array(
-            'message' => 'Bidding has been added Successfully',
-            'alert_type' => 'success',
-        );
+        if($updateRecord==false):
+            $notification = array(
+                'message' => 'Purchase coins for bidding on your meaning',
+                'alert_type' => 'danger',
+            );
+            return Redirect::back()->with($notification);
+        else:
+            $notification = array(
+                'message' => 'Bidding has been added Successfully',
+                'alert_type' => 'success',
+            );
+        endif;
         $route=lang_route('define');
         return Redirect::to($route)->with($notification);
+    }
+    /**
+     * contributors define menus
+     */
+    public function defineMenus(){
+        return ['define'=>'Define', 'define'=>'Illustrator', 'define'=>'Translator'];
+    }
+    /**
+     * contributor vote Menus
+     */
+    public function voteMenus(){
+        return ['voteMeaning'=>'Vote Meaning'];
+    }
+    /**
+     * contributor coins menus
+     */
+    public function coinsMenu(){
+        return ['purchaseCoins'=>'Purchase Coins', 'Illustrator'=>'Redeem Points', 'Translator'=>'Summary'];
     }
 }

@@ -22,7 +22,7 @@
     {!! t('Earn Bonus Coins') !!}
   </div>
   <ul class="menuListing">
-    <li><a href="#" class="menu4"><span>{!! t('Vote Meanings') !!}</span></a></li>
+    <li><a href="{!! t('voteMeaning') !!}" class="menu4"><span>{!! t('Vote Meanings') !!}</span></a></li>
     <li><a href="#" class="menu4"><span>{!! t('Vote Illustration') !!}</span></a></li>
     <li><a href="#" class="menu4"><span>{!! t('Vote Translations')!!}</span></a></li>
   </ul>
