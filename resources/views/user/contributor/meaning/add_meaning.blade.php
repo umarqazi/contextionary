@@ -74,6 +74,7 @@
                         @endif
                     </div>
                     <button type="submit" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Bid') !!}</button>
+                    <a href="{!! lang_route('editMeaning', ['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'id'=>$data['id']]) !!}" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</a>
                 </div>
             </div>
             {!! Form::close() !!}

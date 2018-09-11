@@ -31,8 +31,7 @@ class SettingController extends Controller
      */
     public function contactUs(){
         $settings = Setting::all();
-        $this->pageMenu=$this->gMenu();
-        return view::make('contact_us')->with(['pageMenu'=>$this->pageMenu, 'settings'=> $settings]);
+        return view::make('guest_pages.contact_us')->with(['settings'=> $settings]);
     }
 
     /**
@@ -47,11 +46,5 @@ class SettingController extends Controller
             'alert_type' => 'success'
         );
         return Redirect::back()->with($notification);
-    }
-    /**
-     * fun facts menus
-     */
-    public function gMenu(){
-        return ['funFacts'=>'Fun Facts', 'Illustrator'=>'Learning Center', 'contactUs'=>'Contact Us'];
     }
 }

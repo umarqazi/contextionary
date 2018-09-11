@@ -30,13 +30,18 @@ MultiLang::routeGroup(function($router) {
             Route::post('update-profile', 'UsersController@profileUpdate')->name('update-profile');
             Route::get('contributorPlan',  'ContributorController@contributorPlan')->name('contributorPlan');
             Route::post('saveContributor', 'ContributorController@saveContributor')->name('saveContributor');
-            Route::get('define',  'ContributorController@define')->name('define');
-            Route::get('defineMeaning/{context_id}/{phrase_id}',  'ContributorController@defineMeaning')->name('defineMeaning');
+            Route::group(array('prefix' => 'define'), function(){
+                Route::get('/',  'ContributorController@define')->name('define');
+                Route::get('define-meaning/{context_id}/{phrase_id}',  'ContributorController@defineMeaning')->name('defineMeaning');
+                Route::get('define-meaning/{context_id}/{phrase_id}/{id}',  'ContributorController@defineMeaning')->name('editMeaning');
+            });
             Route::post('postContextMeaning',  'ContributorController@postContextMeaning')->name('postContextMeaning');
-            Route::get('purchaseCoins',  'ContributorController@purchaseCoins')->name('coins');
-            Route::post('addCoins',  'ContributorController@addCoins')->name('addCoins');
-            Route::get('addCoins',  'ContributorController@addCoins')->name('addCoins');
-            Route::post('applyBidding',  'ContributorController@applyBidding')->name('applyBidding');          
+            Route::group(array('prefix' => 'coins-list'), function(){
+                Route::get('/',  'ContributorController@purchaseCoins')->name('coins');
+                Route::post('add-coins',  'ContributorController@addCoins')->name('addCoins');
+                Route::get('add-coins',  'ContributorController@addCoins')->name('addCoins');
+            });
+            Route::post('applyBidding',  'ContributorController@applyBidding')->name('applyBidding');
             Route::get('start-pictionary',  'PictionaryController@index')->name('start-pictionary');
             Route::get('reset-pictionary',  'PictionaryController@reset')->name('reset-pictionary');
             Route::get('pictionary',  'PictionaryController@getQuestion')->name('pictionary');
@@ -46,19 +51,23 @@ MultiLang::routeGroup(function($router) {
             Route::get('spot-the-intruder',  'SpotIntruderController@getQuestion')->name('spot-the-intruder');
             Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
             Route::get('tutorials',  'TutorialsController@index');
-            Route::get('plist',  'VoteController@phraseList')->name('plist');
-            Route::get('voteMeaning/{context_id}/{phrase_id}',  'VoteController@voteMeaning')->name('voteMeaning');
-            Route::get('voteMeaning',  'VoteController@voteMeaning')->name('voteMeaning');
-          
-            Route::post('vote',  'VoteController@vote')->name('vote');
-            Route::group(array('prefix' => 'cron'), function(){
-                Route::get('meaning',  'CronController@meaningToVote')->name('meaning');
+
+            Route::group(array('prefix' => 'phrase-list'), function(){
+                Route::get('/',  'VoteController@phraseList')->name('plist');
+                Route::get('vote-meaning/{context_id}/{phrase_id}',  'VoteController@voteMeaning')->name('voteMeaning');
+                Route::get('poor-quality/{context_id}/{phrase_id}',  'VoteController@poorQuality')->name('poor-quality');
             });
+
+            Route::post('vote',  'VoteController@vote')->name('vote');
         });
         Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');
         Route::get('fun-facts/{id}',  'FunFactsController@get');
         Route::get('contactUs',  'SettingController@contactUs')->name('contactUs');
         Route::post('contactUs',  'SettingController@sendMessage')->name('contactUs');
+    });
+    Route::group(array('prefix' => 'cron'), function(){
+        Route::get('meaning',  'CronController@meaningToVote')->name('meaning');
+        Route::get('meaning-vote',  'CronController@checkExpiredVotes')->name('votes');
     });
     Route::get('locale/{locale}',  'LocaleController@locale')->name('locale');
     Route::get('switchLanguage/{locale}',  'LocaleController@switchLanguage')->name('switchLanguage');

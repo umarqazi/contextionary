@@ -16,13 +16,16 @@ class ContextPhraseRepo
 {
     protected $contextPhrase;
     protected $defineMeaningRepo;
+    protected $voteExpiryRepo;
 
     public function __construct()
     {
         $contextPhrase= new ContextPhrase();
         $defineMeaningRepo=new DefineMeaningRepo();
+        $voteExpiryRepo=new VoteExpiryRepo();
         $this->contextPhrase=$contextPhrase;
         $this->defineMeaningRepo=$defineMeaningRepo;
+        $this->voteExpiryRepo=$voteExpiryRepo;
     }
 
     /*
@@ -41,9 +44,11 @@ class ContextPhraseRepo
         $contributedMeaning=$this->defineMeaningRepo->getAllContributedMeaning();
         foreach($contextPhrases as $key=>$record):
             $contextPhrases[$key]['status']='';
+            $contextPhrases[$key]['phrase_status']='Open';
             foreach ($contributedMeaning as $meaning):
                 if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
                     $contextPhrases[$key]['status']='disabled';
+                    $contextPhrases[$key]['phrase_status']='In-Progress';
                 endif;
             endforeach;
         endforeach;
