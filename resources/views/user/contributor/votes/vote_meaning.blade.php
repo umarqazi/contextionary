@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Define a Meaning') !!}
+    {!! t('Vote Meaning') !!}
 @stop
 @section('content')
     <div class="container-fluid contributorMain voteMeaningBg">
@@ -51,7 +51,7 @@
                     <div class="text-center">
                         <a href="#" class="orangeBtn waves-light mb-3 mr-3">{!! t('Return') !!}</a>
                         <button type="submit" class="orangeBtn waves-light mb-3 mr-3">{!! t('Submit') !!}</button>
-                        <a href="#" class="orangeBtn waves-light mb-3">{!! t('Pool Quality') !!}</a>
+                        <a href="{!! lang_route('poor-quality', ['context_id'=>$phraseMeaning['context_id'],'phrase_id'=>$phraseMeaning['phrase_id'],]) !!}" class="orangeBtn waves-light mb-3">{!! t('Poor Quality') !!}</a>
                     </div>
                 </div>
 

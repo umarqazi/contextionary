@@ -12,6 +12,6 @@ class VoteMeaning extends Model
     public $timestamps = false;
 
     public function meaning(){
-        return $this->belongsto('App\DefineMeaning');
+        return $this->belongsto('App\DefineMeaning', 'define_meaning_id');
     }
 }

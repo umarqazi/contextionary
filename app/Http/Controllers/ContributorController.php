@@ -25,7 +25,6 @@ class ContributorController
     protected $contributor;
     protected $authService;
     protected $user;
-    protected $pageMenu;
 
     public function __construct()
     {
@@ -70,42 +69,49 @@ class ContributorController
      * Get context from postgres for definition
      */
     public function define(){
-        $this->pageMenu=$this->defineMenus();
         $bucketURL = Storage::disk('local')->url(Config::get('constant.ContextImages'));
         $contextList=$this->contributor->getAllContextPhrase();
-        return view::make('user.contributor.define')->with(['contextList'=>$contextList, 'bucketUrl'=>$bucketURL, 'pageMenu'=>$this->pageMenu]);
+        return view::make('user.contributor.meaning.define')->with(['contextList'=>$contextList, 'bucketUrl'=>$bucketURL]);
     }
     public function purchaseCoins(){
-        $this->pageMenu=$this->coinsMenu();
         $getCoinsList=Coin::all();
-        return view::make('user.contributor.purchase_coins')->with(['coins'=> $getCoinsList, 'pageMenu'=>$this->pageMenu]);
+        return view::make('user.contributor.transactions.purchase_coins')->with(['coins'=> $getCoinsList]);
     }
     public function addCoins(Request $request){
         $coin=$request->coins;
         $getCoinInfo=Coin::find($coin);
-        return view::make('user.contributor.pay_with_stripe')->with(['id'=>Auth::user()->id, 'coin'=>$getCoinInfo]);
+        return view::make('user.contributor.transactions.pay_with_stripe')->with(['id'=>Auth::user()->id, 'coin'=>$getCoinInfo]);
     }
     /*
      * define Meaning view
      */
-    public function defineMeaning($context_id, $phrase_id){
-        $this->pageMenu=$this->defineMenus();
+    public function defineMeaning($context_id, $phrase_id, $id=NULL){
         $contextList=$this->contributor->getContextPhrase($context_id, $phrase_id);
-        return view::make('user.contributor.add_meaning')->with(['data'=>$contextList, 'pageMenu'=>$this->pageMenu]);
+        if($id!=NULL):
+            $view='user.contributor.meaning.edit_meaning';
+        else:
+            $view='user.contributor.meaning.add_meaning';
+        endif;
+        return view::make($view)->with(['data'=>$contextList]);
     }
     /*
      * add context meaning in database
      */
     public function postContextMeaning(AddContextMeaning $addContextMeaning){
         $addContextMeaning->validate();
-        $meaningData=['status'=>'0','meaning'=>$addContextMeaning['meaning'], 'context_id'=>$addContextMeaning['context_id'], 'phrase_id'=>$addContextMeaning['phrase_id'],'phrase_type'=>$addContextMeaning['phrase_type'], 'user_id'=>$addContextMeaning['user_id']];
+        $id='';
+        if($addContextMeaning['id']){
+            $id=$addContextMeaning['id'];
+        }
+        $meaningData=['id'=>$id,'status'=>'0','meaning'=>$addContextMeaning['meaning'], 'context_id'=>$addContextMeaning['context_id'], 'phrase_id'=>$addContextMeaning['phrase_id'],'phrase_type'=>$addContextMeaning['phrase_type'], 'user_id'=>$addContextMeaning['user_id']];
         $saveRecord=$this->contributor->saveContextMeaning($meaningData);
         $notification = array(
             'message' => 'Your Meaning has been added against phrase. You can bid now',
             'alert_type' => 'success',
             'data'=>$saveRecord
         );
-        return Redirect::back()->with($notification);
+        $url=lang_url('define/define-meaning').'/'.$addContextMeaning['context_id'].'/'.$addContextMeaning['phrase_id'];
+        return Redirect::to($url)->with($notification);
     }
     /*
      * place bid against their meaning
@@ -127,23 +133,5 @@ class ContributorController
         endif;
         $route=lang_route('define');
         return Redirect::to($route)->with($notification);
-    }
-    /**
-     * contributors define menus
-     */
-    public function defineMenus(){
-        return ['define'=>'Define', 'define'=>'Illustrator', 'define'=>'Translator'];
-    }
-    /**
-     * contributor vote Menus
-     */
-    public function voteMenus(){
-        return ['voteMeaning'=>'Vote Meaning'];
-    }
-    /**
-     * contributor coins menus
-     */
-    public function coinsMenu(){
-        return ['purchaseCoins'=>'Purchase Coins', 'Illustrator'=>'Redeem Points', 'Translator'=>'Summary'];
     }
 }

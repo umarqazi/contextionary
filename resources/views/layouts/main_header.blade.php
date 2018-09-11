@@ -17,11 +17,13 @@
               <span class="name">{!! Auth::user()->first_name !!} {!! Auth::user()->last_name !!}</span>
             </div>
             <ul class="userMenu">
-              <li>
-                <a href="#">
-                  <div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> User Plan
-                </a>
-              </li>
+              @if(Auth::user()->hasRole(Config::get('constant.userRole')))
+                <li>
+                  <a href="#">
+                    <div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> User Plan
+                  </a>
+                </li>
+              @endif
               <li>
                 <a href="{!! lang_route('profile') !!}">
                   <div class="img-holder"><img src="{!! asset('assets/images/view-profile-icon.png') !!}"></div> View Profile

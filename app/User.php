@@ -41,4 +41,10 @@ class User extends Authenticatable
     public function userTransaction(){
         return $this->hasOne(Transaction::class);
     }
+    /**
+     * relation with define meaning
+     */
+    public function defineMeaning(){
+        return $this->hasMany('App/DefineMeaning');
+    }
 }

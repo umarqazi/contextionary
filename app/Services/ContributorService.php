@@ -7,6 +7,7 @@
  */
 
 namespace App\Services;
+use App\Repositories\BiddingExpiryRepo;
 use App\Repositories\CoinsRepo;
 use App\Repositories\ContextPhraseRepo;
 use App\Repositories\DefineMeaningRepo;
@@ -31,6 +32,7 @@ class ContributorService implements IService
     protected $contextPhrase;
     protected $defineMeaning;
     protected $voteService;
+    protected $biddingRepo;
 
     public function __construct()
     {
@@ -44,6 +46,7 @@ class ContributorService implements IService
         $context=new ContextRepo();
         $role=new RoleRepo();
         $voteService=new VoteService();
+        $biddingRepo=new BiddingExpiryRepo();
         $this->contextRepo=$context;
         $this->roleRepo=$role;
         $this->familiarContext=$familiarContext;
@@ -54,6 +57,7 @@ class ContributorService implements IService
         $this->contextPhrase=$contextPhrase;
         $this->defineMeaning=$defineMeaningRepo;
         $this->voteService=$voteService;
+        $this->biddingRepo=$biddingRepo;
     }
 
     public function getParentContextList(){
@@ -73,7 +77,7 @@ class ContributorService implements IService
      * get context against specific id
      */
     public function getContextPhrase($context_id, $phrase_id){
-         return $contextPhrase=$this->contextPhrase->getContext($context_id, $phrase_id);
+        return $contextPhrase=$this->contextPhrase->getContext($context_id, $phrase_id);
     }
     /*
      * update contributor records
@@ -106,7 +110,11 @@ class ContributorService implements IService
      * save meaning against context or phrase
      */
     public function saveContextMeaning($data){
-       return $record=$this->defineMeaning->create($data);
+        if($data['id']!=''):
+            return $record=$this->defineMeaning->update($data, $data['id']);
+        else:
+            return $record=$this->defineMeaning->create($data);
+        endif;
     }
     /*
      * bidding on context meaning
@@ -130,14 +138,16 @@ class ContributorService implements IService
         $today=Carbon::today();
         $getAllMeaning=$this->defineMeaning->fetchContextPhraseMeaning();
         foreach($getAllMeaning as $meaning):
-            if($meaning['total'] < 50):
-                if(Carbon::parse($meaning['expiry_date']) < Carbon::parse($today)):
+            if($meaning['context_id']!=NULL && $meaning['phrase_id']!=NULL):
+                if($meaning['total'] < 2):
+                    if(Carbon::parse($meaning['expiry_date']) < Carbon::parse($today)):
+                        $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($meaning['context_id'], $meaning['phrase_id']);
+                        $this->voteService->addPhraseForVote($meaning['context_id'], $meaning['phrase_id'], 'meaning');
+                    endif;
+                else:
                     $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($meaning['context_id'], $meaning['phrase_id']);
                     $this->voteService->addPhraseForVote($meaning['context_id'], $meaning['phrase_id'], 'meaning');
                 endif;
-            else:
-                $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($meaning['context_id'], $meaning['phrase_id']);
-                $this->voteService->addPhraseForVote($meaning['context_id'], $meaning['phrase_id'], 'meaning');
             endif;
         endforeach;
     }

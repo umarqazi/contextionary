@@ -8,7 +8,7 @@
   <div class="blockStyle wow fadeIn" data-wow-delay="0.6s">
     @include('layouts.toaster')
     <h2>{!! t('SIGN UP') !!}</h2>
-    {!! Form::open(['url'=>lang_route("register"),'enctype'=>'multipart/form-data', 'method'=>'post']) !!}
+    {!! Form::open(['url'=>lang_route("register"),'enctype'=>'multipart/form-data', 'method'=>'post', 'id'=>'form-submission']) !!}
     <div class="row">
       <div class="col-md-6">
         <div class="customForm-group">

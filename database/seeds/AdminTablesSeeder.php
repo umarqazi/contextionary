@@ -173,6 +173,66 @@ class AdminTablesSeeder extends Seeder
             'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  19,
+            'parent_id'     =>  8,
+            'order'         =>  18,
+            'title'         =>  'Settings',
+            'icon'          =>  'fa-gear',
+            'uri'           =>  'auth/settings',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  20,
+            'parent_id'     =>  17,
+            'order'         =>  14,
+            'title'         =>  'Pictionary',
+            'icon'          =>  'fa-image',
+            'uri'           =>  'auth/pictionary',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  21,
+            'parent_id'     =>  17,
+            'order'         =>  13,
+            'title'         =>  'Fun Facts',
+            'icon'          =>  'fa-soccer-ball-o',
+            'uri'           =>  'auth/fun-facts',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  22,
+            'parent_id'     =>  17,
+            'order'         =>  0,
+            'title'         =>  'Spot The Intruder',
+            'icon'          =>  'fa-user-secret',
+            'uri'           =>  'auth/spot-the-intruder',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  23,
+            'parent_id'     =>  0,
+            'order'         =>  17,
+            'title'         =>  'Coin Deals',
+            'icon'          =>  'fa-copyright',
+            'uri'           =>  'auth/coins-deals',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  24,
+            'parent_id'     =>  0,
+            'order'         =>  18,
+            'title'         =>  'Messages',
+            'icon'          =>  'fa-comment-o',
+            'uri'           =>  'auth/contact-us-msgs',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
 
         // admin_permissions
         DB::table('admin_permissions')->insert([

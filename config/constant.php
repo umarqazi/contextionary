@@ -4,6 +4,8 @@ return [
         ['1'=>'Basic Plan', '2'=>'Premium Plan', '3'=>'Advance Plan'],
     'contributorRole'=>
         ['definition'=>'definition', 'illustrator'=>'illustrator', 'translator'=>'translator'],
+    'userRole'=>
+        ['basic plan'=>'basic plan', 'premium plan'=>'premium plan', 'advance plan'=>'advance plan'],
     'plan_prices'=>
         ['1'=>'2.99',
             '2'=>'9.99',

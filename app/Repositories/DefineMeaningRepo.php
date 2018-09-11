@@ -85,10 +85,18 @@ class DefineMeaningRepo
             $checkContextPhrase=$this->getRecords($getContextInfo->context_id, $getContextInfo->phrase_id)->first();
             if($checkContextPhrase->id==$meaning_id):
                 $date=Carbon::now()->addMonths(1);
-                DB::table('bidding_expiry')->insert(['context_id'=>$getContextInfo->context_id, 'phrase_id'=>$getContextInfo->phrase_id, 'expiry_date'=>$date]);
+                $expiry=$this->addBidExpiry($getContextInfo->context_id,$getContextInfo->phrase_id, 'meaning', $date);
             endif;
         endif;
         return true;
+    }
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return bool
+     */
+    public function addBidExpiry($context_id, $phrase_id, $type, $date){
+        DB::table('bidding_expiry')->insert(['context_id'=>$context_id, 'phrase_id'=>$phrase_id,'bid_type'=>$type, 'expiry_date'=>$date]);
     }
     /*
      * update status except first 9
@@ -97,7 +105,7 @@ class DefineMeaningRepo
 
         /**update status for vote of first 9 contributor*/
 
-        $records=$this->getRecords($context_id, $phrase_id)->limit(1)->update(['status'=>'1']);
+        $records=$this->getRecords($context_id, $phrase_id)->limit(4)->update(['status'=>'1']);
 
         /** update status for refund of contributor */
 
@@ -116,6 +124,12 @@ class DefineMeaningRepo
      * get Meaning for Vote
      */
     public function getAllVoteMeaning($context_id,  $phrase_id){
-        return $this->getRecords($context_id, $phrase_id)->where('status', '1')->get();
+        return $this->getRecords($context_id, $phrase_id)->where('user_id','!=',Auth::user()->id)->where('status', '1')->get();
+    }
+    /**
+     * update voting status
+     */
+    public function updateVoteStatus($context_id, $phrase_id){
+        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->update(['status'=>3]);
     }
 }
