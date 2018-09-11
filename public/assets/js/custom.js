@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    $(".coins").val(1);
     new WOW().init();
 
     if ($('#datepicker-example-1')[0]) {
@@ -117,15 +117,20 @@ $(document).ready(function () {
 
     //Add minus coins
     $('.add').click(function () {
-        $(".coins").val(+$(this).prev().val() + 1);
+        var coins=$(".coins").val();
+        $(".coins").val(+coins + 1);
     });
 
     $('.sub').click(function () {
-        $(".coins").val(+$(this).next().val() - 1);
+        var coins=$(".coins").val();
+        $(".coins").val(+coins - 1);
     });
 
     $(".enter-phrase").keypress(function () {
         $(".bidBtn").removeClass('disabled');
+    });
+    $('#form-submission').submit(function() {
+        // $('.default-loader').css('display', 'block');
     });
 });
 (function ($) {

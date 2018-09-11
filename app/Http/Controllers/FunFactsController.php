@@ -36,7 +36,7 @@ class FunFactsController extends Controller
      */
     public function index(){
         $fun_facts = $this->fun_facts_service->getListing();
-        return View::make('fun_facts')->with('fun_facts', $fun_facts);
+        return View::make('guest_pages.fun_facts')->with('fun_facts', $fun_facts);
     }
 
     /**
@@ -45,6 +45,6 @@ class FunFactsController extends Controller
      */
     public function get($id){
         $fun_fact = $this->fun_facts_service->get($id);
-        return View::make('detail_fun_facts')->with('fun_fact', $fun_fact);
+        return View::make('guest_pages.detail_fun_facts')->with('fun_fact', $fun_fact);
     }
 }
