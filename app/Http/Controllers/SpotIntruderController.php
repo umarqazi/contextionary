@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\SpotIntruder;
-use App\SpotIntruderGame;
+use App\Services\SpotTheIntruderGameService;
+use App\Services\SpotTheIntruderService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +12,28 @@ use Redirect;
 
 class SpotIntruderController extends Controller
 {
+
+    /**
+     * @var SpotTheIntruderService
+     */
+    private $spot_the_intruder_service;
+
+    /**
+     * @var SpotTheIntruderGameService
+     */
+    private $spot_the_intruder_game_service;
+
+    /**
+     * SpotIntruderController constructor.
+     */
+    public function __construct()
+    {
+        $spot_the_intruder_service = new SpotTheIntruderService();
+        $this->spot_the_intruder_service = $spot_the_intruder_service;
+        $spot_the_intruder_game_service = new SpotTheIntruderGameService();
+        $this->spot_the_intruder_game_service = $spot_the_intruder_game_service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +41,7 @@ class SpotIntruderController extends Controller
      */
     public function index()
     {
-        return View::make('spot_intruder_index');
+        return View::make('user.user_plan.games.spot_intruder_index');
     }
 
     /**
@@ -27,25 +49,26 @@ class SpotIntruderController extends Controller
      */
     public function getQuestion()
     {
-        $game = SpotIntruderGame::where('is_complete', 0)->where('user_id', Auth::user()->id)->first();
-        $question = SpotIntruder::inRandomOrder()->get()->first();
+        $user_id = Auth::user()->id;
+        $game = $this->spot_the_intruder_game_service->incompleteUserGame($user_id);
         if($game == null){
-            $game = new SpotIntruderGame();
-            $game->user_id = Auth::user()->id;
-            $game->question_count = $game->question_count + 1;
-            $game->save();
-            $game = SpotIntruderGame::find($game->id);
-            return View::make('spot_intruder')->with('question', $question)->with('game',$game);
+            $question = $this->spot_the_intruder_service->getRandom([]);
+            $game = $this->spot_the_intruder_game_service->create($user_id);
+            $this->spot_the_intruder_game_service->addQuestion($game->id, $question->id);
+            $game = $this->spot_the_intruder_game_service->get($game->id);
+            return View::make('user.user_plan.games.spot_intruder')->with(['question' => $question, 'game' => $game]);
         }else{
             if($game->question_count < 20) {
-                $game->question_count = $game->question_count + 1;
-                $game->save();
-                return View::make('spot_intruder')->with('question', $question)->with('game',$game);
+                $question = $this->spot_the_intruder_service->getRandom(explode(',', $game->questions));
+                $game = $this->spot_the_intruder_game_service->addQuestionCount($game->id);
+                $game = $this->spot_the_intruder_game_service->addQuestion($game->id, $question->id);
+                $game = $this->spot_the_intruder_game_service->get($game->id);
+                return View::make('user.user_plan.games.spot_intruder')->with(['question' => $question, 'game' => $game]);
             }else{
-                $game->is_complete = 1;
-                $game->save();
-                $high_score = SpotIntruderGame::where('user_id', Auth::user()->id)->max('score');
-                return View::make('spot_intruder_result')->with('game', $game)->with('high_score', $high_score);
+                $game = $this->spot_the_intruder_game_service->complete($game->id);
+                $game = $this->spot_the_intruder_game_service->get($game->id);
+                $high_score = $this->spot_the_intruder_game_service->getHighScore($user_id);
+                return View::make('user.user_plan.games.spot_intruder_result')->with(['game' => $game, 'high_score' => $high_score]);
             }
         }
     }
@@ -55,11 +78,10 @@ class SpotIntruderController extends Controller
      * @return bool
      */
     public function verifyAnswer(Request $request){
-        $question = SpotIntruder::find($request->ques_id);
-        $game = SpotIntruderGame::find($request->game_id);
+        $question = $this->spot_the_intruder_service->find($request->ques_id);
+        $game = $this->spot_the_intruder_game_service->find($request->game_id);
         if($question->answer == $request->option ){
-            $game->score = $game->score + 1;
-            $game->save();
+            $this->spot_the_intruder_game_service->addScoreCount($game->id);
             return response()->json([
                 'http-status' => Response::HTTP_OK,
                 'status' => true,
@@ -79,9 +101,8 @@ class SpotIntruderController extends Controller
      * @return mixed
      */
     public function reset(){
-        $game = SpotIntruderGame::where('is_complete', 0)->where('user_id', Auth::user()->id)->first();
-        $game->is_complete = 1;
-        $game->save();
-        return View::make('spot_intruder_index');
+        $game = $this->spot_the_intruder_game_service->incompleteUserGame(Auth::user()->id);
+        $this->spot_the_intruder_game_service->complete($game->id);
+        return View::make('user.user_plan.games.spot_intruder_index');
     }
 }
