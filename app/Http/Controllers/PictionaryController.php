@@ -56,19 +56,19 @@ class PictionaryController extends Controller
             $game = $this->pictionary_game_service->create($user_id);
             $this->pictionary_game_service->addQuestion($game->id, $pictionary->id);
             $game = $this->pictionary_game_service->get($game->id);
-            return View::make('user.user_plan.games.pictionary')->with('pictionary', $pictionary)->with('game',$game);
+            return View::make('user.user_plan.games.pictionary')>with(['pictionary' => $pictionary, 'game' => $game]);
         }else{
             if($game->question_count < 20) {
                 $pictionary = $this->pictionary_service->getRandom(explode(',', $game->questions));
                 $game = $this->pictionary_game_service->addQuestionCount($game->id);
                 $this->pictionary_game_service->addQuestion($game->id, $pictionary->id);
                 $game = $this->pictionary_game_service->get($game->id);
-                return View::make('user.user_plan.games.pictionary')->with('pictionary', $pictionary)->with('game',$game);
+                return View::make('user.user_plan.games.pictionary')->with(['pictionary' => $pictionary, 'game' => $game]);
             }else{
                 $game = $this->pictionary_game_service->complete($game->id);
                 $game = $this->pictionary_game_service->get($game->id);
                 $high_score = $this->pictionary_game_service->getHighScore($user_id);
-                return View::make('user.user_plan.games.pictionary_result')->with('game', $game)->with('high_score', $high_score);
+                return View::make('user.user_plan.games.pictionary_result')->with(['game' => $game, 'high_score' => $high_score]);
             }
         }
     }
@@ -105,13 +105,4 @@ class PictionaryController extends Controller
         $this->pictionary_game_service->complete($game->id);
         return View::make('user.user_plan.games.pictionary_index');
     }
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function continue(){
-//        $game = $this->pictionary_game_service->incompleteUserGame(Auth::user()->id);
-//        $this->pictionary_game_service->addQuestionCount($game->id);
-//        $this->getQuestion();
-//    }
 }
