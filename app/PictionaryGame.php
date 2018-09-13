@@ -22,7 +22,7 @@ class PictionaryGame extends Model
     /**
      * @var array
      */
-    protected $fillable = ['score', 'question_count', 'questions', 'is_complete'];
+    protected $fillable = ['score', 'question_count', 'questions', 'questions_answered', 'is_complete'];
 
     /**
      * @param $user_id

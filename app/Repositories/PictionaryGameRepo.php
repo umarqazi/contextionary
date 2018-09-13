@@ -94,6 +94,23 @@ class PictionaryGameRepo extends BaseRepo implements IRepo
 
     /**
      * @param $game_id
+     * @param $ques_id
+     * @return mixed
+     */
+    public function addAnsweredQuestion($game_id, $ques_id)
+    {
+        $game = $this->find($game_id);
+        if($game->questions_answered){
+            $game->questions_answered = $game->questions_answered.','.$ques_id;
+        }else{
+            $game->questions_answered = $ques_id;
+        }
+        $game->save();
+        return $game;
+    }
+
+    /**
+     * @param $game_id
      * @return mixed
      */
     public function complete($game_id)

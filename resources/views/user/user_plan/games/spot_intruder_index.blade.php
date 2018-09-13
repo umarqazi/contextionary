@@ -7,7 +7,7 @@
 </div>
 <script>
     setTimeout(function(){
-        window.location.replace("http://localhost:8000/en/spot-the-intruder");
+        window.location.replace("{{lang_route('intruder')}}");
     }, 2000);
 </script>
 @endsection
