@@ -58,10 +58,13 @@ class SpotIntruderController extends Controller
             $game = $this->spot_the_intruder_game_service->get($game->id);
             return View::make('user.user_plan.games.spot_intruder')->with(['question' => $question, 'game' => $game]);
         }else{
-            if($game->question_count < 20) {
-                $question = $this->spot_the_intruder_service->getRandom(explode(',', $game->questions));
-                $game = $this->spot_the_intruder_game_service->addQuestionCount($game->id);
-                $game = $this->spot_the_intruder_game_service->addQuestion($game->id, $question->id);
+            if($game->question_count < 21) {
+                $questioned = explode(',', $game->questions);
+                $answered   = explode(',', $game->questions_answered);
+                $question = $this->spot_the_intruder_service->getQuestion($questioned, $answered);
+                if($questioned == $answered){
+                    $this->spot_the_intruder_game_service->addQuestion($game->id, $question->id);
+                }
                 $game = $this->spot_the_intruder_game_service->get($game->id);
                 return View::make('user.user_plan.games.spot_intruder')->with(['question' => $question, 'game' => $game]);
             }else{
@@ -75,11 +78,12 @@ class SpotIntruderController extends Controller
 
     /**
      * @param Request $request
-     * @return bool
+     * @return \Illuminate\Http\JsonResponse
      */
     public function verifyAnswer(Request $request){
         $question = $this->spot_the_intruder_service->find($request->ques_id);
         $game = $this->spot_the_intruder_game_service->find($request->game_id);
+        $this->spot_the_intruder_game_service->addAnsweredQuestion($game->id, $question->id);
         if($question->answer == $request->option ){
             $this->spot_the_intruder_game_service->addScoreCount($game->id);
             return response()->json([
@@ -95,6 +99,16 @@ class SpotIntruderController extends Controller
                 'body' => $question->{$question->answer},
             ],Response::HTTP_OK);
         }
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function continue(){
+        $game = $this->spot_the_intruder_game_service->incompleteUserGame(Auth::user()->id);
+        $this->spot_the_intruder_game_service->addQuestionCount($game->id);
+        $lang=lang_url('intruder');
+        return redirect()->to($lang);
     }
 
     /**

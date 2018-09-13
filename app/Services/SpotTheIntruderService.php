@@ -34,6 +34,24 @@ class SpotTheIntruderService extends BaseService implements IService
         return $this->spot_the_intruder_repo->getRandom($exclude);
     }
 
+    /**
+     * @param $ques
+     * @param $answered
+     * @return mixed
+     */
+    public function getQuestion($ques,$answered)
+    {
+        if($ques == $answered){
+            return $this->spot_the_intruder_repo->getRandom($ques);
+        }else{
+            return $this->spot_the_intruder_repo->find(end($ques));
+        }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function find($id){
         return $this->spot_the_intruder_repo->find($id);
     }
