@@ -61,6 +61,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'locale' => \App\Http\Middleware\Language::class,
         'define' => \App\Http\Middleware\DefineMeaning::class,
-        'illustrate' => \App\Http\Middleware\Illustrator::class,
+        'illustrator' => \App\Http\Middleware\Illustrator::class,
     ];
 }
