@@ -17,6 +17,7 @@ use App\VoteMeaning;
 use Carbon\Carbon;
 use Auth;
 use Mail;
+use Config;
 
 Class VoteService{
 
