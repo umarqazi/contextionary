@@ -17,9 +17,4 @@
             </div>
         </div>
     </div>
-<script>
-    // setTimeout(function(){
-    //     window.location.replace("http://localhost:8000/en/pictionary");
-    // }, 2000);
-</script>
 @endsection
