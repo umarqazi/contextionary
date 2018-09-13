@@ -20,6 +20,7 @@ class CreatePictionaryGameTable extends Migration
             $table->integer('score')->default(0);
             $table->integer('question_count')->default(0);
             $table->string('questions')->nullable();
+            $table->string('questions_answered')->nullable();
             $table->boolean('is_complete')->default(0);
             $table->timestamps();
         });

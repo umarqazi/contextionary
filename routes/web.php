@@ -38,12 +38,14 @@ MultiLang::routeGroup(function($router) {
             Route::get('addCoins',  'ContributorController@addCoins')->name('addCoins');
             Route::post('applyBidding',  'ContributorController@applyBidding')->name('applyBidding');
             Route::get('start-pictionary',  'PictionaryController@index')->name('start-pictionary');
+            Route::get('continue-pictionary',  'PictionaryController@continue')->name('continue-pictionary');
             Route::get('reset-pictionary',  'PictionaryController@reset')->name('reset-pictionary');
             Route::get('pictionary',  'PictionaryController@getQuestion')->name('pictionary');
             Route::post('verify-pictionary',  'PictionaryController@verifyAnswer');
             Route::get('start-spot-the-intruder',  'SpotIntruderController@index')->name('start-spot-the-intruder');
+            Route::get('continue-spot-the-intruder',  'SpotIntruderController@continue')->name('continue-spot-the-intruder');
             Route::get('reset-spot-the-intruder',  'SpotIntruderController@reset')->name('reset-spot-the-intruder');
-            Route::get('spot-the-intruder',  'SpotIntruderController@getQuestion')->name('spot-the-intruder');
+            Route::get('intruder',  'SpotIntruderController@getQuestion')->name('intruder');
             Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
             Route::get('tutorials',  'TutorialsController@index');
             Route::get('voteMeaning',  'VoteController@voteMeaning')->name('voteMeaning');

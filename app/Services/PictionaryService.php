@@ -27,11 +27,26 @@ class PictionaryService extends BaseService implements IService
     }
 
     /**
+     * @param $exclude
      * @return mixed
      */
     public function getRandom($exclude)
     {
         return $this->pictionary_repo->getRandom($exclude);
+    }
+
+    /**
+     * @param $ques
+     * @param $answered
+     * @return mixed
+     */
+    public function getQuestion($ques,$answered)
+    {
+        if($ques == $answered){
+            return $this->pictionary_repo->getRandom($ques);
+        }else{
+            return $this->pictionary_repo->find(end($ques));
+        }
     }
 
     public function find($id){

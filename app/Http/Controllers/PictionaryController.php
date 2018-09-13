@@ -56,12 +56,15 @@ class PictionaryController extends Controller
             $game = $this->pictionary_game_service->create($user_id);
             $this->pictionary_game_service->addQuestion($game->id, $pictionary->id);
             $game = $this->pictionary_game_service->get($game->id);
-            return View::make('user.user_plan.games.pictionary')>with(['pictionary' => $pictionary, 'game' => $game]);
+            return View::make('user.user_plan.games.pictionary')->with(['pictionary' => $pictionary, 'game' => $game]);
         }else{
-            if($game->question_count < 20) {
-                $pictionary = $this->pictionary_service->getRandom(explode(',', $game->questions));
-                $game = $this->pictionary_game_service->addQuestionCount($game->id);
-                $this->pictionary_game_service->addQuestion($game->id, $pictionary->id);
+            if($game->question_count < 21) {
+                $questioned = explode(',', $game->questions);
+                $answered   = explode(',', $game->questions_answered);
+                $pictionary = $this->pictionary_service->getQuestion($questioned, $answered);
+                if($questioned == $answered){
+                    $this->pictionary_game_service->addQuestion($game->id, $pictionary->id);
+                }
                 $game = $this->pictionary_game_service->get($game->id);
                 return View::make('user.user_plan.games.pictionary')->with(['pictionary' => $pictionary, 'game' => $game]);
             }else{
@@ -80,6 +83,7 @@ class PictionaryController extends Controller
     public function verifyAnswer(Request $request){
         $pictionary = $this->pictionary_service->find($request->ques_id);
         $game = $this->pictionary_game_service->find($request->game_id);
+        $this->pictionary_game_service->addAnsweredQuestion($game->id, $pictionary->id);
         if($pictionary->answer == $request->option ){
             $this->pictionary_game_service->addScoreCount($game->id);
             return response()->json([
@@ -95,6 +99,16 @@ class PictionaryController extends Controller
                 'body' => $pictionary->{$pictionary->answer},
             ],Response::HTTP_OK);
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function continue(){
+        $game = $this->pictionary_game_service->incompleteUserGame(Auth::user()->id);
+        $this->pictionary_game_service->addQuestionCount($game->id);
+        $lang=lang_url('pictionary');
+        return redirect()->to($lang);
     }
 
     /**
