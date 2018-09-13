@@ -39,12 +39,7 @@ class VoteExpiryRepo
         return $this->voteExpiry->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->first();
     }
     public function votes($type){
-        return $this->voteExpiry->where('vote_type', $type)->whereDate('expiry_date', '>=', Carbon::today())
-            ->leftJoin('vote_meanings', function ($query){
-                $query->on('vote_expiries.context_id', '=', 'vote_meanings.context_id');
-                $query->on('vote_expiries.phrase_id', '=', 'vote_meanings.phrase_id')->where('vote_meanings.user_id', Auth::user()->id);
-
-            })->where('vote_meanings.user_id', '=', NULL)->select('vote_expiries.*');
+        return $this->voteExpiry->where(['vote_type'=>$type, 'status'=>'0'])->select('vote_expiries.*');
     }
     /**
      * get latest pharse for vote
@@ -81,6 +76,12 @@ class VoteExpiryRepo
      */
     public function updateStatus($id){
         return $this->voteExpiry->where('id', $id)->update(['status'=>'1']);
+    }
+    /**
+     * check record against type
+     */
+    public function checkRecordType($context_id, $phrase_id, $type){
+        return $this->voteExpiry->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'vote_type'=>$type])->first();
     }
 
 }

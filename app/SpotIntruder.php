@@ -24,4 +24,10 @@ class SpotIntruder extends Model
      */
     protected $fillable = ['option1', 'option2', 'option3', 'option4', 'question','answer'];
 
+    /**
+     * @return mixed
+     */
+    public function getRandom($exclude){
+        return self::inRandomOrder()->whereNotIn('id', $exclude)->get()->first();
+    }
 }

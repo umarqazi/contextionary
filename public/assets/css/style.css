@@ -157,7 +157,7 @@ color: #f7953a;
   position: fixed;
   height:100%;
   width: 100%;
-  background: rgba(255,255,255,.8);
+  background: rgba(0,0,0,.3);
   z-index: 100;
   display: none;
 }
@@ -167,6 +167,7 @@ color: #f7953a;
 .default-loader .loader-container img{
   display: block;
   margin:0px auto;
+  width:20%;
   top:50%;
   transform: translateY(-50%);
   position: relative;
@@ -176,4 +177,26 @@ color: #f7953a;
 }
 .show-div{
   display: none;
+}
+
+.uploadImgHolder{
+  width: 150px;
+  height:150px;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.uploadImgHolder img{
+  position: absolute;
+  left:50%;
+  top:50%;
+  right: 0;
+  max-height: 170px;
+  transform: translate(-50%, -50%);
+}
+.illustrator-form{
+  display: inline-block;
+  vertical-align: top;
 }
