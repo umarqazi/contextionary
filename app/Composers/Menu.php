@@ -1,8 +1,12 @@
 <?php
 
-View::composer('user.contributor.meaning.*', function($view)
+View::composer(['user.contributor.meaning.*', 'user.contributor.illustrator.*'], function($view)
 {
-    $page=['define'=>'Define', 'illustrator'=>'Illustrator', 'translator'=>'Translator'];
+    $roles = Auth::user()->roles->pluck('name');
+    foreach($roles as $role):
+        $page[$role]=$role;
+    endforeach;
+
     $view->with(['pageMenu'=>$page]);
 });
 

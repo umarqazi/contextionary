@@ -19,6 +19,8 @@ use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use Illuminate\Support\Facades\Storage;
 use Config;
 use App\Coin;
+use Input;
+use Image;
 
 class ContributorController
 {
@@ -117,7 +119,7 @@ class ContributorController
      * place bid against their meaning
      */
     public function applyBidding(Request $request){
-        $data=['coins'=>$request->bid];
+        $data=['coins'=>$request->bid,'context_id'=>$request->context_id,'phrase_id'=>$request->phrase_id, 'model'=>$request->model, 'type'=>$request->type];
         $updateRecord=$this->contributor->bidding($data, $request->meaning_id);
         if($updateRecord==false):
             $notification = array(
@@ -131,7 +133,53 @@ class ContributorController
                 'alert_type' => 'success',
             );
         endif;
-        $route=lang_route('define');
+        $route=lang_route($request->route);
         return Redirect::to($route)->with($notification);
+    }
+
+    /**
+     * get phrase for illustrator
+     */
+    public function illustrate(){
+        $contextList=$this->contributor->getIllustratePhrase();
+        return view::make('user.contributor.illustrator.illustrate_list')->with('contextList',$contextList);
+    }
+    /** get meaning for illustrator */
+    public function addIllustrate($context_id, $phrase_id){
+        $contextList=$this->contributor->getContextPhrase($context_id, $phrase_id);
+        $contextList['illustrator']=$this->contributor->getIllustrator($context_id, $phrase_id);
+        return view::make('user.contributor.illustrator.add_illustrator')->with(['data'=>$contextList, 'illustrate'=>'1']);
+    }
+    /**
+     * add image against meaning
+     */
+    public function pAddIllustrate(Request $request){
+        $validators = $request->validate([
+            'illustrate' => 'required|mimes:jpg,png,jpeg',
+        ]);
+        if (Input::hasFile('illustrate')) {
+            $image      = Input::file('illustrate');
+            $fileName=$this->uploadImage($image, 'illustrate');
+        }
+        $data=['illustrator'=>$fileName, 'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id];
+        $saveIllustrate=$this->contributor->saveIllustrate($data);
+        $notification = array(
+            'message' => 'Your Illustrator has been added against meaning. You can bid now',
+            'alert_type' => 'success',
+        );
+        return Redirect::back()->with($notification);
+
+    }
+    public function uploadImage($data, $place){
+        $fileName   = time() . '.' . $data->getClientOriginalExtension();
+
+        $img = Image::make($data->getRealPath());
+        $img->resize(120, 120, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->stream();
+        $fileName='images/'.Auth::user()->id.'/'.$place.'/'.$fileName;
+        Storage::disk('public')->put($fileName, $img);
+        return $fileName;
     }
 }

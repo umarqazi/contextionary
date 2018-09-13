@@ -11,6 +11,7 @@ namespace App\Repositories;
 
 use App\ContextPhrase;
 use App\Repositories\DefineMeaningRepo;
+use Config;
 
 class ContextPhraseRepo
 {
@@ -40,15 +41,18 @@ class ContextPhraseRepo
      * get paginated records
      */
     public function getPaginated(){
-        $contextPhrases=$this->getList()->orderBy('context_phrase.work_order', 'ASC')->paginate(9);
+        $contextPhrases=$this->getList()->orderBy('context_phrase.work_order', 'ASC')->take(27)->paginate(9);
         $contributedMeaning=$this->defineMeaningRepo->getAllContributedMeaning();
         foreach($contextPhrases as $key=>$record):
-            $contextPhrases[$key]['status']='';
-            $contextPhrases[$key]['phrase_status']='Open';
+            $contextPhrases[$key]['status']=Config::get('constant.phrase_status.open');
             foreach ($contributedMeaning as $meaning):
+                $checkVote='';
                 if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
-                    $contextPhrases[$key]['status']='disabled';
-                    $contextPhrases[$key]['phrase_status']='In-Progress';
+                    $contextPhrases[$key]['status']=Config::get('constant.phrase_status.in-progress');
+                endif;
+                $checkVote=$this->voteExpiryRepo->checkRecordType($record['context_id'], $record['phrase_id'], 'meaning');
+                if(!empty($checkVote)):
+                    $contextPhrases[$key]['status']=Config::get('constant.phrase_status.submitted');
                 endif;
             endforeach;
         endforeach;

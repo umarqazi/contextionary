@@ -130,7 +130,10 @@ $(document).ready(function () {
         $(".bidBtn").removeClass('disabled');
     });
     $('#form-submission').submit(function() {
-        // $('.default-loader').css('display', 'block');
+        $('.default-loader').css('display', 'block');
+    });
+    $('#bid-submission').submit(function() {
+        $('.default-loader').css('display', 'block');
     });
 });
 (function ($) {
