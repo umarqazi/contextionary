@@ -17,7 +17,7 @@
                             <div class="col-md-2">
                                 <div class="md-form ml-4 mt-0">
                                     <div class="custom-control custom-checkbox">
-                                        {!! Form::checkbox('role[]', Config::get('constant.contributorRole.definition'),null,['class'=>'custom-control-input', 'id'=>'checkBoxw']) !!}
+                                        {!! Form::checkbox('role[]', Config::get('constant.contributorRole.define'),null,['class'=>'custom-control-input', 'id'=>'checkBoxw']) !!}
                                         <label class="custom-control-label" for="checkBoxw">{!! t('Writer') !!}</label>
                                     </div>
                                 </div>
@@ -26,7 +26,7 @@
                             <div class="col-md-2">
                                 <div class="md-form ml-4 mt-0">
                                     <div class="custom-control custom-checkbox">
-                                        {!! Form::checkbox('role[]', Config::get('constant.contributorRole.illustrator'),null,['class'=>'custom-control-input', 'id'=>'checkBoxi']) !!}
+                                        {!! Form::checkbox('role[]', Config::get('constant.contributorRole.illustrate'),null,['class'=>'custom-control-input', 'id'=>'checkBoxi']) !!}
                                         <label class="custom-control-label" for="checkBoxi">{!! t('Illustrator') !!}</label>
                                     </div>
                                 </div>
