@@ -2,7 +2,7 @@
     /**
      * Contributor Meanings Menu
      */
-    View::composer('user.contributor.meaning.*', function($view)
+    View::composer(['user.contributor.meaning.*', 'user.contributor.illustrator.*'], function($view)
     {
         $roles = Auth::user()->roles->pluck('name');
         foreach($roles as $role):
