@@ -7,7 +7,7 @@
 </div>
 <script>
     setTimeout(function(){
-        window.location.replace("/en/intruder");
+        window.location.replace("{{lang_route('intruder')}}");
     }, 2000);
 </script>
 @endsection
