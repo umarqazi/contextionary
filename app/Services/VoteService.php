@@ -116,34 +116,40 @@ Class VoteService{
         $getVote=$this->voteExpiry->getAllMeaningVotes('meaning');
         if($getVote):
             foreach($getVote as $vote):
+                $cron_run='0';
                 $getTotalVote=$this->voteMeaning->totalVotes($vote['context_id'], $vote['phrase_id']);
                 if($getTotalVote < 5):
                     if($vote['expiry_date'] < Carbon::today()):
-                        $getHighestVotes=$this->voteMeaning->hightVotes($vote['context_id'], $vote['phrase_id']);
-                        if(!empty($getHighestVotes)):
-                            $this->defineMeaning->updateVoteStatus($vote['context_id'], $vote['phrase_id']);
-                            foreach($getHighestVotes as $key=>$hightesVotes):
-                                if($key+1=='1'):
-                                    $points=10;
-                                else:
-                                    $points=1;
-                                endif;
-                                $data=['point'=>$points,'context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'user_id'=>$hightesVotes['meaning']['user_id'], 'position'=>$key+1];
-                                $this->userPoint->create($data);
-                                $hightesVotes['points']=$points;
-                                if($key+1==1):
-                                    $position='1st';
-                                elseif($key+1==2):
-                                    $position='2nd';
-                                else:
-                                    $position='3rd';
-                                endif;
-                                $hightesVotes['position']=$position;
-                                Mail::to($hightesVotes['meaning']['users']['email'])->send(new Meanings($hightesVotes));
-                                $this->defineMeaning->update(['position'=>$key+1], $hightesVotes['meaning']['id']);
-                            endforeach;
-                            $this->voteExpiry->updateStatus($vote['id']);
-                        endif;
+                        $cron_run='1';
+                    endif;
+                else:
+                    $cron_run='1';
+                endif;
+                if($cron_run=='1'):
+                    $getHighestVotes=$this->voteMeaning->hightVotes($vote['context_id'], $vote['phrase_id']);
+                    if(!empty($getHighestVotes)):
+                        $this->defineMeaning->updateVoteStatus($vote['context_id'], $vote['phrase_id']);
+                        foreach($getHighestVotes as $key=>$hightesVotes):
+                            if($key+1=='1'):
+                                $points=10;
+                            else:
+                                $points=1;
+                            endif;
+                            $data=['point'=>$points,'context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'user_id'=>$hightesVotes['meaning']['user_id'], 'position'=>$key+1];
+                            $this->userPoint->create($data);
+                            $hightesVotes['points']=$points;
+                            if($key+1==1):
+                                $position='1st';
+                            elseif($key+1==2):
+                                $position='2nd';
+                            else:
+                                $position='3rd';
+                            endif;
+                            $hightesVotes['position']=$position;
+                            Mail::to($hightesVotes['meaning']['users']['email'])->send(new Meanings($hightesVotes));
+                            $this->defineMeaning->update(['position'=>$key+1], $hightesVotes['meaning']['id']);
+                        endforeach;
+                        $this->voteExpiry->updateStatus($vote['id']);
                     endif;
                 endif;
             endforeach;
