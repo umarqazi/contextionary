@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDefineMeaningsTable extends Migration
+class CreateIllustratorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateDefineMeaningsTable extends Migration
      */
     public function up()
     {
-        Schema::create('define_meanings', function (Blueprint $table) {
+        Schema::create('illustrators', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('meaning');
+            $table->string('illustrator');
             $table->integer('context_id');
             $table->integer('phrase_id');
-            $table->string('phrase_type');
             $table->integer('position')->nullable();
             $table->integer('coins')->nullable();
             $table->integer('status');
@@ -35,6 +34,6 @@ class CreateDefineMeaningsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('define_meanings');
+        Schema::dropIfExists('illustrators');
     }
 }

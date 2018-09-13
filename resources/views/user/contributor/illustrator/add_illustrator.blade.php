@@ -1,12 +1,11 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Define a Meaning') !!}
+    {!! t('Add a Illustrator') !!}
 @stop
 @section('content')
     <div class="container-fluid contributorMain definePage" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $data['context_picture'] !!}); background-size:cover">
         <div class="wrapperMask"></div>
         @include('layouts.flc_header')
-        {!! Form::open(['url'=>lang_route('postContextMeaning'), 'method'=>'post', 'id'=>'form-submission']) !!}
         <div class="row">
             @include('layouts.toaster')
         </div>
@@ -30,36 +29,48 @@
         </div>
         <div class="row mt-4">
             <div class="col-md-12">
-                <label class="customLabel">Phrase Meaning</label>
-                @if(!$data['id'])
-                    {!! Form::textarea('meaning', $data['meaning'], ['class'=>'enter-phrase' ,'placeholder'=>'Enter Phrase Meaning']) !!}
-                    <p class="text-right white-text">{!! t('Characters') !!} 0/2500</p>
-                    @if ($errors->has('meaning'))
-                        <div class="help-block"><strong>{{ $errors->first('meaning') }}</strong></div>
-                    @endif
-                @endif
-                @if($data['id'])
-                    <div class="voteMeaningBg defineMeaningBackground">
-                        <div class="tab-content contextContent ">
-                            <div id="tab1" class="tab-pane mCustomScrollbar fade show active">
-                                <p>{!! $data['meaning'] !!}</p>
-                            </div>
+                <label class="customLabel">{!! t('Phrase Meaning') !!}</label>
+                <div class="voteMeaningBg defineMeaningBackground">
+                    <div class="tab-content contextContent ">
+                        <div id="tab1" class="tab-pane mCustomScrollbar fade show active">
+                            <p>{!! $data['meaning'] !!}</p>
                         </div>
                     </div>
-                @endif
-                {!! Form::hidden('context_id', $data['context_id'], []) !!}
-                {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
-                {!! Form::hidden('user_id', Auth::user()->id, []) !!}
-            </div>
-            @if(!$data['id'])
-                <div class="col-md-12 mt-4 text-center actionsBtn">
-                    <a href="{!! URL::previous() !!}" class="orangeBtn ml-3 waves-light">Return</a>
-                    <button class="orangeBtn ml-3 waves-light">Save</button>
                 </div>
-            @endif
+            </div>
         </div>
-        {!! Form::close() !!}
-        @if($data['id'] )
+        @if(empty($data['illustrator']))
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="uploadImgHolder mr-2">
+                        <img src="{!! asset('assets/images/dummy.png') !!}" id="profile-img-tag" />
+                    </div>
+                    {!! Form::open(['url'=>lang_route('postIllustrate'),'class'=>'illustrator-form','enctype'=>'multipart/form-data','method'=>'post', 'id'=>'form-submission']) !!}
+                    <label class="customLabel">{!! t('Upload Illustrator against this Meaning') !!}</label>
+                    <label class="orangeBtn waves-light bidBtn">
+                        {!! t('Browse') !!}
+                        <input type="file" name="illustrate" id="profile-img" style="display: none">
+                    </label>
+                    @if ($errors->has('illustrate'))
+                        <div class="help-block"><strong>{{ $errors->first('illustrate') }}</strong></div>
+                    @endif
+                    {!! Form::hidden('context_id', $data['context_id'], []) !!}
+                    {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
+
+                </div>
+            </div>
+            <div class="col-md-12 mt-4 text-center actionsBtn pb-4">
+                <a href="{!! URL::previous() !!}" class="orangeBtn ml-3 waves-light">{!! t('Return') !!}</a>
+                <button class="orangeBtn ml-3 waves-light">{!! t('Save') !!}</button>
+            </div>
+            {!! Form::close() !!}
+        @endif
+        @if(!empty($data['illustrator']))
+            <div class="col-md-12">
+                <div class="uploadImgHolder mr-2">
+                    <img src="{!! asset('storage') !!}/{!! $data['illustrator']->illustrator !!}" id="profile-img-tag" />
+                </div>
+            </div>
             {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
             <div class="row mt-4">
                 <div class="col-md-12 mt-4 text-center actionsBtn">
@@ -67,12 +78,12 @@
                         <span class="white-text">{!! t('Coins') !!}</span>
                         <button type="button" class="sub"><i class="fa fa-minus"></i></button>
                         {!! Form::number('bid', '1',['class'=>'coins', 'min'=>'1']) !!}
-                        {!! Form::hidden('meaning_id', $data['id'], []) !!}
+                        {!! Form::hidden('meaning_id', $data['illustrator']['id'], []) !!}
                         {!! Form::hidden('context_id', $data['context_id'], []) !!}
                         {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
-                        {!! Form::hidden('model', 'defineMeaning', []) !!}
-                        {!! Form::hidden('type', 'meaning', []) !!}
-                        {!! Form::hidden('route', 'define', []) !!}
+                        {!! Form::hidden('model', 'illustrate', []) !!}
+                        {!! Form::hidden('type', 'illustrate', []) !!}
+                        {!! Form::hidden('route', 'illustrate', []) !!}
                         <button type="button" class="add"><i class="fa fa-plus"></i></button>
                         @if ($errors->has('coins'))
                             <div class="help-block"><strong>{{ $errors->first('coins') }}</strong></div>
@@ -85,4 +96,5 @@
             {!! Form::close() !!}
         @endif
     </div>
+    {!! HTML::script('assets/js/login.js') !!}
 @endsection

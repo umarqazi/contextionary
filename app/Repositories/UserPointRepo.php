@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 
 use App\UserPoint;
+use Auth;
 
 class UserPointRepo
 {
@@ -32,5 +33,11 @@ class UserPointRepo
      */
     public function create($data){
         return $this->userPoints->create($data);
+    }
+    /**
+     * get points of login user
+     */
+    public function points(){
+       return $this->userPoints->where('user_id', Auth::user()->id)->sum('point');
     }
 }

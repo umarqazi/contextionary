@@ -57,8 +57,12 @@ MultiLang::routeGroup(function($router) {
                 Route::get('vote-meaning/{context_id}/{phrase_id}',  'VoteController@voteMeaning')->name('voteMeaning');
                 Route::get('poor-quality/{context_id}/{phrase_id}',  'VoteController@poorQuality')->name('poor-quality');
             });
-
             Route::post('vote',  'VoteController@vote')->name('vote');
+            Route::group(array('prefix' => 'illustrate'), function(){
+                Route::get('/',  'ContributorController@illustrate')->name('illustrate');
+                Route::get('illustrate-meaning/{context_id}/{phrase_id}',  'ContributorController@addIllustrate')->name('addIllustrate');
+                Route::post('illustrate-meaning',  'ContributorController@pAddIllustrate')->name('postIllustrate');
+            });
         });
         Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');
         Route::get('fun-facts/{id}',  'FunFactsController@get');
