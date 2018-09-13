@@ -149,7 +149,7 @@ class ContributorService implements IService
         $getAllMeaning=$this->defineMeaning->fetchContextPhraseMeaning();
         foreach($getAllMeaning as $meaning):
             if($meaning['context_id']!=NULL && $meaning['phrase_id']!=NULL):
-                if($meaning['total'] < 2):
+                if($meaning['total'] < 10):
                     if(Carbon::parse($meaning['expiry_date']) < Carbon::parse($today)):
                         $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($meaning['context_id'], $meaning['phrase_id']);
                         $this->voteService->addPhraseForVote($meaning['context_id'], $meaning['phrase_id'], 'meaning');
