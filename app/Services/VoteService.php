@@ -116,7 +116,7 @@ Class VoteService{
         if($getVote):
             foreach($getVote as $vote):
                 $getTotalVote=$this->voteMeaning->totalVotes($vote['context_id'], $vote['phrase_id']);
-                if($getTotalVote < 10):
+                if($getTotalVote < 5):
                     if($vote['expiry_date'] < Carbon::today()):
                         $getHighestVotes=$this->voteMeaning->hightVotes($vote['context_id'], $vote['phrase_id']);
                         if(!empty($getHighestVotes)):

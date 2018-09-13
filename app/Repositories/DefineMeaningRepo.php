@@ -103,7 +103,7 @@ class DefineMeaningRepo
 
         /**update status for vote of first 9 contributor*/
 
-        $records=$this->getRecords($context_id, $phrase_id)->limit(4)->update(['status'=>'1']);
+        $records=$this->getRecords($context_id, $phrase_id)->limit(3)->update(['status'=>'1']);
 
         /** update status for refund of contributor */
 
