@@ -68,16 +68,16 @@ $(document).ready(function () {
         $(".rightMenu .rightDropdown").fadeIn();
     });
 
-    $(".rightMenu").click(function () {
+    $(".rightMenu").click(function (event) {
         event.stopPropagation();
     });
 
-    $(".dropDown").click(function () {
+    $(".dropDown").click(function (event) {
         event.stopPropagation();
         $(this).find('.dropDown-block').fadeIn();
     });
 
-    $(".dropDown-block").click(function () {
+    $(".dropDown-block").click(function (event) {
         event.stopPropagation();
     });
 
@@ -86,7 +86,7 @@ $(document).ready(function () {
         $("aside").css('left', '-300px');
     });
 
-    $(".mobileIcon").click(function () {
+    $(".mobileIcon").click(function (event) {
         event.stopPropagation();
         $("aside").css('left', '0');
     });
