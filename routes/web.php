@@ -30,7 +30,7 @@ MultiLang::routeGroup(function($router) {
             Route::post('update-profile', 'UsersController@profileUpdate')->name('update-profile');
             Route::get('contributorPlan',  'ContributorController@contributorPlan')->name('contributorPlan');
             Route::post('saveContributor', 'ContributorController@saveContributor')->name('saveContributor');
-            Route::group(array('prefix' => 'define'), function(){
+            Route::group(array('prefix' => 'define', 'middleware'=>'define'), function(){
                 Route::get('/',  'ContributorController@define')->name('define');
                 Route::get('define-meaning/{context_id}/{phrase_id}',  'ContributorController@defineMeaning')->name('defineMeaning');
                 Route::get('define-meaning/{context_id}/{phrase_id}/{id}',  'ContributorController@defineMeaning')->name('editMeaning');
@@ -58,7 +58,7 @@ MultiLang::routeGroup(function($router) {
                 Route::get('poor-quality/{context_id}/{phrase_id}',  'VoteController@poorQuality')->name('poor-quality');
             });
             Route::post('vote',  'VoteController@vote')->name('vote');
-            Route::group(array('prefix' => 'illustrate'), function(){
+            Route::group(array('prefix' => 'illustrate', 'middleware'=>'illustrator'), function(){
                 Route::get('/',  'ContributorController@illustrate')->name('illustrate');
                 Route::get('illustrate-meaning/{context_id}/{phrase_id}',  'ContributorController@addIllustrate')->name('addIllustrate');
                 Route::post('illustrate-meaning',  'ContributorController@pAddIllustrate')->name('postIllustrate');
