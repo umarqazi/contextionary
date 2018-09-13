@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVoteExpiriesTable extends Migration
+class CreateIllustratorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,17 @@ class CreateVoteExpiriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('vote_expiries', function (Blueprint $table) {
+        Schema::create('illustrators', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('illustrator');
             $table->integer('context_id');
             $table->integer('phrase_id');
-            $table->string('vote_type');
+            $table->integer('position')->nullable();
+            $table->integer('coins')->nullable();
             $table->integer('status');
-            $table->timestamp('expiry_date');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -30,6 +34,6 @@ class CreateVoteExpiriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vote_expiries');
+        Schema::dropIfExists('illustrators');
     }
 }

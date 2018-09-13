@@ -18,6 +18,11 @@
   {{-- End head css --}}
   {!! HTML::script('assets/js/jquery-3.3.1.min.js') !!}
 </head>
+<div class="default-loader">
+    <div class="loader-container">
+        <img src="{!! asset('assets/images/loader.gif') !!}">
+    </div>
+</div>
 <body>
   <section class="loginContainer">
       <div class="loginWrapper">

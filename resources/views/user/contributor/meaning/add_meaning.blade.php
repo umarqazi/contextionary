@@ -6,7 +6,7 @@
     <div class="container-fluid contributorMain definePage" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $data['context_picture'] !!}); background-size:cover">
         <div class="wrapperMask"></div>
         @include('layouts.flc_header')
-        {!! Form::open(['url'=>lang_route('postContextMeaning'), 'method'=>'post']) !!}
+        {!! Form::open(['url'=>lang_route('postContextMeaning'), 'method'=>'post', 'id'=>'form-submission']) !!}
         <div class="row">
             @include('layouts.toaster')
         </div>
@@ -39,13 +39,13 @@
                     @endif
                 @endif
                 @if($data['id'])
-                <div class="voteMeaningBg defineMeaningBackground">
-                    <div class="tab-content contextContent ">
-                        <div id="tab1" class="tab-pane mCustomScrollbar fade show active">
-                            <p>{!! $data['meaning'] !!}</p>
+                    <div class="voteMeaningBg defineMeaningBackground">
+                        <div class="tab-content contextContent ">
+                            <div id="tab1" class="tab-pane mCustomScrollbar fade show active">
+                                <p>{!! $data['meaning'] !!}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endif
                 {!! Form::hidden('context_id', $data['context_id'], []) !!}
                 {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
@@ -59,8 +59,8 @@
             @endif
         </div>
         {!! Form::close() !!}
-        @if($data['id'])
-            {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post']) !!}
+        @if($data['id'] )
+            {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
             <div class="row mt-4">
                 <div class="col-md-12 mt-4 text-center actionsBtn">
                     <div class="coinsWrapper">
@@ -68,12 +68,18 @@
                         <button type="button" class="sub"><i class="fa fa-minus"></i></button>
                         {!! Form::number('bid', '1',['class'=>'coins', 'min'=>'1']) !!}
                         {!! Form::hidden('meaning_id', $data['id'], []) !!}
+                        {!! Form::hidden('context_id', $data['context_id'], []) !!}
+                        {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
+                        {!! Form::hidden('model', 'defineMeaning', []) !!}
+                        {!! Form::hidden('type', 'meaning', []) !!}
+                        {!! Form::hidden('route', 'define', []) !!}
                         <button type="button" class="add"><i class="fa fa-plus"></i></button>
                         @if ($errors->has('coins'))
                             <div class="help-block"><strong>{{ $errors->first('coins') }}</strong></div>
                         @endif
                     </div>
                     <button type="submit" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Bid') !!}</button>
+                    <a href="{!! lang_route('editMeaning', ['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'id'=>$data['id']]) !!}" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</a>
                 </div>
             </div>
             {!! Form::close() !!}

@@ -7,7 +7,7 @@
   <div class="blockStyle wow fadeIn" data-wow-delay="0.6s">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <form class='form-horizontal' method='POST' id='payment-form' role='form' action='{!! lang_route("addmoney.stripe")!!}' >
+        <form class='form-horizontal' method='POST' id='form-submission' role='form' action='{!! lang_route("addmoney.stripe")!!}' >
           {{ csrf_field() }}
           @include('layouts.toaster')
           <div class="planBlock">

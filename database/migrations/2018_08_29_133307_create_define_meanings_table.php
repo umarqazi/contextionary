@@ -19,6 +19,7 @@ class CreateDefineMeaningsTable extends Migration
             $table->integer('context_id');
             $table->integer('phrase_id');
             $table->string('phrase_type');
+            $table->integer('position')->nullable();
             $table->integer('coins')->nullable();
             $table->integer('status');
             $table->integer('user_id')->unsigned()->nullable();

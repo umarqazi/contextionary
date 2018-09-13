@@ -17,11 +17,13 @@
               <span class="name">{!! Auth::user()->first_name !!} {!! Auth::user()->last_name !!}</span>
             </div>
             <ul class="userMenu">
-              <li>
-                <a href="#">
-                  <div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> User Plan
-                </a>
-              </li>
+              @if(Auth::user()->hasRole(Config::get('constant.userRole')))
+                <li>
+                  <a href="#">
+                    <div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> User Plan
+                  </a>
+                </li>
+              @endif
               <li>
                 <a href="{!! lang_route('profile') !!}">
                   <div class="img-holder"><img src="{!! asset('assets/images/view-profile-icon.png') !!}"></div> View Profile
@@ -70,42 +72,42 @@
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Coins') !!}</td>
-                  <td>{!! $coins !!}</td>
-                  <td>2</td>
-                  <td>1</td>
+                  <td>{!! ($coins!=NULL)? $coins:'0' !!}</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Points') !!}</td>
-                  <td>5</td>
-                  <td>2</td>
-                  <td>1</td>
+                  <td>{!! ($points!=NULL)? $points:'0'!!}</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Earning') !!}</td>
-                  <td>5</td>
-                  <td>2</td>
-                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Contributions') !!}</td>
                   <td>{!! $Contributions !!}</td>
-                  <td>2</td>
-                  <td>1</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
                 <tr>
-                  <td class="name">My Pole Positions</td>
-                  <td>5</td>
-                  <td>2</td>
-                  <td>1</td>
+                  <td class="name">{!! t('My Pole Positions') !!}</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
                 <tr>
-                  <td class="name">My Runner-ups</td>
-                  <td>5</td>
-                  <td>2</td>
-                  <td>1</td>
+                  <td class="name">{!! t('My Runner-ups') !!}</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
               </table>
-              <h2 class="mt-3">Other contributors</h2>
+              <h2 class="mt-3">{!! t('Other Contributors') !!}</h2>
               <table class="customTable">
                 <tr>
                   <td class="name"></td>
@@ -114,22 +116,22 @@
                   <td><img src="{!! asset('assets/images/statistics-icon3.png') !!}"></td>
                 </tr>
                 <tr>
-                  <td class="name">Highest Coins</td>
-                  <td>5</td>
-                  <td>2</td>
-                  <td>1</td>
+                  <td class="name">{!! t('Highest Coins') !!}</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
                 <tr>
-                  <td class="name">Highest Points</td>
-                  <td>5</td>
-                  <td>2</td>
-                  <td>1</td>
+                  <td class="name">{!! t('Highest Points') !!}</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
                 <tr>
-                  <td class="name">Highest Earning</td>
-                  <td>5</td>
-                  <td>2</td>
-                  <td>1</td>
+                  <td class="name">{!! t('Highest Earning') !!}</td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>0</td>
                 </tr>
               </table>
             </div>
