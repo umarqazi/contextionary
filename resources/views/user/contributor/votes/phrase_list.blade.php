@@ -12,14 +12,14 @@
             @if(!$contextList->isEmpty())
                 @foreach($contextList as $context)
                     <div class="col-sm-6 col-md-4 col-lg-4">
-                        <a @if($context['context_info']['status']!='disabled') href="{!! lang_route('voteMeaning', ['context_id'=>$context['context_info']['context_id'],'phrase_id'=>$context['context_info']['phrase_id']]) !!}" @endif>
+                        <a @if($context['status']=='Pending') href="{!! lang_route('voteMeaning', ['context_id'=>$context['context_info']['context_id'],'phrase_id'=>$context['context_info']['phrase_id']]) !!}" @endif>
                             <div class="categeoryBlock">
                                 <div class="mask"></div>
                                 <img src="{!!asset('storage/Contexts') !!}/{!! $context['context_info']['context_picture'] !!}" class="mainImg">
                                 <div class="info">
                                     <h1>@if($context['context_info']['context_name']) {!! t($context['context_info']['context_name']) !!} @endif </h1>
                                     <p>@if($context['context_info']['phrase_text']){!! t($context['context_info']['phrase_text']) !!} @endif</p>
-                                    {!! t('Open') !!} <i class="fa fa-angle-right"></i>
+                                    <strong class="{!! $context['status'] !!}"> {!! t($context['status']) !!} </strong><i class="fa fa-angle-right"></i>
                                 </div>
                             </div>
                         </a>

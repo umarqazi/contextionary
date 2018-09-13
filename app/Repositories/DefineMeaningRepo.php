@@ -79,24 +79,22 @@ class DefineMeaningRepo
      * @param $meaning_id
      * @return bool
      */
-    public function addExpiry($meaning_id){
+    public function checkTotalPhrase($meaning_id){
+        $checkContextPhrase='';
         $getContextInfo=$this->meaning->where('id', $meaning_id)->first();
         if($getContextInfo):
-            $checkContextPhrase=$this->getRecords($getContextInfo->context_id, $getContextInfo->phrase_id)->first();
-            if($checkContextPhrase->id==$meaning_id):
-                $date=Carbon::now()->addMonths(1);
-                $expiry=$this->addBidExpiry($getContextInfo->context_id,$getContextInfo->phrase_id, 'meaning', $date);
-            endif;
+            $checkContextPhrase=$this->getRecords($getContextInfo->context_id, $getContextInfo->phrase_id)->where('coins', '!=', NULL)->count();
         endif;
-        return true;
+        return $checkContextPhrase;
     }
     /**
      * @param $context_id
      * @param $phrase_id
      * @return bool
      */
-    public function addBidExpiry($context_id, $phrase_id, $type, $date){
-        DB::table('bidding_expiry')->insert(['context_id'=>$context_id, 'phrase_id'=>$phrase_id,'bid_type'=>$type, 'expiry_date'=>$date]);
+    public function addBidExpiry($data, $type){
+        $date=Carbon::now()->addMonths(1);
+        return DB::table('bidding_expiry')->insert(['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'bid_type'=>$data['type'], 'expiry_date'=>$date]);
     }
     /*
      * update status except first 9
@@ -131,5 +129,11 @@ class DefineMeaningRepo
      */
     public function updateVoteStatus($context_id, $phrase_id){
         return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->update(['status'=>3]);
+    }
+    /**
+     * get Illustrate Records
+     */
+    public function illustrates(){
+        return $this->meaning->where(['status'=>'3', 'position'=>'1'])->paginate(9);
     }
 }

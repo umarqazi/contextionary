@@ -60,10 +60,17 @@ Class VoteService{
         $contextPhrase=$getLatestVote=$this->voteExpiry->getAllVotes('meaning');
         if($contextPhrase):
             foreach($contextPhrase as $key=>$context):
+                $contextPhrase[$key]['status']=Config::get('constant.vote_status.pending');
+                $data=['context_id'=>$context->context_id, 'phrase_id'=>$context->phrase_id];
+                $userVote=$this->voteMeaning->checkUserVote($data);
+                if(!empty($userVote)):
+                    $contextPhrase[$key]['status']=Config::get('constant.vote_status.submitted');
+                endif;
                 $contextPhrase[$key]['context_info']=$this->contextPhrase->getContext($context->context_id, $context->phrase_id);
             endforeach;
             return $contextPhrase;
         endif;
+
         return $records;
     }
     /**
@@ -109,7 +116,7 @@ Class VoteService{
         if($getVote):
             foreach($getVote as $vote):
                 $getTotalVote=$this->voteMeaning->totalVotes($vote['context_id'], $vote['phrase_id']);
-                if($getTotalVote < 50):
+                if($getTotalVote < 10):
                     if($vote['expiry_date'] < Carbon::today()):
                         $getHighestVotes=$this->voteMeaning->hightVotes($vote['context_id'], $vote['phrase_id']);
                         if(!empty($getHighestVotes)):
@@ -134,7 +141,7 @@ Class VoteService{
                                 Mail::to($hightesVotes['meaning']['users']['email'])->send(new Meanings($hightesVotes));
                                 $this->defineMeaning->update(['position'=>$key+1], $hightesVotes['meaning']['id']);
                             endforeach;
-                        $this->voteExpiry->updateStatus($vote['id']);
+                            $this->voteExpiry->updateStatus($vote['id']);
                         endif;
                     endif;
                 endif;
