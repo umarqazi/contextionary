@@ -82,7 +82,7 @@ class CoinsController extends Controller
             });
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
-//                    $actions->disableDelete();
+                    $actions->disableDelete();
                 });
             });
         });
