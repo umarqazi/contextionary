@@ -200,3 +200,6 @@ color: #f7953a;
   display: inline-block;
   vertical-align: top;
 }
+.dashBoard-container .topLinks a{
+  font-size:9pt !important;
+}
