@@ -4,7 +4,10 @@
      */
     View::composer('user.contributor.meaning.*', function($view)
     {
-        $page=['define'=>'Define', 'illustrator'=>'Illustrator', 'translator'=>'Translator'];
+        $roles = Auth::user()->roles->pluck('name');
+        foreach($roles as $role):
+            $page[$role]=$role;
+        endforeach;
         $view->with(['pageMenu'=>$page]);
     });
 
