@@ -48,13 +48,13 @@ class DefineMeaningRepo
         return $this->meaning->where('id', $meaning_id)->update($data);
     }
     public function contributions($user_id){
-        return $this->meaning->where('user_id',$user_id)->where('coins', '!=', NULL);
+        return $this->meaning->where('user_id',$user_id);
     }
     /*
      * fetch total numbers of contributions of user
      */
     public function getUserContributions($user_id){
-        return $this->contributions($user_id)->count();
+        return $this->contributions($user_id)->where('coins', '!=', NULL)->count();
     }
     /*
      * get all contributions of user
@@ -66,7 +66,7 @@ class DefineMeaningRepo
      * get group of context and phrase
      */
     public function fetchContextPhraseMeaning(){
-        return $records=$this->meaning->where('coins','!=', NULL)->where('status','=', 0)->where('position','=', NULL)->leftJoin('bidding_expiry', function ($query){
+        return $records=$this->meaning->where('coins','!=', NULL)->leftJoin('bidding_expiry', function ($query){
             $query->on('define_meanings.context_id', '=', 'bidding_expiry.context_id');
             $query->on('define_meanings.phrase_id', '=', 'bidding_expiry.phrase_id');
         })->select('*', DB::raw('count(*) as total'))->groupBy('define_meanings.context_id', 'define_meanings.phrase_id')->get();
@@ -135,5 +135,23 @@ class DefineMeaningRepo
      */
     public function illustrates(){
         return $this->meaning->where(['status'=>'3', 'position'=>'1'])->paginate(9);
+    }
+    /*
+     * get current bidding
+     */
+    public function fetchBidding($type){
+        return $records=DB::table('bidding_expiry')->where(['status'=> 0, 'bid_type'=>$type])->get();
+    }
+    /**
+     * update bidding status
+     */
+    public function updateBiddingStatus($id){
+        return DB::table('bidding_expiry')->where('id', $id)->update(['status'=>'1']);
+    }
+    /**
+     * total meaning
+     */
+    public function totalMeaning($context_id, $phrase_id){
+        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->count();
     }
 }
