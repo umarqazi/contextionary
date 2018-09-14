@@ -28,6 +28,10 @@ function readURL(input) {
     reader.readAsDataURL(input.files[0]);
   }
 }
+function showButtons(){
+  $('.show-bid').hide();
+  $('.hide_form').show();
+}
 $("#profile-img").change(function(){
   readURL(this);
 });
@@ -39,3 +43,4 @@ $(".pricing-palden .pricing-item").mouseleave(function () {
   $('.pricing-palden .pricing-item').siblings().removeClass('active');
   $('.pricing-item.pricing__item--featured').addClass('active');
 });
+

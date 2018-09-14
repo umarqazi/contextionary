@@ -66,34 +66,63 @@
             {!! Form::close() !!}
         @endif
         @if(!empty($data['illustrator']))
-            <div class="col-md-12">
-                <div class="uploadImgHolder mr-2">
-                    <img src="{!! asset('storage') !!}/{!! $data['illustrator']->illustrator !!}" id="profile-img-tag" />
-                </div>
-            </div>
-            {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
-            <div class="row mt-4">
-                <div class="col-md-12 mt-4 text-center actionsBtn">
-                    <div class="coinsWrapper">
-                        <span class="white-text">{!! t('Coins') !!}</span>
-                        <button type="button" class="sub"><i class="fa fa-minus"></i></button>
-                        {!! Form::number('bid', '1',['class'=>'coins', 'min'=>'1']) !!}
-                        {!! Form::hidden('meaning_id', $data['illustrator']['id'], []) !!}
+            <div class="hide_form">
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="uploadImgHolder mr-2">
+                            <img src="{!! asset('assets/images/dummy.png') !!}" id="profile-img-tag" />
+                        </div>
+                        {!! Form::open(['url'=>lang_route('postIllustrate'),'class'=>'illustrator-form','enctype'=>'multipart/form-data','method'=>'post', 'id'=>'form-submission']) !!}
+                        <label class="customLabel">{!! t('Upload Illustrator against this Meaning') !!}</label>
+                        <label class="orangeBtn waves-light bidBtn">
+                            {!! t('Browse') !!}
+                            <input type="file" name="illustrate" id="profile-img" style="display: none">
+                        </label>
+                        @if ($errors->has('illustrate'))
+                            <div class="help-block"><strong>{{ $errors->first('illustrate') }}</strong></div>
+                        @endif
                         {!! Form::hidden('context_id', $data['context_id'], []) !!}
                         {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
-                        {!! Form::hidden('model', 'illustrate', []) !!}
-                        {!! Form::hidden('type', 'illustrate', []) !!}
-                        {!! Form::hidden('route', 'illustrate', []) !!}
-                        <button type="button" class="add"><i class="fa fa-plus"></i></button>
-                        @if ($errors->has('coins'))
-                            <div class="help-block"><strong>{{ $errors->first('coins') }}</strong></div>
-                        @endif
+                        {!! Form::hidden('id', $data['illustrator']['id'], []) !!}
+
                     </div>
-                    <button type="submit" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Bid') !!}</button>
-                    <a href="{!! lang_route('editMeaning', ['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'id'=>$data['id']]) !!}" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</a>
                 </div>
+                <div class="col-md-12 mt-4 text-center actionsBtn pb-4">
+                    <a href="{!! URL::previous() !!}" class="orangeBtn ml-3 waves-light">{!! t('Return') !!}</a>
+                    <button class="orangeBtn ml-3 waves-light">{!! t('Save') !!}</button>
+                </div>
+                {!! Form::close() !!}
             </div>
-            {!! Form::close() !!}
+            <div class="show-bid">
+                <div class="col-md-12">
+                    <div class="uploadImgHolder mr-2">
+                        <img src="{!! asset('storage') !!}/{!! $data['illustrator']->illustrator !!}" id="profile-img-tag" />
+                    </div>
+                </div>
+                {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
+                <div class="row mt-4">
+                    <div class="col-md-12 mt-4 text-center actionsBtn">
+                        <div class="coinsWrapper">
+                            <span class="white-text">{!! t('Coins') !!}</span>
+                            <button type="button" class="sub"><i class="fa fa-minus"></i></button>
+                            {!! Form::number('bid', '1',['class'=>'coins', 'min'=>'1']) !!}
+                            {!! Form::hidden('meaning_id', $data['illustrator']['id'], []) !!}
+                            {!! Form::hidden('context_id', $data['context_id'], []) !!}
+                            {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
+                            {!! Form::hidden('model', 'illustrate', []) !!}
+                            {!! Form::hidden('type', 'illustrate', []) !!}
+                            {!! Form::hidden('route', 'illustrate', []) !!}
+                            <button type="button" class="add"><i class="fa fa-plus"></i></button>
+                            @if ($errors->has('coins'))
+                                <div class="help-block"><strong>{{ $errors->first('coins') }}</strong></div>
+                            @endif
+                        </div>
+                        <button type="submit" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Bid') !!}</button>
+                        <button type="button" onclick="showButtons()" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</button>
+                    </div>
+                </div>
+                {!! Form::close() !!}
+            </div>
         @endif
     </div>
     {!! HTML::script('assets/js/login.js') !!}
