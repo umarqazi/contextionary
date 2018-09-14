@@ -89,7 +89,7 @@ class ContributorController
      */
     public function defineMeaning($context_id, $phrase_id, $id=NULL){
         $contextList=$this->contributor->getContextPhrase($context_id, $phrase_id);
-        if($contextList==false):
+        if($contextList['coins']!=NULL):
             $notification = array(
                 'message' => 'Bid has been placed against this meaning',
                 'alert_type' => 'danger',
@@ -165,11 +165,15 @@ class ContributorController
         $validators = $request->validate([
             'illustrate' => 'required|mimes:jpg,png,jpeg',
         ]);
+        $id='';
         if (Input::hasFile('illustrate')) {
             $image      = Input::file('illustrate');
             $fileName=$this->uploadImage($image, 'illustrate');
         }
-        $data=['illustrator'=>$fileName, 'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id];
+        if(array_key_exists('id', $request)):
+            $id=$request->id;
+        endif;
+        $data=['id'=>$id,'illustrator'=>$fileName, 'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id];
         $saveIllustrate=$this->contributor->saveIllustrate($data);
         $notification = array(
             'message' => 'Your Illustrator has been added against meaning. You can bid now',
