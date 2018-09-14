@@ -15,7 +15,7 @@
                             </div>
                             <div class="info">
                                 <h3>{!! $record['title'] !!}</h3>
-                                <p>{!! substr($record['description'],0,150) !!}</p>
+                                {!! substr($record['description'],0,150) !!}
                             </div>
                             <a href="{!! lang_url('fun-facts', ['id'=>$record['id']]) !!}" class="readMore"><img src="{!! asset('assets/images/readMore.png') !!}"></a>
                         </div>
