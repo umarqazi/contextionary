@@ -45,14 +45,16 @@ class ContextPhraseRepo
         $contributedMeaning=$this->defineMeaningRepo->getAllContributedMeaning();
         foreach($contextPhrases as $key=>$record):
             $contextPhrases[$key]['status']=Config::get('constant.phrase_status.open');
+            $checkVote=$this->voteExpiryRepo->checkRecordType($record['context_id'], $record['phrase_id'], 'meaning');
+            if(!empty($checkVote)):
+                $contextPhrases[$key]['status']=Config::get('constant.phrase_status.submitted');
+            endif;
             foreach ($contributedMeaning as $meaning):
                 $checkVote='';
-                if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
-                    $contextPhrases[$key]['status']=Config::get('constant.phrase_status.in-progress');
-                endif;
-                $checkVote=$this->voteExpiryRepo->checkRecordType($record['context_id'], $record['phrase_id'], 'meaning');
-                if(!empty($checkVote)):
-                    $contextPhrases[$key]['status']=Config::get('constant.phrase_status.submitted');
+                if($contextPhrases[$key]['status']==Config::get('constant.phrase_status.open')):
+                    if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
+                        $contextPhrases[$key]['status']=Config::get('constant.phrase_status.in-progress');
+                    endif;
                 endif;
             endforeach;
         endforeach;
