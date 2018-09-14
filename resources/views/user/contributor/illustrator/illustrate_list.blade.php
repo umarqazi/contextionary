@@ -12,7 +12,7 @@
             @if(!$contextList->isEmpty())
                 @foreach($contextList as $context)
                     <div class="col-sm-6 col-md-4 col-lg-4">
-                        <a @if($context['status']=='Open') href="{!! lang_route('addIllustrate', ['context_id'=>$context['context_id'],'phrase_id'=>$context['phrase_id']]) !!}" @endif>
+                        <a @if($context['status']!=Config::get('constant.phrase_status.submitted')) href="{!! lang_route('addIllustrate', ['context_id'=>$context['context_id'],'phrase_id'=>$context['phrase_id']]) !!}" @endif>
                             <div class="categeoryBlock">
                                 <div class="mask"></div>
                                 <img src="{!!asset('storage/Contexts') !!}/{!! $context['context']['context_picture'] !!}" class="mainImg">

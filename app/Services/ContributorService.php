@@ -82,12 +82,8 @@ class ContributorService implements IService
      * get context against specific id
      */
     public function getContextPhrase($context_id, $phrase_id){
-        $contextPhrase=$this->contextPhrase->getContext($context_id, $phrase_id);
-        if($contextPhrase['coins']!=NULL):
-            return false;
-        else:
-            return $contextPhrase;
-        endif;
+        return $contextPhrase=$this->contextPhrase->getContext($context_id, $phrase_id);
+
     }
     /*
      * update contributor records
@@ -198,8 +194,13 @@ class ContributorService implements IService
             $contextPhrase[$key]['status']=Config::get('constant.phrase_status.open');
             $contextDetail=$this->contextPhrase->getContext($phrase['context_id'], $phrase['phrase_id']);
             $checkUserIllustrator=$this->getIllustrator($phrase['context_id'], $phrase['phrase_id']);
-            if(!empty($checkUserIllustrator)):
-                $contextPhrase[$key]['status']=Config::get('constant.phrase_status.in-progress');
+            if($checkUserIllustrator):
+                if($checkUserIllustrator->coins!=NULL):
+                    $contextPhrase[$key]['status']=Config::get('constant.phrase_status.submitted');
+                else:
+                    $contextPhrase[$key]['status']=Config::get('constant.phrase_status.in-progress');
+                endif;
+
             endif;
             $contextPhrase[$key]['context']=$contextDetail;
         endforeach;
@@ -209,7 +210,12 @@ class ContributorService implements IService
      * save illustrator
      */
     public function saveIllustrate($data){
-        return $this->illustrate->create($data);
+        if($data['id']!=NULL):
+            return $this->illustrate->update($data, $data['id']);
+        else:
+            return $this->illustrate->create($data);
+        endif;
+
     }
     /**
      * get Illustrator
