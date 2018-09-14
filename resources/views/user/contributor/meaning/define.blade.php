@@ -9,7 +9,7 @@
             @include('layouts.toaster')
         </div>
         <div class="row">
-            @if($contextList)
+            @if(!$contextList->isEmpty())
                 @foreach($contextList as $context)
                     <div class="col-sm-6 col-md-4 col-lg-4">
                         <a @if($context['status']!=Config::get('constant.phrase_status.submitted')) href="{!! lang_route('defineMeaning', ['context_id'=>$context['context_id'],'phrase_id'=>$context['phrase_id']]) !!}" @endif>
@@ -25,6 +25,12 @@
                         </a>
                     </div>
                 @endforeach
+            @else
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <strong class="record-message">{!! t('No Phrase available for Meaning') !!}</strong>
+                    </div>
+                </div>
             @endif
             <div class="col-md-12 mt-4 mb-4 text-center">
                 <div class="customPagination">
