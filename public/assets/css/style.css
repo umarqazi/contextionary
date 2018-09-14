@@ -172,7 +172,7 @@ color: #f7953a;
   transform: translateY(-50%);
   position: relative;
 }
-.In-Progress{
+.In-Progress, .Submitted, .Open{
   color: #f7941d;
 }
 .show-div{
@@ -215,7 +215,4 @@ color: #f7953a;
   color: #fff;
   font-size: 14px;
   text-align: justify;
-}
-.Submitted{
-  color:green;
 }
