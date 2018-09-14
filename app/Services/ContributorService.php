@@ -139,7 +139,7 @@ class ContributorService implements IService
         $this->$repository->update($updateColumns, $meaning_id);
         $total=$this->$repository->checkTotalPhrase($meaning_id, $data['type']);
         if($total=='1'){
-            $this->defineMeaning->addBidExpiry($data, $data['type']);
+            $this->biddingRepo->addBidExpiry($data, $data['type']);
         }
         $coins=Auth::user()->coins-$data['coins'];
         $userData=['coins'=>$coins];
@@ -151,12 +151,12 @@ class ContributorService implements IService
      */
     public function checkMeaning(){
         $today=Carbon::today();
-        $getAllMeaning=$this->defineMeaning->fetchBidding('meaning');
+        $getAllMeaning=$this->biddingRepo->fetchBidding('meaning');
         if($getAllMeaning){
             foreach($getAllMeaning as $meaning):
-                $context_id=$meaning->context_id;
-                $phrase_id=$meaning->phrase_id;
-                $expiry_date=$meaning->expiry_date;
+                $context_id=$meaning['context_id'];
+                $phrase_id=$meaning['phrase_id'];
+                $expiry_date=$meaning['expiry_date'];
                 if($context_id!=NULL && $phrase_id!=NULL):
                     $cron_job='0';
                     $checkTotal=$this->defineMeaning->totalMeaning($context_id, $phrase_id);
@@ -170,7 +170,7 @@ class ContributorService implements IService
                     if($cron_job=='1'):
                         $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($context_id, $phrase_id);
                         $this->voteService->addPhraseForVote($context_id, $phrase_id, 'meaning');
-                        $updateBidding=$this->defineMeaning->updateBiddingStatus($meaning->id);
+                        $updateBidding=$this->biddingRepo->updateBiddingStatus($meaning['id']);
                     endif;
                 endif;
             endforeach;

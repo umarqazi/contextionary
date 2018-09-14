@@ -21,11 +21,25 @@ class BiddingExpiryRepo
         $bidding=new BiddingExpiry();
         $this->bidding=$bidding;
     }
-
-    /**
-     * update expiry date
+    /*
+     * get current bidding
      */
-    public function updateRecord($context_id, $phrase_id){
-        return $this->bidding->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->update(['expiry_date'=>Carbon::yesterday()]);
+    public function fetchBidding($type){
+        return $records=$this->bidding->where(['status'=> 0, 'bid_type'=>$type])->get();
+    }
+    /**
+     * update bidding status
+     */
+    public function updateBiddingStatus($id){
+        return $this->bidding->where('id', $id)->update(['status'=>'1']);
+    }
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return bool
+     */
+    public function addBidExpiry($data, $type){
+        $date=Carbon::now()->addMonths(1);
+        return $this->bidding->insert(['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'bid_type'=>$data['type'], 'expiry_date'=>$date]);
     }
 }
