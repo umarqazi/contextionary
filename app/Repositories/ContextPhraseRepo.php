@@ -66,12 +66,10 @@ class ContextPhraseRepo
         $getContextPhrase=$this->getList()->where(['context_phrase.context_id'=>$context_id, 'context_phrase.phrase_id'=>$phrase_id])->first();
         $getMeaning=$this->defineMeaningRepo->fetchMeaning($context_id, $phrase_id);
         if(!empty($getMeaning)){
-            if($getMeaning->coins!=NULL):
-                return false;
-            endif;
             $getContextPhrase->setAttribute('id', $getMeaning->id);
             $getContextPhrase->setAttribute('meaning', $getMeaning->meaning);
             $getContextPhrase->setAttribute('phrase_type', $getMeaning->phrase_type);
+            $getContextPhrase->setAttribute('coins', $getMeaning->coins);
         }
         return $getContextPhrase;
     }

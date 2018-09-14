@@ -82,7 +82,12 @@ class ContributorService implements IService
      * get context against specific id
      */
     public function getContextPhrase($context_id, $phrase_id){
-        return $contextPhrase=$this->contextPhrase->getContext($context_id, $phrase_id);
+        $contextPhrase=$this->contextPhrase->getContext($context_id, $phrase_id);
+        if($contextPhrase['coins']!=NULL):
+            return false;
+        else:
+            return $contextPhrase;
+        endif;
     }
     /*
      * update contributor records
