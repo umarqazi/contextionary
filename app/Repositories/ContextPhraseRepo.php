@@ -12,6 +12,7 @@ namespace App\Repositories;
 use App\ContextPhrase;
 use App\Repositories\DefineMeaningRepo;
 use Config;
+use Auth;
 
 class ContextPhraseRepo
 {
@@ -45,15 +46,13 @@ class ContextPhraseRepo
         $contributedMeaning=$this->defineMeaningRepo->getAllContributedMeaning();
         foreach($contextPhrases as $key=>$record):
             $contextPhrases[$key]['status']=Config::get('constant.phrase_status.open');
-            $checkVote=$this->voteExpiryRepo->checkRecordType($record['context_id'], $record['phrase_id'], 'meaning');
-            if(!empty($checkVote)):
-                $contextPhrases[$key]['status']=Config::get('constant.phrase_status.submitted');
-            endif;
             foreach ($contributedMeaning as $meaning):
-                $checkVote='';
-                if($contextPhrases[$key]['status']==Config::get('constant.phrase_status.open')):
-                    if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
+                if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
+                    if($meaning['coins']==NULL && $meaning['user_id']==Auth::user()->id):
                         $contextPhrases[$key]['status']=Config::get('constant.phrase_status.in-progress');
+                    endif;
+                    if($meaning['coins']!=NULL && $meaning['user_id']==Auth::user()->id):
+                        $contextPhrases[$key]['status']=Config::get('constant.phrase_status.submitted');
                     endif;
                 endif;
             endforeach;
@@ -67,6 +66,9 @@ class ContextPhraseRepo
         $getContextPhrase=$this->getList()->where(['context_phrase.context_id'=>$context_id, 'context_phrase.phrase_id'=>$phrase_id])->first();
         $getMeaning=$this->defineMeaningRepo->fetchMeaning($context_id, $phrase_id);
         if(!empty($getMeaning)){
+            if($getMeaning->coins!=NULL):
+                return false;
+            endif;
             $getContextPhrase->setAttribute('id', $getMeaning->id);
             $getContextPhrase->setAttribute('meaning', $getMeaning->meaning);
             $getContextPhrase->setAttribute('phrase_type', $getMeaning->phrase_type);

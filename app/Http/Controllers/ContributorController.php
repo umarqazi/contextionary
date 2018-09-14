@@ -89,6 +89,14 @@ class ContributorController
      */
     public function defineMeaning($context_id, $phrase_id, $id=NULL){
         $contextList=$this->contributor->getContextPhrase($context_id, $phrase_id);
+        if($contextList==false):
+            $notification = array(
+                'message' => 'Bid has been placed against this meaning',
+                'alert_type' => 'danger',
+            );
+            $url=lang_url('define');
+            return Redirect::to($url)->with($notification);
+        endif;
         if($id!=NULL):
             $view='user.contributor.meaning.edit_meaning';
         else:
