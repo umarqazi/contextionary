@@ -136,9 +136,6 @@ class DefineMeaningRepo
     public function illustrates(){
         return $this->meaning->where(['status'=>'3', 'position'=>'1'])->paginate(9);
     }
-<<<<<<< HEAD
-}
-=======
     /*
      * get current bidding
      */
@@ -158,4 +155,3 @@ class DefineMeaningRepo
         return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->count();
     }
 }
->>>>>>> 0a12d6cfdd8e96f0ac3afe5bef0a333de850d104
