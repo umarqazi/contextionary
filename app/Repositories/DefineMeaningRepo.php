@@ -66,7 +66,7 @@ class DefineMeaningRepo
      * get group of context and phrase
      */
     public function fetchContextPhraseMeaning(){
-        return $records=$this->meaning->where('coins','!=', NULL)->where('position','=', NULL)->leftJoin('bidding_expiry', function ($query){
+        return $records=$this->meaning->where('coins','!=', NULL)->where('status','=', 0)->where('position','=', NULL)->leftJoin('bidding_expiry', function ($query){
             $query->on('define_meanings.context_id', '=', 'bidding_expiry.context_id');
             $query->on('define_meanings.phrase_id', '=', 'bidding_expiry.phrase_id');
         })->select('*', DB::raw('count(*) as total'))->groupBy('define_meanings.context_id', 'define_meanings.phrase_id')->get();
