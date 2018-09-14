@@ -146,20 +146,31 @@ class ContributorService implements IService
      */
     public function checkMeaning(){
         $today=Carbon::today();
-        $getAllMeaning=$this->defineMeaning->fetchContextPhraseMeaning();
-        foreach($getAllMeaning as $meaning):
-            if($meaning['context_id']!=NULL && $meaning['phrase_id']!=NULL):
-                if($meaning['total'] < 5):
-                    if(Carbon::parse($meaning['expiry_date']) < Carbon::parse($today)):
-                        $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($meaning['context_id'], $meaning['phrase_id']);
-                        $this->voteService->addPhraseForVote($meaning['context_id'], $meaning['phrase_id'], 'meaning');
+        $getAllMeaning=$this->defineMeaning->fetchBidding('meaning');
+        if($getAllMeaning){
+            foreach($getAllMeaning as $meaning):
+                $context_id=$meaning->context_id;
+                $phrase_id=$meaning->phrase_id;
+                $expiry_date=$meaning->expiry_date;
+                if($context_id!=NULL && $phrase_id!=NULL):
+                    $cron_job='0';
+                    $checkTotal=$this->defineMeaning->totalMeaning($context_id, $phrase_id);
+                    if($checkTotal < 5):
+                        if(Carbon::parse($expiry_date) < Carbon::parse($today)):
+                            $cron_job='1';
+                        endif;
+                    else:
+                        $cron_job='1';
                     endif;
-                else:
-                    $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($meaning['context_id'], $meaning['phrase_id']);
-                    $this->voteService->addPhraseForVote($meaning['context_id'], $meaning['phrase_id'], 'meaning');
+                    if($cron_job=='1'):
+                        $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($context_id, $phrase_id);
+                        $this->voteService->addPhraseForVote($context_id, $phrase_id, 'meaning');
+                        $updateBidding=$this->defineMeaning->updateBiddingStatus($meaning->id);
+                    endif;
                 endif;
-            endif;
-        endforeach;
+            endforeach;
+        }
+
     }
     /**
      * get Phrase Meanings
