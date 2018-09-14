@@ -46,7 +46,7 @@ class VoteController extends Controller
      */
     public function vote(VoteMeaning $voteMeaning){
         $voteMeaning->validate();
-        $data=['context_id'=>$voteMeaning['context_id'],'phrase_id'=>$voteMeaning['phrase_id'],'user_id'=>Auth::user()->id,'define_meaning_id'=>$voteMeaning['meaning'], 'grammer'=>$voteMeaning['meaning'],'spelling'=>$voteMeaning['meaning'],'audience'=>$voteMeaning['meaning'],'part_of_speech'=>$voteMeaning['meaning'],'vote'=>1];
+        $data=['context_id'=>$voteMeaning['context_id'],'phrase_id'=>$voteMeaning['phrase_id'],'user_id'=>Auth::user()->id,'define_meaning_id'=>$voteMeaning['meaning'], 'grammer'=>$voteMeaning['grammer'],'spelling'=>$voteMeaning['spelling'],'audience'=>$voteMeaning['audience'],'part_of_speech'=>$voteMeaning['part_of_speech'],'vote'=>1];
         $addVote=$this->voteService->vote($data);
         if($addVote['status']==false){
             $notification = array(

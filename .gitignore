@@ -13,3 +13,4 @@ yarn-error.log
 composer.lock
 config/database.php
 public/assets/images/*
+/storage/*

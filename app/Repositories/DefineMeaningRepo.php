@@ -87,15 +87,6 @@ class DefineMeaningRepo
         endif;
         return $checkContextPhrase;
     }
-    /**
-     * @param $context_id
-     * @param $phrase_id
-     * @return bool
-     */
-    public function addBidExpiry($data, $type){
-        $date=Carbon::now()->addMonths(1);
-        return DB::table('bidding_expiry')->insert(['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'bid_type'=>$data['type'], 'expiry_date'=>$date]);
-    }
     /*
      * update status except first 9
      */
@@ -135,18 +126,6 @@ class DefineMeaningRepo
      */
     public function illustrates(){
         return $this->meaning->where(['status'=>'3', 'position'=>'1'])->paginate(9);
-    }
-    /*
-     * get current bidding
-     */
-    public function fetchBidding($type){
-        return $records=DB::table('bidding_expiry')->where(['status'=> 0, 'bid_type'=>$type])->get();
-    }
-    /**
-     * update bidding status
-     */
-    public function updateBiddingStatus($id){
-        return DB::table('bidding_expiry')->where('id', $id)->update(['status'=>'1']);
     }
     /**
      * total meaning
