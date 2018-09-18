@@ -16,7 +16,7 @@ use App\Repositories\FunFactsRepo;
 class FunFactsService extends BaseService implements IService
 {
     /**
-     * @var
+     * @var FunFactsRepo
      */
     protected $fun_facts_repo;
 

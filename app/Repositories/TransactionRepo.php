@@ -11,7 +11,7 @@ namespace App\Repositories;
 use App\Transaction;
 use App\TransactionDetail;
 
-class TransactionRepo
+class TransactionRepo extends BaseRepo implements IRepo
 {
     public function __construct()
     {

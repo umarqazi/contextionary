@@ -47,4 +47,12 @@ class User extends Authenticatable
     public function defineMeaning(){
         return $this->hasMany('App/DefineMeaning');
     }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function glossary() {
+        return $this->belongsToMany('App\Glossary', 'my_collection', 'user_id', 'glossary_id')->withTimestamps();
+    }
 }

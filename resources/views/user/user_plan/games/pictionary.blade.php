@@ -4,21 +4,7 @@
 @stop
 @section('content')
 <div class="container-fluid contributorMain funfact pictionaryQuiz">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tabsContainer">
-                <ul class="customTabs tabsView">
-                    <li class="active"><a href="#">Pictionary</a></li>
-                    <li><a href="#">Spot the intruder</a></li>
-                    <li><a href="#">hangman</a></li>
-                </ul>
-                <div class="searchHolder light">
-                    <i class="fa fa-search"></i>
-                    <input type="search" class="fld" placeholder="Search">
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('layouts.flc_header')
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="score">

@@ -25,7 +25,6 @@
                         <strong class="record-message">{!! t('Record not Found') !!}</strong>
                     </div>
                 @endif
-
             </div>
         </div>
     </div>

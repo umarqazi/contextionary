@@ -15,9 +15,9 @@ class CreateGlossaryItemsTable extends Migration
     {
         Schema::create('glossary_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->integer('price');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('thumbnail');
             $table->string('file');
             $table->string('url');

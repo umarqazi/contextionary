@@ -13,7 +13,7 @@ namespace App\Repositories;
 
 use App\FunFact;
 
-class FunFactsRepo
+class FunFactsRepo extends BaseRepo implements IRepo
 {
     /**
      * @var FunFact

@@ -14,6 +14,7 @@
   {!! HTML::style('assets/css/responsive.css') !!}
   {!! HTML::style('assets/css/style.css') !!}
   {!! HTML::style('https://use.fontawesome.com/releases/v5.1.1/css/all.css') !!}
+  {!! HTML::style('assets/js/source/jquery.fancybox.css') !!}
   @yield('head_css')
   {{-- End head css --}}
   {!! HTML::script('assets/js/jquery-3.3.1.min.js') !!}
