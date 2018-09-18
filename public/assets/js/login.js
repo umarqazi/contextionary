@@ -44,3 +44,6 @@ $(".pricing-palden .pricing-item").mouseleave(function () {
   $('.pricing-item.pricing__item--featured').addClass('active');
 });
 
+$("#meaning-area").keyup(function(){
+  $("#count").text("Characters: " + ($(this).val().length)+" / 2500");
+});

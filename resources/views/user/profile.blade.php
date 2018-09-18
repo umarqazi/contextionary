@@ -4,18 +4,8 @@
 @stop
 @section('content')
 <div class="container-fluid contributorMain userProfile">
+    @include('layouts.profile-menu')
     <div class="row">
-        <div class="col-md-12">
-            <div class="tabsContainer">
-                <ul class="customTabs">
-                    <li class="active title">{!! t('My Profile') !!} <a href="{!! lang_route('edit profile') !!}"><i class="fas fa-pencil-alt"></i></a></li>
-                </ul>
-                <div class="searchHolder light">
-                    <i class="fa fa-search"></i>
-                    <input type="search" class="fld" placeholder="Search">
-                </div>
-            </div>
-        </div>
         <div class="col-md-12">
             @include('layouts.toaster')
         </div>
@@ -28,7 +18,7 @@
                     <ul>
                         <li>{!! t('First Name') !!}: <span>{!! $user['first_name']!!}</span></li>
                         <li>{!! t('Last Name') !!}: <span>{!! $user['last_name']!!}</span></li>
-                        <li>{!! t('Pseudonyme') !!}: <span>{!! $user['profile']['pseudonyme']!!}</span></li>
+                        @if($user['profile']['pseudonyme'])<li>{!! t('Pseudonyme') !!}: <span>{!! $user['profile']['pseudonyme']!!}</span></li>@endif
                         <li>{!! t('Sex') !!}: <span>{!! $user['profile']['gender']!!}</span></li>
                         <li>{!! t('Phone No') !!}: <span>{!! $user['profile']['phone_number']!!}</span></li>
                         <li>{!! t('Native Language') !!}: <span>{!! $user['profile']['native_language']!!}</span></li>

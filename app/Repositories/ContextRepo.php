@@ -35,4 +35,10 @@ class ContextRepo
     public function getPaginatedRecord(){
         return $this->getRecords()->paginate(9);
     }
+    /**
+     * get all context
+     */
+    public function getContext(){
+        return $this->getRecords()->get();
+    }
 }

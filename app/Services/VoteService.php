@@ -47,7 +47,7 @@ Class VoteService{
     public function addPhraseForVote($context, $phrase, $type){
         $date=Carbon::now()->addMonths(1);
         $data=['context_id'=>$context, 'phrase_id'=>$phrase, 'vote_type'=>$type, 'expiry_date'=>$date];
-        $record=$this->voteExpiry->checkRecords($context, $phrase);
+        $record=$this->voteExpiry->checkRecords($context, $phrase, $type);
         if(!$record):
             $this->voteExpiry->create($data);
         endif;
@@ -113,12 +113,12 @@ Class VoteService{
      * check expired votes
      */
     public function checkExpiredVotes(){
-        $getVote=$this->voteExpiry->getAllMeaningVotes('meaning');
+        $getVote=$this->voteExpiry->getAllMeaningVotes(env("MEANING"));
         if($getVote):
             foreach($getVote as $vote):
                 $cron_run='0';
                 $getTotalVote=$this->voteMeaning->totalVotes($vote['context_id'], $vote['phrase_id']);
-                if($getTotalVote < 5):
+                if($getTotalVote < Config::get('constant.selected_bids')):
                     if($vote['expiry_date'] < Carbon::today()):
                         $cron_run='1';
                     endif;

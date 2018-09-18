@@ -13,7 +13,7 @@
       <div class="col-md-6">
         <div class="customForm-group">
           {!! Form::text('first_name', Input::old('first_name'), ['class'=>'customInput', 'placeholder'=>t('First Name')]) !!}
-          <span class="focus-border"></span>
+          <span class="focus-border"></span><span class="asterick">*</span>
           <i class="fa fa-user"></i>
           @if ($errors->has('first_name'))
           <span class="help-block">
@@ -25,7 +25,7 @@
       <div class="col-md-6">
         <div class="customForm-group">
           {!! Form::text('last_name', Input::old('last_name'), ['class'=>'customInput', 'placeholder'=>'Last Name']) !!}
-          <span class="focus-border"></span>
+          <span class="focus-border"></span><span class="asterick">*</span>
           <i class="fa fa-user"></i>
           @if ($errors->has('last_name'))
           <span class="help-block">
@@ -58,7 +58,7 @@
       </div>
 
       <div class="col-md-6">
-        <div class="customForm-group">
+        <div class="customForm-group"><span class="asterick">*</span>
           {!! Form::select('gender',['Male'=>'Male', 'Female'=>'Female'] ,null, ['class'=>'customSelect w-100', 'placeholder'=>'Gender']) !!}
           @if ($errors->has('gender'))
           <span class="help-block">
@@ -71,7 +71,7 @@
       <div class="col-md-6">
         <div class="customForm-group">
           {!! Form::text('email', Input::old('email'), ['class'=>'customInput', 'placeholder'=>'Email']) !!}
-          <span class="focus-border"></span>
+          <span class="focus-border"></span><span class="asterick">*</span>
           <i class="fa fa-envelope"></i>
           @if ($errors->has('email'))
           <span class="help-block">
@@ -85,7 +85,7 @@
         <div class="customForm-group">
           {!! Form::text('phone_number', Input::old('phone_number'), ['class'=>'customInput', 'placeholder'=>'Phone']) !!}
           <span class="focus-border"></span>
-          <i class="fa fa-phone"></i>
+            <i class="fa fa-phone"></i><span class="asterick">*</span>
           @if ($errors->has('phone_number'))
           <span class="help-block">
             <strong>{{ t($errors->first('phone_number')) }}</strong>
@@ -96,9 +96,8 @@
 
       <div class="col-md-6">
         <div class="customForm-group">
-          {!! Form::text('country', Input::old('country'), ['class'=>'customInput', 'placeholder'=>t('Country of residence')]) !!}
+          @include('countries')
           <span class="focus-border"></span>
-          <i class="fa fa-globe"></i>
         </div>
       </div>
 

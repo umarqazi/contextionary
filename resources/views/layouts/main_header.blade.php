@@ -1,6 +1,6 @@
 <div class="userHeader">
   <div class="row">
-    <div class="col-md-8 col-sm-6">
+    <div class="col-md-7 col-sm-6">
       <img src="{!! asset('assets/images/dashboard-icon.png') !!}" class="menuIcon cursor">
       <img src="{!! asset('assets/images/dashboard-icon.png') !!}" class="mobileIcon cursor">
       @if(Auth::check())
@@ -41,26 +41,24 @@
           <div class="topLinks">
             <?php $roles = Auth::user()->roles->pluck('name');?>
             @foreach($roles as $role)
-              <a href="#">{!! $role !!} @if($role==Config::get('constant.contributorRole.translator')) ({!! Auth::user()->profile->language_proficiency !!}) @endif</a>
+              <p>{!! $role !!} @if($role==Config::get('constant.contributorRole.translator')) ({!! Auth::user()->profile->language_proficiency !!}) @endif</p>
             @endforeach
           </div>
         @endif
       @endif
     </div>
-    <div class="col-md-4 col-sm-6 text-right">
-      <div class="languageBar">
-        <span class="active"><img src="{!! asset('assets/images/') !!}/{!!Config::get('multilang.locales.'.App::getLocale().'.flag') !!}"> {!! Config::get('multilang.locales.'.App::getLocale().'.name') !!} <i class="fa fa-chevron-down"></i></span>
-        <ul class="list">
-          <a href="{!! lang_route('locale', ['locale'=>'en']) !!}"><li><img src="{!! asset('assets/images/english-flag.png') !!}"> English </li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><li><img src="{!! asset('assets/images/french-flag.png') !!}"> Frech</li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'sp']) !!}"><li><img src="{!! asset('assets/images/spain-flag.png') !!}"> Spanish</li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'hi']) !!}"><li><img src="{!! asset('assets/images/hindi-flag.png') !!}"> Hindi</li></a>
-        </ul>
+    <div class="col-md-5 col-sm-6 text-right">
+      <div class="switch-account dropDown">
+        <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span>Switch <i class="fa fa-angle-down"></i></span>
+        <div class="dropDown-block">
+          <a href="#" class="account"><i class="fa fa-angle-right"></i> Switch to user account</a>
+        </div>
       </div>
       @if(Auth::check())
         @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
           <div class="rightMenu">
             <a href="#" class="menu"></a>
+            <a href="#" class="statistics">Statistics</a>
             <div class="rightDropdown">
               <h2>my Statistics</h2>
               <table class="customTable">
@@ -138,6 +136,16 @@
           </div>
         @endif
       @endif
+      <div class="languageBar">
+        <span class="active"><img src="{!! asset('assets/images/') !!}/{!!Config::get('multilang.locales.'.App::getLocale().'.flag') !!}"> {!! Config::get('multilang.locales.'.App::getLocale().'.name') !!} <i class="fa fa-chevron-down"></i></span>
+        <ul class="list">
+          <a href="{!! lang_route('locale', ['locale'=>'en']) !!}"><li><img src="{!! asset('assets/images/english-flag.png') !!}"> English </li></a>
+          <a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><li><img src="{!! asset('assets/images/french-flag.png') !!}"> Frech</li></a>
+          <a href="{!! lang_route('locale', ['locale'=>'sp']) !!}"><li><img src="{!! asset('assets/images/spain-flag.png') !!}"> Spanish</li></a>
+          <a href="{!! lang_route('locale', ['locale'=>'hi']) !!}"><li><img src="{!! asset('assets/images/hindi-flag.png') !!}"> Hindi</li></a>
+        </ul>
+      </div>
+
     </div>
   </div>
 </div>

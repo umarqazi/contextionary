@@ -34,7 +34,7 @@ class VoteController extends Controller
         if($meanings==false){
             $notification = array(
                 'message' => 'You already cast your vote against this phrase',
-                'alert_type' => 'danger',
+                'alert_type' => 'error',
             );
             $url=lang_url('phrase-list');
             return Redirect::to($url)->with($notification);
@@ -51,7 +51,7 @@ class VoteController extends Controller
         if($addVote['status']==false){
             $notification = array(
                 'message' => $addVote['message'],
-                'alert_type' => 'danger',
+                'alert_type' => 'error',
             );
             return Redirect::back()->with($notification);
         }else{
@@ -73,7 +73,7 @@ class VoteController extends Controller
         if($vote==false){
             $notification = array(
                 'message' => 'You already cast your vote against this phrase',
-                'alert_type' => 'danger',
+                'alert_type' => 'error',
             );
         }else{
             $notification = array(
