@@ -53,8 +53,11 @@ class ContributorController
     public function saveContributor(Request $request){
         try{
             $notification=[];
-            $records['context']=$request->context;
-            array_push($records['context'], '1','2');
+            $records['context']=[];
+            if($request->context){
+                $records['context']=$request->context;
+            }
+            array_push($records['context'], '1');
             $records['role']=$request->role;
             $records['language']=$request->language;
             $records['user_id']=$request->user_id;
