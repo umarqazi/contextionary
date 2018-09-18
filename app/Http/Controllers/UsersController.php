@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Services\ContributorService;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
 use App\User;
@@ -21,6 +22,7 @@ use Carbon;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Repositories\UserRepo;
+use Config;
 
 class UsersController extends Controller
 {
@@ -31,6 +33,7 @@ class UsersController extends Controller
     protected  $authService;
     protected  $user;
     protected $register;
+    protected $contributorService;
 
     public function __construct(RegisterController $registerController, UserService $userServices, RoleService $role, AuthService $authService)
     {
@@ -38,6 +41,8 @@ class UsersController extends Controller
         $this->userRoles = $role;
         $this->authService = $authService;
         $this->register=$registerController;
+        $contributor=new ContributorService();
+        $this->contributorService=$contributor;
     }
     public function validateRole(){
         if(Auth::check()){
@@ -148,5 +153,36 @@ class UsersController extends Controller
     public function showPaymentInfo($plan){
         $this->user = Auth::user();
         return view::make('user.user_plan.pay_with_stripe')->with(['id'=>$this->user->id, 'plan'=>$plan]);
+    }
+    /**
+     * get roles of user
+     */
+    public function editRoles(){
+        $user=Auth::user();
+        $roles=$user->getRoleNames();
+        $contributor=$this->contributorService->getParentContextList();
+        $familiarContext=$this->contributorService->getFamiliarContext($user->id);
+        foreach($contributor as $key=>$context):
+            foreach($familiarContext as $familiar):
+                if($familiar['context_id']==$context['context_id']):
+                    $contributor[$key]['selected']=$familiar['context_id'];
+                endif;
+            endforeach;
+        endforeach;
+        $contributorRoles=Config::get('constant.contributorRole');
+        $userRoles=[];
+        $i=0;
+        foreach($contributorRoles as $role):
+            $userRoles[$i]['role']=$role;
+            $userRoles[$i]['selected']='';
+            foreach($roles as $currentRole):
+                if($role==$currentRole):
+                    $userRoles[$i]['selected']=$currentRole;
+                endif;
+            endforeach;
+            $i++;
+        endforeach;
+        $language=$user->profile->language_proficiency;
+        return view::make('user.roles')->with(['roles'=>$userRoles,'language'=>$language, 'contextList'=>$contributor, 'id'=>$user->id, 'familiar_context'=>$familiarContext]);
     }
 }

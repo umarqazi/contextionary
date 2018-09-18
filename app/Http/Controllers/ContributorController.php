@@ -45,24 +45,35 @@ class ContributorController
         }catch (\Exception $e){
             $notification = array(
                 'message' => $e->getMessage(),
-                'alert_type' => 'danger'
+                'alert_type' => 'error'
             );
             return Redirect::back()->with($notification);
         }
     }
     public function saveContributor(Request $request){
         try{
-            $records['role']=$request->role;
+            $notification=[];
             $records['context']=$request->context;
+            array_push($records['context'], '1','2');
+            $records['role']=$request->role;
             $records['language']=$request->language;
             $records['user_id']=$request->user_id;
             $this->contributor->updateContributorRecord($records);
-            return Redirect::to(lang_url('dashboard'));
+            if($request->profile==1):
+                $notification = array(
+                    'message' => 'Record has been updated',
+                    'alert_type' => 'success'
+                );
+                $url=lang_url('profile');
+            else:
+                $url=lang_url('dashboard');
+            endif;
+            return Redirect::to($url)->with($notification);
 
         }catch(\Exception $e){
             $notification = array(
                 'message' => $e->getMessage(),
-                'alert_type' => 'danger'
+                'alert_type' => 'error'
             );
             return Redirect::back()->with($notification);
         }
@@ -73,7 +84,8 @@ class ContributorController
     public function define(){
         $bucketURL = Storage::disk('local')->url(Config::get('constant.ContextImages'));
         $contextList=$this->contributor->getAllContextPhrase();
-        return view::make('user.contributor.meaning.define')->with(['contextList'=>$contextList, 'bucketUrl'=>$bucketURL]);
+        $data=['route'=>'defineMeaning', 'title'=>'Phrase for Meaning'];
+        return view::make('user.contributor.meaning.define')->with(['data'=>$data,'contextList'=>$contextList, 'bucketUrl'=>$bucketURL]);
     }
     public function purchaseCoins(){
         $getCoinsList=Coin::all();
@@ -81,6 +93,13 @@ class ContributorController
     }
     public function addCoins(Request $request){
         $coin=$request->coins;
+        if($coin == NULL):
+            $notification = array(
+                'message' => 'Please select the Coins Deal first',
+                'alert_type' => 'error',
+            );
+            return Redirect::back()->with($notification);
+        endif;
         $getCoinInfo=Coin::find($coin);
         return view::make('user.contributor.transactions.pay_with_stripe')->with(['id'=>Auth::user()->id, 'coin'=>$getCoinInfo]);
     }
@@ -92,7 +111,7 @@ class ContributorController
         if($contextList['coins']!=NULL):
             $notification = array(
                 'message' => 'Bid has been placed against this meaning',
-                'alert_type' => 'danger',
+                'alert_type' => 'error',
             );
             $url=lang_url('define');
             return Redirect::to($url)->with($notification);
@@ -132,7 +151,7 @@ class ContributorController
         if($updateRecord==false):
             $notification = array(
                 'message' => 'Purchase coins for bidding on your meaning',
-                'alert_type' => 'danger',
+                'alert_type' => 'error',
             );
             return Redirect::back()->with($notification);
         else:
@@ -150,11 +169,12 @@ class ContributorController
      */
     public function illustrate(){
         $contextList=$this->contributor->getIllustratePhrase();
-        return view::make('user.contributor.illustrator.illustrate_list')->with('contextList',$contextList);
+        $data=['route'=>'addIllustrate', 'title'=>'Phrase for Illustrator'];
+        return view::make('user.contributor.meaning.define')->with(['contextList'=>$contextList, 'data'=>$data]);
     }
     /** get meaning for illustrator */
     public function addIllustrate($context_id, $phrase_id){
-        $contextList=$this->contributor->getContextPhrase($context_id, $phrase_id);
+        $contextList=$this->contributor->getMeaningForIllustrate($context_id, $phrase_id);
         $contextList['illustrator']=$this->contributor->getIllustrator($context_id, $phrase_id);
         return view::make('user.contributor.illustrator.add_illustrator')->with(['data'=>$contextList, 'illustrate'=>'1']);
     }

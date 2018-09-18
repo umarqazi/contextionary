@@ -11,8 +11,9 @@
                 <div class="col-md-12">
                     {!! Form::open(['url'=>lang_route("saveContributor"), 'enctype'=>'multipart/form-data', 'method'=>'post']) !!}
                     {!! Form::hidden('user_id', $id,[]) !!}
+                    {!! Form::hidden('profile', '0',[]) !!}
                     <div class="planBlock form-container active desired-rolls">
-                        <h3 class="BlueBackground">Select Your Desired role/s</h3>
+                        <h3 class="BlueBackground">{!! t('Select Your Desired role/s') !!}</h3>
                         <div class="row justify-content-center">
                             <div class="col-md-2">
                                 <div class="md-form ml-4 mt-0">
@@ -69,7 +70,7 @@
                     <div class="row wow fadeIn form-container select-lang" data-wow-delay="0.6s">
                         <div class="col-md-12">
                             <div class="planBlock">
-                                <h3 class="BlueBackground">Select the language for which you have the most advance level proficiency</h3>
+                                <h3 class="BlueBackground">{!! t('Select the language for which you have the most advance level proficiency') !!}</h3>
                                 <div class="row justify-content-center">
                                     <div class="col-md-2">
                                         <div class="custom-control custom-radio d-block my-2">

@@ -32,7 +32,9 @@ class SendVerificationEmail implements ShouldQueue
      */
     public function handle()
     {
-        $email = new EmailVerification($this->user);
-        $mail=Mail::to($this->user->email)->send($email);
+        if($this->user->status != '1'){
+            $email = new EmailVerification($this->user);
+            $mail=Mail::to($this->user->email)->send($email);
+        }
     }
 }

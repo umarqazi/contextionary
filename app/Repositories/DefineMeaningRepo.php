@@ -14,6 +14,7 @@ use Auth;
 use DB;
 use Carbon\Carbon;
 use App\Repositories\ContextPhraseRepo;
+use Config;
 
 class DefineMeaningRepo
 {
@@ -94,7 +95,7 @@ class DefineMeaningRepo
 
         /**update status for vote of first 9 contributor*/
 
-        $records=$this->getRecords($context_id, $phrase_id)->limit(3)->update(['status'=>'1']);
+        $records=$this->getRecords($context_id, $phrase_id)->limit(Config::get('constant.selected_bids'))->update(['status'=>'1']);
 
         /** update status for refund of contributor */
 
@@ -132,5 +133,11 @@ class DefineMeaningRepo
      */
     public function totalMeaning($context_id, $phrase_id){
         return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->count();
+    }
+    /**
+     * get first meaning for illustrator
+     */
+    public function selectedMeaning($context_id, $phrase_id){
+        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'position'=>'1'])->first();
     }
 }

@@ -35,8 +35,8 @@ class VoteExpiryRepo
     /**
      * check previous records
      */
-    public function checkRecords($context_id, $phrase_id){
-        return $this->voteExpiry->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->first();
+    public function checkRecords($context_id, $phrase_id, $type){
+        return $this->voteExpiry->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'vote_type'=>$type])->first();
     }
     public function votes($type){
         return $this->voteExpiry->where(['vote_type'=>$type, 'status'=>'0'])->select('vote_expiries.*');
