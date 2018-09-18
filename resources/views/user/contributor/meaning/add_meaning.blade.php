@@ -21,7 +21,7 @@
                 <span class="whiteText"><strong>{!! t('Phrase Type') !!}:</strong> @if($data['phrase_type']) <span class="whiteText">{!! Config::get('constant.PhraseType.'.$data['phrase_type']) !!}</span>
                     @endif</span>
                 @if(!$data['phrase_type'])
-                    {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'form-control'])!!}
+                    {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'customSelect'])!!}
                     @if ($errors->has('phrase_type'))
                         <div class="help-block"><strong>{{ $errors->first('phrase_type') }}</strong></div>
                     @endif
@@ -30,10 +30,10 @@
         </div>
         <div class="row mt-4">
             <div class="col-md-12">
-                <label class="customLabel">Phrase Meaning</label>
+                <label class="customLabel">{!! t('Phrase Meaning') !!}</label>
                 @if(!$data['id'])
-                    {!! Form::textarea('meaning', $data['meaning'], ['class'=>'enter-phrase' ,'placeholder'=>'Enter Phrase Meaning']) !!}
-                    <p class="text-right white-text">{!! t('Characters') !!} 0/2500</p>
+                    {!! Form::textarea('meaning', $data['meaning'], ['maxlength'=>"2500",'id'=>'meaning-area','class'=>'enter-phrase' ,'placeholder'=>'Enter Phrase Meaning']) !!}
+                    <p class="text-right white-text"><span id="count">{!! t('Characters') !!} 0/2500</span></p>
                     @if ($errors->has('meaning'))
                         <div class="help-block"><strong>{{ $errors->first('meaning') }}</strong></div>
                     @endif
@@ -53,36 +53,23 @@
             </div>
             @if(!$data['id'])
                 <div class="col-md-12 mt-4 text-center actionsBtn">
-                    <a href="{!! URL::previous() !!}" class="orangeBtn ml-3 waves-light">Return</a>
-                    <button class="orangeBtn ml-3 waves-light">Save</button>
+                    <a href="{!! URL::previous() !!}" class="orangeBtn ml-3 waves-light">{!! t('Return') !!}</a>
+                    <button class="orangeBtn ml-3 waves-light">{!! t('Save') !!}</button>
                 </div>
             @endif
         </div>
         {!! Form::close() !!}
         @if($data['id'] )
             {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
-            <div class="row mt-4">
-                <div class="col-md-12 mt-4 text-center actionsBtn">
-                    <div class="coinsWrapper">
-                        <span class="white-text">{!! t('Coins') !!}</span>
-                        <button type="button" class="sub"><i class="fa fa-minus"></i></button>
-                        {!! Form::number('bid', '1',['class'=>'coins', 'min'=>'1']) !!}
-                        {!! Form::hidden('meaning_id', $data['id'], []) !!}
-                        {!! Form::hidden('context_id', $data['context_id'], []) !!}
-                        {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
-                        {!! Form::hidden('model', 'defineMeaning', []) !!}
-                        {!! Form::hidden('type', 'meaning', []) !!}
-                        {!! Form::hidden('route', 'define', []) !!}
-                        <button type="button" class="add"><i class="fa fa-plus"></i></button>
-                        @if ($errors->has('coins'))
-                            <div class="help-block"><strong>{{ $errors->first('coins') }}</strong></div>
-                        @endif
-                    </div>
-                    <button type="submit" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Bid') !!}</button>
-                    <a href="{!! lang_route('editMeaning', ['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'id'=>$data['id']]) !!}" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</a>
-                </div>
-            </div>
+            @include('user.contributor.bid')
+            {!! Form::hidden('meaning_id', $data['id'], []) !!}
+            {!! Form::hidden('context_id', $data['context_id'], []) !!}
+            {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
+            {!! Form::hidden('model', 'defineMeaning', []) !!}
+            {!! Form::hidden('type', env("MEANING"), []) !!}
+            {!! Form::hidden('route', 'define', []) !!}
             {!! Form::close() !!}
         @endif
     </div>
+    {!! HTML::script('assets/js/login.js') !!}
 @endsection

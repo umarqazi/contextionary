@@ -15,12 +15,12 @@ class CreateUserProfilesTable extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('pseudonyme');
-            $table->string('date_birth');
+            $table->string('pseudonyme')->nullable();
+            $table->string('date_birth')->nullable();
             $table->string('gender');
             $table->string('phone_number');
             $table->string('country');
-            $table->string('native_language');
+            $table->string('native_language')->nullable();
             $table->text('bio')->nullable();
             $table->string('language_proficiency')->nullable();
             $table->integer('user_id')->unsigned();

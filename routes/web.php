@@ -23,6 +23,7 @@ MultiLang::routeGroup(function($router) {
             Route::get('/dashboard', 'UsersController@index')->name('dashboard');
             Route::get('profile',  'UsersController@profile')->name('profile');
             Route::get('edit-profile',  'UsersController@edit')->name('edit profile');
+            Route::get('edit-roles',  'UsersController@editRoles')->name('edit roles');
             Route::get('selectPlan',  'UsersController@selectPlan')->name('selectPlan');
             Route::get('userPlan',  'UsersController@userPlan')->name('userPlan');
             Route::get('payment/{plan}',  'UsersController@showPaymentInfo')->name('payment');
@@ -74,6 +75,7 @@ MultiLang::routeGroup(function($router) {
     Route::group(array('prefix' => 'cron'), function(){
         Route::get('meaning',  'CronController@meaningToVote')->name('meaning');
         Route::get('meaning-vote',  'CronController@checkExpiredVotes')->name('votes');
+        Route::get('illustratorCron',  'CronController@illustratorBidtoVote')->name('illustratorCron');
     });
     Route::get('locale/{locale}',  'LocaleController@locale')->name('locale');
     Route::get('switchLanguage/{locale}',  'LocaleController@switchLanguage')->name('switchLanguage');

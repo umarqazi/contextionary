@@ -41,21 +41,26 @@ class ContextPhraseRepo
     /*
      * get paginated records
      */
-    public function getPaginated(){
-        $contextPhrases=$this->getList()->orderBy('context_phrase.work_order', 'ASC')->take(27)->paginate(9);
+    public function getPaginated($contexts){
+        $contextPhrases=$this->getList()->whereIn('context_immediate_parent_id', $contexts)->orderBy('context_phrase.work_order', 'ASC')->take(27)->paginate(9);
         $contributedMeaning=$this->defineMeaningRepo->getAllContributedMeaning();
         foreach($contextPhrases as $key=>$record):
-            $contextPhrases[$key]['status']=Config::get('constant.phrase_status.open');
-            foreach ($contributedMeaning as $meaning):
-                if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
-                    if($meaning['coins']==NULL && $meaning['user_id']==Auth::user()->id):
-                        $contextPhrases[$key]['status']=Config::get('constant.phrase_status.in-progress');
+            $checkVote=$this->voteExpiryRepo->checkRecords($record['context_id'], $record['phrase_id'], env('MEANING'));
+            if(!empty($checkVote)):
+                unset($contextPhrases[$key]);
+            else:
+                $contextPhrases[$key]['status']=Config::get('constant.phrase_status.open');
+                foreach ($contributedMeaning as $meaning):
+                    if($record['context_id']==$meaning['context_id'] && $record['phrase_id']==$meaning['phrase_id']):
+                        if($meaning['coins']==NULL && $meaning['user_id']==Auth::user()->id):
+                            $contextPhrases[$key]['status']=Config::get('constant.phrase_status.in-progress');
+                        endif;
+                        if($meaning['coins']!=NULL && $meaning['user_id']==Auth::user()->id):
+                            $contextPhrases[$key]['status']=Config::get('constant.phrase_status.submitted');
+                        endif;
                     endif;
-                    if($meaning['coins']!=NULL && $meaning['user_id']==Auth::user()->id):
-                        $contextPhrases[$key]['status']=Config::get('constant.phrase_status.submitted');
-                    endif;
-                endif;
-            endforeach;
+                endforeach;
+            endif;
         endforeach;
         return $contextPhrases;
     }
@@ -65,6 +70,20 @@ class ContextPhraseRepo
     public function getContext($context_id, $phrase_id){
         $getContextPhrase=$this->getList()->where(['context_phrase.context_id'=>$context_id, 'context_phrase.phrase_id'=>$phrase_id])->first();
         $getMeaning=$this->defineMeaningRepo->fetchMeaning($context_id, $phrase_id);
+        if(!empty($getMeaning)){
+            $getContextPhrase->setAttribute('id', $getMeaning->id);
+            $getContextPhrase->setAttribute('meaning', $getMeaning->meaning);
+            $getContextPhrase->setAttribute('phrase_type', $getMeaning->phrase_type);
+            $getContextPhrase->setAttribute('coins', $getMeaning->coins);
+        }
+        return $getContextPhrase;
+    }
+    /*
+     * get Context and meaning
+     */
+    public function getFirstPositionMeaning($context_id, $phrase_id){
+        $getContextPhrase=$this->getList()->where(['context_phrase.context_id'=>$context_id, 'context_phrase.phrase_id'=>$phrase_id])->first();
+        $getMeaning=$this->defineMeaningRepo->selectedMeaning($context_id, $phrase_id);
         if(!empty($getMeaning)){
             $getContextPhrase->setAttribute('id', $getMeaning->id);
             $getContextPhrase->setAttribute('meaning', $getMeaning->meaning);

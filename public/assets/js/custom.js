@@ -123,7 +123,9 @@ $(document).ready(function () {
 
     $('.sub').click(function () {
         var coins=$(".coins").val();
-        $(".coins").val(+coins - 1);
+        if(coins > 0){
+            $(".coins").val(+coins - 1);
+        }
     });
 
     $(".enter-phrase").keypress(function () {
