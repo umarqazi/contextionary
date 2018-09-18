@@ -22,6 +22,7 @@ class SpotTheIntruderRepo extends BaseRepo implements IRepo
     }
 
     /**
+     * @param $exclude
      * @return mixed
      */
     public function getRandom($exclude)

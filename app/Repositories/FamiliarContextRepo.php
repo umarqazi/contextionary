@@ -22,4 +22,17 @@ class FamiliarContextRepo
     public function create($data){
         return $this->familiarContext->insert($data);
     }
+    /**
+     * get context of user
+     */
+    public function getContext($user_id){
+        return $this->familiarContext->where('user_id', $user_id)->get();
+    }
+    /**
+     * get delete all context of user
+     */
+    public function delete($user_id){
+        return $this->familiarContext->where('user_id', $user_id)->delete();
+    }
+    
 }

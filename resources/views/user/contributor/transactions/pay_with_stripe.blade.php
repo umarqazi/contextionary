@@ -6,22 +6,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="container-fluid contributorMain purchasCoinBg">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="tabsContainer">
-                            <ul class="customTabs tabsView">
-                                <li class="active"><a href="#">Purchase coins</a></li>
-                                <li><a href="#">redeem points</a></li>
-                                <li><a href="#">Summary</a></li>
-                            </ul>
-                            <div class="searchHolder light">
-                                <i class="fa fa-search"></i>
-                                <input type="search" class="fld" placeholder="Search">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <form class='form-horizontal' method='POST' id='payment-form' role='form' action='{!! lang_route("addmoney.stripe")!!}' >
+                @include('layouts.flc_header')
+                <form class='form-horizontal' method='POST' id='form-submission' role='form' action='{!! lang_route("addmoney.stripe")!!}' >
                     {{ csrf_field() }}
                     @include('stripe_form')
                     <div class='form-row1'>
@@ -31,7 +17,7 @@
                         {!! Form::hidden('type', 'purchase_coins', []) !!}
                     </div>
                     <div class="mt-4">
-                        <button type="submit" class="orangeBtn waves-effect waves-light">Pay with Stripe</button>
+                        <button type="submit" class="orangeBtn waves-effect waves-light">{!! t('Pay with Stripe') !!}</button>
                     </div>
                 </form>
             </div>

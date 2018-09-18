@@ -7,7 +7,7 @@
 </div>
 <script>
     setTimeout(function(){
-        window.location.replace("http://localhost:8000/en/pictionary");
+        window.location.replace("{{lang_route('pictionary')}}");
     }, 2000);
 </script>
 @endsection

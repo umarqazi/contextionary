@@ -76,6 +76,15 @@ class SpotTheIntruderGameService extends BaseService implements IService
 
     /**
      * @param $game_id
+     * @param $ques_id
+     * @return mixed
+    */
+    public function addAnsweredQuestion($game_id, $ques_id){
+        return $this->spot_the_intruder_game_repo->addAnsweredQuestion($game_id, $ques_id);
+    }
+
+    /**
+     * @param $game_id
      * @return string
      */
     public function complete($game_id){

@@ -8,6 +8,7 @@
 
 namespace App\Repositories;
 use Spatie\Permission\Models\Role;
+use Config;
 
 class RoleRepo
 {
@@ -27,7 +28,7 @@ class RoleRepo
     }
     public function assignMultiRole($id, $roles){
         $user           =   $this->user->findById($id);
-        $assignRole     =   $user->assignRole($roles);
+        $assignRole     =   $user->syncRoles($roles);
         return $assignRole;
     }
 }

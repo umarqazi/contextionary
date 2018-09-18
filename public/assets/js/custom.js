@@ -68,16 +68,16 @@ $(document).ready(function () {
         $(".rightMenu .rightDropdown").fadeIn();
     });
 
-    $(".rightMenu").click(function () {
+    $(".rightMenu").click(function (event) {
         event.stopPropagation();
     });
 
-    $(".dropDown").click(function () {
+    $(".dropDown").click(function (event) {
         event.stopPropagation();
         $(this).find('.dropDown-block').fadeIn();
     });
 
-    $(".dropDown-block").click(function () {
+    $(".dropDown-block").click(function (event) {
         event.stopPropagation();
     });
 
@@ -86,7 +86,7 @@ $(document).ready(function () {
         $("aside").css('left', '-300px');
     });
 
-    $(".mobileIcon").click(function () {
+    $(".mobileIcon").click(function (event) {
         event.stopPropagation();
         $("aside").css('left', '0');
     });
@@ -123,14 +123,19 @@ $(document).ready(function () {
 
     $('.sub').click(function () {
         var coins=$(".coins").val();
-        $(".coins").val(+coins - 1);
+        if(coins > 0){
+            $(".coins").val(+coins - 1);
+        }
     });
 
     $(".enter-phrase").keypress(function () {
         $(".bidBtn").removeClass('disabled');
     });
     $('#form-submission').submit(function() {
-        // $('.default-loader').css('display', 'block');
+        $('.default-loader').css('display', 'block');
+    });
+    $('#bid-submission').submit(function() {
+        $('.default-loader').css('display', 'block');
     });
     //light box
     if ($('.fancybox')[0]) {
