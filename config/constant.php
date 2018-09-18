@@ -17,7 +17,7 @@ return [
     'status'=>['0'=>'in Progress', '1'=>'Ready for Voting', '2'=>'Cancelled', '3'=>'Voting Done'],
     'phrase_status'=>['open'=>'Open', 'in-progress'=>'In-Progress', 'submitted'=>'Submitted'],
     'vote_status'=>['pending'=>'Pending', 'submitted'=>'Submitted'],
-    'selected_bids'=>'9',
-    'total_bids'=>'50'
+    'selected_bids'=>'4',
+    'total_bids'=>'5'
 ];
 ?>
