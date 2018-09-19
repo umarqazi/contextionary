@@ -178,6 +178,40 @@ color: #f7953a;
 .show-div{
   display: none;
 }
+.fancybox-skin {
+  padding: 5px !important;
+  background: #333 !important;
+  border: 1px Solid #fff !important;
+}
+
+.glossarybg .glossary-block .img-holder .view p{
+ color: #fff;
+  margin-bottom: 0px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.glossarybg .glossary-block .img-holder .view a{
+  color: #fff;
+}
+
+.glossarybg .glossary-block .img-holder .favIcon{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: #fff;
+  color: #f7952d;
+  font-size: 18px;
+  border-radius: 50px;
+  padding: 2px 5px;
+  display: none;
+}
+.favIcon2{
+   color: red !important;
+}
+
+.glossarybg .glossary-block:hover .img-holder .favIcon{
+  display: inline-block;
+}
 
 .uploadImgHolder{
   width: 150px;

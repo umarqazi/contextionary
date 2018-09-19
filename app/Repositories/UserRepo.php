@@ -68,5 +68,29 @@ class UserRepo {
         return $this->update($user_id, $sumCoins);
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function getListingForAuthUser($user)
+    {
+        return $user->glossary()->paginate();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addToFav($user, $glossary_item_id)
+    {
+        return $user->glossary()->attach($glossary_item_id);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function removeFromFav($user, $glossary_item_id)
+    {
+        return $user->glossary()->detach($glossary_item_id);
+    }
 }
 ?>
