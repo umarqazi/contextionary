@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Services\ContributorService;
+use App\Services\MutualService;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
 use App\User;
@@ -41,6 +42,7 @@ class UsersController extends Controller
         $this->userRoles = $role;
         $this->authService = $authService;
         $this->register=$registerController;
+        $this->mutualService=new MutualService();
         $contributor=new ContributorService();
         $this->contributorService=$contributor;
     }
@@ -161,7 +163,7 @@ class UsersController extends Controller
         $user=Auth::user();
         $roles=$user->getRoleNames();
         $contributor=$this->contributorService->getParentContextList();
-        $familiarContext=$this->contributorService->getFamiliarContext($user->id);
+        $familiarContext=$this->mutualService->getUserContext($user->id);
         foreach($contributor as $key=>$context):
             foreach($familiarContext as $familiar):
                 if($familiar['context_id']==$context['context_id']):

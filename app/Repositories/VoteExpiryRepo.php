@@ -62,8 +62,8 @@ class VoteExpiryRepo
     /**
      * get all votes
      */
-    public function getAllVotes($type){
-        return $this->votes($type)->paginate(9);
+    public function getAllVotes($type, $contexts){
+        return $this->votes($type)->whereIn('context_id', $contexts)->get();
     }
     /**
      * get expired votes
@@ -74,8 +74,8 @@ class VoteExpiryRepo
     /**
      * update records status
      */
-    public function updateStatus($id){
-        return $this->voteExpiry->where('id', $id)->update(['status'=>'1']);
+    public function updateStatus($id, $records){
+        return $this->voteExpiry->where('id', $id)->update($records);
     }
     /**
      * check record against type
