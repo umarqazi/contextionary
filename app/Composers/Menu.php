@@ -46,6 +46,16 @@ View::composer('guest_pages.*', function($view)
     $page=['fun-facts'=>'Fun Facts', 'Illustrator'=>'Learning Center', 'contactUs'=>'Contact Us'];
     $view->with(['pageMenu'=>$page]);
 });
+
+/**
+ * Glossary Menus
+ */
+View::composer('user.user_plan.glossary.*', function($view)
+{
+    $page=['glossary'=>'Glossary', 'my-collection'=>'My Collection'];
+    $view->with(['pageMenu'=>$page]);
+});
+
 /**
  * Guest Menus
  */

@@ -51,6 +51,11 @@ MultiLang::routeGroup(function($router) {
             Route::get('start-spot-the-intruder',  'SpotIntruderController@index')->name('start-spot-the-intruder');
             Route::get('continue-spot-the-intruder',  'SpotIntruderController@continue')->name('continue-spot-the-intruder');
             Route::get('reset-spot-the-intruder',  'SpotIntruderController@reset')->name('reset-spot-the-intruder');
+            Route::get('spot-the-intruder',  'SpotIntruderController@getQuestion')->name('spot-the-intruder');
+            Route::get('glossary',  'GlossaryController@index')->name('glossary');
+            Route::get('my-collection',  'GlossaryController@getListingForAuthUser')->name('my-collection');
+            Route::post('add-to-fav',  'GlossaryController@addToFav');
+            Route::post('remove-from-fav',  'GlossaryController@removeFromFav');
             Route::get('intruder',  'SpotIntruderController@getQuestion')->name('intruder');
             Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
             Route::get('tutorials',  'TutorialsController@index');

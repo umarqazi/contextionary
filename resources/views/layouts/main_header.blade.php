@@ -49,30 +49,24 @@
     </div>
     <div class="col-md-5 col-sm-6 text-right">
       <div class="switch-account dropDown">
-        <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span>Switch <i class="fa fa-angle-down"></i></span>
+        <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span>{!! t('Switch') !!} <i class="fa fa-angle-down"></i></span>
         <div class="dropDown-block">
-          <a href="#" class="account"><i class="fa fa-angle-right"></i> Switch to user account</a>
+          <a href="#" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to user account') !!}</a>
         </div>
       </div>
       @if(Auth::check())
         @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
           <div class="rightMenu">
-            <a href="#" class="menu"></a>
-            <a href="#" class="statistics">Statistics</a>
+            <a href="#" class="menu"><span>{!! t('Statistics') !!}</span></a>
             <div class="rightDropdown">
-              <h2>my Statistics</h2>
+              <h2 class="statistics-heading">{!! t('my Statistics') !!}</h2>
+              <h2 class="statistics-heading"> <p>{!! t('Coins') !!} ({!! ($coins!=NULL)? $coins:'0' !!})</p></h2>
               <table class="customTable">
                 <tr>
                   <td class="name"></td>
                   <td><img src="{!! asset('assets/images/statistics-icon1.png') !!}"></td>
                   <td><img src="{!! asset('assets/images/statistics-icon2.png') !!}"></td>
                   <td><img src="{!! asset('assets/images/statistics-icon3.png') !!}"></td>
-                </tr>
-                <tr>
-                  <td class="name">{!! t('My Coins') !!}</td>
-                  <td>{!! ($coins!=NULL)? $coins:'0' !!}</td>
-                  <td>0</td>
-                  <td>0</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Points') !!}</td>

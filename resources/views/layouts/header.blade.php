@@ -7,7 +7,7 @@
       <button id="menu"><i class="fa fa-bars"></i></button>
       <ul class="mainMenu">
         <i class="fa fa-times closeMenu"></i>
-        <li class="active"><a href="#">{!! t('A Game of Context') !!}</a></li>
+        <li><a href="#">{!! t('A Game of Context') !!}</a></li>
         <li><a href="#">{!! t('Reading Assistant') !!}</a></li>
         <li><a href="#">{!! t('Glossary Catalog') !!}</a></li>
         <li><a href="{!! lang_route('fun-facts') !!}">{!! t('Fun Facts') !!}</a></li>

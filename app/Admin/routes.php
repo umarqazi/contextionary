@@ -18,6 +18,7 @@ use Illuminate\Routing\Router;
             $router->resource('auth/spot-the-intruder', 'SpotIntruderController');
             $router->resource('auth/settings', 'SettingsController');
             /* Add in Seeder*/
+            $router->resource('auth/glossary', 'GlossaryController');
             $router->resource('auth/packages', 'PackagesController');
             $router->resource('auth/points', 'PointsController');
             $router->resource('auth/coins-deals', 'CoinsController');

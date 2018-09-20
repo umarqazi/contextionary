@@ -14,8 +14,8 @@
 
     </div>
     <ul class="menuListing">
-        <li><a href="#" class="menu5"><span>Glossary Catalog</span></a></li>
-        <li><a href="#" class="menu5"><span>My Collection</span></a></li>
+        <li><a href="{!! lang_route('glossary') !!}" class="menu5"><span>Glossary Catalog</span></a></li>
+        <li><a href="{!! lang_route('my-collection') !!}" class="menu5"><span>My Collection</span></a></li>
     </ul>
 </div>
 <div class="menuCate">
