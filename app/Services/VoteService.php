@@ -7,6 +7,7 @@
  */
 namespace App\Services;
 
+use App\Http\Controllers\SettingController;
 use App\Mail\Meanings;
 use App\Repositories\ContextPhraseRepo;
 use App\Repositories\DefineMeaningRepo;
@@ -26,6 +27,8 @@ Class VoteService{
     protected $defineMeaning;
     protected $contextPhrase;
     protected $userPoint;
+    protected $voteExpiryDate;
+    protected $mutual;
 
     public function __construct()
     {
@@ -34,6 +37,10 @@ Class VoteService{
         $context=new ContextPhraseRepo();
         $vote=new VoteMeaningRepo();
         $userPoint=new UserPointRepo();
+        $setting = new SettingController();
+        $mutualService=new MutualService();
+        $this->mutual=$mutualService;
+        $this->voteExpiryDate=$setting->getKeyValue(env('VOTE_EXPIRY'))->values;
         $this->voteExpiry=$expiry;
         $this->defineMeaning=$define;
         $this->contextPhrase=$context;
@@ -45,7 +52,7 @@ Class VoteService{
      * update VoteExpiry
      */
     public function addPhraseForVote($context, $phrase, $type){
-        $date=Carbon::now()->addMonths(1);
+        $date=Carbon::now()->addDays($this->voteExpiryDate);
         $data=['context_id'=>$context, 'phrase_id'=>$phrase, 'vote_type'=>$type, 'expiry_date'=>$date];
         $record=$this->voteExpiry->checkRecords($context, $phrase, $type);
         if(!$record):
@@ -57,22 +64,28 @@ Class VoteService{
      * get meanings for allVotes
      */
     public function getVoteList(){
+        $getContext=$this->mutual->getFamiliarContext(Auth::user()->id);
         $records=[];
-        $contextPhrase=$getLatestVote=$this->voteExpiry->getAllVotes('meaning');
+        $contextPhrase=$getLatestVote=$this->voteExpiry->getAllVotes(env('MEANING'), $getContext);
         if($contextPhrase):
             foreach($contextPhrase as $key=>$context):
-                $contextPhrase[$key]['status']=Config::get('constant.vote_status.pending');
+                $records[$key]['status']=Config::get('constant.vote_status.pending');
                 $data=['context_id'=>$context->context_id, 'phrase_id'=>$context->phrase_id];
                 $userVote=$this->voteMeaning->checkUserVote($data);
                 if(!empty($userVote)):
-                    $contextPhrase[$key]['status']=Config::get('constant.vote_status.submitted');
+                    $records[$key]['status']=Config::get('constant.vote_status.submitted');
                 endif;
-                $contextPhrase[$key]['context_info']=$this->contextPhrase->getContext($context->context_id, $context->phrase_id);
+                $contexts=$this->contextPhrase->getContext($context->context_id, $context->phrase_id);
+                $records[$key]['expiry_date']=$this->mutual->displayHumanTimeLeft($context['expiry_date']);
+                $records[$key]['context_id']=$contexts->context_id;
+                $records[$key]['phrase_id']=$contexts->phrase_id;
+                $records[$key]['work_order']=$contexts->work_order;
+                $records[$key]['context_name']=$contexts->context_name;
+                $records[$key]['context_picture']=$contexts->context_picture;
+                $records[$key]['phrase_text']=$contexts->hrase_text;
             endforeach;
-            return $contextPhrase;
         endif;
-
-        return $records;
+        return $this->mutual->paginatedRecord($records, 'phrase-list');
     }
     /**
      * get meanings for vote
@@ -108,51 +121,5 @@ Class VoteService{
             return $this->voteMeaning->create($data);
         endif;
         return false;
-    }
-    /**
-     * check expired votes
-     */
-    public function checkExpiredVotes(){
-        $getVote=$this->voteExpiry->getAllMeaningVotes(env("MEANING"));
-        if($getVote):
-            foreach($getVote as $vote):
-                $cron_run='0';
-                $getTotalVote=$this->voteMeaning->totalVotes($vote['context_id'], $vote['phrase_id']);
-                if($getTotalVote < Config::get('constant.selected_bids')):
-                    if($vote['expiry_date'] < Carbon::today()):
-                        $cron_run='1';
-                    endif;
-                else:
-                    $cron_run='1';
-                endif;
-                if($cron_run=='1'):
-                    $getHighestVotes=$this->voteMeaning->hightVotes($vote['context_id'], $vote['phrase_id']);
-                    if(!empty($getHighestVotes)):
-                        $this->defineMeaning->updateVoteStatus($vote['context_id'], $vote['phrase_id']);
-                        foreach($getHighestVotes as $key=>$hightesVotes):
-                            if($key+1=='1'):
-                                $points=10;
-                            else:
-                                $points=1;
-                            endif;
-                            $data=['point'=>$points,'context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'user_id'=>$hightesVotes['meaning']['user_id'], 'position'=>$key+1];
-                            $this->userPoint->create($data);
-                            $hightesVotes['points']=$points;
-                            if($key+1==1):
-                                $position='1st';
-                            elseif($key+1==2):
-                                $position='2nd';
-                            else:
-                                $position='3rd';
-                            endif;
-                            $hightesVotes['position']=$position;
-                            Mail::to($hightesVotes['meaning']['users']['email'])->send(new Meanings($hightesVotes));
-                            $this->defineMeaning->update(['position'=>$key+1], $hightesVotes['meaning']['id']);
-                        endforeach;
-                        $this->voteExpiry->updateStatus($vote['id']);
-                    endif;
-                endif;
-            endforeach;
-        endif;
     }
 }

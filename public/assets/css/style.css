@@ -246,9 +246,12 @@ color: #f7953a;
   margin-right: 10px;
   font-size: 14px;
   position: relative;
+  color:#737373;
   top: -8px;
 }
-
+.rightMenu:hover{
+  color: #f7941d;
+}
 .dashBoard-container .userHeader .rightMenu{
   width: 120px;
 }
@@ -266,4 +269,34 @@ color: #f7953a;
 }
 .heading-color{
   background: rgba(255, 255, 255, 0.19) !important;
+}
+.days-left{
+  font-weight: bold;
+}
+.statistics-heading{
+  width:50%;
+  float:left;
+}
+.statistics-heading > p{
+  float:right;
+  text-transform: uppercase;
+  color: #f7941d !important;
+  font-weight: 500;
+  font-size: 16px;
+  margin: 0px 0px 10px 0px;
+}
+
+.dashBoard-container .userHeader .rightMenu .menu{
+  width: 98px;
+  margin-right: 10px;
+}
+
+.dashBoard-container .userHeader .rightMenu .menu span{
+  color: #767272;
+  padding-top: 5px;
+  display: inline-block;
+}
+
+.dashBoard-container .userHeader .rightMenu .menu:hover span{
+  color: #f7953a;
 }

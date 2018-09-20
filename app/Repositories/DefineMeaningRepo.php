@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 
 use App\DefineMeaning;
+use App\Http\Controllers\SettingController;
 use Auth;
 use DB;
 use Carbon\Carbon;
@@ -21,6 +22,7 @@ class DefineMeaningRepo
     protected $meaning;
     protected $userRepo;
     protected $contextPhrase;
+    protected $selected_bids;
 
     public function __construct()
     {
@@ -28,6 +30,8 @@ class DefineMeaningRepo
         $this->meaning=$meaning;
         $users=new UserRepo();
         $this->userRepo=$users;
+        $setting=new SettingController();
+        $this->selected_bids=$setting->getKeyValue(env('SELECTED_BIDS'))->values;
     }
     /*
      * save function
@@ -95,7 +99,7 @@ class DefineMeaningRepo
 
         /**update status for vote of first 9 contributor*/
 
-        $records=$this->getRecords($context_id, $phrase_id)->limit(Config::get('constant.selected_bids'))->update(['status'=>'1']);
+        $records=$this->getRecords($context_id, $phrase_id)->orderBy('coins', 'desc')->limit($this->selected_bids)->update(['status'=>'1']);
 
         /** update status for refund of contributor */
 

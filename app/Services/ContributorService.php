@@ -36,6 +36,7 @@ class ContributorService implements IService
     protected $voteService;
     protected $biddingRepo;
     protected $illustrate;
+    protected $mutualService;
     protected $contextArray=array();
 
     public function __construct()
@@ -47,13 +48,13 @@ class ContributorService implements IService
         $userService=new UserService();
         $userRepo=new UserRepo();
         $familiarContext=new FamiliarContextRepo();
-        $context=new ContextRepo();
         $role=new RoleRepo();
         $voteService=new VoteService();
         $biddingRepo=new BiddingExpiryRepo();
         $illustrateRepo=new IllustratorRepo();
         $contextRepo=new ContextRepo();
-        $this->contextRepo=$context;
+        $mutualService=new MutualService();
+        $this->mutualService=$mutualService;
         $this->roleRepo=$role;
         $this->familiarContext=$familiarContext;
         $this->userRepo=$userRepo;
@@ -79,21 +80,12 @@ class ContributorService implements IService
     }
 
     /**
-     * @return mixed
+     * @return LengthAwarePaginator
      */
-    public function getFamiliarContext($user_id){
-        return $getFamiliarContext=$this->familiarContext->getContext($user_id);
-    }
     public function getAllContextPhrase(){
-        $getFamiliarContext=$this->getFamiliarContext(Auth::user()->id);
-        $getAllContext=$this->contextRepo->getContext();
-        $contexts=[];
-        foreach ($getFamiliarContext as $key=> $context):
-            array_push($this->contextArray, $context['context_id']);
-            $contexts[$key]['child']=$this->contextChildList($getAllContext, $context['context_id']);
-        endforeach;
-        $this->contextArray=array_unique($this->contextArray);
-        return $contextPhrase=$this->contextPhrase->getPaginated($this->contextArray);
+        $this->contextArray=$this->mutualService->getFamiliarContext(Auth::user()->id);
+        $contextPhrase=$this->contextPhrase->getPaginated($this->contextArray);
+        return $pagination=$this->mutualService->paginatedRecord($contextPhrase, 'define');
     }
     /*
      * get context against specific id
@@ -217,23 +209,5 @@ class ContributorService implements IService
      */
     public function getMeaningForIllustrate($context_id, $phrase_id){
         return $contextPhrase=$this->contextPhrase->getFirstPositionMeaning($context_id, $phrase_id);
-    }
-    /**
-     * get context and child of all context
-     */
-    public function contextChildList($array, $parentId = 0){
-        $branch = array();
-        foreach ($array as $key=>$element) {
-            if ($element['context_immediate_parent_id'] == $parentId) {
-                array_push($this->contextArray, $element['context_id']);
-                $children = $this->contextChildList($array, $element['context_id']);
-                if ($children) {
-                    $element['children'] = $children;
-                }
-                $branch[$key] = $element;
-            }
-
-        }
-        return $branch;
     }
 }
