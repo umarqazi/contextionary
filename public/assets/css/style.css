@@ -334,3 +334,6 @@ color: #f7953a;
 .dashBoard-container .userHeader .rightMenu .menu:hover span{
   color: #f7953a;
 }
+.commentBox{
+  right:-310px !important;
+}
