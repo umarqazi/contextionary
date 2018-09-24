@@ -90,10 +90,6 @@ class RegisterController extends Controller
                 'token' => md5(microtime()),
                 'email_token' => base64_encode($data['email']),
             ]);
-            if (Input::hasFile('profile_image')) {
-                $image      = Input::file('profile_image');
-                $fileName=$this->uploadImage($image, $user->id);
-            }
             /**
              * Update User Profile
              */
@@ -107,6 +103,10 @@ class RegisterController extends Controller
             $userProfile->native_language=$data['native_language'];
             $userProfile->user_id =$id;
             $userProfile->save();
+            if (Input::hasFile('profile_image')) {
+                $image      = Input::file('profile_image');
+                $fileName=$this->uploadImage($image, $user->id);
+            }
 
             /**
              * update profile image
