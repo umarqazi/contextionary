@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactUs;
 use App\Services\ContactUsService;
+use App\Services\SettingService;
 use App\Setting;
 use Illuminate\Http\Request;
 use View;
@@ -15,22 +16,30 @@ class SettingController extends Controller
      * @var ContactUsService
      */
     protected $contactUs;
+
+    /**
+     * @var ContactUsService
+     */
+    protected $setting_service;
+
     protected $pageMenu;
+
     /**
      * SettingController constructor.
-     * @param ContactUsService $contactUs
      */
     public function __construct()
     {
-        $contactUs = new ContactUsService();
-        $this->contactUs=$contactUs;
+        $contactUs              =   new ContactUsService();
+        $this->contactUs        =   $contactUs;
+        $setting_service        =   new SettingService();
+        $this->setting_service  =   $setting_service;
     }
 
     /**
      * @return mixed
      */
     public function contactUs(){
-        $settings = Setting::all();
+        $settings = $this->setting_service->getListing();
         return view::make('guest_pages.contact_us')->with(['settings'=> $settings]);
     }
 

@@ -14,6 +14,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+    /**
+     * @var array
+     */
     protected $fillable = ['keys', 'values', 'pic3', 'pic4', 'option1', 'option2', 'option3', 'option4', 'question','answer'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getListing(){
+        return self::all();
+    }
 
 }
