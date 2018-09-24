@@ -3,41 +3,34 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\CronController;
-use App\Services\ContributorService;
 use Illuminate\Console\Command;
 
-class CheckMeaning extends Command
+class CheckMeaningVotes extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'meaning:vote';
+    protected $signature = 'define:illustrator';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Checking meaning available for vote, we are checking total number of meaning and if total no of meaning is less than 50 then we are checking expiry date';
+    protected $description = 'This command will check total number of votes against meanings and will transfer meaning to illustrator phase';
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    /**
-     * CheckMeaning constructor.
-     *
-     */
-    protected $contributor;
+    protected $cronController;
     public function __construct()
     {
         parent::__construct();
-        $cronController=new CronController();
-        $this->contributor=$cronController;
-
+        $this->cronController=new CronController();
     }
 
     /**
@@ -47,6 +40,6 @@ class CheckMeaning extends Command
      */
     public function handle()
     {
-        $this->contributor->meaningToVote();
+        $this->cronController->checkExpiredVotes();
     }
 }
