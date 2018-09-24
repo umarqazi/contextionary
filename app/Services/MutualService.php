@@ -99,9 +99,12 @@ class MutualService
         $minutes = $now->diffInMinutes($expiry_date);
         if ($now->diffInDays($expiry_date) > 0)
         {
-            return $now->diffInDays($expiry_date) . str_plural(' day', $now->diffInDays($expiry_date)).     ' left';
+            $counter= $now->diffInDays($expiry_date) . str_plural(' day', $now->diffInDays($expiry_date)).     ' left';
         }elseif($hours > 0){
-            return $hours . str_plural(' Hour', $hours).' Left';
+            $counter= $hours . str_plural(' Hour', $hours).' Left';
+        }elseif($minutes > 0){
+            $counter= $minutes . str_plural(' Minute', $minutes).' Left';
         }
+        return $counter;
     }
 }
