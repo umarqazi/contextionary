@@ -82,8 +82,8 @@ class ContextPhraseRepo
                             $totalContext[$key]['status']=Config::get('constant.phrase_status.submitted');
                         endif;
                     endif;
-                    $totalContext[$key]['clickable']='1';
                 endforeach;
+                $totalContext[$key]['clickable']='1';
             endif;
         endforeach;
         $totalContext = array_slice($totalContext, 0, $this->total_context);
