@@ -82,6 +82,7 @@ class ContextPhraseRepo
                             $totalContext[$key]['status']=Config::get('constant.phrase_status.submitted');
                         endif;
                     endif;
+                    $totalContext[$key]['clickable']='1';
                 endforeach;
             endif;
         endforeach;
@@ -116,6 +117,7 @@ class ContextPhraseRepo
             $getContextPhrase->setAttribute('meaning', $getMeaning->meaning);
             $getContextPhrase->setAttribute('phrase_type', $getMeaning->phrase_type);
             $getContextPhrase->setAttribute('coins', $getMeaning->coins);
+            $getContextPhrase->setAttribute('writer', $getMeaning->users->first_name.' '.$getMeaning->users->last_name);
         }
         return $getContextPhrase;
     }

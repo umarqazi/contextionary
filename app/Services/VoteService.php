@@ -70,10 +70,12 @@ Class VoteService{
         if($contextPhrase):
             foreach($contextPhrase as $key=>$context):
                 $records[$key]['status']=Config::get('constant.vote_status.pending');
+                $records[$key]['clickable']='1';
                 $data=['context_id'=>$context->context_id, 'phrase_id'=>$context->phrase_id];
                 $userVote=$this->voteMeaning->checkUserVote($data);
                 if(!empty($userVote)):
                     $records[$key]['status']=Config::get('constant.vote_status.submitted');
+                    $records[$key]['clickable']='0';
                 endif;
                 $contexts=$this->contextPhrase->getContext($context->context_id, $context->phrase_id);
                 $records[$key]['expiry_date']=$this->mutual->displayHumanTimeLeft($context['expiry_date']);

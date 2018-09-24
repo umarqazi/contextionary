@@ -13,9 +13,13 @@ use App\Http\Controllers\SettingController;
 use App\Repositories\BiddingExpiryRepo;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\IllustratorRepo;
+use App\Repositories\UserPointRepo;
 use App\Repositories\VoteExpiryRepo;
+use App\Repositories\VoteMeaningRepo;
 use Carbon\Carbon;
 use Config;
+use Mail;
+use App\Mail\Meanings;
 
 class CronService
 {
@@ -27,6 +31,8 @@ class CronService
     protected $bids_expiry;
     protected $vote_expiry;
     protected $voteExpiryRepo;
+    protected $voteMeaningRepo;
+    protected $userPoint;
 
     public function __construct()
     {
@@ -35,6 +41,8 @@ class CronService
         $voteService=new VoteService();
         $illustrator=new IllustratorRepo();
         $expiryRepo=new VoteExpiryRepo();
+        $this->voteMeaningRepo=new VoteMeaningRepo();
+        $this->userPoint=new UserPointRepo();
         $this->biddingRepo=$biddingRepo;
         $this->defineMeaning=$defineMeaning;
         $this->voteService=$voteService;
@@ -95,22 +103,23 @@ class CronService
      * check expired votes
      */
     public function checkExpiredVotes(){
-        $getVote=$this->voteExpiry->getAllMeaningVotes(env("MEANING"));
+        $getVote=$this->voteExpiryRepo->getAllMeaningVotes(env("MEANING"));
         if($getVote):
             foreach($getVote as $vote):
                 $cron_run='0';
-                $getTotalVote=$this->voteMeaning->totalVotes($vote['context_id'], $vote['phrase_id']);
+                $getTotalVote=$this->voteMeaningRepo->totalVotes($vote['context_id'], $vote['phrase_id']);
                 if($vote['expiry_date'] < Carbon::today()):
                     if($getTotalVote >= env('MINIMUM_VOTES')):
                         $cron_run='1';
                     else:
-                        $date=Carbon::now()->addDays($this->vote_expiry);
+                        echo $date=Carbon::now()->addDays($this->vote_expiry);
+                        die();
                         $expiry_update=['expiry_date'=>$date];
                         $this->voteExpiryRepo->updateStatus($vote['id'], $expiry_update);
                     endif;
                 endif;
                 if($cron_run=='1'):
-                    $getHighestVotes=$this->voteMeaning->hightVotes($vote['context_id'], $vote['phrase_id']);
+                    $getHighestVotes=$this->voteMeaningRepo->hightVotes($vote['context_id'], $vote['phrase_id']);
                     if(!empty($getHighestVotes)):
                         $this->defineMeaning->updateVoteStatus($vote['context_id'], $vote['phrase_id']);
                         foreach($getHighestVotes as $key=>$hightesVotes):
