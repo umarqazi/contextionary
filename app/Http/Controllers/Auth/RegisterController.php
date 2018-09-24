@@ -66,6 +66,7 @@ class RegisterController extends Controller
             'profile_image' => 'mimes:jpg,png,jpeg',
             'pseudonyme'=>'string|nullable',
             'gender'=>'required',
+            'phone_number'=>'required',
             'native_language'=>'required'
         ]);
     }
