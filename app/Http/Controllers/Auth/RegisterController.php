@@ -79,6 +79,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $fileName='';
         $user = User::create([
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
@@ -109,8 +110,10 @@ class RegisterController extends Controller
         /**
          * update profile image
          */
-        $user->profile_image=$fileName;
-        $user->save();
+        if($fileName){
+            $user->profile_image=$fileName;
+            $user->save();
+        }
         Session::put('user', $user);
     }
 
