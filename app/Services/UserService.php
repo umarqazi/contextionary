@@ -116,25 +116,4 @@ class UserService extends BaseService implements IService
         $user   =   $this->user_repo->findById($id);
         return SendVerificationEmail::dispatch($user);
     }
-
-    /**
-     * @return mixed
-     */
-    public function getListingForAuthUser($user){
-        return $this->user_repo->getListingForAuthUser($user);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function addToFav($user, $glossary_item_id){
-        return $this->user_repo->addToFav($user, $glossary_item_id);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function removeFromFav($user, $glossary_item_id){
-        return $this->user_repo->removeFromFav($user, $glossary_item_id);
-    }
 }

@@ -83,15 +83,12 @@ class SettingsController extends Controller
             $grid->id('ID')->sortable();
             $grid -> option('useWidth', true);
             $grid->keys()->sortable();
-            $grid->values()->sortable();
+            $grid->values()->sortable()->editable();
             $grid->filter(function ($filter){
                 $filter->like('keys');
                 $filter->like('values');
             });
-            $grid->actions(function (Grid\Displayers\Actions $actions) {
-                $action = "".$actions->getResource()."/".$actions->getKey()."";
-                $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
-            });
+            $grid->disableActions();
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
                     $actions->disableDelete();

@@ -1,6 +1,8 @@
 @php
 $contactUsController = new \App\Admin\Controllers\ContactUsController();
-$message_count = $contactUsController->unReadMessagesCount();
+$contact_message_count = $contactUsController->unReadMessagesCount();
+$feedbackController = new \App\Admin\Controllers\FeedbackController();
+$feed_message_count = $feedbackController->unReadMessagesCount();
 @endphp
 @if(Admin::user()->visible($item['roles']))
     @if(!isset($item['children']))
@@ -11,11 +13,18 @@ $message_count = $contactUsController->unReadMessagesCount();
                 <a href="{{ admin_base_path($item['uri']) }}">
             @endif
                 <i class="fa {{$item['icon']}}">
-                    @if($item['title'] == 'Messages' && $message_count > 0)
-                        @if($message_count < 99)
-                            <span class="badge contact-msg-menu-item">{{$message_count}}</span>
-                        @elseif($message_count > 99)
+                    @if($item['title'] == 'Messages' && $contact_message_count > 0)
+                        @if($contact_message_count < 99)
+                            <span class="badge contact-msg-menu-item">{{$contact_message_count}}</span>
+                        @elseif($contact_message_count > 99)
                             <span class="badge contact-msg-menu-item">99+</span>
+                        @endif
+                    @endif
+                    @if($item['title'] == 'Feedbacks' && $feed_message_count > 0)
+                        @if($feed_message_count < 99)
+                            <span class="badge feedback-msg-menu-item">{{$feed_message_count}}</span>
+                        @elseif($feed_message_count > 99)
+                            <span class="badge feedback-msg-menu-item">99+</span>
                         @endif
                     @endif
                 </i>

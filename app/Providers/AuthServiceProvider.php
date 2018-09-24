@@ -27,5 +27,6 @@ class AuthServiceProvider extends ServiceProvider
         // include view composers
         require __DIR__ . "/../Composers/Contributors.php";
         require __DIR__ . "/../Composers/Menu.php";
+        require __DIR__ . "/../Composers/Feedback.php";
     }
 }

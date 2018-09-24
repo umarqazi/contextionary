@@ -11,9 +11,9 @@
 
 namespace App\Admin\Controllers;
 
-use App\ContactUs;
+use App\Feedback;
+use App\Services\FeedbackService;
 use Illuminate\Support\Facades\Storage;
-use App\Services\ContactUsService;
 use \Illuminate\Database\Eloquent\Model;
 use Encore\Admin\Controllers\ModelForm;
 use Encore\Admin\Facades\Admin;
@@ -22,20 +22,20 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 
-class ContactUsController extends Controller
+class FeedbackController extends Controller
 {
     /**
-     * @var ContactUsService
+     * @var FeedbackService
      */
-    protected  $contactUsServices;
+    protected  $feedback_services;
 
     /**
-     * ContactUsController constructor.
+     * FeedbackController constructor.
      */
     public function __construct()
     {
-        $contactUsServices = new ContactUsService;
-        $this->contactUsServices = $contactUsServices;
+        $feedback_services = new FeedbackService();
+        $this->feedback_services = $feedback_services;
     }
 
     /**
@@ -46,7 +46,7 @@ class ContactUsController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('Contact Us Messages'));
+            $content->header(trans('FeedBacks'));
             $content->description(trans('List'));
             $content->body($this->grid()->render());
         });
@@ -59,11 +59,9 @@ class ContactUsController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(ContactUs::class, function (Grid $grid) {
+        return Admin::grid(Feedback::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
             $grid->option('useWidth', true);
-            $grid->first_name()->sortable();
-            $grid->last_name()->sortable();
             $grid->email()->sortable();
             $grid->message();
             $grid->disableCreateButton();
@@ -78,8 +76,6 @@ class ContactUsController extends Controller
             $grid->column('created_at','Created at')->sortable();
             $grid->column('updated_at','Last Updated at')->sortable();
             $grid->filter(function ($filter){
-                $filter->like('first_name');
-                $filter->like('last_name');
                 $filter->like('email');
                 $filter->like('status');
             });
@@ -105,22 +101,22 @@ class ContactUsController extends Controller
      */
     public function show($id)
     {
-        $status = $this->contactUsServices->status($id);
-        $this->contactUsServices->read($id);
+        $status = $this->feedback_services->status($id);
+        $this->feedback_services->read($id);
         if($status == 0){
             $script = <<<SCRIPT
-        var count = parseInt($('.contact-msg-menu-item').html());
+        var count = parseInt($('.feedback-msg-menu-item').html());
         if(count >= 2){
-            $('.contact-msg-menu-item').html(count -1);
+            $('.feedback-msg-menu-item').html(count -1);
         }
         else{
-            $('.contact-msg-menu-item').remove(); 
+            $('.feedback-msg-menu-item').remove(); 
         }
 SCRIPT;
             Admin::script($script);
         }
         return Admin::content(function (Content $content) use ($id) {
-            $content->header('Contact Us Messages');
+            $content->header('Feedback');
             $content->description('View Message');
             $content->body($this->form()->view($id));
         });
@@ -133,12 +129,10 @@ SCRIPT;
      */
     public function form()
     {
-        return Admin::form(ContactUs::class, function (Form $form) {
+        return Admin::form(Feedback::class, function (Form $form) {
             $form->display('id', 'ID');
-            $form->text('first_name', trans('First Name'))->rules('required')->placeholder('Enter First Name...');
-            $form->text('last_name', trans('Last Name'))->rules('required')->placeholder('Enter Last Name...');
-            $form->text('email', trans('Email'))->rules('required')->placeholder('Enter Email...');
-            $form->textarea('message', trans('Message'))->rules('required')->placeholder('Enter Message...');
+            $form->text('email', trans('Email'))->rules('required');
+            $form->textarea('message', trans('Message'))->rules('required');
         });
     }
 
@@ -146,7 +140,7 @@ SCRIPT;
      * @return mixed
      */
     public function unReadMessagesCount(){
-        $unReadMessagesCount = $this->contactUsServices->count();
+        $unReadMessagesCount = $this->feedback_services->count();
         return $unReadMessagesCount;
     }
 
