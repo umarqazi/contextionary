@@ -65,7 +65,8 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'profile_image' => 'mimes:jpg,png,jpeg',
             'pseudonyme'=>'string|nullable',
-            'gender'=>'required'
+            'gender'=>'required',
+            'native_language'=>'required'
         ]);
     }
 
@@ -87,7 +88,6 @@ class RegisterController extends Controller
                 'password' => bcrypt($data['password']),
                 'token' => md5(microtime()),
                 'email_token' => base64_encode($data['email']),
-                'native_language'=>$data['native_language']
             ]);
             if (Input::hasFile('profile_image')) {
                 $image      = Input::file('profile_image');
