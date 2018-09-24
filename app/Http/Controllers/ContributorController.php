@@ -171,7 +171,11 @@ class ContributorController
     /** get meaning for illustrator */
     public function addIllustrate($context_id, $phrase_id){
         $contextList=$this->contributor->getMeaningForIllustrate($context_id, $phrase_id);
-        $contextList['illustrator']=$this->contributor->getIllustrator($context_id, $phrase_id);
+        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id];
+        $contextList['illustrator']=$this->contributor->getIllustrator($data);
+        if($contextList['illustrator']->user_id==Auth::user()->id && $contextList['illustrator']->coins!=NULL):
+            $contextList['close_bid']='1';
+        endif;
         return view::make('user.contributor.illustrator.add_illustrator')->with(['data'=>$contextList, 'illustrate'=>'1']);
     }
     /**

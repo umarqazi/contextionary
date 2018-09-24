@@ -38,6 +38,9 @@ class ContributorService implements IService
     protected $illustrate;
     protected $mutualService;
     protected $contextArray=array();
+    protected $user_id;
+    protected $voteExpiryRepo;
+    protected $bidExpiryRepo;
 
     public function __construct()
     {
@@ -54,6 +57,8 @@ class ContributorService implements IService
         $illustrateRepo=new IllustratorRepo();
         $contextRepo=new ContextRepo();
         $mutualService=new MutualService();
+        $this->voteExpiryRepo=new VoteExpiryRepo();
+        $this->bidExpiryRepo=new BiddingExpiryRepo();
         $this->mutualService=$mutualService;
         $this->roleRepo=$role;
         $this->familiarContext=$familiarContext;
@@ -168,24 +173,42 @@ class ContributorService implements IService
      * get phrase for illustrate
      */
     public function getIllustratePhrase(){
-        $contextPhrase=$this->defineMeaning->illustrates();
+        $this->contextArray=$this->mutualService->getFamiliarContext(Auth::user()->id);
+        $contextPhrase=$this->defineMeaning->illustrates($this->contextArray);
+        $illustrators=[];
+        $user_id=Auth::user()->id;
         foreach($contextPhrase as $key=>$phrase):
-            $contextPhrase[$key]['status']=Config::get('constant.phrase_status.open');
-            $contextDetail=$this->contextPhrase->getContext($phrase['context_id'], $phrase['phrase_id']);
-            $checkUserIllustrator=$this->getIllustrator($phrase['context_id'], $phrase['phrase_id']);
-            if($checkUserIllustrator):
-                if($checkUserIllustrator->coins!=NULL):
-                    $contextPhrase[$key]['status']=Config::get('constant.phrase_status.submitted');
-                else:
-                    $contextPhrase[$key]['status']=Config::get('constant.phrase_status.in-progress');
+            $checkVote=$this->voteExpiryRepo->checkRecords($phrase['context_id'], $phrase['phrase_id'], env('ILLUSTRATE'));
+            if(!empty($checkVote)):
+                unset($contextPhrase[$key]);
+            else:
+                $illustrators[$key]['clickable']='1';
+                $illustrators[$key]['expiry_date']='';
+                $illustrators[$key]['status']=Config::get('constant.phrase_status.open');
+                $contextDetail=$this->contextPhrase->getContext($phrase['context_id'], $phrase['phrase_id']);
+                $checkIllustrate=['context_id'=>$phrase['context_id'], 'phrase_id'=>$phrase['phrase_id'], 'user_id'=>$user_id];
+                $checkUserIllustrator=$this->getIllustrator($checkIllustrate);
+                if($checkUserIllustrator):
+                    if($checkUserIllustrator->coins!=NULL):
+                        $illustrators[$key]['status']=Config::get('constant.phrase_status.submitted');
+                    else:
+                        $illustrators[$key]['status']=Config::get('constant.phrase_status.in-progress');
+                    endif;
                 endif;
-
+                $checkBidExpiry=$this->bidExpiryRepo->checkPhraseExpiry($phrase['context_id'], $phrase['phrase_id'], env('ILLUSTRATE'));
+                if(!empty($checkBidExpiry)):
+                    $illustrators[$key]['expiry_date']=$this->mutualService->displayHumanTimeLeft($checkBidExpiry->expiry_date);
+                endif;
+                $illustrators[$key]['context_id']=$phrase['context_id'];
+                $illustrators[$key]['phrase_id']=$phrase['phrase_id'];
+                $illustrators[$key]['context_name']=$contextDetail->context_name;
+                $illustrators[$key]['context_picture']=$contextDetail->context_picture;
+                $illustrators[$key]['phrase_text']=$contextDetail->phrase_text;
             endif;
-            $contextPhrase[$key]['context_name']=$contextDetail->context_name;
-            $contextPhrase[$key]['context_picture']=$contextDetail->context_picture;
-            $contextPhrase[$key]['phrase_text']=$contextDetail->phrase_text;
         endforeach;
-        return $contextPhrase;
+        $illustrators=$this->mutualService->paginatedRecord($illustrators, 'illustrator');
+
+        return $illustrators;
     }
     /**
      * save illustrator
@@ -201,8 +224,8 @@ class ContributorService implements IService
     /**
      * get Illustrator
      */
-    public function getIllustrator($context_id, $phrase_id){
-        return $this->illustrate->currentUserIllustrate($context_id, $phrase_id, Auth::user()->id);
+    public function getIllustrator($data){
+        return $this->illustrate->currentUserIllustrate($data);
     }
     /*
      * get context against specific id

@@ -42,7 +42,7 @@ class BiddingExpiryRepo
      * @return bool
      */
     public function addBidExpiry($data, $type){
-        $date=Carbon::now()->addDays($this->total_context);
+        $date=Carbon::now()->addMinutes($this->total_context);
         return $this->bidding->insert(['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'bid_type'=>$data['type'], 'expiry_date'=>$date]);
     }
 

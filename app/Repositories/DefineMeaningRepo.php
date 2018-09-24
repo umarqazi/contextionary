@@ -129,8 +129,8 @@ class DefineMeaningRepo
     /**
      * get Illustrate Records
      */
-    public function illustrates(){
-        return $this->meaning->where(['status'=>'3', 'position'=>'1'])->paginate(9);
+    public function illustrates($contexts){
+        return $this->meaning->whereIn('context_id', $contexts)->where(['status'=>'3', 'position'=>'1'])->get();
     }
     /**
      * total meaning
@@ -142,6 +142,6 @@ class DefineMeaningRepo
      * get first meaning for illustrator
      */
     public function selectedMeaning($context_id, $phrase_id){
-        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'position'=>'1'])->first();
+        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'position'=>'1'])->with('users')->first();
     }
 }

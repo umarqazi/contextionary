@@ -2,7 +2,7 @@
     @if(!empty($contextList))
         @foreach($contextList as $context)
             <div class="col-sm-6 col-md-4 col-lg-4">
-                <a href="{!! lang_route($data['route'], ['context_id'=>$context['context_id'],'phrase_id'=>$context['phrase_id']]) !!}">
+                <a @if($context['clickable']==1)href="{!! lang_route($data['route'], ['context_id'=>$context['context_id'],'phrase_id'=>$context['phrase_id']]) !!}" @endif>
                     <div class="categeoryBlock">
                         <div class="mask"></div>
                         <?php $thumb=public_path().'/storage/Contexts/'.$context['context_picture'];?>
