@@ -70,7 +70,7 @@ class CronService
      * function for updating bids and add record for votes
      */
     public function bidExpiry($type, $model){
-        $today=Carbon::today();
+        $today=Carbon::now();
         $getAllMeaning=$this->biddingRepo->fetchBidding($type);
         if($getAllMeaning){
             foreach($getAllMeaning as $meaning):
@@ -108,12 +108,11 @@ class CronService
             foreach($getVote as $vote):
                 $cron_run='0';
                 $getTotalVote=$this->voteMeaningRepo->totalVotes($vote['context_id'], $vote['phrase_id']);
-                if($vote['expiry_date'] < Carbon::today()):
+                if($vote['expiry_date'] < Carbon::now()):
                     if($getTotalVote >= env('MINIMUM_VOTES')):
                         $cron_run='1';
                     else:
-                        echo $date=Carbon::now()->addMinutes($this->vote_expiry);
-                        die();
+                        $date=Carbon::now()->addMinutes($this->vote_expiry);
                         $expiry_update=['expiry_date'=>$date];
                         $this->voteExpiryRepo->updateStatus($vote['id'], $expiry_update);
                     endif;
