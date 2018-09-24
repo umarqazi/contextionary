@@ -8,6 +8,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Profile;
+use App\Feedback;
 use App\Transaction;
 
 class User extends Authenticatable
@@ -54,5 +55,12 @@ class User extends Authenticatable
      */
     public function glossary() {
         return $this->belongsToMany('App\Glossary', 'my_collection', 'user_id', 'glossary_id')->withTimestamps();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function feedback() {
+        return $this->hasOne('App\Feedback');
     }
 }

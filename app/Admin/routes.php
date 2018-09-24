@@ -23,4 +23,5 @@ use Illuminate\Routing\Router;
             $router->resource('auth/points', 'PointsController');
             $router->resource('auth/coins-deals', 'CoinsController');
             $router->resource('auth/contact-us-msgs', 'ContactUsController')->only('index', 'show');
+            $router->resource('auth/feedback-msgs', 'FeedbackController')->only('index', 'show');
         });

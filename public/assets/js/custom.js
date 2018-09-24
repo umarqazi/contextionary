@@ -137,6 +137,11 @@ $(document).ready(function () {
     $('#bid-submission').submit(function() {
         $('.default-loader').css('display', 'block');
     });
+
+    $(".comment-icon").click(function () {
+        var get_parent = $(".comment-icon").parent().get(0);
+        $(get_parent).toggleClass('open');
+    });
     //light box
     if ($('.fancybox')[0]) {
         $('.fancybox').fancybox();

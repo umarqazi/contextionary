@@ -51,25 +51,25 @@ class GlossaryController extends Controller
      */
     public function getListingForAuthUser()
     {
-        $glossary_items = $this->user_service->getListingForAuthUser(Auth::user());
+        $glossary_items = $this->glossary_service->getListingForAuthUser(Auth::user());
         return View::make('user.user_plan.glossary.my_collection')->with(['glossary_items'=> $glossary_items]);
     }
 
     /**
      * @param Request $request
-     * @return mixed
+     * @return int
      */
     public function addToFav(Request $request){
-        $this->user_service->addToFav(Auth::user(), $request->book_id);
+        $this->glossary_service->addToFav(Auth::user(), $request->book_id);
         return 1;
     }
 
     /**
      * @param Request $request
-     * @return mixed
+     * @return int
      */
     public function removeFromFav(Request $request){
-        $this->user_service->removeFromFav(Auth::user(), $request->book_id);
+        $this->glossary_service->removeFromFav(Auth::user(), $request->book_id);
         return 1;
     }
 
