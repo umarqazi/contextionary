@@ -42,4 +42,25 @@ class GlossaryService extends BaseService implements IService
         return $this->glossary_repo->getListing();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getListingForAuthUser($user){
+        return $this->glossary_repo->getListingForAuthUser($user);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addToFav($user, $glossary_item_id){
+        return $this->glossary_repo->addToFav($user, $glossary_item_id);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function removeFromFav($user, $glossary_item_id){
+        return $this->glossary_repo->removeFromFav($user, $glossary_item_id);
+    }
+
 }
