@@ -16,6 +16,10 @@
               <a href="{!! lang_url('login') !!}" class="orangeBtn waves-light mr-3">{!! t('Log in') !!}</a>
               <a href="{!! lang_url('register') !!}" class="orangeBtn waves-light">{!! t('Sign up') !!}</a>
             </div>
+          @else
+            <div class="actions-btn">
+              <a href="{!! lang_url('dashboard') !!}" class="orangeBtn waves-light">{!! t('Dashboard') !!}</a>
+            </div>
           @endif
         </div>
       </div>

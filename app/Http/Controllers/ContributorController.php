@@ -19,6 +19,8 @@ use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use Illuminate\Support\Facades\Storage;
 use Config;
 use App\Coin;
+use Input;
+use Image;
 
 class ContributorController
 {
@@ -43,24 +45,38 @@ class ContributorController
         }catch (\Exception $e){
             $notification = array(
                 'message' => $e->getMessage(),
-                'alert_type' => 'danger'
+                'alert_type' => 'error'
             );
             return Redirect::back()->with($notification);
         }
     }
     public function saveContributor(Request $request){
         try{
+            $notification=[];
+            $records['context']=[];
+            if($request->context){
+                $records['context']=$request->context;
+            }
+            array_push($records['context'], '1');
             $records['role']=$request->role;
-            $records['context']=$request->context;
             $records['language']=$request->language;
             $records['user_id']=$request->user_id;
             $this->contributor->updateContributorRecord($records);
-            return Redirect::to(lang_url('dashboard'));
+            if($request->profile==1):
+                $notification = array(
+                    'message' => 'Record has been updated',
+                    'alert_type' => 'success'
+                );
+                $url=lang_url('profile');
+            else:
+                $url=lang_url('dashboard');
+            endif;
+            return Redirect::to($url)->with($notification);
 
         }catch(\Exception $e){
             $notification = array(
                 'message' => $e->getMessage(),
-                'alert_type' => 'danger'
+                'alert_type' => 'error'
             );
             return Redirect::back()->with($notification);
         }
@@ -71,7 +87,8 @@ class ContributorController
     public function define(){
         $bucketURL = Storage::disk('local')->url(Config::get('constant.ContextImages'));
         $contextList=$this->contributor->getAllContextPhrase();
-        return view::make('user.contributor.meaning.define')->with(['contextList'=>$contextList, 'bucketUrl'=>$bucketURL]);
+        $data=['route'=>'defineMeaning', 'title'=>'Phrase for Meaning'];
+        return view::make('user.contributor.meaning.define')->with(['data'=>$data,'contextList'=>$contextList, 'bucketUrl'=>$bucketURL]);
     }
     public function purchaseCoins(){
         $getCoinsList=Coin::all();
@@ -79,6 +96,13 @@ class ContributorController
     }
     public function addCoins(Request $request){
         $coin=$request->coins;
+        if($coin == NULL):
+            $notification = array(
+                'message' => 'Please select the Coins Deal first',
+                'alert_type' => 'error',
+            );
+            return Redirect::back()->with($notification);
+        endif;
         $getCoinInfo=Coin::find($coin);
         return view::make('user.contributor.transactions.pay_with_stripe')->with(['id'=>Auth::user()->id, 'coin'=>$getCoinInfo]);
     }
@@ -87,6 +111,14 @@ class ContributorController
      */
     public function defineMeaning($context_id, $phrase_id, $id=NULL){
         $contextList=$this->contributor->getContextPhrase($context_id, $phrase_id);
+        if($contextList['coins']!=NULL):
+            $notification = array(
+                'message' => 'Bid has been placed against this meaning',
+                'alert_type' => 'error',
+            );
+            $url=lang_url('define');
+            return Redirect::to($url)->with($notification);
+        endif;
         if($id!=NULL):
             $view='user.contributor.meaning.edit_meaning';
         else:
@@ -117,12 +149,12 @@ class ContributorController
      * place bid against their meaning
      */
     public function applyBidding(Request $request){
-        $data=['coins'=>$request->bid];
+        $data=['coins'=>$request->bid,'context_id'=>$request->context_id,'phrase_id'=>$request->phrase_id, 'model'=>$request->model, 'type'=>$request->type];
         $updateRecord=$this->contributor->bidding($data, $request->meaning_id);
         if($updateRecord==false):
             $notification = array(
                 'message' => 'Purchase coins for bidding on your meaning',
-                'alert_type' => 'danger',
+                'alert_type' => 'error',
             );
             return Redirect::back()->with($notification);
         else:
@@ -131,7 +163,58 @@ class ContributorController
                 'alert_type' => 'success',
             );
         endif;
-        $route=lang_route('define');
+        $route=lang_route($request->route);
         return Redirect::to($route)->with($notification);
+    }
+
+    /**
+     * get phrase for illustrator
+     */
+    public function illustrate(){
+        $contextList=$this->contributor->getIllustratePhrase();
+        $data=['route'=>'addIllustrate', 'title'=>'Phrase for Illustrator'];
+        return view::make('user.contributor.meaning.define')->with(['contextList'=>$contextList, 'data'=>$data]);
+    }
+    /** get meaning for illustrator */
+    public function addIllustrate($context_id, $phrase_id){
+        $contextList=$this->contributor->getMeaningForIllustrate($context_id, $phrase_id);
+        $contextList['illustrator']=$this->contributor->getIllustrator($context_id, $phrase_id);
+        return view::make('user.contributor.illustrator.add_illustrator')->with(['data'=>$contextList, 'illustrate'=>'1']);
+    }
+    /**
+     * add image against meaning
+     */
+    public function pAddIllustrate(Request $request){
+        $validators = $request->validate([
+            'illustrate' => 'required|mimes:jpg,png,jpeg',
+        ]);
+        $id='';
+        if (Input::hasFile('illustrate')) {
+            $image      = Input::file('illustrate');
+            $fileName=$this->uploadImage($image, 'illustrate');
+        }
+        if(array_key_exists('id', $request)):
+            $id=$request->id;
+        endif;
+        $data=['id'=>$id,'illustrator'=>$fileName, 'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id];
+        $saveIllustrate=$this->contributor->saveIllustrate($data);
+        $notification = array(
+            'message' => 'Your Illustrator has been added against meaning. You can bid now',
+            'alert_type' => 'success',
+        );
+        return Redirect::back()->with($notification);
+
+    }
+    public function uploadImage($data, $place){
+        $fileName   = time() . '.' . $data->getClientOriginalExtension();
+
+        $img = Image::make($data->getRealPath());
+        $img->resize(120, 120, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $img->stream();
+        $fileName='images/'.Auth::user()->id.'/'.$place.'/'.$fileName;
+        Storage::disk('public')->put($fileName, $img);
+        return $fileName;
     }
 }

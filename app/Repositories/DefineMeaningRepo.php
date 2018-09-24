@@ -14,6 +14,7 @@ use Auth;
 use DB;
 use Carbon\Carbon;
 use App\Repositories\ContextPhraseRepo;
+use Config;
 
 class DefineMeaningRepo
 {
@@ -48,13 +49,13 @@ class DefineMeaningRepo
         return $this->meaning->where('id', $meaning_id)->update($data);
     }
     public function contributions($user_id){
-        return $this->meaning->where('user_id',$user_id)->where('coins', '!=', NULL);
+        return $this->meaning->where('user_id',$user_id);
     }
     /*
      * fetch total numbers of contributions of user
      */
     public function getUserContributions($user_id){
-        return $this->contributions($user_id)->count();
+        return $this->contributions($user_id)->where('coins', '!=', NULL)->count();
     }
     /*
      * get all contributions of user
@@ -79,24 +80,13 @@ class DefineMeaningRepo
      * @param $meaning_id
      * @return bool
      */
-    public function addExpiry($meaning_id){
+    public function checkTotalPhrase($meaning_id){
+        $checkContextPhrase='';
         $getContextInfo=$this->meaning->where('id', $meaning_id)->first();
         if($getContextInfo):
-            $checkContextPhrase=$this->getRecords($getContextInfo->context_id, $getContextInfo->phrase_id)->first();
-            if($checkContextPhrase->id==$meaning_id):
-                $date=Carbon::now()->addMonths(1);
-                $expiry=$this->addBidExpiry($getContextInfo->context_id,$getContextInfo->phrase_id, 'meaning', $date);
-            endif;
+            $checkContextPhrase=$this->getRecords($getContextInfo->context_id, $getContextInfo->phrase_id)->where('coins', '!=', NULL)->count();
         endif;
-        return true;
-    }
-    /**
-     * @param $context_id
-     * @param $phrase_id
-     * @return bool
-     */
-    public function addBidExpiry($context_id, $phrase_id, $type, $date){
-        DB::table('bidding_expiry')->insert(['context_id'=>$context_id, 'phrase_id'=>$phrase_id,'bid_type'=>$type, 'expiry_date'=>$date]);
+        return $checkContextPhrase;
     }
     /*
      * update status except first 9
@@ -105,7 +95,7 @@ class DefineMeaningRepo
 
         /**update status for vote of first 9 contributor*/
 
-        $records=$this->getRecords($context_id, $phrase_id)->limit(4)->update(['status'=>'1']);
+        $records=$this->getRecords($context_id, $phrase_id)->limit(Config::get('constant.selected_bids'))->update(['status'=>'1']);
 
         /** update status for refund of contributor */
 
@@ -131,5 +121,23 @@ class DefineMeaningRepo
      */
     public function updateVoteStatus($context_id, $phrase_id){
         return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->update(['status'=>3]);
+    }
+    /**
+     * get Illustrate Records
+     */
+    public function illustrates(){
+        return $this->meaning->where(['status'=>'3', 'position'=>'1'])->paginate(9);
+    }
+    /**
+     * total meaning
+     */
+    public function totalMeaning($context_id, $phrase_id){
+        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->count();
+    }
+    /**
+     * get first meaning for illustrator
+     */
+    public function selectedMeaning($context_id, $phrase_id){
+        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'position'=>'1'])->first();
     }
 }

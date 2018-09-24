@@ -6,7 +6,7 @@
     <div class="container-fluid contributorMain definePage" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $data['context_picture'] !!}); background-size:cover">
         <div class="wrapperMask"></div>
         @include('layouts.flc_header')
-        {!! Form::open(['url'=>lang_route('postContextMeaning'), 'method'=>'post']) !!}
+        {!! Form::open(['url'=>lang_route('postContextMeaning'), 'method'=>'post', 'id'=>'form-submission']) !!}
         <div class="row">
             @include('layouts.toaster')
         </div>

@@ -4,19 +4,8 @@
 @stop
 @section('content')
     <div class="container-fluid contributorMain userProfile">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="tabsContainer">
-                    <ul class="customTabs">
-                        <li class="active title">{!! t('My Profile') !!} <a href="{!! lang_route('edit profile') !!}"><i class="fas fa-pencil-alt"></i></a></li>
-                    </ul>
-                    @include('search')
-                </div>
-            </div>
-        </div>
-        @if (Session::has('message'))
-            <div class="alert alert-info">{{ Session::get('message') }}</div>
-        @endif
+        @include('layouts.profile-menu')
+        @include('layouts.toaster')
         <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ lang_url('update-profile') }}">
             <div class="row">
 
@@ -60,7 +49,7 @@
                 <div class="col-md-6 make-left">
 
                     <div class="customForm-group">
-                        <input type="text" class="customSelect w-100" name="pseudonyme" value="{{ $user->profile->pseudonyme }}" required autofocus>
+                        <input type="text" placeholder="Pseudonyme" class="customSelect w-100" name="pseudonyme" value="{{ $user->profile->pseudonyme }}" required autofocus>
 
                         @if ($errors->has('pseudonyme'))
                             <span class="help-block">

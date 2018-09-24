@@ -30,9 +30,15 @@ class ContextRepo
         return $this->context;
     }
     public function getLimitedRecords(){
-        return $this->list()->take(10);
+        return $this->list()->take(env('CONTEXT_LENGTH'));
     }
     public function getPaginatedRecord(){
         return $this->getRecords()->paginate(9);
+    }
+    /**
+     * get all context
+     */
+    public function getContext(){
+        return $this->getRecords()->get();
     }
 }

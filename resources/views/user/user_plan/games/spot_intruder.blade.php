@@ -47,7 +47,7 @@
                     <h2>Correct Answer!</h2>
                 </div>
                 <div class="col-sm-3 correct-div-text">
-                    <a href="{!! lang_route('spot-the-intruder') !!}"><span>Continue</span></a>
+                    <a href="{!! lang_route('continue-spot-the-intruder') !!}"><span>Continue</span></a>
                 </div>
             </div>
         </div>
@@ -61,7 +61,7 @@
                     <p>Correct Answer was <strong id="answer"></strong></p>
                 </div>
                 <div class="col-sm-3 wrong-div-text">
-                    <a href="{!! lang_route('spot-the-intruder') !!}"><span>Continue</span></a>
+                    <a href="{!! lang_route('continue-spot-the-intruder') !!}"><span>Continue</span></a>
                 </div>
             </div>
         </div>

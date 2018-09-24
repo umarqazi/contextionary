@@ -54,18 +54,30 @@ class PictionaryController extends Controller
         if($game == null){
             $pictionary = $this->pictionary_service->getRandom([]);
             $game = $this->pictionary_game_service->create($user_id);
-            $this->pictionary_game_service->addQuestion($game->id, $pictionary->id);
             $game = $this->pictionary_game_service->get($game->id);
-            return View::make('user.user_plan.games.pictionary')>with(['pictionary' => $pictionary, 'game' => $game]);
-        }else{
-            if($game->question_count < 20) {
-                $pictionary = $this->pictionary_service->getRandom(explode(',', $game->questions));
-                $game = $this->pictionary_game_service->addQuestionCount($game->id);
+            if(!empty($pictionary)){
                 $this->pictionary_game_service->addQuestion($game->id, $pictionary->id);
-                $game = $this->pictionary_game_service->get($game->id);
                 return View::make('user.user_plan.games.pictionary')->with(['pictionary' => $pictionary, 'game' => $game]);
+            }
+            else{
+                return View::make('user.user_plan.games.pictionary_error')->with(['message' => 'No more Questions. Be patient, we are adding more questions.']);
+            }
+        }else{
+            if($game->question_count < 21) {
+                $questioned = explode(',', $game->questions);
+                $answered   = explode(',', $game->questions_answered);
+                $pictionary = $this->pictionary_service->getQuestion($questioned, $answered);
+                $game = $this->pictionary_game_service->get($game->id);
+                if(!empty($pictionary)){
+                    if($questioned == $answered){
+                        $this->pictionary_game_service->addQuestion($game->id, $pictionary->id);
+                    }
+                    return View::make('user.user_plan.games.pictionary')->with(['pictionary' => $pictionary, 'game' => $game]);
+                }else{
+                    return View::make('user.user_plan.games.pictionary_error')->with(['message' => 'Pictionary is down! Please contact support to report the issue.']);
+                }
             }else{
-                $game = $this->pictionary_game_service->complete($game->id);
+                $this->pictionary_game_service->complete($game->id);
                 $game = $this->pictionary_game_service->get($game->id);
                 $high_score = $this->pictionary_game_service->getHighScore($user_id);
                 return View::make('user.user_plan.games.pictionary_result')->with(['game' => $game, 'high_score' => $high_score]);
@@ -80,20 +92,46 @@ class PictionaryController extends Controller
     public function verifyAnswer(Request $request){
         $pictionary = $this->pictionary_service->find($request->ques_id);
         $game = $this->pictionary_game_service->find($request->game_id);
-        if($pictionary->answer == $request->option ){
-            $this->pictionary_game_service->addScoreCount($game->id);
-            return response()->json([
-                'http-status' => Response::HTTP_OK,
-                'status' => true,
-                'body' => null
-            ],Response::HTTP_OK);
+        if(!empty($pictionary) && !empty($game)){
+            $this->pictionary_game_service->addAnsweredQuestion($game->id, $pictionary->id);
+            if($pictionary->answer == $request->option ){
+                $this->pictionary_game_service->addScoreCount($game->id);
+                return response()->json([
+                    'http-status' => Response::HTTP_OK,
+                    'status' => true,
+                    'body' => null
+                ],Response::HTTP_OK);
+            }
+            else{
+                return response()->json([
+                    'http-status' => Response::HTTP_OK,
+                    'status' => false,
+                    'body' => $pictionary->{$pictionary->answer},
+                ],Response::HTTP_OK);
+            }
         }
         else{
             return response()->json([
                 'http-status' => Response::HTTP_OK,
                 'status' => false,
-                'body' => $pictionary->{$pictionary->answer},
+                'message' => 'Game or Question not found.',
+                'body' => $request->all(),
             ],Response::HTTP_OK);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function continue(){
+        $game = $this->pictionary_game_service->incompleteUserGame(Auth::user()->id);
+        if(!empty($game)){
+            $this->pictionary_game_service->addQuestionCount($game->id);
+            $lang=lang_url('pictionary');
+            return redirect()->to($lang);
+        }
+        else{
+            return View::make('user.user_plan.games.pictionary_error')->with(['message' => 'Pictionary is down! Please contact support to report the issue.']);
         }
     }
 
@@ -102,7 +140,12 @@ class PictionaryController extends Controller
      */
     public function reset(){
         $game = $this->pictionary_game_service->incompleteUserGame(Auth::user()->id);
-        $this->pictionary_game_service->complete($game->id);
-        return View::make('user.user_plan.games.pictionary_index');
+        if(!empty($game)){
+            $this->pictionary_game_service->complete($game->id);
+            return View::make('user.user_plan.games.pictionary_index');
+        }
+        else{
+            return View::make('user.user_plan.games.pictionary_error')->with(['message' => 'Pictionary is down! Please contact support to report the issue.']);
+        }
     }
 }

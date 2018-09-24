@@ -11,6 +11,7 @@ use App\Repositories\BiddingExpiryRepo;
 use App\Repositories\CoinsRepo;
 use App\Repositories\ContextPhraseRepo;
 use App\Repositories\DefineMeaningRepo;
+use App\Repositories\IllustratorRepo;
 use App\Repositories\ProfileRepo;
 use App\Repositories\FamiliarContextRepo;
 use App\Repositories\ContextRepo;
@@ -19,6 +20,7 @@ use App\Repositories\UserRepo;
 use App\Repositories\VoteExpiryRepo;
 use Auth;
 use Carbon\Carbon;
+use Config;
 
 class ContributorService implements IService
 {
@@ -33,6 +35,8 @@ class ContributorService implements IService
     protected $defineMeaning;
     protected $voteService;
     protected $biddingRepo;
+    protected $illustrate;
+    protected $contextArray=array();
 
     public function __construct()
     {
@@ -47,6 +51,8 @@ class ContributorService implements IService
         $role=new RoleRepo();
         $voteService=new VoteService();
         $biddingRepo=new BiddingExpiryRepo();
+        $illustrateRepo=new IllustratorRepo();
+        $contextRepo=new ContextRepo();
         $this->contextRepo=$context;
         $this->roleRepo=$role;
         $this->familiarContext=$familiarContext;
@@ -58,6 +64,8 @@ class ContributorService implements IService
         $this->defineMeaning=$defineMeaningRepo;
         $this->voteService=$voteService;
         $this->biddingRepo=$biddingRepo;
+        $this->illustrate=$illustrateRepo;
+        $this->contextRepo=$contextRepo;
     }
 
     public function getParentContextList(){
@@ -70,14 +78,29 @@ class ContributorService implements IService
         return $this->contextRepo->getPaginatedRecord();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFamiliarContext($user_id){
+        return $getFamiliarContext=$this->familiarContext->getContext($user_id);
+    }
     public function getAllContextPhrase(){
-        return $contextPhrase=$this->contextPhrase->getPaginated();
+        $getFamiliarContext=$this->getFamiliarContext(Auth::user()->id);
+        $getAllContext=$this->contextRepo->getContext();
+        $contexts=[];
+        foreach ($getFamiliarContext as $key=> $context):
+            array_push($this->contextArray, $context['context_id']);
+            $contexts[$key]['child']=$this->contextChildList($getAllContext, $context['context_id']);
+        endforeach;
+        $this->contextArray=array_unique($this->contextArray);
+        return $contextPhrase=$this->contextPhrase->getPaginated($this->contextArray);
     }
     /*
      * get context against specific id
      */
     public function getContextPhrase($context_id, $phrase_id){
         return $contextPhrase=$this->contextPhrase->getContext($context_id, $phrase_id);
+
     }
     /*
      * update contributor records
@@ -88,6 +111,7 @@ class ContributorService implements IService
         foreach($data['context'] as $key=>$context){
             $familiarContext[$key]=['user_id'=>$data['user_id'], 'context_id'=>$context];
         }
+        $this->familiarContext->delete($data['user_id']);
         $this->familiarContext->create($familiarContext);
         $this->profile->update($data['user_id'], ['language_proficiency'=>$data['language']]);
         $this->userService->verificationEmail($data['user_id']);
@@ -124,32 +148,17 @@ class ContributorService implements IService
         if($coins <= 0){
             return false;
         }
-        $this->defineMeaning->update($data, $meaning_id);
-        $this->defineMeaning->addExpiry($meaning_id);
+        $repository=$data['model'];
+        $updateColumns=['coins'=>$data['coins']];
+        $this->$repository->update($updateColumns, $meaning_id);
+        $total=$this->$repository->checkTotalPhrase($meaning_id, $data['type']);
+        if($total=='1'){
+            $this->biddingRepo->addBidExpiry($data, $data['type']);
+        }
         $coins=Auth::user()->coins-$data['coins'];
         $userData=['coins'=>$coins];
         $this->userRepo->update(Auth::user()->id, $userData);
         return true;
-    }
-    /*
-     * cron job for checking availability of meaning for vote
-     */
-    public function checkMeaning(){
-        $today=Carbon::today();
-        $getAllMeaning=$this->defineMeaning->fetchContextPhraseMeaning();
-        foreach($getAllMeaning as $meaning):
-            if($meaning['context_id']!=NULL && $meaning['phrase_id']!=NULL):
-                if($meaning['total'] < 2):
-                    if(Carbon::parse($meaning['expiry_date']) < Carbon::parse($today)):
-                        $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($meaning['context_id'], $meaning['phrase_id']);
-                        $this->voteService->addPhraseForVote($meaning['context_id'], $meaning['phrase_id'], 'meaning');
-                    endif;
-                else:
-                    $updateMeaningStatus=$this->defineMeaning->updateMeaningStatus($meaning['context_id'], $meaning['phrase_id']);
-                    $this->voteService->addPhraseForVote($meaning['context_id'], $meaning['phrase_id'], 'meaning');
-                endif;
-            endif;
-        endforeach;
     }
     /**
      * get Phrase Meanings
@@ -162,5 +171,69 @@ class ContributorService implements IService
             $records['allMeaning']=$this->defineMeaning->getAllVoteMeaning($getMeaning->context_id, $getMeaning->phrase_id);
         }
         return $records;
+    }
+    /**
+     * get phrase for illustrate
+     */
+    public function getIllustratePhrase(){
+        $contextPhrase=$this->defineMeaning->illustrates();
+        foreach($contextPhrase as $key=>$phrase):
+            $contextPhrase[$key]['status']=Config::get('constant.phrase_status.open');
+            $contextDetail=$this->contextPhrase->getContext($phrase['context_id'], $phrase['phrase_id']);
+            $checkUserIllustrator=$this->getIllustrator($phrase['context_id'], $phrase['phrase_id']);
+            if($checkUserIllustrator):
+                if($checkUserIllustrator->coins!=NULL):
+                    $contextPhrase[$key]['status']=Config::get('constant.phrase_status.submitted');
+                else:
+                    $contextPhrase[$key]['status']=Config::get('constant.phrase_status.in-progress');
+                endif;
+
+            endif;
+            $contextPhrase[$key]['context_name']=$contextDetail->context_name;
+            $contextPhrase[$key]['context_picture']=$contextDetail->context_picture;
+            $contextPhrase[$key]['phrase_text']=$contextDetail->phrase_text;
+        endforeach;
+        return $contextPhrase;
+    }
+    /**
+     * save illustrator
+     */
+    public function saveIllustrate($data){
+        if($data['id']!=NULL):
+            return $this->illustrate->update($data, $data['id']);
+        else:
+            return $this->illustrate->create($data);
+        endif;
+
+    }
+    /**
+     * get Illustrator
+     */
+    public function getIllustrator($context_id, $phrase_id){
+        return $this->illustrate->currentUserIllustrate($context_id, $phrase_id, Auth::user()->id);
+    }
+    /*
+     * get context against specific id
+     */
+    public function getMeaningForIllustrate($context_id, $phrase_id){
+        return $contextPhrase=$this->contextPhrase->getFirstPositionMeaning($context_id, $phrase_id);
+    }
+    /**
+     * get context and child of all context
+     */
+    public function contextChildList($array, $parentId = 0){
+        $branch = array();
+        foreach ($array as $key=>$element) {
+            if ($element['context_immediate_parent_id'] == $parentId) {
+                array_push($this->contextArray, $element['context_id']);
+                $children = $this->contextChildList($array, $element['context_id']);
+                if ($children) {
+                    $element['children'] = $children;
+                }
+                $branch[$key] = $element;
+            }
+
+        }
+        return $branch;
     }
 }

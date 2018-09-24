@@ -5,11 +5,11 @@
   </div>
   <ul class="menuListing">
     @if(Auth::check())
-      @if(Auth::user()->hasRole(Config::get('constant.contributorRole.definition')))
+      @if(Auth::user()->hasRole(Config::get('constant.contributorRole.define')))
         <li><a href="{!! lang_route('define') !!}"><span>{!! t('Define') !!}</span></a></li>
       @endif
-      @if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrator')))
-        <li><a href="#" class="menu2"><span>{!! t('Illustrate') !!}</span></a></li>
+      @if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrate')))
+        <li><a href="{!! lang_route('illustrate') !!}" class="menu2"><span>{!! t('Illustrate') !!}</span></a></li>
       @endif
       @if(Auth::user()->hasRole(Config::get('constant.contributorRole.translator')))
         <li><a href="#" class="menu3"><span>{!! t('Translate') !!}</span></a></li>
@@ -22,11 +22,15 @@
     {!! t('Earn Bonus Coins') !!}
   </div>
   <ul class="menuListing">
-    <li><a href="{!! lang_route('plist') !!}" class="menu4"><span>{!! t('Vote Meanings') !!}</span></a></li>
-    @if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrator')))
-    <li><a href="#" class="menu4"><span>{!! t('Vote Illustration') !!}</span></a></li>
+    @if(Auth::user()->hasRole(Config::get('constant.contributorRole.define')))
+      <li><a href="{!! lang_route('plist') !!}" class="menu4"><span>{!! t('Vote Meanings') !!}</span></a></li>
     @endif
-    <li><a href="#" class="menu4"><span>{!! t('Vote Translations')!!}</span></a></li>
+    @if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrate')))
+      <li><a href="#" class="menu4"><span>{!! t('Vote Illustration') !!}</span></a></li>
+    @endif
+    @if(Auth::user()->hasRole(Config::get('constant.contributorRole.translator')))
+      <li><a href="#" class="menu4"><span>{!! t('Vote Translations')!!}</span></a></li>
+    @endif
   </ul>
 </div>
 

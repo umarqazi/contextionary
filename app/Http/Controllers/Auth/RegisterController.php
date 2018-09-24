@@ -63,8 +63,9 @@ class RegisterController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'profile_image' => 'required|mimes:jpg,png,jpeg',
-            'pseudonyme'=>'required|string',
+            'profile_image' => 'mimes:jpg,png,jpeg',
+            'country'=>'required',
+            'pseudonyme'=>'string|nullable',
             'gender'=>'required'
         ]);
     }
@@ -97,7 +98,7 @@ class RegisterController extends Controller
              */
             $userProfile = new Profile;
             $userProfile->pseudonyme = $data['pseudonyme'];
-            $userProfile->date_birth=strtotime($data['date_birth']);
+            $userProfile->date_birth=$data['date_birth'];
             $userProfile->gender= $data['gender'];
             $userProfile->phone_number=$data['phone_number'];
             $userProfile->country=$data['country'];

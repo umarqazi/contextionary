@@ -18,6 +18,7 @@ class BiddingExpiry extends Migration
             $table->integer('context_id');
             $table->integer('phrase_id');
             $table->string('bid_type');
+            $table->integer('status');
             $table->timestamp('expiry_date');
         });
     }
