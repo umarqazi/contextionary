@@ -84,6 +84,7 @@ class ContactUsController extends Controller
                 $filter->like('status');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
+                $actions->disableEdit();
                 $action = "".$actions->getResource()."/".$actions->getKey()."";
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
