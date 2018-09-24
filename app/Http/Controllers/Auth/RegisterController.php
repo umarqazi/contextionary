@@ -64,7 +64,6 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'profile_image' => 'mimes:jpg,png,jpeg',
-            'country'=>'required',
             'pseudonyme'=>'string|nullable',
             'gender'=>'required'
         ]);
@@ -78,24 +77,26 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         try{
             $user = User::create([
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'email' => $data['email'],
+                'status' => 0,
                 'password' => bcrypt($data['password']),
                 'token' => md5(microtime()),
+                'email_token' => base64_encode($data['email']),
+                'native_language'=>$data['native_language']
             ]);
             if (Input::hasFile('profile_image')) {
                 $image      = Input::file('profile_image');
                 $fileName=$this->uploadImage($image, $user->id);
             }
-            $user->profile_image=$fileName;
-            $user->email_token= base64_encode($data['email']);
-            $user->save();
             /**
              * Update User Profile
              */
+            $id=$user->id;
             $userProfile = new Profile;
             $userProfile->pseudonyme = $data['pseudonyme'];
             $userProfile->date_birth=$data['date_birth'];
@@ -103,10 +104,15 @@ class RegisterController extends Controller
             $userProfile->phone_number=$data['phone_number'];
             $userProfile->country=$data['country'];
             $userProfile->native_language=$data['native_language'];
-            $userProfile->user_id =$user->id;
+            $userProfile->user_id =$id;
             $userProfile->save();
+
+            /**
+             * update profile image
+             */
+            $user->profile_image=$fileName;
+            $user->save();
             Session::put('user', $user);
-            $this->redirectTo=$this->redirectTo.'/'.$user->id;
 
         }catch (\Exception $e){
             $notification = array(
@@ -117,8 +123,11 @@ class RegisterController extends Controller
         }
     }
   
-    public function sendVerificationEmail($id){
-        $this->userServices->verificationEmail($id);
+    public function sendVerificationEmail(){
+        $id=User::where('status',0)->orderBy('id', 'desc')->select('id')->first();
+        if($id){
+            $this->userServices->verificationEmail($id->id);
+        }
         $notification = array(
             'message' => t('You have successfully registered. An email is sent to you for verification.'),
             'alert_type' => 'success'

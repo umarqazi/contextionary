@@ -102,7 +102,7 @@
       </div>
 
       <div class="col-md-6">
-        <div class="customForm-group">
+        <div class="customForm-group"><span class="asterick">*</span>
           {!! Form::select('native_language', Config::get('constant.Native Language'),null, ['class'=>'customSelect w-100', 'placeholder'=>t('Native Language')]) !!}
         </div>
       </div>
