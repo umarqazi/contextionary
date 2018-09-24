@@ -84,7 +84,7 @@ class CronService
                         if($checkTotal >= $this->minimum_bids):
                             $cron_job='1';
                         else:
-                            $date=Carbon::now()->addDays($this->bids_expiry);
+                            $date=Carbon::now()->addMinutes($this->bids_expiry);
                             $expiry_update=['expiry_date'=>$date];
                             $this->biddingRepo->updateBiddingStatus($meaning['id'], $expiry_update);
                         endif;
@@ -112,7 +112,7 @@ class CronService
                     if($getTotalVote >= env('MINIMUM_VOTES')):
                         $cron_run='1';
                     else:
-                        echo $date=Carbon::now()->addDays($this->vote_expiry);
+                        echo $date=Carbon::now()->addMinutes($this->vote_expiry);
                         die();
                         $expiry_update=['expiry_date'=>$date];
                         $this->voteExpiryRepo->updateStatus($vote['id'], $expiry_update);
