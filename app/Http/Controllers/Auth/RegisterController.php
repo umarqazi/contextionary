@@ -79,51 +79,41 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
-        try{
-            $user = User::create([
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'email' => $data['email'],
-                'status' => 0,
-                'password' => bcrypt($data['password']),
-                'token' => md5(microtime()),
-                'email_token' => base64_encode($data['email']),
-            ]);
-            /**
-             * Update User Profile
-             */
-            $id=$user->id;
-            $userProfile = new Profile;
-            $userProfile->pseudonyme = $data['pseudonyme'];
-            $userProfile->date_birth=$data['date_birth'];
-            $userProfile->gender= $data['gender'];
-            $userProfile->phone_number=$data['phone_number'];
-            $userProfile->country=$data['country'];
-            $userProfile->native_language=$data['native_language'];
-            $userProfile->user_id =$id;
-            $userProfile->save();
-            if (Input::hasFile('profile_image')) {
-                $image      = Input::file('profile_image');
-                $fileName=$this->uploadImage($image, $user->id);
-            }
-
-            /**
-             * update profile image
-             */
-            $user->profile_image=$fileName;
-            $user->save();
-            Session::put('user', $user);
-
-        }catch (\Exception $e){
-            $notification = array(
-                'message' => $e->getMessage(),
-                'alert_type' => 'danger'
-            );
-            return Redirect::back()->with($notification);
+        $user = User::create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'email' => $data['email'],
+            'status' => 0,
+            'password' => bcrypt($data['password']),
+            'token' => md5(microtime()),
+            'email_token' => base64_encode($data['email']),
+        ]);
+        /**
+         * Update User Profile
+         */
+        $id=$user->id;
+        $userProfile = new Profile;
+        $userProfile->pseudonyme = $data['pseudonyme'];
+        $userProfile->date_birth=$data['date_birth'];
+        $userProfile->gender= $data['gender'];
+        $userProfile->phone_number=$data['phone_number'];
+        $userProfile->country=$data['country'];
+        $userProfile->native_language=$data['native_language'];
+        $userProfile->user_id =$id;
+        $userProfile->save();
+        if (Input::hasFile('profile_image')) {
+            $image      = Input::file('profile_image');
+            $fileName=$this->uploadImage($image, $user->id);
         }
+
+        /**
+         * update profile image
+         */
+        $user->profile_image=$fileName;
+        $user->save();
+        Session::put('user', $user);
     }
-  
+
     public function sendVerificationEmail(){
         $id=User::where('status',0)->orderBy('id', 'desc')->select('id')->first();
         if($id){
@@ -135,7 +125,7 @@ class RegisterController extends Controller
         );
         return Redirect::to('/login')->with($notification);
     }
-  
+
     public function verifyEmail($token){
         $getUser=User::where('email_token', $token)->first();
         if($getUser){
