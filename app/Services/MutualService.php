@@ -93,6 +93,7 @@ class MutualService
      */
     public function displayHumanTimeLeft($expiry_date)
     {
+        $counter='';
         $now = Carbon::now();
         $days = $now->diffInDays($expiry_date);
         $hours = $now->diffInHours($expiry_date);
