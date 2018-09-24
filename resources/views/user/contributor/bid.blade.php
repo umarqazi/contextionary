@@ -12,8 +12,10 @@
         <button type="submit" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Bid') !!}</button>
         @if(\Route::current()->getName() == App::getLocale().'.defineMeaning')
             <a href="{!! lang_route('editMeaning', ['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'id'=>$data['id']]) !!}" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</a>
+            <a href="{!! lang_url('define')!!}" class="orangeBtn ml-3 waves-light bidBtn waves-effect waves-light">{!! t('Return') !!}</a>
         @else
             <button type="button" onclick="showButtons()" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</button>
+            <a href="{!! lang_url('illustrate')!!}" class="orangeBtn ml-3 waves-light bidBtn waves-effect waves-light">{!! t('Return') !!}</a>
         @endif
     </div>
 </div>

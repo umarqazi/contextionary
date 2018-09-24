@@ -20,10 +20,14 @@
             <div class="col-md-5 selectPhrase text-right">
                 <span class="whiteText"><strong>{!! t('Phrase Type') !!}:</strong> @if($data['phrase_type']) <span class="whiteText">{!! Config::get('constant.PhraseType.'.$data['phrase_type']) !!}</span>
                     @endif</span>
-                @if(!$data['phrase_type'])
-                    {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'customSelect'])!!}
-                    @if ($errors->has('phrase_type'))
-                        <div class="help-block"><strong>{{ $errors->first('phrase_type') }}</strong></div>
+                @if($data['close_bid']==1)
+                    <span class="whiteText">{!! Config::get('constant.PhraseType.'.$data['phrase_type']) !!}</span>
+                @else
+                    @if(!$data['phrase_type'])
+                        {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'customSelect'])!!}
+                        @if ($errors->has('phrase_type'))
+                            <div class="help-block"><strong>{{ $errors->first('phrase_type') }}</strong></div>
+                        @endif
                     @endif
                 @endif
             </div>
