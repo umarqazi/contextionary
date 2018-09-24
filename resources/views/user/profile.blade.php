@@ -12,7 +12,11 @@
         <div class="col-md-8 col-lg-8">
             <div class="userBlock">
                 <div class="img-holder">
-                    <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+                    @if(Auth::user()->profile_image)
+                        <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+                    @else
+                        <img src="{!! asset('assets/images/default.jpg')!!}">
+                    @endif
                 </div>
                 <div class="basicInfo">
                     <ul>

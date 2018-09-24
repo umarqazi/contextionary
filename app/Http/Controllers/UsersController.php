@@ -107,7 +107,7 @@ class UsersController extends Controller
             }
             $user->profile_image=$fileName;
             $user->save();
-            $updateProfile=Profile::find($user->id);
+            $updateProfile=Profile::where('user_id', $user->id)->first();
             $updateProfile->phone_number=Input::get('phone_number');
             $updateProfile->gender=Input::get('gender');
             $updateProfile->country=Input::get('country');

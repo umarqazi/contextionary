@@ -6,13 +6,21 @@
       @if(Auth::check())
         <div class="userAvtar dropDown">
           <div class="img-holder">
-            <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+            @if(Auth::user()->profile_image)
+              <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+            @else
+              <img src="{!! asset('assets/images/default.jpg')!!}">
+            @endif
           </div>
           <span class="name cursor">{!! Auth::user()->first_name !!} <i class="fa fa-chevron-down"></i></span>
           <div class="dropDown-block">
             <div class="avtar-holder">
               <div class="img-holder">
-                <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+                @if(Auth::user()->profile_image)
+                  <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+                @else
+                  <img src="{!! asset('assets/images/default.jpg')!!}">
+                @endif
               </div>
               <span class="name">{!! Auth::user()->first_name !!} {!! Auth::user()->last_name !!}</span>
             </div>
