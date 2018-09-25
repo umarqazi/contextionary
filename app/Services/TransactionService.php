@@ -87,19 +87,19 @@ class TransactionService
         } catch (Exception $e) {
             $notification = array(
                 'message' => $e->getMessage(),
-                'alert_type' => 'danger'
+                'alert_type' => 'error'
             );
             return ['status'=>false, 'notification'=>$notification];
         } catch(\Cartalyst\Stripe\Exception\CardErrorException $e) {
             $notification = array(
                 'message' => $e->getMessage(),
-                'alert_type' => 'danger'
+                'alert_type' => 'error'
             );
             return ['status'=>false, 'notification'=>$notification];
         } catch(\Cartalyst\Stripe\Exception\MissingParameterException $e) {
             $notification = array(
                 'message' => $e->getMessage(),
-                'alert_type' => 'danger'
+                'alert_type' => 'error'
             );
             return ['status'=>false, 'notification'=>$notification];
         }

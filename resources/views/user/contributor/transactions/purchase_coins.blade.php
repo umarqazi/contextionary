@@ -28,7 +28,7 @@
                                         </label>
                                     </div>
                                 @endforeach;
-                                <div class="col-sm-12 col-md-12 mt-4 mb-3 text-center">
+                                <div class="col-sm-12 col-md-12 mt-4 mb-3 text-center hide-button" id="show-purchase">
                                     <button type="submit" class="orangeBtn waves-light">{!! t('Purchase') !!}</button>
                                 </div>
                             @endif;
