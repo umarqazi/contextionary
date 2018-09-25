@@ -24,4 +24,6 @@ use Illuminate\Routing\Router;
             $router->resource('auth/coins-deals', 'CoinsController');
             $router->resource('auth/contact-us-msgs', 'ContactUsController')->only('index', 'show');
             $router->resource('auth/feedback-msgs', 'FeedbackController')->only('index', 'show');
+            $router->resource('auth/vote-expiry', 'VoteExpiryController')->only('index', 'show');
+            $router->resource('auth/bidding-expiry', 'BiddingExpiryController')->only('index', 'show');
         });

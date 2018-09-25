@@ -51,3 +51,7 @@
     font-weight: 600;
     margin-bottom: 5px !important;
 }
+.custom-header{
+    padding: 0 !important;
+    margin-bottom: 15px !important;
+}
