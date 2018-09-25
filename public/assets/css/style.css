@@ -337,3 +337,6 @@ color: #f7953a;
 .commentBox{
   right:-310px !important;
 }
+.hide-button{
+  display:none;
+}
