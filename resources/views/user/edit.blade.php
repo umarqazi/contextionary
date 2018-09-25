@@ -6,7 +6,7 @@
     <div class="container-fluid contributorMain userProfile">
         @include('layouts.profile-menu')
         @include('layouts.toaster')
-        <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ lang_url('update-profile') }}">
+        <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ lang_url('update-profile') }}" id='form-submission'>
             <div class="row">
 
                 {{ csrf_field() }}
@@ -49,7 +49,7 @@
                 <div class="col-md-6 make-left">
 
                     <div class="customForm-group">
-                        <input type="text" placeholder="Pseudonyme" class="customSelect w-100" name="pseudonyme" value="{{ $user->profile->pseudonyme }}" required autofocus>
+                        <input type="text" placeholder="Pseudonyme" class="customSelect w-100" name="pseudonyme" value="{{ $user->profile->pseudonyme }}" autofocus>
 
                         @if ($errors->has('pseudonyme'))
                             <span class="help-block">

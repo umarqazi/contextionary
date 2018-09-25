@@ -52,7 +52,7 @@ Class VoteService{
      * update VoteExpiry
      */
     public function addPhraseForVote($context, $phrase, $type){
-        $date=Carbon::now()->addDays($this->voteExpiryDate);
+        $date=Carbon::now()->addMinutes($this->voteExpiryDate);
         $data=['context_id'=>$context, 'phrase_id'=>$phrase, 'vote_type'=>$type, 'expiry_date'=>$date];
         $record=$this->voteExpiry->checkRecords($context, $phrase, $type);
         if(!$record):
