@@ -28,6 +28,7 @@ class CronService
     protected $voteService;
     protected $illustrator;
     protected $minimum_bids;
+    protected $minimum_votes;
     protected $bids_expiry;
     protected $vote_expiry;
     protected $voteExpiryRepo;
@@ -50,6 +51,7 @@ class CronService
         $this->voteExpiryRepo=$expiryRepo;
         $setting = new SettingController();
         $this->minimum_bids=$setting->getKeyValue(env('MINIMUM_BIDS'))->values;
+        $this->minimum_votes=$setting->getKeyValue(env('MINIMUM_VOTES'))->values;
         $this->bids_expiry=$setting->getKeyValue(env('BIDS_EXPIRY'))->values;
         $this->vote_expiry=$setting->getKeyValue(env('VOTE_EXPIRY'))->values;
     }
@@ -109,7 +111,7 @@ class CronService
                 $cron_run='0';
                 $getTotalVote=$this->voteMeaningRepo->totalVotes($vote['context_id'], $vote['phrase_id']);
                 if($vote['expiry_date'] < Carbon::now()):
-                    if($getTotalVote >= env('MINIMUM_VOTES')):
+                    if($getTotalVote >= $this->minimum_votes):
                         $cron_run='1';
                     else:
                         $date=Carbon::now()->addMinutes($this->vote_expiry);
