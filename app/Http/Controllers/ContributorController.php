@@ -166,9 +166,13 @@ class ContributorController
         $contextList=$this->contributor->getMeaningForIllustrate($context_id, $phrase_id);
         $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id];
         $contextList['illustrator']=$this->contributor->getIllustrator($data);
-        if($contextList['illustrator']->user_id==Auth::user()->id && $contextList['illustrator']->coins!=NULL):
-            $contextList['close_bid']='1';
-        endif;
+        if($contextList['illustrator']){
+            if($contextList['illustrator']->user_id==Auth::user()->id && $contextList['illustrator']->coins!=NULL):
+                $contextList['close_bid']='1';
+            endif;
+        }else{
+            $contextList['close_bid']='0';
+        }
         return view::make('user.contributor.illustrator.add_illustrator')->with(['data'=>$contextList, 'illustrate'=>'1']);
     }
     /**
