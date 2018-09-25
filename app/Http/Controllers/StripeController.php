@@ -8,12 +8,13 @@ use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
 use Auth;
 use App\Services\TransactionService;
+use Illuminate\Support\Facades\Input;
 
 class StripeController extends Controller
 {
     public $stripe;
-    public function __construct(TransactionService $stripe){
-        $this->stripe=$stripe;
+    public function __construct(){
+        $this->stripe=new TransactionService();
     }
     public function postPaymentWithStripe(StripePayment $stripe)
     {
@@ -38,7 +39,7 @@ class StripeController extends Controller
                 }
             }
         }else{
-            return Redirect::back()->with($payment['notification']);
+            return Redirect::back()->with($payment['notification'])->withInput(Input::all());
         }
     }
 }

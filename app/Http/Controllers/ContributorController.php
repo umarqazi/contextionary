@@ -96,13 +96,6 @@ class ContributorController
     }
     public function addCoins(Request $request){
         $coin=$request->coins;
-        if($coin == NULL):
-            $notification = array(
-                'message' => 'Please select the Coins Deal first',
-                'alert_type' => 'error',
-            );
-            return Redirect::back()->with($notification);
-        endif;
         $getCoinInfo=Coin::find($coin);
         return view::make('user.contributor.transactions.pay_with_stripe')->with(['id'=>Auth::user()->id, 'coin'=>$getCoinInfo]);
     }
