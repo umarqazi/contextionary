@@ -8,6 +8,7 @@ use Illuminate\Routing\Router;
             'middleware'    => config('admin.route.middleware'),
         ], function (Router $router) {
             $router->get('/', 'HomeController@index')->name('admin_login');
+            $router->resource('auth/users', 'AdminController');
             $router->resource('auth/simple-users', 'UserController');
             $router->resource('auth/simple-users-roles', 'RoleController');
             $router->resource('auth/simple-users-permissions', 'PermissionController');
@@ -24,4 +25,6 @@ use Illuminate\Routing\Router;
             $router->resource('auth/coins-deals', 'CoinsController');
             $router->resource('auth/contact-us-msgs', 'ContactUsController')->only('index', 'show');
             $router->resource('auth/feedback-msgs', 'FeedbackController')->only('index', 'show');
+            $router->resource('auth/vote-expiry', 'VoteExpiryController')->only('index', 'show');
+            $router->resource('auth/bidding-expiry', 'BiddingExpiryController')->only('index', 'show');
         });
