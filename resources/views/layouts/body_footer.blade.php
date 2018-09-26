@@ -7,6 +7,7 @@
                 <p>{{$settings->where('keys', 'Feedback Question')->first()->values}}</p>
                 <form onsubmit="submit_feedback();">
                     <input type="email" class="fld" id="feed_email" placeholder="Your Email">
+                    <input type="hidden" id="feed_ques" value="{{$settings->where('keys', 'Feedback Question')->first()->values}}">
                     <textarea class="fld text-area msg" id="feed_msg" placeholder="Your Message"></textarea>
                     <button type="submit" class="orangeBtn">Submit</button>
                 </form>
@@ -20,6 +21,7 @@
                     url: '/en/submit-feedback',
                     data: {
                         email: $('#feed_email').val(),
+                        question: $('#feed_ques').val(),
                         message: $('#feed_msg').val(),
                         user_id: {{Auth::user()->id}},
                         _token: '{{csrf_token()}}'
