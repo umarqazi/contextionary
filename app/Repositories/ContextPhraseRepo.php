@@ -10,34 +10,55 @@ namespace App\Repositories;
 
 
 use App\ContextPhrase;
+use App\Phrase;
 use App\Repositories\DefineMeaningRepo;
 use Config;
 use Auth;
 
 class ContextPhraseRepo
 {
+    /**
+     * @var ContextPhrase
+     */
     protected $contextPhrase;
-    protected $defineMeaningRepo;
-    protected $voteExpiryRepo;
 
+    /**
+     * @var \App\Repositories\DefineMeaningRepo
+     */
+    protected $defineMeaningRepo;
+
+    /**
+     * @var VoteExpiryRepo
+     */
+    protected $voteExpiryRepo;
+    /**
+     * @var Phrase
+     */
+    protected $phrase;
+
+    /**
+     * ContextPhraseRepo constructor.
+     */
     public function __construct()
     {
-        $contextPhrase= new ContextPhrase();
-        $defineMeaningRepo=new DefineMeaningRepo();
-        $voteExpiryRepo=new VoteExpiryRepo();
-        $this->contextPhrase=$contextPhrase;
-        $this->defineMeaningRepo=$defineMeaningRepo;
-        $this->voteExpiryRepo=$voteExpiryRepo;
+        $contextPhrase              =   new ContextPhrase();
+        $this->contextPhrase        =   $contextPhrase;
+        $defineMeaningRepo          =   new DefineMeaningRepo();
+        $this->defineMeaningRepo    =   $defineMeaningRepo;
+        $voteExpiryRepo             =   new VoteExpiryRepo();
+        $this->voteExpiryRepo       =   $voteExpiryRepo;
+        $phrase                     =   new Phrase();
+        $this->phrase               =   $phrase;
     }
 
     /*
      * get context Phrase List
      */
-
     public function getList(){
         return $this->contextPhrase->where('work_order', '!=', NULL)->leftJoin('context', 'context.context_id', '=','context_phrase.context_id')
             ->leftJoin('phrase', 'phrase.phrase_id', '=', 'context_phrase.phrase_id');
     }
+
     /*
      * get paginated records
      */
@@ -64,6 +85,7 @@ class ContextPhraseRepo
         endforeach;
         return $contextPhrases;
     }
+
     /*
      * get one context phrase
      */
@@ -78,6 +100,7 @@ class ContextPhraseRepo
         }
         return $getContextPhrase;
     }
+
     /*
      * get Context and meaning
      */
@@ -91,5 +114,29 @@ class ContextPhraseRepo
             $getContextPhrase->setAttribute('coins', $getMeaning->coins);
         }
         return $getContextPhrase;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRandContextPhrase()
+    {
+        return $this->contextPhrase->getRand();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getPhrase($id){
+        return $this->phrase->get($id);
+    }
+
+    /**
+     * @param $length
+     * @return mixed
+     */
+    public function getLengthed($length){
+        return $this->phrase->getLengthed($length);
     }
 }

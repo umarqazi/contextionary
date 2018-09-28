@@ -76,7 +76,7 @@ MultiLang::routeGroup(function($router) {
         Route::get('fun-facts/{id}',  'FunFactsController@get');
         Route::get('contactUs',  'SettingController@contactUs')->name('contactUs');
         Route::post('contactUs',  'SettingController@sendMessage');
-        Route::post('submit-feedback',  'FeedbackController@submit')->name('feedback');
+        Route::get('hangman',  'HangmanController@getPhrase');
     });
     Route::group(array('prefix' => 'cron'), function(){
         Route::get('meaning',  'CronController@meaningToVote')->name('meaning');
