@@ -96,17 +96,11 @@ class CoinsController extends Controller
      */
     public function form($id = null)
     {
-        $dir ='images/coin';
-        return Admin::form(Coin::class, function (Form $form) use ($id, $dir) {
+        return Admin::form(Coin::class, function (Form $form) use ($id) {
             $form->display('id', 'ID');
-            $form->image('image')->move($dir);
             $form->text('price', trans('Price'))->rules('required')->placeholder('Enter Price...');
             $form->text('coins', trans('Coins'))->rules('required')->placeholder('Enter Coins...');
             $form->saved(function (Form $form) use ($id) {
-                $image_name = explode('/',$form->model()->image);
-                $coin = Coin::find($form->model()->id);
-                $coin->image = 'images/coin/'.$image_name[2];
-                $coin->update();
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
                 }else{
