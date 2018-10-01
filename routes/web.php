@@ -58,7 +58,7 @@ MultiLang::routeGroup(function($router) {
             Route::post('remove-from-fav',  'GlossaryController@removeFromFav');
             Route::get('intruder',  'SpotIntruderController@getQuestion')->name('intruder');
             Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
-            Route::get('tutorials',  'TutorialsController@index');
+            Route::get('tutorials',  'TutorialsController@index')->name('tutorials');
 
             Route::group(array('prefix' => 'phrase-list'), function(){
                 Route::get('/',  'VoteController@phraseList')->name('plist');
@@ -76,7 +76,7 @@ MultiLang::routeGroup(function($router) {
         Route::get('fun-facts/{id}',  'FunFactsController@get');
         Route::get('contactUs',  'SettingController@contactUs')->name('contactUs');
         Route::post('contactUs',  'SettingController@sendMessage');
-        Route::post('submit-feedback',  'FeedbackController@submit')->name('feedback');
+        Route::get('hangman',  'HangmanController@getPhrase');
     });
     Route::group(array('prefix' => 'cron'), function(){
         Route::get('meaning',  'CronController@meaningToVote')->name('meaning');

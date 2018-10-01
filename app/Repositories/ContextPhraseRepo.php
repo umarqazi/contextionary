@@ -10,6 +10,8 @@ namespace App\Repositories;
 
 
 use App\ContextPhrase;
+use App\Phrase;
+use App\Repositories\DefineMeaningRepo;
 use App\Http\Controllers\SettingController;
 use App\Services\MutualService;
 use Auth;
@@ -18,37 +20,58 @@ use Config;
 
 class ContextPhraseRepo
 {
+    /**
+     * @var ContextPhrase
+     */
     protected $contextPhrase;
+
+    /**
+     * @var \App\Repositories\DefineMeaningRepo
+     */
     protected $defineMeaningRepo;
+
+    /**
+     * @var VoteExpiryRepo
+     */
     protected $voteExpiryRepo;
+
+    /**
+     * @var Phrase
+     */
+    protected $phrase;
     protected $bidExpiryRepo;
     protected $setting;
     protected $total_context;
     protected $mutualService;
 
+    /**
+     * ContextPhraseRepo constructor.
+     */
     public function __construct()
     {
-        $contextPhrase= new ContextPhrase();
-        $defineMeaningRepo=new DefineMeaningRepo();
-        $voteExpiryRepo=new VoteExpiryRepo();
-        $bidExpiry=new BiddingExpiryRepo();
-        $this->contextPhrase=$contextPhrase;
-        $this->defineMeaningRepo=$defineMeaningRepo;
-        $this->voteExpiryRepo=$voteExpiryRepo;
-        $this->bidExpiryRepo=$bidExpiry;
-        $setting = new SettingController();
-        $this->total_context=$setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
-        $this->mutualService=new MutualService();
+        $contextPhrase              =   new ContextPhrase();
+        $this->contextPhrase        =   $contextPhrase;
+        $defineMeaningRepo          =   new DefineMeaningRepo();
+        $this->defineMeaningRepo    =   $defineMeaningRepo;
+        $voteExpiryRepo             =   new VoteExpiryRepo();
+        $this->voteExpiryRepo       =   $voteExpiryRepo;
+        $phrase                     =   new Phrase();
+        $this->phrase               =   $phrase;
+        $bidExpiry                  =   new BiddingExpiryRepo();
+        $this->bidExpiryRepo        =   $bidExpiry;
+        $setting                    =   new SettingController();
+        $this->total_context        =   $setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
+        $this->mutualService        =   new MutualService();
     }
 
     /*
      * get context Phrase List
      */
-
     public function getList(){
         return $this->contextPhrase->where('work_order', '!=', NULL)->leftJoin('context', 'context.context_id', '=','context_phrase.context_id')
             ->leftJoin('phrase', 'phrase.phrase_id', '=', 'context_phrase.phrase_id');
     }
+
     /*
      * get paginated records
      */
@@ -89,6 +112,7 @@ class ContextPhraseRepo
         $totalContext = array_slice($totalContext, 0, $this->total_context);
         return $totalContext;
     }
+
     /*
      * get one context phrase
      */
@@ -106,6 +130,7 @@ class ContextPhraseRepo
         }
         return $getContextPhrase;
     }
+
     /*
      * get Context and meaning
      */
@@ -120,5 +145,29 @@ class ContextPhraseRepo
             $getContextPhrase->setAttribute('writer', $getMeaning->users->first_name.' '.$getMeaning->users->last_name);
         }
         return $getContextPhrase;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRandContextPhrase()
+    {
+        return $this->contextPhrase->getRand();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getPhrase($id){
+        return $this->phrase->get($id);
+    }
+
+    /**
+     * @param $length
+     * @return mixed
+     */
+    public function getLengthed($length){
+        return $this->phrase->getLengthed($length);
     }
 }
