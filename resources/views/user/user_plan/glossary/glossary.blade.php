@@ -6,7 +6,7 @@
     <div class="container-fluid contributorMain funfact glossarybg">
         @include('layouts.flc_header')
         <div class="row mt-4">
-            @if($glossary_items)
+            @if(!$glossary_items->isEmpty())
                 @foreach($glossary_items as $glossary_item)
                     <div class="col-lg-3 col-md-4 col-sm-6 text-center">
                     <div class="glossary-block">
@@ -36,6 +36,12 @@
                     </div>
                 </div>
                 @endforeach
+            @else
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <strong class="record-message">{!! t('No Books available!') !!}</strong>
+                    </div>
+                </div>
             @endif
         </div>
     </div>
@@ -53,7 +59,7 @@
                 if(res == 1){
                     toastr.success("Added to your collection!");
                     $(elem).addClass('favIcon2');
-                    $(elem).attr('onclick', 'unfav(event, this,{{$glossary_item->id}});');
+                    $(elem).attr('onclick', 'unfav(event, this, book_id);');
                 }
             })
         }
@@ -67,7 +73,7 @@
                 if(res == 1){
                     toastr.success("Removed from your collection!");
                     $(elem).removeClass('favIcon2');
-                    $(elem).attr('onclick', 'fav(event, this,{{$glossary_item->id}});');
+                    $(elem).attr('onclick', 'fav(event, this, book_id);');
                 }
             })
         }

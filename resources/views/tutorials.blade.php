@@ -24,7 +24,15 @@
 
     <div class="row mt-4">
         <div class="col-md-12 tut-div">
-            {!! html_entity_decode($tutorial) !!}
+            @if($tutorial != null)
+                {!! html_entity_decode($tutorial) !!}
+            @else
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <strong class="record-message">{!! t('No Tutorials available') !!}</strong>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 

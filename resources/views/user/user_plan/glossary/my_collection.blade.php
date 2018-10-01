@@ -6,7 +6,7 @@
     <div class="container-fluid contributorMain funfact glossarybg">
         @include('layouts.flc_header')
         <div class="row mt-4">
-            @if($glossary_items)
+            @if(!$glossary_items->isEmpty())
                 @foreach($glossary_items as $glossary_item)
                     <div class="col-lg-3 col-md-4 col-sm-6 text-center glossary-div-block">
                     <div class="glossary-block">
@@ -22,11 +22,6 @@
                             <p>{{$glossary_item->name}}</p>
                             <a class="fancybox gallerypdf" rel="fancybox-thumb" href="{!! asset('storage/'.$glossary_item->file) !!}" title=""><i class="fa fa-eye"></i> Quick View</a>
                             </div>
-                            {{--<div class="hidden">--}}
-                                {{--<a class="fancybox" href="{!! asset('storage/'.$glossary_item->file) !!}"><img src="{!! asset('storage/'.$glossary_item->file) !!}" alt=""/></a>--}}
-
-                                {{--<a class="fancybox" href="{!! asset('storage/'.$glossary_item->file) !!}"><img src="{!! asset('storage/'.$glossary_item->file) !!}" alt=""/></a>--}}
-                            {{--</div>--}}
                         </div>
 
                         <div class="actionsBtns mt-3">
@@ -37,6 +32,12 @@
                     </div>
                 </div>
                 @endforeach
+            @else
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <strong class="record-message">{!! t('No Books in your collection!') !!}</strong>
+                    </div>
+                </div>
             @endif
         </div>
     </div>

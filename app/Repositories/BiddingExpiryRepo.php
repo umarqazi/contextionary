@@ -13,7 +13,7 @@ use App\BiddingExpiry;
 use App\Http\Controllers\SettingController;
 use Carbon\Carbon;
 
-class BiddingExpiryRepo
+class BiddingExpiryRepo extends BaseRepo implements IRepo
 {
     protected $bidding;
 
