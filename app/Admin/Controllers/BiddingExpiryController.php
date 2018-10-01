@@ -89,4 +89,37 @@ class BiddingExpiryController extends Controller
         });
     }
 
+
+    /**
+     * Make a form builder.
+     *
+     * @param $id
+     * @return Form
+     */
+    public function form($id = null)
+    {
+        return Admin::form(BiddingExpiry::class, function (Form $form) use ($id) {
+            $form->display('id', 'ID');
+            $form->datetime('expiry_date','Expiry Date');
+            $form->saved(function (Form $form) use ($id) {
+                if($id){
+                    admin_toastr(trans('Updated successfully!'));
+                }
+                return redirect(admin_base_path('auth/bidding-expiry'));
+            });
+        });
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param int $id
+     *
+     * @return mixed
+     */
+    public function update($id)
+    {
+        return $this->form()->update($id);
+    }
+
 }
