@@ -58,7 +58,7 @@ MultiLang::routeGroup(function($router) {
             Route::post('remove-from-fav',  'GlossaryController@removeFromFav');
             Route::get('intruder',  'SpotIntruderController@getQuestion')->name('intruder');
             Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
-            Route::get('tutorials',  'TutorialsController@index');
+            Route::get('tutorials',  'TutorialsController@index')->name('tutorials');
 
             Route::group(array('prefix' => 'phrase-list'), function(){
                 Route::get('/',  'VoteController@phraseList')->name('plist');
