@@ -36,6 +36,11 @@ class RoleService extends BaseService implements IRoleService
         return true;
     }
 
+    public function fetchNames($request)
+    {
+        // TODO: Implement fetchNames() method.
+    }
+
     /**
      * @param $user_id
      * @return mixed
