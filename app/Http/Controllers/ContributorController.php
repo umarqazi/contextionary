@@ -30,12 +30,13 @@ class ContributorController
 
     public function __construct()
     {
-        $authService=new AuthService();
-        $contributor= new ContributorService();
-        $this->authService = $authService;
-        $this->contributor = $contributor;
+        $this->authService=new AuthService();
+        $this->contributor= new ContributorService();
     }
 
+    /**
+     * @return mixed
+     */
     public function contributorPlan(){
         try{
             $contextList=$this->contributor->getParentContextList();
@@ -50,21 +51,34 @@ class ContributorController
             return Redirect::back()->with($notification);
         }
     }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * save role for contributor
+     */
     public function saveContributor(Request $request){
         try{
+            if(empty($request->context) || empty($request->role)|| empty($request->language)){
+                $notification = array(
+                    'message' => trans('content.select_option'),
+                    'alert_type' => 'error'
+                );
+                return Redirect::back()->with($notification)->withInput(Input::all());
+            }
             $notification=[];
+
             $records['context']=[];
             if($request->context){
                 $records['context']=$request->context;
             }
-            array_push($records['context'], '1');
             $records['role']=$request->role;
             $records['language']=$request->language;
             $records['user_id']=$request->user_id;
             $this->contributor->updateContributorRecord($records);
             if($request->profile==1):
                 $notification = array(
-                    'message' => 'Record has been updated',
+                    'message' => trans('content.record_updated'),
                     'alert_type' => 'success'
                 );
                 $url=lang_url('profile');
@@ -81,7 +95,9 @@ class ContributorController
             return Redirect::back()->with($notification);
         }
     }
-    /*
+    
+    /**
+     * @return mixed
      * Get context from postgres for definition
      */
     public function define(){
@@ -90,17 +106,33 @@ class ContributorController
         $data=['route'=>'defineMeaning', 'title'=>'Phrase for Meaning'];
         return view::make('user.contributor.meaning.define')->with(['data'=>$data,'contextList'=>$contextList, 'bucketUrl'=>$bucketURL]);
     }
+
+    /**
+     * @return mixed
+     * purchase coins list
+     */
     public function purchaseCoins(){
         $getCoinsList=Coin::all();
         return view::make('user.contributor.transactions.purchase_coins')->with(['coins'=> $getCoinsList]);
     }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * purchase coins through stripe
+     */
     public function addCoins(Request $request){
         $coin=$request->coins;
         $getCoinInfo=Coin::find($coin);
         return view::make('user.contributor.transactions.pay_with_stripe')->with(['id'=>Auth::user()->id, 'coin'=>$getCoinInfo]);
     }
-    /*
-     * define Meaning view
+
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @param null $id
+     * @return mixed
+     * define meaning view
      */
     public function defineMeaning($context_id, $phrase_id, $id=NULL){
         $contextList=$this->contributor->getContextPhrase($context_id, $phrase_id);
@@ -112,7 +144,10 @@ class ContributorController
         endif;
         return view::make($view)->with(['data'=>$contextList]);
     }
-    /*
+
+    /**
+     * @param AddContextMeaning $addContextMeaning
+     * @return mixed
      * add context meaning in database
      */
     public function postContextMeaning(AddContextMeaning $addContextMeaning){
@@ -124,14 +159,17 @@ class ContributorController
         $meaningData=['id'=>$id,'status'=>'0','meaning'=>$addContextMeaning['meaning'], 'context_id'=>$addContextMeaning['context_id'], 'phrase_id'=>$addContextMeaning['phrase_id'],'phrase_type'=>$addContextMeaning['phrase_type'], 'user_id'=>$addContextMeaning['user_id']];
         $saveRecord=$this->contributor->saveContextMeaning($meaningData);
         $notification = array(
-            'message' => 'Your Meaning has been added against phrase. You can bid now',
+            'message' => trans('content.meaning_added'),
             'alert_type' => 'success',
             'data'=>$saveRecord
         );
         $url=lang_url('define/define-meaning').'/'.$addContextMeaning['context_id'].'/'.$addContextMeaning['phrase_id'];
         return Redirect::to($url)->with($notification);
     }
-    /*
+
+    /**
+     * @param Request $request
+     * @return mixed
      * place bid against their meaning
      */
     public function applyBidding(Request $request){
@@ -139,13 +177,13 @@ class ContributorController
         $updateRecord=$this->contributor->bidding($data, $request->meaning_id);
         if($updateRecord==false):
             $notification = array(
-                'message' => 'Purchase coins for bidding on your meaning',
+                'message' => trans('content.purchase_coins'),
                 'alert_type' => 'error',
             );
             return Redirect::back()->with($notification);
         else:
             $notification = array(
-                'message' => 'Bidding has been added Successfully',
+                'message' => trans('content.bid_placed'),
                 'alert_type' => 'success',
             );
         endif;
@@ -154,6 +192,7 @@ class ContributorController
     }
 
     /**
+     * @return mixed
      * get phrase for illustrator
      */
     public function illustrate(){
@@ -161,21 +200,34 @@ class ContributorController
         $data=['route'=>'addIllustrate', 'title'=>'Phrase for Illustrator'];
         return view::make('user.contributor.meaning.define')->with(['contextList'=>$contextList, 'data'=>$data]);
     }
-    /** get meaning for illustrator */
+
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return mixed
+     * get meaning for illustrator
+     */
     public function addIllustrate($context_id, $phrase_id){
-        $contextList=$this->contributor->getMeaningForIllustrate($context_id, $phrase_id);
-        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id];
+        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'position'=>'1'];
+        $contextList=$this->contributor->getMeaningForIllustrate($data);
+        $data['user_id']=Auth::user()->id;
+        unset($data['position']);
         $contextList['illustrator']=$this->contributor->getIllustrator($data);
         if($contextList['illustrator']){
             if($contextList['illustrator']->user_id==Auth::user()->id && $contextList['illustrator']->coins!=NULL):
                 $contextList['close_bid']='1';
+            else:
+                $contextList['close_bid']='0';
             endif;
         }else{
             $contextList['close_bid']='0';
         }
         return view::make('user.contributor.illustrator.add_illustrator')->with(['data'=>$contextList, 'illustrate'=>'1']);
     }
+
     /**
+     * @param Request $request
+     * @return mixed
      * add image against meaning
      */
     public function pAddIllustrate(Request $request){
@@ -187,25 +239,26 @@ class ContributorController
             $image      = Input::file('illustrate');
             $fileName=$this->uploadImage($image, 'illustrate');
         }
-        if(array_key_exists('id', $request)):
+        if($request->has('id')):
             $id=$request->id;
         endif;
         $data=['id'=>$id,'illustrator'=>$fileName, 'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id];
         $saveIllustrate=$this->contributor->saveIllustrate($data);
         $notification = array(
-            'message' => 'Your Illustrator has been added against meaning. You can bid now',
+            'message' => trans('content.illustrator_added'),
             'alert_type' => 'success',
         );
         return Redirect::back()->with($notification);
-
     }
+
+    /**
+     * @param $data
+     * @param $place
+     * @return string
+     */
     public function uploadImage($data, $place){
         $fileName   = time() . '.' . $data->getClientOriginalExtension();
-
         $img = Image::make($data->getRealPath());
-        $img->resize(120, 120, function ($constraint) {
-            $constraint->aspectRatio();
-        });
         $img->stream();
         $fileName='images/'.Auth::user()->id.'/'.$place.'/'.$fileName;
         Storage::disk('public')->put($fileName, $img);

@@ -19,6 +19,9 @@ class VoteExpiryRepo
     protected $voteExpiry;
     protected $voteMeaning;
 
+    /**
+     * VoteExpiryRepo constructor.
+     */
     public function __construct()
     {
         $expiry=new VoteExpiry();
@@ -26,18 +29,28 @@ class VoteExpiryRepo
         $vote=new VoteMeaning();
         $this->voteMeaning=$vote;
     }
+
     /**
+     * @param $data
      * save vote Expiry
      */
     public function create($data){
         $this->voteExpiry->create($data);
     }
+
     /**
+     * @param $data
+     * @return mixed
      * check previous records
      */
-    public function checkRecords($context_id, $phrase_id, $type){
-        return $this->voteExpiry->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'vote_type'=>$type])->first();
+    public function checkRecords($data){
+        return $this->voteExpiry->where($data)->first();
     }
+
+    /**
+     * @param $type
+     * @return mixed
+     */
     public function votes($type){
         return $this->voteExpiry->where(['vote_type'=>$type, 'status'=>'0'])->select('vote_expiries.*');
     }
@@ -60,28 +73,31 @@ class VoteExpiryRepo
     }
 
     /**
+     * @param $type
+     * @param $contexts
+     * @return mixed
      * get all votes
      */
     public function getAllVotes($type, $contexts){
         return $this->votes($type)->whereIn('context_id', $contexts)->get();
     }
+
     /**
+     * @param $type
+     * @return mixed
      * get expired votes
      */
     public function getAllMeaningVotes($type){
         return $this->voteExpiry->where('vote_type', $type)->where('status', 0)->get();
     }
+
     /**
+     * @param $id
+     * @param $records
+     * @return mixed
      * update records status
      */
     public function updateStatus($id, $records){
         return $this->voteExpiry->where('id', $id)->update($records);
     }
-    /**
-     * check record against type
-     */
-    public function checkRecordType($context_id, $phrase_id, $type){
-        return $this->voteExpiry->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'vote_type'=>$type])->first();
-    }
-
 }

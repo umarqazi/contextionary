@@ -17,6 +17,12 @@ class AuthService
         $user=new UserRepo();
         $this->user = $user;
     }
+
+    /**
+     * @param $id
+     * @param $token
+     * @return bool
+     */
     public function authenticateToken($id, $token){
         $user=$this->user->findById($id);
         if($user){
@@ -29,6 +35,11 @@ class AuthService
             return false;
         }
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function updateToken($id){
         $user=$this->user->updateToken($id);
         return $user->token;

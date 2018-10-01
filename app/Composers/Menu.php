@@ -16,7 +16,7 @@ View::composer(['user.contributor.meaning.*', 'user.contributor.illustrator.*'],
  */
 View::composer('user.contributor.votes.*', function($view)
 {
-    $page=['phrase-list'=>'Vote Meaning'];
+    $page=['phrase-list'=>'Vote Meaning', 'illustrator-vote-list'=>'Vote Illustrator'];
     $view->with(['pageMenu'=>$page]);
 });
 

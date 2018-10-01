@@ -116,7 +116,7 @@
           <div class="customForm-group">
             {!! Form::text('', null, ['class'=>"customInput", 'placeholder'=>t("Attach Profile Picture")])!!}
             <span class="focus-border"></span>
-            <label class="d-inline">
+            <label class="d-inline attach-image">
               <i class="fa fa-paperclip"></i>
               <input type="file" id="profile-img" name="profile_image" style="display: none;">
             </label>
@@ -153,10 +153,10 @@
       </div>
       <img src="" id="profile-img-tag" width="200px" class="img-thumbnail" />
       <div class="mt-4">
-        <button type="submit" class="orangeBtn waves-effect waves-light">SIGN UP</button>
+        <button type="submit" class="orangeBtn waves-effect waves-light">{!! t('Sign Up') !!}</button>
       </div>
       <div class="font14 mt-4">
-        <span class="whiteText">Already have an account</span><a href="{!! lang_route('login')!!}"> Login</a>
+        <span class="whiteText">{!! t('Already have an account') !!}</span><a href="{!! lang_route('login')!!}"> {!! t('Login') !!}</a>
       </div>
       {!! Form::close() !!}
     </div>

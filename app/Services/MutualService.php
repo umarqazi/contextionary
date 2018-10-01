@@ -20,21 +20,26 @@ class MutualService
 {
     protected $familiarContext;
     protected $contextRepo;
-    protected $contextArray=array();
+    protected $contextArray=array('1','2','3');
 
+    /**
+     * MutualService constructor.
+     */
     public function __construct()
     {
-        $familiarContext=new FamiliarContextRepo();
-        $contextRepo=new ContextRepo();
-        $this->contextRepo=$contextRepo;
-        $this->familiarContext=$familiarContext;
+        $this->familiarContext     = new FamiliarContextRepo();
+        $this->contextRepo         = new ContextRepo();
     }
+
     /**
+     * @param $user_id
+     * @return mixed
      * get all context of user
      */
     public function getUserContext($user_id){
         return $getFamiliarContext=$this->familiarContext->getContext($user_id);
     }
+
     /**
      * @return mixed
      */
@@ -48,7 +53,11 @@ class MutualService
         endforeach;
         return $this->contextArray;
     }
+
     /**
+     * @param $array
+     * @param int $parentId
+     * @return array
      * get context and child of all context
      */
     public function contextChildList($array, $parentId = 0){
@@ -65,7 +74,11 @@ class MutualService
         }
         return $this->contextArray=array_unique($this->contextArray);
     }
+
     /**
+     * @param $totalContext
+     * @param $url
+     * @return LengthAwarePaginator
      * convert array to pagination
      */
     public function paginatedRecord($totalContext, $url){
@@ -88,24 +101,13 @@ class MutualService
         $data->setPath(lang_url($url));
         return $data;
     }
+
     /**
+     * @param $expiry_date
      * @return string
      */
     public function displayHumanTimeLeft($expiry_date)
     {
-        $counter='';
-        $now = Carbon::now();
-        $days = $now->diffInDays($expiry_date);
-        $hours = $now->diffInHours($expiry_date);
-        $minutes = $now->diffInMinutes($expiry_date);
-        if ($now->diffInDays($expiry_date) > 0)
-        {
-            $counter= $now->diffInDays($expiry_date) . str_plural(' day', $now->diffInDays($expiry_date)).     ' left';
-        }elseif($hours > 0){
-            $counter= $hours . str_plural(' Hour', $hours).' Left';
-        }elseif($minutes > 0){
-            $counter= $minutes . str_plural(' Minute', $minutes).' Left';
-        }
-        return $counter;
+        return Carbon::parse($expiry_date)->format('d M Y h:i A');
     }
 }

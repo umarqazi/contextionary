@@ -16,6 +16,12 @@ class ContextPhrase extends Model
      */
     protected $connection = 'pgsql';
 
+
+    public function contexts(){
+        return $this->belongsTo('App\Context', 'context_id');
+    }
+    public function phrases(){
+        return $this->belongsTo('App\Phrase', 'phrase_id');
     /**
      * @return mixed
      */

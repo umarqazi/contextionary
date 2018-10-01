@@ -16,38 +16,63 @@ class VoteMeaningRepo
 {
     protected $voteMeaning;
 
+    /**
+     * VoteMeaningRepo constructor.
+     */
     public function __construct()
     {
         $vote=new VoteMeaning();
         $this->voteMeaning=$vote;
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function create($data){
         return $this->voteMeaning->create($data);
     }
+
     /**
+     * @param $data
+     * @return mixed
      * get votes of meaning
      */
-    public function getVotesMeaning($context_id, $phrase_id){
-        return $this->voteMeaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id]);
+    public function getVotesMeaning($data){
+        return $this->voteMeaning->where($data);
     }
 
     /**
+     * @param $data
+     * @param $key
+     * @return mixed
      * check login user vote
      */
-    public function checkUserVote($data){
-        return $this->getVotesMeaning($data['context_id'], $data['phrase_id'])->where('user_id', Auth::user()->id)->first();
+    public function checkUserVote($data, $key){
+        return $this->getVotesMeaning($data)->where('type', '=', $key)->first();
     }
+
     /**
+     * @param $context_id
+     * @param $phrase_id
+     * @param $key
+     * @return mixed
      * total number of vote
      */
-    public function totalVotes($context_id, $phrase_id){
-        return $total=$this->getVotesMeaning($context_id, $phrase_id)->get()->count();
+    public function totalVotes($data){
+        return $total=$this->getVotesMeaning($data)->get()->count();
     }
+
     /**
+     * @param $context_id
+     * @param $phrase_id
+     * @param $columnKey
+     * @param $type
+     * @return mixed
      * get highest votes
      */
-    public function hightVotes($context_id, $phrase_id){
-        return $total=$this->getVotesMeaning($context_id, $phrase_id)->with('meaning')->where('vote', 1)->groupBy('define_meaning_id')->select('vote_meanings.*', DB::raw('count(*) as total'))->limit(3)->orderBy('total', 'DESC')->get();
+    public function hightVotes($checkArray){
+        $data=['context_id'=>$checkArray['context_id'], 'phrase_id'=>$checkArray['phrase_id']];
+        return $total=$this->getVotesMeaning($data)->where($checkArray['columnKey'], '!=', NULL)->with($checkArray['type'])->where('vote', 1)->groupBy($checkArray['columnKey'])->select('vote_meanings.*', DB::raw('count(*) as total'))->limit(3)->orderBy('total', 'DESC')->get();
     }
 }

@@ -1,5 +1,5 @@
 <div class="row">
-    @if(!empty($contextList))
+    @if(!$contextList->isEmpty())
         @foreach($contextList as $context)
             <div class="col-sm-6 col-md-4 col-lg-4">
                 <a @if($context['clickable']==1)href="{!! lang_route($data['route'], ['context_id'=>$context['context_id'],'phrase_id'=>$context['phrase_id']]) !!}" @endif>

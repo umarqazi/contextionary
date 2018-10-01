@@ -14,28 +14,46 @@ class UserRepo {
      */
     private $user;
 
+    /**
+     * UserRepo constructor.
+     */
     public function __construct()
     {
         $user= new User();
         $this->user = $user;
     }
 
+    /**
+     * @param User $user
+     */
     public function create(User $user)
     {
         $this->user->persist($user);
         $this->user->flush();
     }
 
+    /**
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
     public function update($id, $data)
     {
         return $user=$this->user->where('id', $id)->update($data);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function findById($id)
     {
         return $this->user->find($id);
     }
 
+    /**
+     * @param User $user
+     */
     public function delete(User $user)
     {
         $this->user->remove($user);
@@ -50,17 +68,30 @@ class UserRepo {
     {
         return new User($data);
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function updateToken($id){
         $user=$this->findById($id);
         $user->token=md5(microtime());
         $user->save();
         return $user;
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function makeActive($id){
         return $this->user->where('id', $id)->update(['status'=>'1']);
     }
+
     /**
-     * update coins
+     * @param $coins
+     * @param $user_id
+     * @return mixed
      */
     public function updateCoins($coins, $user_id){
         $user=$this->findById($user_id);
