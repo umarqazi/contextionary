@@ -31,7 +31,6 @@ class HomeController extends Controller
             $content->header('Dashboard');
             $content->description('Admin Dashboard');
             $content->row($usersController->userCount().$usersController->userCount().$usersController->userCount().$usersController->userCount());
-            $content->row(Dashboard::title());
         });
     }
     public function userListing()

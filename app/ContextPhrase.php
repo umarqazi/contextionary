@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContextPhrase extends Model
 {
+    /**
+     * @var string
+     */
     protected $table='context_phrase';
+
+    /**
+     * @var string
+     */
     protected $connection = 'pgsql';
 
 
@@ -15,5 +22,10 @@ class ContextPhrase extends Model
     }
     public function phrases(){
         return $this->belongsTo('App\Phrase', 'phrase_id');
+    /**
+     * @return mixed
+     */
+    public function getRand(){
+        return self::inRandomOrder()->get()->first();
     }
 }

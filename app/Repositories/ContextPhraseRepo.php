@@ -10,6 +10,8 @@ namespace App\Repositories;
 
 
 use App\ContextPhrase;
+use App\Phrase;
+use App\Repositories\DefineMeaningRepo;
 use App\Http\Controllers\SettingController;
 use App\Services\MutualService;
 use Auth;
@@ -18,14 +20,33 @@ use Config;
 
 class ContextPhraseRepo
 {
+    /**
+     * @var ContextPhrase
+     */
     protected $contextPhrase;
+
+    /**
+     * @var \App\Repositories\DefineMeaningRepo
+     */
     protected $defineMeaningRepo;
+
+    /**
+     * @var VoteExpiryRepo
+     */
     protected $voteExpiryRepo;
+
+    /**
+     * @var Phrase
+     */
+    protected $phrase;
     protected $bidExpiryRepo;
     protected $setting;
     protected $total_context;
     protected $mutualService;
 
+    /**
+     * ContextPhraseRepo constructor.
+     */
     public function __construct()
     {
         $this->contextPhrase        =   new ContextPhrase();
@@ -35,6 +56,7 @@ class ContextPhraseRepo
         $setting                    =   new SettingController();
         $this->mutualService        =   new MutualService();
         $this->total_context        =   $setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
+        $this->phrase                     =   new Phrase();
     }
     
     /**
@@ -75,5 +97,29 @@ class ContextPhraseRepo
             $getContextPhrase->setAttribute('writer', $getMeaning->users->first_name.' '.$getMeaning->users->last_name);
         }
         return $getContextPhrase;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRandContextPhrase()
+    {
+        return $this->contextPhrase->getRand();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getPhrase($id){
+        return $this->phrase->get($id);
+    }
+
+    /**
+     * @param $length
+     * @return mixed
+     */
+    public function getLengthed($length){
+        return $this->phrase->getLengthed($length);
     }
 }
