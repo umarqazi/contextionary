@@ -63,7 +63,11 @@ MultiLang::routeGroup(function($router) {
             Route::group(array('prefix' => 'phrase-list'), function(){
                 Route::get('/',  'VoteController@phraseList')->name('plist');
                 Route::get('vote-meaning/{context_id}/{phrase_id}',  'VoteController@voteMeaning')->name('voteMeaning');
-                Route::get('poor-quality/{context_id}/{phrase_id}',  'VoteController@poorQuality')->name('poor-quality');
+                Route::get('poor-quality/{context_id}/{phrase_id}/{type}',  'VoteController@poorQuality')->name('poor-quality');
+            });
+            Route::group(array('prefix' => 'illustrator-vote-list'), function(){
+                Route::get('/',  'VoteController@voteIllustrator')->name('vIllustratorList');
+                Route::get('vote-illustrator/{context_id}/{phrase_id}',  'VoteController@getSelectedIllustrators')->name('voteIllustrator');
             });
             Route::post('vote',  'VoteController@vote')->name('vote');
             Route::group(array('prefix' => 'illustrate', 'middleware'=>'illustrator'), function(){
@@ -71,6 +75,7 @@ MultiLang::routeGroup(function($router) {
                 Route::get('illustrate-meaning/{context_id}/{phrase_id}',  'ContributorController@addIllustrate')->name('addIllustrate');
                 Route::post('illustrate-meaning',  'ContributorController@pAddIllustrate')->name('postIllustrate');
             });
+            Route::post('save-illustrator-vote',  'VoteController@saveVoteIllustrator')->name('saveIllustratorVote');
         });
         Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');
         Route::get('fun-facts/{id}',  'FunFactsController@get');
@@ -82,6 +87,7 @@ MultiLang::routeGroup(function($router) {
         Route::get('meaning',  'CronController@meaningToVote')->name('meaning');
         Route::get('meaning-vote',  'CronController@checkExpiredVotes')->name('votes');
         Route::get('illustratorCron',  'CronController@illustratorBidtoVote')->name('illustratorCron');
+        Route::get('illustrator-vote',  'CronController@checkIllustratorVotes')->name('illustratorVote');
     });
     Route::get('locale/{locale}',  'LocaleController@locale')->name('locale');
     Route::get('switchLanguage/{locale}',  'LocaleController@switchLanguage')->name('switchLanguage');

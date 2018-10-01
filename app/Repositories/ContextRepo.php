@@ -13,12 +13,21 @@ use App\Context;
 class ContextRepo
 {
     protected $context;
+    protected $defineMeaningRepo;
+
+    /**
+     * ContextRepo constructor.
+     */
     public function __construct()
     {
         $context= new Context();
+        $this->defineMeaningRepo=new DefineMeaningRepo();
         $this->context=$context;
     }
-    public function list(){
+    /**
+     * @return mixed
+     */
+    public function lists(){
         return $this->context->where('context_children_id', '!=','0')->get();
     }
 
@@ -29,16 +38,32 @@ class ContextRepo
     public function getRecords(){
         return $this->context;
     }
+
+    /**
+     * @return mixed
+     */
     public function getLimitedRecords(){
-        return $this->list()->take(env('CONTEXT_LENGTH'));
+        return $this->lists()->take(env('CONTEXT_LENGTH'));
     }
+
+    /**
+     * @return mixed
+     */
     public function getPaginatedRecord(){
         return $this->getRecords()->paginate(9);
     }
     /**
+     * @return mixed
      * get all context
      */
     public function getContext(){
         return $this->getRecords()->get();
+    }
+    /**
+     * @return mixed
+     * get one Context
+     */
+    public function getContextName($context_id){
+        return $this->getRecords()->where('context_id', $context_id)->first();
     }
 }

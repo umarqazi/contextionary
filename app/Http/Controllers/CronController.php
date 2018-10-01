@@ -11,6 +11,9 @@ class CronController extends Controller
     protected $cronService;
     protected $voteService;
 
+    /**
+     * CronController constructor.
+     */
     public function __construct()
     {
         $contributorService=new CronService();
@@ -18,6 +21,7 @@ class CronController extends Controller
         $voteService=new VoteService();
         $this->voteService=$voteService;
     }
+
     public function meaningToVote(){
         $this->cronService->checkMeaning();
     }
@@ -25,12 +29,18 @@ class CronController extends Controller
      * check expired votes
      */
     public function checkExpiredVotes(){
-        $this->cronService->checkExpiredVotes();
+        $this->cronService->checkDefineExpiredVotes();
     }
     /**
      * check illustrator expiry
      */
     public function illustratorBidtoVote(){
         $this->cronService->checkIllustratorBid();
+    }
+    /**
+     *
+     */
+    public function checkIllustratorVotes(){
+        $this->cronService->illustratorVotes();
     }
 }

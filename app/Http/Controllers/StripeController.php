@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Input;
 class StripeController extends Controller
 {
     public $stripe;
+
+    /**
+     * StripeController constructor.
+     */
     public function __construct(){
         $this->stripe=new TransactionService();
     }
+
+    /**
+     * @param StripePayment $stripe
+     * @return mixed
+     */
     public function postPaymentWithStripe(StripePayment $stripe)
     {
         $validator = $stripe->validated();

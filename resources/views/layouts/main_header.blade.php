@@ -12,7 +12,7 @@
               <img src="{!! asset('assets/images/default.jpg')!!}">
             @endif
           </div>
-          <span class="name cursor">{!! Auth::user()->first_name !!} <i class="fa fa-chevron-down"></i></span>
+          <span class="name cursor"><i class="fa fa-chevron-down"></i></span>
           <div class="dropDown-block">
             <div class="avtar-holder">
               <div class="img-holder">
@@ -49,7 +49,7 @@
           <div class="topLinks">
             <?php $roles = Auth::user()->roles->pluck('name');?>
             @foreach($roles as $role)
-              <p>{!! $role !!} @if($role==Config::get('constant.contributorRole.translator')) ({!! Auth::user()->profile->language_proficiency !!}) @endif</p>
+              <p>{!! Config::get('constant.contributorNames.'.$role) !!} @if($role==Config::get('constant.contributorRole.translate')) ({!! Auth::user()->profile->language_proficiency !!}) @endif</p>
             @endforeach
           </div>
         @endif
@@ -57,7 +57,7 @@
     </div>
     <div class="col-md-5 col-sm-6 text-right">
       <div class="switch-account dropDown">
-        <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span>{!! t('Switch') !!} <i class="fa fa-angle-down"></i></span>
+        <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
         <div class="dropDown-block">
           <a href="#" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to user account') !!}</a>
         </div>
@@ -78,9 +78,9 @@
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Points') !!}</td>
-                  <td>{!! ($points!=NULL)? $points:'0'!!}</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $points[env('MEANING')]!!}</td>
+                  <td>{!! $points[env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $points[env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Earning') !!}</td>
@@ -90,21 +90,21 @@
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Contributions') !!}</td>
-                  <td>{!! $Contributions !!}</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $contributions[env('MEANING')] !!}</td>
+                  <td>{!! $contributions[env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions[env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Pole Positions') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $pole[env('MEANING')] !!}</td>
+                  <td>{!! $pole[env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $pole[env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Runner-ups') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $runnerUp[env('MEANING')] !!}</td>
+                  <td>{!! $runnerUp[env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $runnerUp[env('TRANSLATE')] !!}</td>
                 </tr>
               </table>
               <h2 class="mt-3">{!! t('Other Contributors') !!}</h2>

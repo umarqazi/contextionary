@@ -20,19 +20,8 @@ class RoleService extends BaseService implements IRoleService
     protected $user;
     public function __construct()
     {
-        $user= new UserRepo();
-        $role= new RoleRepo();
-        $this->roles=$role;
-        $this->user=$user;
-    }
-
-    /**
-     * @param User $user
-     * @return mixed
-     */
-    public function fetchNames($request)
-    {
-        //
+        $this->user     =   new UserRepo();
+        $this->roles    =   new RoleRepo();
     }
 
     /**
@@ -46,6 +35,11 @@ class RoleService extends BaseService implements IRoleService
         $assignRole     =   $user->assignRole($package_name);
         return true;
     }
+
+    /**
+     * @param $user_id
+     * @return mixed
+     */
     public function checkRole($user_id){
         $user=$this->user->findById($user_id);
         $user->hasAnyRole(Role::all());

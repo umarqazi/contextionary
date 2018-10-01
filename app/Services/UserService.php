@@ -45,12 +45,9 @@ class UserService extends BaseService implements IService
      */
     public function __construct()
     {
-        $user_repo= new UserRepo();
-        $transaction_repo= new TransactionRepo();
-        $coin= new CoinsRepo();
-        $this->user_repo = $user_repo;
-        $this->transactionRepo=$transaction_repo;
-        $this->coin=$coin;
+        $this->user_repo        =   new UserRepo();
+        $this->transactionRepo  =    new TransactionRepo();
+        $this->coin             =   new CoinsRepo();
     }
 
     /**

@@ -7,11 +7,13 @@
  */
 
 namespace App\Services;
+use App\Http\Controllers\SettingController;
 use App\Repositories\BiddingExpiryRepo;
 use App\Repositories\CoinsRepo;
 use App\Repositories\ContextPhraseRepo;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\IllustratorRepo;
+use App\Repositories\PhraseRepo;
 use App\Repositories\ProfileRepo;
 use App\Repositories\FamiliarContextRepo;
 use App\Repositories\ContextRepo;
@@ -41,43 +43,40 @@ class ContributorService implements IService
     protected $user_id;
     protected $voteExpiryRepo;
     protected $bidExpiryRepo;
+    protected $total_context;
+    protected $phraseRepo;
 
     public function __construct()
     {
-        $defineMeaningRepo=new DefineMeaningRepo();
-        $contextPhrase=new ContextPhraseRepo();
-        $coinsRepo=new CoinsRepo();
-        $profile=new ProfileRepo();
-        $userService=new UserService();
-        $userRepo=new UserRepo();
-        $familiarContext=new FamiliarContextRepo();
-        $role=new RoleRepo();
-        $voteService=new VoteService();
-        $biddingRepo=new BiddingExpiryRepo();
-        $illustrateRepo=new IllustratorRepo();
-        $contextRepo=new ContextRepo();
-        $mutualService=new MutualService();
-        $this->voteExpiryRepo=new VoteExpiryRepo();
-        $this->bidExpiryRepo=new BiddingExpiryRepo();
-        $this->mutualService=$mutualService;
-        $this->roleRepo=$role;
-        $this->familiarContext=$familiarContext;
-        $this->userRepo=$userRepo;
-        $this->userService=$userService;
-        $this->profile=$profile;
-        $this->coins=$coinsRepo;
-        $this->contextPhrase=$contextPhrase;
-        $this->defineMeaning=$defineMeaningRepo;
-        $this->voteService=$voteService;
-        $this->biddingRepo=$biddingRepo;
-        $this->illustrate=$illustrateRepo;
-        $this->contextRepo=$contextRepo;
+        $this->defineMeaning    =   new DefineMeaningRepo();
+        $this->contextPhrase    =   new ContextPhraseRepo();
+        $this->coins            =   new CoinsRepo();
+        $this->profile          =   new ProfileRepo();
+        $this->userService      =   new UserService();
+        $this->userRepo         =   new UserRepo();
+        $this->familiarContext  =   new FamiliarContextRepo();
+        $this->roleRepo         =   new RoleRepo();
+        $this->voteService      =   new VoteService();
+        $this->biddingRepo      =   new BiddingExpiryRepo();
+        $this->illustrate       =   new IllustratorRepo();
+        $this->contextRepo      =   new ContextRepo();
+        $this->mutualService    =   new MutualService();
+        $this->voteExpiryRepo   =   new VoteExpiryRepo();
+        $this->bidExpiryRepo    =   new BiddingExpiryRepo();
+        $this->phraseRepo       =   new PhraseRepo();
+        $setting                =   new SettingController();
+        $this->total_context    =   $setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
+        $this->min_bids         =   $setting->getKeyValue(env('MINIMUM_BIDS'))->values;
     }
 
+    /**
+     * @return mixed
+     */
     public function getParentContextList(){
         return $this->contextRepo->getLimitedRecords();
     }
-    /*
+    /**
+     * @return mixed
      * get Paginated Records
      */
     public function getPaginatedContent(){
@@ -88,18 +87,25 @@ class ContributorService implements IService
      * @return LengthAwarePaginator
      */
     public function getAllContextPhrase(){
-        $this->contextArray=$this->mutualService->getFamiliarContext(Auth::user()->id);
-        $contextPhrase=$this->contextPhrase->getPaginated($this->contextArray);
-        return $pagination=$this->mutualService->paginatedRecord($contextPhrase, 'define');
+        $contextPhrase=$this->contextPhrase->getPaginated();
+        return $listOfPhrase=$this->bidPhraseList($contextPhrase, env('MEANING'), 'defineMeaning', 'define');
     }
-    /*
+
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return mixed
      * get context against specific id
      */
     public function getContextPhrase($context_id, $phrase_id){
-        return $contextPhrase=$this->contextPhrase->getContext($context_id, $phrase_id);
+        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id];
+        return $contextPhrase=$this->contextPhrase->getFirstPositionMeaning($data);
 
     }
-    /*
+
+    /**
+     * @param $data
+     * @return bool
      * update contributor records
      */
     public function updateContributorRecord($data){
@@ -114,7 +120,11 @@ class ContributorService implements IService
         $this->userService->verificationEmail($data['user_id']);
         return true;
     }
-    /*
+
+    /**
+     * @param $userId
+     * @param $packageId
+     * @return bool
      * update coins after purchase
      */
     public function updateCoins($userId, $packageId){
@@ -127,7 +137,10 @@ class ContributorService implements IService
         endif;
         return true;
     }
-    /*
+
+    /**
+     * @param $data
+     * @return mixed
      * save meaning against context or phrase
      */
     public function saveContextMeaning($data){
@@ -137,12 +150,16 @@ class ContributorService implements IService
             return $record=$this->defineMeaning->create($data);
         endif;
     }
-    /*
+
+    /**
+     * @param $data
+     * @param $meaning_id
+     * @return bool
      * bidding on context meaning
      */
     public function bidding($data, $meaning_id){
         $coins=Auth::user()->coins-$data['coins'];
-        if($coins <= 0){
+        if($coins < 0){
             return false;
         }
         $repository=$data['model'];
@@ -157,60 +174,47 @@ class ContributorService implements IService
         $this->userRepo->update(Auth::user()->id, $userData);
         return true;
     }
+
     /**
+     * @return string
      * get Phrase Meanings
      */
     public function getVoteMeaning(){
         $records='';
         $getMeaning=$this->defineMeaning->voteMeaning();
         if($getMeaning){
-            $records=$this->contextPhrase->getContext($getMeaning->context_id, $getMeaning->phrase_id);
+            $data=['context_id'=>$getMeaning->context_id, 'phrase_id'=>$getMeaning->phrase_id, 'user_id'=>Auth::user()->id];
+            $records=$this->contextPhrase->getFirstPositionMeaning($data);
             $records['allMeaning']=$this->defineMeaning->getAllVoteMeaning($getMeaning->context_id, $getMeaning->phrase_id);
         }
         return $records;
     }
+
     /**
+     * @return array
      * get phrase for illustrate
      */
     public function getIllustratePhrase(){
-        $this->contextArray=$this->mutualService->getFamiliarContext(Auth::user()->id);
-        $contextPhrase=$this->defineMeaning->illustrates($this->contextArray);
-        $illustrators=[];
-        $user_id=Auth::user()->id;
-        foreach($contextPhrase as $key=>$phrase):
-            $checkVote=$this->voteExpiryRepo->checkRecords($phrase['context_id'], $phrase['phrase_id'], env('ILLUSTRATE'));
-            if(!empty($checkVote)):
-                unset($contextPhrase[$key]);
-            else:
-                $illustrators[$key]['clickable']='1';
-                $illustrators[$key]['expiry_date']='';
-                $illustrators[$key]['status']=Config::get('constant.phrase_status.open');
-                $contextDetail=$this->contextPhrase->getContext($phrase['context_id'], $phrase['phrase_id']);
-                $checkIllustrate=['context_id'=>$phrase['context_id'], 'phrase_id'=>$phrase['phrase_id'], 'user_id'=>$user_id];
-                $checkUserIllustrator=$this->getIllustrator($checkIllustrate);
-                if($checkUserIllustrator):
-                    if($checkUserIllustrator->coins!=NULL):
-                        $illustrators[$key]['status']=Config::get('constant.phrase_status.submitted');
-                    else:
-                        $illustrators[$key]['status']=Config::get('constant.phrase_status.in-progress');
-                    endif;
-                endif;
-                $checkBidExpiry=$this->bidExpiryRepo->checkPhraseExpiry($phrase['context_id'], $phrase['phrase_id'], env('ILLUSTRATE'));
-                if(!empty($checkBidExpiry)):
-                    $illustrators[$key]['expiry_date']=$this->mutualService->displayHumanTimeLeft($checkBidExpiry->expiry_date);
-                endif;
-                $illustrators[$key]['context_id']=$phrase['context_id'];
-                $illustrators[$key]['phrase_id']=$phrase['phrase_id'];
-                $illustrators[$key]['context_name']=$contextDetail->context_name;
-                $illustrators[$key]['context_picture']=$contextDetail->context_picture;
-                $illustrators[$key]['phrase_text']=$contextDetail->phrase_text;
-            endif;
-        endforeach;
-        $illustrators=$this->mutualService->paginatedRecord($illustrators, 'illustrator');
+        $listOfPhrase='';
+        $contextPhrase=$this->defineMeaning->illustrates();
+        if($contextPhrase):
+            foreach($contextPhrase as $key=>$context):
+                $record=$this->contextRepo->getContextName($context['context_id']);
+                $phraseRecord=$this->phraseRepo->getPhraseName($context['phrase_id']);
+                $contextPhrase[$key]['context_name'] = $record->context_name;
+                $contextPhrase[$key]['context_picture'] = $record->context_picture;
+                $contextPhrase[$key]['phrase_text'] = $phraseRecord->phrase_text;
+                $contextPhrase[$key]['red_flag'] = $phraseRecord->red_flag;
+            endforeach;
+            $listOfPhrase=$this->bidPhraseList($contextPhrase, env('ILLUSTRATE'), 'illustrate', 'illustrator');
+        endif;
 
-        return $illustrators;
+        return $listOfPhrase;
     }
+
     /**
+     * @param $data
+     * @return mixed
      * save illustrator
      */
     public function saveIllustrate($data){
@@ -221,16 +225,69 @@ class ContributorService implements IService
         endif;
 
     }
+
     /**
-     * get Illustrator
-     */
-    public function getIllustrator($data){
-        return $this->illustrate->currentUserIllustrate($data);
-    }
-    /*
+     * @param $context_id
+     * @param $phrase_id
+     * @return mixed
      * get context against specific id
      */
-    public function getMeaningForIllustrate($context_id, $phrase_id){
-        return $contextPhrase=$this->contextPhrase->getFirstPositionMeaning($context_id, $phrase_id);
+    public function getMeaningForIllustrate($data){
+        return $contextPhrase=$this->contextPhrase->getFirstPositionMeaning($data);
+    }
+
+    /**
+     * make list of phrase
+     */
+    public function bidPhraseList($contextPhrase, $type, $repoName, $url){
+        $this->contextArray=$this->mutualService->getFamiliarContext(Auth::user()->id);
+        $totalContext=[];
+        foreach($contextPhrase as $key=>$record):
+            if(in_array($record['context_id'], $this->contextArray)){
+                $checkActiveContext=['context_id'=>$record['context_id'], 'phrase_id'=>$record['phrase_id'], 'vote_type'=>$type];
+                $checkVote=$this->voteExpiryRepo->checkRecords($checkActiveContext);
+                if(!empty($checkVote)):
+                    unset($contextPhrase[$key]);
+                else:
+                    $totalContext[$key]['expiry_date']='';
+                    $checkMeaning=['context_id'=>$record['context_id'], 'phrase_id'=>$record['phrase_id']];
+                    $totalCount=$this->$repoName->totalRecords($checkMeaning);
+                    if($totalCount >= $this->min_bids){
+                        $checkBidExpiry=$this->bidExpiryRepo->checkPhraseExpiry($record['context_id'],$record['phrase_id'],  $type);
+                        if(!empty($checkBidExpiry)):
+                            $totalContext[$key]['expiry_date']=$this->mutualService->displayHumanTimeLeft($checkBidExpiry->expiry_date);
+                        endif;
+                    }
+                    $totalContext[$key]['context_id']=$record['context_id'];
+                    $totalContext[$key]['phrase_id']=$record['phrase_id'];
+                    $totalContext[$key]['work_order']=$record['work_order'];
+                    $totalContext[$key]['context_name']=$record['context_name'];
+                    $totalContext[$key]['context_picture']=$record['context_picture'];
+                    $totalContext[$key]['phrase_text']=$record['phrase_text'];
+                    $totalContext[$key]['status']=Config::get('constant.phrase_status.open');
+                    $checkMeaning['user_id']=Auth::user()->id;
+                    $contributedMeaning=$this->$repoName->fetchUserRecord($checkMeaning);
+                    if(!empty($contributedMeaning)):
+                        if($contributedMeaning->coins==NULL):
+                            $totalContext[$key]['status']=Config::get('constant.phrase_status.in-progress');
+                        endif;
+                        if($contributedMeaning->coins!=NULL):
+                            $totalContext[$key]['status']=Config::get('constant.phrase_status.submitted');
+                        endif;
+                    endif;
+                    $totalContext[$key]['clickable']='1';
+                endif;
+            }
+        endforeach;
+        $totalContext = array_slice($totalContext, 0, $this->total_context);
+        return $pagination=$this->mutualService->paginatedRecord($totalContext, $url);
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function getIllustrator($data){
+        return $this->illustrate->fetchUserRecord($data);
     }
 }

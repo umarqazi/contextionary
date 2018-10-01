@@ -1,4 +1,9 @@
-
+<script>
+  var user_coins;
+  $( document ).ready(function() {
+    user_coins="<?php echo $coins?>"
+  });
+</script>
 <div class="menuCate">
   <div class="title">
     {!! t('Contributions') !!}
@@ -11,7 +16,7 @@
       @if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrate')))
         <li><a href="{!! lang_route('illustrate') !!}" class="menu2"><span>{!! t('Illustrate') !!}</span></a></li>
       @endif
-      @if(Auth::user()->hasRole(Config::get('constant.contributorRole.translator')))
+      @if(Auth::user()->hasRole(Config::get('constant.contributorRole.translate')))
         <li><a href="#" class="menu3"><span>{!! t('Translate') !!}</span></a></li>
       @endif
     @endif
@@ -26,9 +31,9 @@
       <li><a href="{!! lang_route('plist') !!}" class="menu4"><span>{!! t('Vote Meanings') !!}</span></a></li>
     @endif
     @if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrate')))
-      <li><a href="#" class="menu4"><span>{!! t('Vote Illustration') !!}</span></a></li>
+      <li><a href="{!! lang_route('vIllustratorList') !!}" class="menu4"><span>{!! t('Vote Illustration') !!}</span></a></li>
     @endif
-    @if(Auth::user()->hasRole(Config::get('constant.contributorRole.translator')))
+    @if(Auth::user()->hasRole(Config::get('constant.contributorRole.translate')))
       <li><a href="#" class="menu4"><span>{!! t('Vote Translations')!!}</span></a></li>
     @endif
   </ul>

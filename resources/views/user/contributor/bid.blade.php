@@ -3,7 +3,7 @@
         <div class="coinsWrapper">
             <span class="white-text">{!! t('Available Coins') !!}:  <span class="green-color">{!! $coins  !!}</span></span>
             <button type="button" class="sub"><i class="fa fa-minus"></i></button>
-            {!! Form::number('bid', '1',['class'=>'coins', 'min'=>'1']) !!}
+            {!! Form::number('bid', '1',['class'=>'coins', 'min'=>'1', 'max'=>($coins!=0)? $coins:'']) !!}
             <button type="button" class="add"><i class="fa fa-plus"></i></button>
             @if ($errors->has('coins'))
                 <div class="help-block"><strong>{{ $errors->first('coins') }}</strong></div>

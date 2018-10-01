@@ -3,7 +3,9 @@ return [
     'packages'=>
         ['1'=>'Basic Plan', '2'=>'Premium Plan', '3'=>'Advance Plan'],
     'contributorRole'=>
-        ['define'=>'define', 'illustrate'=>'illustrate', 'translator'=>'translator'],
+        ['define'=>'define', 'illustrate'=>'illustrate', 'translate'=>'translate'],
+    'contributorNames'=>
+        ['define'=>'Writer', 'illustrate'=>'illustrator', 'translate'=>'translator'],
     'userRole'=>
         ['basic plan'=>'basic plan', 'premium plan'=>'premium plan', 'advance plan'=>'advance plan'],
     'plan_prices'=>
