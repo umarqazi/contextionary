@@ -9,7 +9,7 @@
 <br/>
 Your registered email-id is {{$data['email']}} , Please click on the below link to verify your email account
 <br/>
-<a href="{{lang_url('verifyEmail', ['token'=>$data->email_token])}}">Verify Email</a>
+<a href="{{lang_url('verifyEmail', ['token'=>$data['email_token']])}}">Verify Email</a>
 </body>
 
 </html>

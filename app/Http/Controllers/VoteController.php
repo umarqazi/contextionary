@@ -26,7 +26,8 @@ class VoteController extends Controller
      */
     public function phraseList(){
         $meanings=$this->voteService->getVoteList();
-        return view::make('user.contributor.votes.phrase_list')->with(['contextList'=>$meanings]);
+        $data=['route'=>'voteMeaning', 'title'=>'Phrase for Illustrator'];
+        return view::make('user.contributor.votes.phrase_list')->with(['data'=>$data,'contextList'=>$meanings]);
     }
     public function voteMeaning(Request $request){
         $data=['context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id];

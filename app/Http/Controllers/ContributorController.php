@@ -96,13 +96,6 @@ class ContributorController
     }
     public function addCoins(Request $request){
         $coin=$request->coins;
-        if($coin == NULL):
-            $notification = array(
-                'message' => 'Please select the Coins Deal first',
-                'alert_type' => 'error',
-            );
-            return Redirect::back()->with($notification);
-        endif;
         $getCoinInfo=Coin::find($coin);
         return view::make('user.contributor.transactions.pay_with_stripe')->with(['id'=>Auth::user()->id, 'coin'=>$getCoinInfo]);
     }
@@ -111,14 +104,7 @@ class ContributorController
      */
     public function defineMeaning($context_id, $phrase_id, $id=NULL){
         $contextList=$this->contributor->getContextPhrase($context_id, $phrase_id);
-        if($contextList['coins']!=NULL):
-            $notification = array(
-                'message' => 'Bid has been placed against this meaning',
-                'alert_type' => 'error',
-            );
-            $url=lang_url('define');
-            return Redirect::to($url)->with($notification);
-        endif;
+        $url=lang_url('define');
         if($id!=NULL):
             $view='user.contributor.meaning.edit_meaning';
         else:
@@ -178,7 +164,15 @@ class ContributorController
     /** get meaning for illustrator */
     public function addIllustrate($context_id, $phrase_id){
         $contextList=$this->contributor->getMeaningForIllustrate($context_id, $phrase_id);
-        $contextList['illustrator']=$this->contributor->getIllustrator($context_id, $phrase_id);
+        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id];
+        $contextList['illustrator']=$this->contributor->getIllustrator($data);
+        if($contextList['illustrator']){
+            if($contextList['illustrator']->user_id==Auth::user()->id && $contextList['illustrator']->coins!=NULL):
+                $contextList['close_bid']='1';
+            endif;
+        }else{
+            $contextList['close_bid']='0';
+        }
         return view::make('user.contributor.illustrator.add_illustrator')->with(['data'=>$contextList, 'illustrate'=>'1']);
     }
     /**

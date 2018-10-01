@@ -22,8 +22,8 @@
             {!! Form::hidden('type', 'buy_package', []) !!}
           </div>
           <div class="mt-4">
-            <a href="{!! lang_route('userPlan')!!}" class="back-button orangeBtn waves-effect waves-light">Back</a>
-            <button type="submit" class="orangeBtn waves-effect waves-light">Pay with Stripe</button>
+            <a href="{!! lang_route('userPlan')!!}" class="back-button orangeBtn waves-effect waves-light">{!! t('Back') !!}</a>
+            <button type="submit" class="orangeBtn waves-effect waves-light">{!! t('Pay with Stripe') !!}</button>
           </div>
         </form>
       </div>

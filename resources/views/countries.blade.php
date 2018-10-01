@@ -47,7 +47,7 @@
 'Cook Islands' => 'Cook Islands',
 'Chile' => 'Chile',
 'Cameroon' => 'Cameroon',
-'PeopleÃ¢â‚¬â„¢s Republic of China' => 'PeopleÃ¢â‚¬â„¢s Republic of China',
+'China' => 'China',
 'Colombia' => 'Colombia',
 'Costa Rica' => 'Costa Rica',
 'Cuba' => 'Cuba',

@@ -67,4 +67,11 @@ class SettingController extends Controller
         );
         return Redirect::back()->with($notification);
     }
+
+    /**
+     * @param $key
+     */
+    public function getKeyValue($key){
+        return Setting::where('keys', $key)->select('values')->first();
+    }
 }
