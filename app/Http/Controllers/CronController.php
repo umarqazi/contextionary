@@ -25,7 +25,7 @@ class CronController extends Controller
      * check expired votes
      */
     public function checkExpiredVotes(){
-        $this->voteService->checkExpiredVotes();
+        $this->cronService->checkExpiredVotes();
     }
     /**
      * check illustrator expiry

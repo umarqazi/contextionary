@@ -36,7 +36,11 @@ class ContributorService implements IService
     protected $voteService;
     protected $biddingRepo;
     protected $illustrate;
+    protected $mutualService;
     protected $contextArray=array();
+    protected $user_id;
+    protected $voteExpiryRepo;
+    protected $bidExpiryRepo;
 
     public function __construct()
     {
@@ -47,13 +51,15 @@ class ContributorService implements IService
         $userService=new UserService();
         $userRepo=new UserRepo();
         $familiarContext=new FamiliarContextRepo();
-        $context=new ContextRepo();
         $role=new RoleRepo();
         $voteService=new VoteService();
         $biddingRepo=new BiddingExpiryRepo();
         $illustrateRepo=new IllustratorRepo();
         $contextRepo=new ContextRepo();
-        $this->contextRepo=$context;
+        $mutualService=new MutualService();
+        $this->voteExpiryRepo=new VoteExpiryRepo();
+        $this->bidExpiryRepo=new BiddingExpiryRepo();
+        $this->mutualService=$mutualService;
         $this->roleRepo=$role;
         $this->familiarContext=$familiarContext;
         $this->userRepo=$userRepo;
@@ -79,21 +85,12 @@ class ContributorService implements IService
     }
 
     /**
-     * @return mixed
+     * @return LengthAwarePaginator
      */
-    public function getFamiliarContext($user_id){
-        return $getFamiliarContext=$this->familiarContext->getContext($user_id);
-    }
     public function getAllContextPhrase(){
-        $getFamiliarContext=$this->getFamiliarContext(Auth::user()->id);
-        $getAllContext=$this->contextRepo->getContext();
-        $contexts=[];
-        foreach ($getFamiliarContext as $key=> $context):
-            array_push($this->contextArray, $context['context_id']);
-            $contexts[$key]['child']=$this->contextChildList($getAllContext, $context['context_id']);
-        endforeach;
-        $this->contextArray=array_unique($this->contextArray);
-        return $contextPhrase=$this->contextPhrase->getPaginated($this->contextArray);
+        $this->contextArray=$this->mutualService->getFamiliarContext(Auth::user()->id);
+        $contextPhrase=$this->contextPhrase->getPaginated($this->contextArray);
+        return $pagination=$this->mutualService->paginatedRecord($contextPhrase, 'define');
     }
     /*
      * get context against specific id
@@ -176,24 +173,42 @@ class ContributorService implements IService
      * get phrase for illustrate
      */
     public function getIllustratePhrase(){
-        $contextPhrase=$this->defineMeaning->illustrates();
+        $this->contextArray=$this->mutualService->getFamiliarContext(Auth::user()->id);
+        $contextPhrase=$this->defineMeaning->illustrates($this->contextArray);
+        $illustrators=[];
+        $user_id=Auth::user()->id;
         foreach($contextPhrase as $key=>$phrase):
-            $contextPhrase[$key]['status']=Config::get('constant.phrase_status.open');
-            $contextDetail=$this->contextPhrase->getContext($phrase['context_id'], $phrase['phrase_id']);
-            $checkUserIllustrator=$this->getIllustrator($phrase['context_id'], $phrase['phrase_id']);
-            if($checkUserIllustrator):
-                if($checkUserIllustrator->coins!=NULL):
-                    $contextPhrase[$key]['status']=Config::get('constant.phrase_status.submitted');
-                else:
-                    $contextPhrase[$key]['status']=Config::get('constant.phrase_status.in-progress');
+            $checkVote=$this->voteExpiryRepo->checkRecords($phrase['context_id'], $phrase['phrase_id'], env('ILLUSTRATE'));
+            if(!empty($checkVote)):
+                unset($contextPhrase[$key]);
+            else:
+                $illustrators[$key]['clickable']='1';
+                $illustrators[$key]['expiry_date']='';
+                $illustrators[$key]['status']=Config::get('constant.phrase_status.open');
+                $contextDetail=$this->contextPhrase->getContext($phrase['context_id'], $phrase['phrase_id']);
+                $checkIllustrate=['context_id'=>$phrase['context_id'], 'phrase_id'=>$phrase['phrase_id'], 'user_id'=>$user_id];
+                $checkUserIllustrator=$this->getIllustrator($checkIllustrate);
+                if($checkUserIllustrator):
+                    if($checkUserIllustrator->coins!=NULL):
+                        $illustrators[$key]['status']=Config::get('constant.phrase_status.submitted');
+                    else:
+                        $illustrators[$key]['status']=Config::get('constant.phrase_status.in-progress');
+                    endif;
                 endif;
-
+                $checkBidExpiry=$this->bidExpiryRepo->checkPhraseExpiry($phrase['context_id'], $phrase['phrase_id'], env('ILLUSTRATE'));
+                if(!empty($checkBidExpiry)):
+                    $illustrators[$key]['expiry_date']=$this->mutualService->displayHumanTimeLeft($checkBidExpiry->expiry_date);
+                endif;
+                $illustrators[$key]['context_id']=$phrase['context_id'];
+                $illustrators[$key]['phrase_id']=$phrase['phrase_id'];
+                $illustrators[$key]['context_name']=$contextDetail->context_name;
+                $illustrators[$key]['context_picture']=$contextDetail->context_picture;
+                $illustrators[$key]['phrase_text']=$contextDetail->phrase_text;
             endif;
-            $contextPhrase[$key]['context_name']=$contextDetail->context_name;
-            $contextPhrase[$key]['context_picture']=$contextDetail->context_picture;
-            $contextPhrase[$key]['phrase_text']=$contextDetail->phrase_text;
         endforeach;
-        return $contextPhrase;
+        $illustrators=$this->mutualService->paginatedRecord($illustrators, 'illustrator');
+
+        return $illustrators;
     }
     /**
      * save illustrator
@@ -209,31 +224,13 @@ class ContributorService implements IService
     /**
      * get Illustrator
      */
-    public function getIllustrator($context_id, $phrase_id){
-        return $this->illustrate->currentUserIllustrate($context_id, $phrase_id, Auth::user()->id);
+    public function getIllustrator($data){
+        return $this->illustrate->currentUserIllustrate($data);
     }
     /*
      * get context against specific id
      */
     public function getMeaningForIllustrate($context_id, $phrase_id){
         return $contextPhrase=$this->contextPhrase->getFirstPositionMeaning($context_id, $phrase_id);
-    }
-    /**
-     * get context and child of all context
-     */
-    public function contextChildList($array, $parentId = 0){
-        $branch = array();
-        foreach ($array as $key=>$element) {
-            if ($element['context_immediate_parent_id'] == $parentId) {
-                array_push($this->contextArray, $element['context_id']);
-                $children = $this->contextChildList($array, $element['context_id']);
-                if ($children) {
-                    $element['children'] = $children;
-                }
-                $branch[$key] = $element;
-            }
-
-        }
-        return $branch;
     }
 }

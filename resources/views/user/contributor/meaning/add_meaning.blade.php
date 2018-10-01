@@ -20,10 +20,14 @@
             <div class="col-md-5 selectPhrase text-right">
                 <span class="whiteText"><strong>{!! t('Phrase Type') !!}:</strong> @if($data['phrase_type']) <span class="whiteText">{!! Config::get('constant.PhraseType.'.$data['phrase_type']) !!}</span>
                     @endif</span>
-                @if(!$data['phrase_type'])
-                    {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'customSelect'])!!}
-                    @if ($errors->has('phrase_type'))
-                        <div class="help-block"><strong>{{ $errors->first('phrase_type') }}</strong></div>
+                @if($data['close_bid']==1)
+                    <span class="whiteText">{!! Config::get('constant.PhraseType.'.$data['phrase_type']) !!}</span>
+                @else
+                    @if(!$data['phrase_type'])
+                        {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'customSelect'])!!}
+                        @if ($errors->has('phrase_type'))
+                            <div class="help-block"><strong>{{ $errors->first('phrase_type') }}</strong></div>
+                        @endif
                     @endif
                 @endif
             </div>
@@ -46,6 +50,15 @@
                             </div>
                         </div>
                     </div>
+                    @if($data['close_bid']==1)
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <div class="coinsWrapper">
+                                    <span class="white-text">{!! t('Bid') !!}:  <span class="green-color">{!! $data['coins'] !!} {!! t('Coins') !!}</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 @endif
                 {!! Form::hidden('context_id', $data['context_id'], []) !!}
                 {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
@@ -59,16 +72,24 @@
             @endif
         </div>
         {!! Form::close() !!}
-        @if($data['id'] )
-            {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
-            @include('user.contributor.bid')
-            {!! Form::hidden('meaning_id', $data['id'], []) !!}
-            {!! Form::hidden('context_id', $data['context_id'], []) !!}
-            {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
-            {!! Form::hidden('model', 'defineMeaning', []) !!}
-            {!! Form::hidden('type', env("MEANING"), []) !!}
-            {!! Form::hidden('route', 'define', []) !!}
-            {!! Form::close() !!}
+        @if($data['close_bid']!=1)
+            @if($data['id'] )
+                {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
+                @include('user.contributor.bid')
+                {!! Form::hidden('meaning_id', $data['id'], []) !!}
+                {!! Form::hidden('context_id', $data['context_id'], []) !!}
+                {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
+                {!! Form::hidden('model', 'defineMeaning', []) !!}
+                {!! Form::hidden('type', env("MEANING"), []) !!}
+                {!! Form::hidden('route', 'define', []) !!}
+                {!! Form::close() !!}
+            @endif
+        @elseif($data['close_bid']==1)
+            <div class="row mt-4">
+                <div class="col-md-12 mt-4 text-center actionsBtn bid-div">
+                    <a href="{!! URL::previous() !!}" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Return') !!}</a>
+                </div>
+            </div>
         @endif
     </div>
     {!! HTML::script('assets/js/login.js') !!}

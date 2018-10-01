@@ -40,9 +40,8 @@ class IllustratorRepo
     /**
      * get login user illustrator
      */
-    public function currentUserIllustrate($context_id, $phrase_id, $user_id){
-        $check=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>$user_id];
-        return $this->phraseIllustrate($check)->first();
+    public function currentUserIllustrate($data){
+        return $this->phraseIllustrate($data)->first();
     }
     /*
      * update record
