@@ -244,7 +244,7 @@ class AdminTablesSeeder extends Seeder
             'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
         ]);
         DB::table('admin_menu')->insert([
-            'id'            =>  25,
+            'id'            =>  26,
             'parent_id'     =>  0,
             'order'         =>  18,
             'title'         =>  'Glossary',
