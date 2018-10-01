@@ -22,6 +22,8 @@ class ContextPhrase extends Model
     }
     public function phrases(){
         return $this->belongsTo('App\Phrase', 'phrase_id');
+    }
+
     /**
      * @return mixed
      */
