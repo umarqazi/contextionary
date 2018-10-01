@@ -10,7 +10,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Tutorial;
+use App\Services\TutorialsService;
 use Illuminate\Http\Request;
 use View;
 use Redirect;
@@ -18,9 +18,27 @@ use Redirect;
 class TutorialsController extends Controller
 {
 
+
+    protected $tutorials_service;
+
+    public function __construct()
+    {
+        $tutorials_service          = new TutorialsService();
+        $this->tutorials_service    = $tutorials_service;
+    }
+
+    /**
+     * @return mixed
+     */
     public function index(){
-        $tutorial = Tutorial::first()->content;
-        return View::make('tutorials')->with('tutorial', $tutorial);
+        $tutorial = $this->tutorials_service->first();
+        if(!empty($tutorial)){
+            $tutorial = $tutorial->content;
+            return View::make('tutorials')->with('tutorial', $tutorial);
+        }else{
+            return View::make('tutorials')->with('tutorial', null);
+        }
+
     }
 
 }
