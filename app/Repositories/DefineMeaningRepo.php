@@ -23,6 +23,7 @@ class DefineMeaningRepo
     protected $userRepo;
     protected $contextPhrase;
     protected $selected_bids;
+    protected $setting;
 
     /**
      * DefineMeaningRepo constructor.
@@ -33,8 +34,7 @@ class DefineMeaningRepo
         $this->meaning=$meaning;
         $users=new UserRepo();
         $this->userRepo=$users;
-        $setting=new SettingController();
-        $this->selected_bids=$setting->getKeyValue(env('SELECTED_BIDS'))->values;
+        $this->setting=new SettingController();
     }
 
     /**
@@ -121,7 +121,7 @@ class DefineMeaningRepo
      * update status except first 9
      */
     public function updateMeaningStatus($context_id, $phrase_id){
-
+        $this->selected_bids=$this->setting->getKeyValue(env('SELECTED_BIDS'))->values;
         /**update status for vote of first 9 contributor*/
 
         $records=$this->getRecords($context_id, $phrase_id)->orderBy('coins', 'desc')->limit($this->selected_bids)->update(['status'=>'1']);

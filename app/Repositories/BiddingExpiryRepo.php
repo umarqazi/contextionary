@@ -20,9 +20,9 @@ class BiddingExpiryRepo extends BaseRepo implements IRepo
 
     public function __construct()
     {
-        $bidding=new BiddingExpiry();
-        $this->bidding=$bidding;
-        $this->setting = new SettingController();
+        $bidding        =   new BiddingExpiry();
+        $this->bidding  =   $bidding;
+        $this->setting  =   new SettingController();
 
     }
     /*
