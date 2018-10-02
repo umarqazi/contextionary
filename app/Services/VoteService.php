@@ -11,6 +11,7 @@ use App\Http\Controllers\SettingController;
 use App\Repositories\ContextPhraseRepo;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\IllustratorRepo;
+use App\Repositories\TranslationRepo;
 use App\Repositories\UserPointRepo;
 use App\Repositories\VoteExpiryRepo;
 use App\Repositories\VoteMeaningRepo;
@@ -30,6 +31,7 @@ Class VoteService{
     protected $voteExpiryDate;
     protected $mutual;
     protected $minimumVotes;
+    protected $translations;
 
     /**
      * VoteService constructor.
@@ -44,6 +46,7 @@ Class VoteService{
         $setting                =   new SettingController();
         $this->mutual           =   new MutualService();
         $this->illustrators     =   new IllustratorRepo();
+        $this->translations     =   new TranslationRepo();
         $this->voteExpiryDate   =   $setting->getKeyValue(env('VOTE_EXPIRY'))->values;
         $this->minimumVotes     =   $setting->getKeyValue(env('MINIMUM_VOTES'))->values;
     }
@@ -147,7 +150,16 @@ Class VoteService{
         $contextPhrase=$getLatestVote=$this->voteExpiry->getAllVotes($type, $getContext);
         if($contextPhrase):
             foreach($contextPhrase as $key=>$context):
-                $data=['context_id'=>$context->context_id, 'phrase_id'=>$context->phrase_id, 'user_id'=>Auth::user()->id, 'status'=>'1'];
+                $data=['context_id'=>$context->context_id, 'phrase_id'=>$context->phrase_id,'status'=>'1'];
+                if($type==env('TRANSLATE')):
+                    $data['language']=Auth::user()->profile->language_proficiency;
+                    $checkLanguage=$this->$model->fetchUserRecord($data);
+                    unset($data['language']);
+                    if(empty($checkLanguage)):
+                        continue;
+                    endif;
+                endif;
+                $data['user_id']=Auth::user()->id;
                 $checkUserPhrase=$this->$model->fetchUserRecord($data);
                 unset($data['status']);
                 if(empty($checkUserPhrase)):
@@ -187,6 +199,13 @@ Class VoteService{
     }
 
     /**
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * translator list for vote
+     */
+    public function getTranslatorVoteList(){
+        return $this->listForVoting(env('TRANSLATE'), env('TRANSLATOR_KEY'), 'translations');
+    }
+    /**
      * @param $data
      * @return array|mixed
      * get illustrators for vote
@@ -219,5 +238,34 @@ Class VoteService{
     public function checkActiveVotes($data, $type){
         $checkActiveVote=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'], 'vote_type'=>$type];
         return $record=$this->voteExpiry->checkRecords($checkActiveVote);
+    }
+    /**
+     * @param $data
+     * @return array|mixed
+     * get translators for vote
+     */
+    public function getVoteTranslators($data){
+        $record=$this->checkActiveVotes($data, env('TRANSLATE'));
+        if($record){
+            if($record->status=='0'){
+                $checkVote=$this->voteMeaning->checkUserVote($data, env('TRANSLATE'));
+                if(empty($checkVote)):
+                    $checkMeaning=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id']];
+                    $records=$this->contextPhrase->getFirstPositionMeaning($checkMeaning);
+                    $getIllustrator=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'], 'position'=>'1'];
+                    $illustraor_name=$this->illustrators->fetchUserRecord($getIllustrator);
+                    if($illustraor_name):
+                        $records['illustrators']=$illustraor_name->illustrator;
+                    endif;
+                    $records['translators']=$this->translations->getAllVoteTranslators($data['context_id'], $data['phrase_id']);
+                    return $records;
+                else:
+                    return ['voteStatus'=>0, 'message'=>trans('content.already_cast_vote')];
+                endif;
+            }else{
+                return ['voteStatus'=>0, 'message'=>trans('content.expired_vote')];
+            }
+        }
+        return ['voteStatus'=>0, 'message'=>trans('content.vote_not_available')];
     }
 }

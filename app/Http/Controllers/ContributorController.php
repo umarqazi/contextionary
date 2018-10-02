@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\AddContextMeaning;
 use App\Services\ContributorService;
+use App\Services\UserService;
 use Session;
 use App\Services\AuthService;
 use Redirect;
@@ -26,12 +27,14 @@ class ContributorController
 {
     protected $contributor;
     protected $authService;
+    protected $userService;
     protected $user;
 
     public function __construct()
     {
         $this->authService=new AuthService();
         $this->contributor= new ContributorService();
+        $this->userService= new UserService();
     }
 
     /**
@@ -76,6 +79,8 @@ class ContributorController
             $records['language']=$request->language;
             $records['user_id']=$request->user_id;
             $this->contributor->updateContributorRecord($records);
+            $data=['user_roles'=>implode(',',$request->role)];
+            $this->userService->updateRecord(Auth::user()->id, $data);
             if($request->profile==1):
                 $notification = array(
                     'message' => trans('content.record_updated'),
@@ -263,5 +268,59 @@ class ContributorController
         $fileName='images/'.Auth::user()->id.'/'.$place.'/'.$fileName;
         Storage::disk('public')->put($fileName, $img);
         return $fileName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function translateList(){
+        $contextList=$this->contributor->getTranslateList();
+        $data=['route'=>'addTranslate', 'title'=>'Phrase for Illustrator'];
+        return view::make('user.contributor.meaning.define')->with(['contextList'=>$contextList, 'data'=>$data]);
+    }
+
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return mixed
+     */
+    public function addTranslate($context_id, $phrase_id){
+        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'position'=>'1'];
+        $contextList=$this->contributor->getMeaningForIllustrate($data);
+        unset($data['position']);
+        $contextList['illustrator']=$this->contributor->getSelectedIllustrators($data);
+        $data['user_id']=Auth::user()->id;
+        $contextList['translation']=$this->contributor->getTranslation($data);
+        if($contextList['translation']){
+            if($contextList['translation']->user_id==Auth::user()->id && $contextList['translation']->coins!=NULL):
+                $contextList['close_bid']='1';
+            else:
+                $contextList['close_bid']='0';
+            endif;
+        }else{
+            $contextList['close_bid']='0';
+        }
+        return view::make('user.contributor.translation.add_translation')->with(['data'=>$contextList, 'illustrate'=>'1']);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function postTranslate(Request $request){
+        $validators = $request->validate([
+            'translation' => 'required',
+        ]);
+        $id='';
+        if($request->has('id')):
+            $id=$request->id;
+        endif;
+        $data=['id'=>$id,'translation'=>$request->translation, 'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id, 'language'=>Auth::user()->profile->language_proficiency];
+        $saveTranslation=$this->contributor->saveTranslation($data);
+        $notification = array(
+            'message' => trans('content.illustrator_added'),
+            'alert_type' => 'success',
+        );
+        return Redirect::back()->with($notification);
     }
 }

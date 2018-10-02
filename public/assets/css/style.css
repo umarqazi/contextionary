@@ -132,6 +132,7 @@ color: #f7953a;
   top: 0;
   opacity: 0;
   z-index: 5;
+  cursor:pointer;
   display: block;
 }
 
@@ -382,4 +383,7 @@ aside .menuCate .menuListing .active-link a{
   background: url(../images/menu-icon1.png) no-repeat 0 -40px;
   color: #f7941d;
   background-size: 16px;
+}
+.switch-account{
+  cursor:pointer;
 }

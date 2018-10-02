@@ -14,7 +14,7 @@
                         {!! Form::hidden('user_id', $id,[]) !!}
                         {!! Form::hidden('profile', '1',[]) !!}
                         <div class="planBlock desired-roles">
-                            <h3 class="heading-color">Select Your Desired role/s</h3>
+                            <h3 class="heading-color">{!! t('Select Your Desired role/s') !!}</h3>
                             <div class="row justify-content-center">
                                 @foreach($roles as $key=>$role)
                                     <div class="col-md-2">
@@ -26,7 +26,6 @@
                                         </div>
                                     </div>
                                 @endforeach
-
                             </div>
                             <div class="desired-roles">
                                 <div class="planBlock ">
@@ -49,49 +48,48 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <div class="desired-roles">
-                                    <div class="planBlock">
-                                        <h3 class="heading-color">{!! t('Select Language') !!}</h3>
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-2">
-                                                <div class="custom-control custom-radio d-block my-2">
-                                                    {!! Form::radio('language', 'Chinese',$language,['class'=>'custom-control-input', "id"=>"customRadio1"]) !!}
-                                                    <label class="custom-control-label" for="customRadio1">{!! t('Chinese') !!}</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <div class="custom-control custom-radio d-block my-2">
-                                                    {!! Form::radio('language', 'Spanish',$language,['class'=>'custom-control-input', "id"=>"customRadio2"]) !!}
-                                                    <label class="custom-control-label" for="customRadio2">{!! t('Spanish') !!}</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <div class="custom-control custom-radio d-block my-2">
-                                                    {!! Form::radio('language', 'Hindi',$language,['class'=>'custom-control-input', "id"=>"customRadio3"]) !!}
-                                                    <label class="custom-control-label" for="customRadio3">{!! t('Hindi') !!}</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                <div class="custom-control custom-radio d-block my-2">
-                                                    {!! Form::radio('language', 'French',$language,['class'=>'custom-control-input', "id"=>"customRadio4"]) !!}
-                                                    <label class="custom-control-label" for="customRadio4">{!! t('French') !!}</label>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <a href="{!! URL::previous() !!}" class="orangeBtn mt-4 waves-light back-to make-vertical ">{!! t('Back') !!}</a>
-                                        <button type="submit" class="orangeBtn mt-4 waves-light make-vertical">{!! t('Update') !!}</button>
-                                    </div>
-                                </div>
-                            </div>
-                            {!! Form::close() !!}
                         </div>
+                        <div class="desired-roles">
+                            <div class="planBlock">
+                                <h3 class="heading-color">{!! t('Select Language') !!}</h3>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-2">
+                                        <div class="custom-control custom-radio d-block my-2">
+                                            {!! Form::radio('language', 'Chinese',null,[($language=='Chinese')? 'checked':'','class'=>'custom-control-input', "id"=>"customRadio1"]) !!}
+                                            <label class="custom-control-label" for="customRadio1">{!! t('Chinese') !!}</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="custom-control custom-radio d-block my-2">
+                                            {!! Form::radio('language', 'Spanish',null,[($language=='Spanish')? 'checked':'','class'=>'custom-control-input', "id"=>"customRadio2"]) !!}
+                                            <label class="custom-control-label" for="customRadio2">{!! t('Spanish') !!}</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="custom-control custom-radio d-block my-2">
+                                            {!! Form::radio('language', 'Hindi',null,[($language=='Hindi')? 'checked':'','class'=>'custom-control-input', "id"=>"customRadio3"]) !!}
+                                            <label class="custom-control-label" for="customRadio3">{!! t('Hindi') !!}</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="custom-control custom-radio d-block my-2">
+                                            {!! Form::radio('language', 'French',null,[($language=='French')? 'checked':'', 'class'=>'custom-control-input', "id"=>"customRadio4"]) !!}
+                                            <label class="custom-control-label" for="customRadio4">{!! t('French') !!}</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <a href="{!! URL::previous() !!}" class="orangeBtn mt-4 waves-light back-to make-vertical ">{!! t('Back') !!}</a>
+                                <button type="submit" class="orangeBtn mt-4 waves-light make-vertical">{!! t('Update') !!}</button>
+                            </div>
+                        </div>
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 @endsection

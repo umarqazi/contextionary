@@ -104,7 +104,7 @@ class IllustratorRepo
 
         /**update status for vote of first 9 contributor*/
         $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id];
-        $records=$this->illustrator->where($data)->limit($this->selected_bids)->update(['status'=>'1']);
+        $records=$this->illustrator->where($data)->limit($this->selected_bids)->orderBy('coins', 'desc')->update(['status'=>'1']);
 
         /** update status for refund of contributor */
 
@@ -138,5 +138,13 @@ class IllustratorRepo
      */
     public function fetchUserRecord($data){
         return $this->illustrator->where($data)->with('users')->first();
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function selectedIllustrates($data){
+        return $this->illustrator->where($data)->with('users')->get();
     }
 }

@@ -18,6 +18,7 @@ use App\Repositories\ProfileRepo;
 use App\Repositories\FamiliarContextRepo;
 use App\Repositories\ContextRepo;
 use App\Repositories\RoleRepo;
+use App\Repositories\TranslationRepo;
 use App\Repositories\UserRepo;
 use App\Repositories\VoteExpiryRepo;
 use Auth;
@@ -45,6 +46,7 @@ class ContributorService implements IService
     protected $bidExpiryRepo;
     protected $total_context;
     protected $phraseRepo;
+    protected $translationRepo;
 
     public function __construct()
     {
@@ -64,6 +66,7 @@ class ContributorService implements IService
         $this->voteExpiryRepo   =   new VoteExpiryRepo();
         $this->bidExpiryRepo    =   new BiddingExpiryRepo();
         $this->phraseRepo       =   new PhraseRepo();
+        $this->translationRepo  =   new TranslationRepo();
         $setting                =   new SettingController();
         $this->total_context    =   $setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
         $this->min_bids         =   $setting->getKeyValue(env('MINIMUM_BIDS'))->values;
@@ -289,5 +292,64 @@ class ContributorService implements IService
      */
     public function getIllustrator($data){
         return $this->illustrate->fetchUserRecord($data);
+    }
+
+    /**
+     * @return array
+     * get phrase for translator
+     */
+    public function getTranslateList(){
+        $listOfPhrase='';
+        $data=['status'=>'3', 'position'=>'1'];
+        $contextPhrase=$this->illustrate->selectedIllustrates($data);
+        if($contextPhrase):
+            foreach($contextPhrase as $key=>$context):
+                $record=$this->contextRepo->getContextName($context['context_id']);
+                $phraseRecord=$this->phraseRepo->getPhraseName($context['phrase_id']);
+                $contextPhrase[$key]['context_name'] = $record->context_name;
+                $contextPhrase[$key]['context_picture'] = $record->context_picture;
+                $contextPhrase[$key]['phrase_text'] = $phraseRecord->phrase_text;
+                $contextPhrase[$key]['red_flag'] = $phraseRecord->red_flag;
+            endforeach;
+            $listOfPhrase=$this->bidPhraseList($contextPhrase, env('TRANSLATE'), 'translationRepo', 'translate');
+        endif;
+
+        return $listOfPhrase;
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    public function getSelectedIllustrators($data){
+        $data['status']=3;
+        $data['position']=1;
+        $illustrator=[];
+        $contextPhrase=$this->illustrate->fetchUserRecord($data);
+        if($contextPhrase):
+            $illustrator['illustrator']=$contextPhrase->illustrator;
+            $illustrator['illustrator_writer']=$contextPhrase->users->first_name.' '.$contextPhrase->users->last_name;
+        endif;
+        return $illustrator;
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function saveTranslation($data){
+        if($data['id']!=NULL):
+            return $this->translationRepo->update($data, $data['id']);
+        else:
+            return $this->translationRepo->create($data);
+        endif;
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function getTranslation($data){
+        return $this->translationRepo->fetchUserRecord($data);
     }
 }
