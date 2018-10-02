@@ -93,6 +93,7 @@
         $.ajax({
             type: "POST",
             url: '/en/verify-pictionary',
+            async: false,
             data: { game_id:{{$game->id}}, ques_id:{{$pictionary->id}}, option: opt, _token: '{{csrf_token()}}'}
         }).done(function( res ) {
             $('button.gameOption').remove();
@@ -104,7 +105,6 @@
                 $('#answer').html(res.body);
             }
         })
-
     });
 </script>
 @endsection
