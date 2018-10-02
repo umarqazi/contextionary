@@ -5,32 +5,33 @@ namespace App\Console\Commands;
 use App\Http\Controllers\CronController;
 use Illuminate\Console\Command;
 
-class CheckMeaningVotes extends Command
+class CheckIllustratorBids extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'define:illustrator';
+    protected $illustratorsBids;
+
+    protected $signature = 'illustrator:bids';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'This command will check total number of votes against meanings and will transfer meaning to illustrator phase';
+    protected $description = 'check total number of bids against illustrators';
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    protected $cronController;
     public function __construct()
     {
         parent::__construct();
-        $this->cronController=new CronController();
+        $this->illustratorsBids=new CronController();
     }
 
     /**
@@ -40,6 +41,7 @@ class CheckMeaningVotes extends Command
      */
     public function handle()
     {
-        $this->cronController->checkExpiredVotes();
+        $this->illustratorsBids->illustratorBidtoVote();
+        $this->illustratorsBids->checkIllustratorVotes();
     }
 }

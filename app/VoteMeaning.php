@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class VoteMeaning extends Model
 {
     protected $fillable = [
-        'grammer', 'define_meaning_id', 'spelling', 'audience', 'part_of_speech', 'vote', 'is_poor', 'user_id', 'phrase_id', 'context_id','illustrator_id', 'type'
+        'define_meaning_id', 'vote', 'is_poor', 'user_id', 'phrase_id', 'context_id','illustrator_id', 'type', 'translation_id'
     ];
     public $timestamps = false;
 
@@ -17,5 +17,9 @@ class VoteMeaning extends Model
 
     public function illustrate(){
         return $this->belongsto('App\Illustrator', 'illustrator_id');
+    }
+
+    public function translate(){
+        return $this->belongsto('App\Translation', 'translation_id');
     }
 }

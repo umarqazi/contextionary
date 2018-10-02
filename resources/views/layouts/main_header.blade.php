@@ -57,10 +57,19 @@
     </div>
     <div class="col-md-5 col-sm-6 text-right">
       <div class="switch-account dropDown">
-        <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
-        <div class="dropDown-block">
-          <a href="#" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to user account') !!}</a>
-        </div>
+        @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
+          <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
+          <div class="dropDown-block">
+            <a href="{!! lang_url('switchToUser') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to User Account') !!}</a>
+          </div>
+        @else
+          @if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan')))
+            <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
+            <div class="dropDown-block">
+              <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contibutor Account') !!}</a>
+            </div>
+          @endif
+        @endif
       </div>
       @if(Auth::check())
         @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))

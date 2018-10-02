@@ -43,4 +43,12 @@ class CronController extends Controller
     public function checkIllustratorVotes(){
         $this->cronService->illustratorVotes();
     }
+
+    public function translateBidtoVote(){
+        $this->cronService->checkTranslateBid();
+    }
+
+    public function translateVote(){
+        $this->cronService->translationVotes();
+    }
 }

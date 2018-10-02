@@ -8,6 +8,7 @@
 use Illuminate\Support\Facades\View;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\IllustratorRepo;
+use App\Repositories\TranslationRepo;
 use App\Repositories\UserPointRepo;
 use App\DefineMeaning;
 View::composer(['layouts.*', 'user.contributor.bid'], function($view)
@@ -23,6 +24,8 @@ View::composer(['layouts.*', 'user.contributor.bid'], function($view)
         $user_contributions[env('MEANING')]=$contributions->getUserContributions(Auth::user()->id);
         $illustrators=new IllustratorRepo();
         $user_contributions[env('ILLUSTRATE')]=$illustrators->getUserContributions(Auth::user()->id);
+        $translationRepo=new TranslationRepo();
+        $user_contributions[env('TRANSLATE')]=$translationRepo->getUserContributions(Auth::user()->id);
         $coins=Auth::user()->coins;
         /* get points of login user*/
         $pointsRepo=new UserPointRepo();

@@ -13,6 +13,7 @@ use App\Http\Controllers\SettingController;
 use App\Repositories\BiddingExpiryRepo;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\IllustratorRepo;
+use App\Repositories\TranslationRepo;
 use App\Repositories\UserPointRepo;
 use App\Repositories\VoteExpiryRepo;
 use App\Repositories\VoteMeaningRepo;
@@ -34,6 +35,7 @@ class CronService
     protected $voteExpiryRepo;
     protected $voteMeaningRepo;
     protected $userPoint;
+    protected $translateRepo;
 
     /**
      * CronService constructor.
@@ -47,6 +49,7 @@ class CronService
         $this->voteExpiryRepo   =   new VoteExpiryRepo();
         $this->voteMeaningRepo  =   new VoteMeaningRepo();
         $this->userPoint        =   new UserPointRepo();
+        $this->translateRepo    =   new TranslationRepo();
         $setting                =   new SettingController();
         $this->minimum_bids     =   $setting->getKeyValue(env('MINIMUM_BIDS'))->values;
         $this->minimum_votes    =   $setting->getKeyValue(env('MINIMUM_VOTES'))->values;
@@ -82,6 +85,13 @@ class CronService
         $this->checkExpiredVotes(env('ILLUSTRATE'), 'illustrator',env('ILLUSTRATOR_KEY'));
     }
 
+    public function checkTranslateBid(){
+        $this->bidExpiry(env('TRANSLATE'), 'translateRepo');
+    }
+
+    public function translationVotes(){
+        $this->checkExpiredVotes(env('TRANSLATE'), 'translateRepo',env('TRANSLATOR_KEY'));
+    }
     /**
      * @param $type
      * @param $model
@@ -142,7 +152,7 @@ class CronService
                     endif;
                 endif;
                 if($cron_run=='1'):
-                    $checkArray=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'columnKey'=>$columnKey, 'type'=>$type];
+                    $checkArray=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'type'=>$type];
                     $getHighestVotes=$this->voteMeaningRepo->hightVotes($checkArray);
                     if(!empty($getHighestVotes)):
                         $this->$model->updateVoteStatus($vote['context_id'], $vote['phrase_id']);

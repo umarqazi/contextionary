@@ -50,4 +50,14 @@ class RoleService extends BaseService implements IRoleService
         $user->hasAnyRole(Role::all());
         return $user['roles'];
     }
+
+    /**
+     * @param $user_id
+     * @param $roles
+     * @return bool
+     */
+    public function assignRoleToUser($user_id, $roles){
+        $this->roles->assignMultiRole($user_id, $roles);
+        return true;
+    }
 }

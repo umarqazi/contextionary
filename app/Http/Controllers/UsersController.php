@@ -228,4 +228,26 @@ class UsersController extends Controller
         $language=$user->profile->language_proficiency;
         return view::make('user.roles')->with(['roles'=>$userRoles,'language'=>$language, 'contextList'=>$contributor, 'id'=>$user->id, 'familiar_context'=>$familiarContext]);
     }
+
+    /**
+     * @return mixed
+     */
+    public function switchToContributor(){
+        if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan'))):
+            $roles=explode(',',Auth::user()->user_roles);
+            $this->userRoles->assignRoleToUser(Auth::user()->id, $roles);
+        endif;
+        return Redirect::to(lang_url('dashboard'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function switchToUser(){
+        if(Auth::user()->hasRole(Config::get('constant.contributorRole'))):
+            $roles=Config::get('constant.userRole.premium plan');
+            $this->userRoles->assignRoleToUser(Auth::user()->id, $roles);
+        endif;
+        return Redirect::to(lang_url('dashboard'));
+    }
 }

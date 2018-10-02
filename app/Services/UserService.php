@@ -114,7 +114,20 @@ class UserService extends BaseService implements IService
         return SendVerificationEmail::dispatch($user);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function get($id){
         return $this->user_repo->findById($id);
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
+    public function updateRecord($id, $data){
+        return $this->user_repo->update($id, $data);
     }
 }
