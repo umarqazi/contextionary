@@ -53,10 +53,9 @@ class ContextPhraseRepo
         $this->defineMeaningRepo    =   new DefineMeaningRepo();
         $this->voteExpiryRepo       =   new VoteExpiryRepo();
         $this->bidExpiryRepo        =   new BiddingExpiryRepo();
-        $setting                    =   new SettingController();
+        $this->setting              =   new SettingController();
         $this->mutualService        =   new MutualService();
-        $this->total_context        =   $setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
-        $this->phrase                     =   new Phrase();
+        $this->phrase               =   new Phrase();
     }
     
     /**
@@ -74,6 +73,7 @@ class ContextPhraseRepo
      * get paginated records
      */
     public function getPaginated(){
+        $this->total_context = $this->setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
         return $this->getList()->limit($this->total_context)->orderBy('context_phrase.work_order', 'ASC')->get();
     }
 

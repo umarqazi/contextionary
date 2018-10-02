@@ -18,6 +18,7 @@ class TranslationRepo
 {
     protected $translation;
     protected $userRepo;
+    protected $setting;
 
     /**
      * IllustratorRepo constructor.
@@ -26,8 +27,7 @@ class TranslationRepo
     {
         $this->translation      =   new Translation();
         $this->userRepo         =   new UserRepo();
-        $setting                =   new SettingController();
-        $this->selected_bids    =   $setting->getKeyValue(env('SELECTED_BIDS'))->values;
+        $this->setting          =   new SettingController();
     }
 
     /**
@@ -85,6 +85,7 @@ class TranslationRepo
      * update status except first 9
      */
     public function updateMeaningStatus($context_id, $phrase_id){
+        $this->selected_bids    =   $this->setting->getKeyValue(env('SELECTED_BIDS'))->values;
 
         /**update status for vote of first 9 contributor*/
         $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id];
