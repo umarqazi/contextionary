@@ -36,7 +36,7 @@
                             <div class="col-md-2">
                                 <div class="md-form ml-4 mt-0">
                                     <div class="custom-control custom-checkbox">
-                                        {!! Form::checkbox('role[]', Config::get('constant.contributorRole.translator'),null,['class'=>'custom-control-input', 'id'=>'checkBoxT']) !!}
+                                        {!! Form::checkbox('role[]', Config::get('constant.contributorRole.translate'),null,['class'=>'custom-control-input', 'id'=>'checkBoxT']) !!}
                                         <label class="custom-control-label" for="checkBoxT">{!! t('Translator') !!}</label>
                                     </div>
                                 </div>
