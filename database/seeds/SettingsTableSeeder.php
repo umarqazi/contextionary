@@ -76,5 +76,47 @@ class SettingsTableSeeder extends Seeder
             'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+        DB::table('settings')->insert([
+            'id'            =>  10,
+            'keys'          =>  'bid_expiry_days',
+            'values'        =>  '3',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  11,
+            'keys'          =>  'minimum_bids',
+            'values'        =>  '3',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  12,
+            'keys'          =>  'total_context',
+            'values'        =>  '3',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  13,
+            'keys'          =>  'vote_expiry_days',
+            'values'        =>  '3',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  14,
+            'keys'          =>  'selected_bids',
+            'values'        =>  '3',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  15,
+            'keys'          =>  'minimum_votes',
+            'values'        =>  '3',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
     }
 }

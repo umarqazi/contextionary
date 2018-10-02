@@ -16,13 +16,14 @@ use Carbon\Carbon;
 class BiddingExpiryRepo extends BaseRepo implements IRepo
 {
     protected $bidding;
+    protected $setting;
 
     public function __construct()
     {
         $bidding=new BiddingExpiry();
         $this->bidding=$bidding;
-        $setting = new SettingController();
-        $this->total_context=$setting->getKeyValue(env('BIDS_EXPIRY'))->values;
+        $this->setting = new SettingController();
+
     }
     /*
      * get current bidding
@@ -42,6 +43,10 @@ class BiddingExpiryRepo extends BaseRepo implements IRepo
      * @return bool
      */
     public function addBidExpiry($data, $type){
+        $setting=$this->setting->getKeyValue(env('BIDS_EXPIRY'));
+        if($setting){
+            $this->total_context=$setting->values;
+        }
         $date=Carbon::now()->addMinutes($this->total_context);
         return $this->bidding->insert(['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'bid_type'=>$data['type'], 'expiry_date'=>$date]);
     }
