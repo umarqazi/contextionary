@@ -36,6 +36,7 @@ class CronService
     protected $voteMeaningRepo;
     protected $userPoint;
     protected $translateRepo;
+    protected $setting;
 
     /**
      * CronService constructor.
@@ -50,11 +51,7 @@ class CronService
         $this->voteMeaningRepo  =   new VoteMeaningRepo();
         $this->userPoint        =   new UserPointRepo();
         $this->translateRepo    =   new TranslationRepo();
-        $setting                =   new SettingController();
-        $this->minimum_bids     =   $setting->getKeyValue(env('MINIMUM_BIDS'))->values;
-        $this->minimum_votes    =   $setting->getKeyValue(env('MINIMUM_VOTES'))->values;
-        $this->bids_expiry      =   $setting->getKeyValue(env('BIDS_EXPIRY'))->values;
-        $this->vote_expiry      =   $setting->getKeyValue(env('VOTE_EXPIRY'))->values;
+        $this->setting          =   new SettingController();
     }
 
     /**
@@ -98,6 +95,8 @@ class CronService
      * function for updating bids and add record for votes
      */
     public function bidExpiry($type, $model){
+        $this->minimum_bids     =   $this->setting->getKeyValue(env('MINIMUM_BIDS'))->values;
+        $this->bids_expiry      =   $this->setting->getKeyValue(env('BIDS_EXPIRY'))->values;
         $today=Carbon::now();
         $getAllMeaning=$this->biddingRepo->fetchBidding($type);
         if($getAllMeaning){
@@ -136,6 +135,8 @@ class CronService
      * check expired votes
      */
     public function checkExpiredVotes($type, $model,$columnKey){
+        $this->minimum_votes    =   $this->setting->getKeyValue(env('MINIMUM_VOTES'))->values;
+        $this->vote_expiry      =   $this->setting->getKeyValue(env('VOTE_EXPIRY'))->values;
         $getVote=$this->voteExpiryRepo->getAllMeaningVotes($type);
         if($getVote):
             foreach($getVote as $vote):

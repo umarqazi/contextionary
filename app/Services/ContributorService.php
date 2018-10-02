@@ -47,6 +47,8 @@ class ContributorService implements IService
     protected $total_context;
     protected $phraseRepo;
     protected $translationRepo;
+    protected $setting;
+    protected $min_bids;
 
     public function __construct()
     {
@@ -67,9 +69,8 @@ class ContributorService implements IService
         $this->bidExpiryRepo    =   new BiddingExpiryRepo();
         $this->phraseRepo       =   new PhraseRepo();
         $this->translationRepo  =   new TranslationRepo();
-        $setting                =   new SettingController();
-        $this->total_context    =   $setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
-        $this->min_bids         =   $setting->getKeyValue(env('MINIMUM_BIDS'))->values;
+        $this->setting          =   new SettingController();
+
     }
 
     /**
@@ -243,6 +244,8 @@ class ContributorService implements IService
      * make list of phrase
      */
     public function bidPhraseList($contextPhrase, $type, $repoName, $url){
+        $this->total_context    =   $this->setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
+        $this->min_bids         =   $this->setting->getKeyValue(env('MINIMUM_BIDS'))->values;
         $this->contextArray=$this->mutualService->getFamiliarContext(Auth::user()->id);
         $totalContext=[];
         foreach($contextPhrase as $key=>$record):

@@ -32,6 +32,7 @@ Class VoteService{
     protected $mutual;
     protected $minimumVotes;
     protected $translations;
+    protected $setting;
 
     /**
      * VoteService constructor.
@@ -43,12 +44,10 @@ Class VoteService{
         $this->contextPhrase    =   new ContextPhraseRepo();
         $this->voteMeaning      =   new VoteMeaningRepo();
         $this->userPoint        =   new UserPointRepo();
-        $setting                =   new SettingController();
+        $this->setting          =   new SettingController();
         $this->mutual           =   new MutualService();
         $this->illustrators     =   new IllustratorRepo();
         $this->translations     =   new TranslationRepo();
-        $this->voteExpiryDate   =   $setting->getKeyValue(env('VOTE_EXPIRY'))->values;
-        $this->minimumVotes     =   $setting->getKeyValue(env('MINIMUM_VOTES'))->values;
     }
 
     /**
@@ -59,6 +58,7 @@ Class VoteService{
      * update VoteExpiry
      */
     public function addPhraseForVote($context, $phrase, $type){
+        $this->voteExpiryDate   =   $this->setting->getKeyValue(env('VOTE_EXPIRY'))->values;
         $date=Carbon::now()->addMinutes($this->voteExpiryDate);
         $data=['context_id'=>$context, 'phrase_id'=>$phrase, 'vote_type'=>$type];
         $record=$this->voteExpiry->checkRecords($data);
@@ -145,6 +145,7 @@ Class VoteService{
      * get list of voting according to type
      */
     public function listForVoting($type, $column_key, $model){
+        $this->minimumVotes     =   $this->setting->getKeyValue(env('MINIMUM_VOTES'))->values;
         $getContext=$this->mutual->getFamiliarContext(Auth::user()->id);
         $records=[];
         $contextPhrase=$getLatestVote=$this->voteExpiry->getAllVotes($type, $getContext);
