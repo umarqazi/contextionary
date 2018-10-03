@@ -161,7 +161,7 @@ class CronService
                     endif;
                 endif;
                 if($cron_run=='1'):
-                    $checkArray=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'type'=>$type];
+                    $checkArray=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'type'=>$type, 'columnKey'=>$columnKey];
                     $getHighestVotes=$this->voteMeaningRepo->hightVotes($checkArray);
                     if(!empty($getHighestVotes)):
                         $this->$model->updateVoteStatus($vote['context_id'], $vote['phrase_id']);
