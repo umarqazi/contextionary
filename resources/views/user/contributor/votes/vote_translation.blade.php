@@ -58,7 +58,7 @@
                     <div class="text-center">
                         <a href="#" class="orangeBtn waves-light mb-3 mr-3">{!! t('Return') !!}</a>
                         <button type="submit" class="orangeBtn waves-light mb-3 mr-3 @if(old('meaning')==NULL) grey @endif" @if(old('meaning')==NULL) disabled @endif id="submit-button">{!! t('Submit') !!}</button>
-                        <a href="{!! lang_route('poor-quality', ['context_id'=>$phraseMeaning['context_id'],'phrase_id'=>$phraseMeaning['phrase_id'],'type'=>'MEANING']) !!}" class="orangeBtn waves-light mb-3">{!! t('Poor Quality') !!}</a>
+                        <a href="{!! lang_route('poor-quality', ['context_id'=>$phraseMeaning['context_id'],'phrase_id'=>$phraseMeaning['phrase_id'],'type'=>env('TRANSLATE')]) !!}" class="orangeBtn waves-light mb-3">{!! t('Poor Quality') !!}</a>
                     </div>
                 </div>
 
