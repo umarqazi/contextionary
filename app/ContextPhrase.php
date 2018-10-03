@@ -11,6 +11,8 @@ class ContextPhrase extends Model
      */
     protected $table='context_phrase';
 
+    public $timestamps = false;
+
     /**
      * @var string
      */

@@ -91,7 +91,7 @@ class IllustratorRepo
      * total meaning
      */
     public function totalRecords($data){
-        return $this->illustrator->where($data)->count();
+        return $this->illustrator->where($data)->where('coins', '!=', NULL)->count();
     }
 
     /**
