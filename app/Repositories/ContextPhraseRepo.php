@@ -122,4 +122,13 @@ class ContextPhraseRepo
     public function getLengthed($length){
         return $this->phrase->getLengthed($length);
     }
+
+    /**
+     * @param $check
+     * @param $data
+     * @return mixed
+     */
+    public function updateStatus($check, $data){
+        return $this->contextPhrase->where($check)->update($data);
+    }
 }
