@@ -121,7 +121,7 @@ class VoteController extends Controller
      */
     public function getSelectedIllustrators(Request $request){
         $data=['context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id];
-        $illustrators=$this->voteService->getVoteIllustratorgetVoteIllustrator($data);
+        $illustrators=$this->voteService->getVoteIllustrator($data);
         if(array_key_exists('voteStatus', $illustrators)){
             $notification = array(
                 'message' => $illustrators['message'],
