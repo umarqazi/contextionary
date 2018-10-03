@@ -94,6 +94,13 @@
                         <img src="{!! asset('storage') !!}/{!! $data['illustrator']->illustrator !!}" id="profile-img-tag" />
                     </div>
                 </div>
+                @if($data['illustrator']->coins)
+                    <div class="col-md-12">
+                        <div class="coinsWrapper">
+                            <span class="white-text">{!! t('Bid') !!}:  <span class="green-color">{!! $data['illustrator']->coins !!} {!! t('Coins') !!}</span></span>
+                        </div>
+                    </div>
+                @endif
                 @if($data['close_bid']!='1')
                     {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
                     @include('user.contributor.bid')

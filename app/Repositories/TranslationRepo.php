@@ -53,7 +53,7 @@ class TranslationRepo
      * total meaning
      */
     public function totalRecords($data){
-        return $this->translation->where($data)->count();
+        return $this->translation->where($data)->where('coins', '!=', NULL)->count();
     }
 
     /**

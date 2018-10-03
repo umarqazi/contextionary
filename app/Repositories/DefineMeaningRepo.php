@@ -174,6 +174,6 @@ class DefineMeaningRepo
      * total meaning
      */
     public function totalRecords($data){
-        return $this->meaning->where($data)->count();
+        return $this->meaning->where($data)->where('coins', '!=', NULL)->count();
     }
 }
