@@ -72,6 +72,6 @@ class VoteMeaningRepo
      * get highest votes
      */
     public function hightVotes($checkArray){
-        return $total=$this->getVotesMeaning($checkArray)->with($checkArray['type'])->where('vote', 1)->groupBy($checkArray['columnKey'])->select('vote_meanings.*', DB::raw('count(*) as total'))->limit(3)->orderBy('total', 'DESC')->get();
+        return $total=$this->getVotesMeaning($checkArray)->with($checkArray['type'])->where('vote', 1)->select('vote_meanings.*', DB::raw('count(*) as total'))->limit(3)->orderBy('total', 'DESC')->get();
     }
 }
