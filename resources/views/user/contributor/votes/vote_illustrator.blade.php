@@ -47,7 +47,7 @@
                     <div class="text-center">
                         <a href="#" class="orangeBtn waves-light mb-3 mr-3">{!! t('Return') !!}</a>
                         <button type="submit" class="orangeBtn waves-light mb-3 mr-3 @if(old('illustrator')==NULL) grey @endif" @if(old('illustrator')==NULL) disabled @endif id="submit-button">{!! t('Submit') !!}</button>
-                        <a href="{!! lang_route('poor-quality', ['context_id'=>$illustrators['context_id'],'phrase_id'=>$illustrators['phrase_id'],'type'=>'ILLUSTRATE']) !!}" class="orangeBtn waves-light mb-3">{!! t('Poor Quality') !!}</a>
+                        <a href="{!! lang_route('poor-quality', ['context_id'=>$illustrators['context_id'],'phrase_id'=>$illustrators['phrase_id'],'type'=>env('ILLUSTRATE')]) !!}" class="orangeBtn waves-light mb-3">{!! t('Poor Quality') !!}</a>
                     </div>
                 </div>
 

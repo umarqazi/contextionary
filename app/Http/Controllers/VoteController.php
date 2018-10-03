@@ -82,14 +82,14 @@ class VoteController extends Controller
      * mark all meaning as poor quality
      */
     public function poorQuality(Request $request){
-        if($request->type=='ILLUSTRATE'){
-            $key=env('ILLUSTRATOR_KEY');
+        if($request->type==env('ILLUSTRATE')){
             $url=lang_url('illustrator-vote-list');
-        }else{
-            $key=env('MEANING_KEY');
+        }elseif($request->type==env('MEANING')){
             $url=lang_url('phrase-list');
+        }else{
+            $url=lang_url('translate-vote-list');
         }
-        $data=['context_id'=>$request->context_id,'phrase_id'=>$request->phrase_id, 'type'=>env($request->type), 'key'=>$key];
+        $data=['context_id'=>$request->context_id,'phrase_id'=>$request->phrase_id, 'type'=>$request->type];
         $vote=$this->voteService->poorQualityVote($data);
         if(array_key_exists('voteStatus', $vote)){
             $notification = array(
