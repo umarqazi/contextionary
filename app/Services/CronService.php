@@ -11,6 +11,7 @@ namespace App\Services;
 
 use App\Http\Controllers\SettingController;
 use App\Repositories\BiddingExpiryRepo;
+use App\Repositories\ContextPhraseRepo;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\IllustratorRepo;
 use App\Repositories\TranslationRepo;
@@ -37,6 +38,7 @@ class CronService
     protected $userPoint;
     protected $translateRepo;
     protected $setting;
+    protected $contextPhrase;
 
     /**
      * CronService constructor.
@@ -52,6 +54,7 @@ class CronService
         $this->userPoint        =   new UserPointRepo();
         $this->translateRepo    =   new TranslationRepo();
         $this->setting          =   new SettingController();
+        $this->contextPhrase    =   new ContextPhraseRepo();
     }
 
     /**
@@ -122,6 +125,11 @@ class CronService
                         $this->voteService->addPhraseForVote($context_id, $phrase_id, $type);
                         $record_update=['status'=>'1'];
                         $updateBidding=$this->biddingRepo->updateBiddingStatus($meaning['id'], $record_update);
+                    endif;
+                    if($type==env('MEANING')):
+                        $check=['context_id'=>$context_id, 'phrase_id'=>$phrase_id];
+                        $updateRecord=['status'=>'1'];
+                        $this->contextPhrase->updateStatus($check, $updateRecord);
                     endif;
                 endif;
             endforeach;
