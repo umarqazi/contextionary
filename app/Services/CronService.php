@@ -125,11 +125,11 @@ class CronService
                         $this->voteService->addPhraseForVote($context_id, $phrase_id, $type);
                         $record_update=['status'=>'1'];
                         $updateBidding=$this->biddingRepo->updateBiddingStatus($meaning['id'], $record_update);
-                    endif;
-                    if($type==env('MEANING')):
-                        $check=['context_id'=>$context_id, 'phrase_id'=>$phrase_id];
-                        $updateRecord=['status'=>'1'];
-                        $this->contextPhrase->updateStatus($check, $updateRecord);
+                        if($type==env('MEANING')):
+                            $check=['context_id'=>$context_id, 'phrase_id'=>$phrase_id];
+                            $updateRecord=['status'=>'1'];
+                            $this->contextPhrase->updateStatus($check, $updateRecord);
+                        endif;
                     endif;
                 endif;
             endforeach;
