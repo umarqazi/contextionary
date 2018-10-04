@@ -18,6 +18,9 @@ Route::group([
     $router->resource('auth/settings', 'SettingsController');
     $router->resource('auth/contact-us-msgs', 'ContactUsController')->only('index', 'show');
     $router->resource('auth/feedback-msgs', 'FeedbackController')->only('index', 'show');
+    $router->get('auth/pictionary-import', 'PictionaryController@import');
+    $router->get('auth/spot-import', 'SpotIntruderController@import');
+    $router->resource('auth/import', 'ImportController')->only( 'store', 'update');
     /* Add in Seeder*/
     $router->resource('auth/glossary', 'GlossaryController');/*Admin Seeder Done*/
     $router->resource('auth/coins-deals', 'CoinsController');/*Admin Seeder Done*/
