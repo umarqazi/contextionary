@@ -62,5 +62,8 @@ class Kernel extends HttpKernel
         'locale' => \App\Http\Middleware\Language::class,
         'define' => \App\Http\Middleware\DefineMeaning::class,
         'illustrator' => \App\Http\Middleware\Illustrator::class,
+        'translate' => \App\Http\Middleware\Translator::class,
+        'checkContributor' => \App\Http\Middleware\Contributors::class,
+        'checkUser' => \App\Http\Middleware\UsersPlan::class,
     ];
 }

@@ -45,12 +45,9 @@ class UserService extends BaseService implements IService
      */
     public function __construct()
     {
-        $user_repo= new UserRepo();
-        $transaction_repo= new TransactionRepo();
-        $coin= new CoinsRepo();
-        $this->user_repo = $user_repo;
-        $this->transactionRepo=$transaction_repo;
-        $this->coin=$coin;
+        $this->user_repo        =   new UserRepo();
+        $this->transactionRepo  =    new TransactionRepo();
+        $this->coin             =   new CoinsRepo();
     }
 
     /**
@@ -117,7 +114,20 @@ class UserService extends BaseService implements IService
         return SendVerificationEmail::dispatch($user);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function get($id){
         return $this->user_repo->findById($id);
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
+    public function updateRecord($id, $data){
+        return $this->user_repo->update($id, $data);
     }
 }

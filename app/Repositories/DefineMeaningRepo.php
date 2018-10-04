@@ -23,17 +23,23 @@ class DefineMeaningRepo
     protected $userRepo;
     protected $contextPhrase;
     protected $selected_bids;
+    protected $setting;
 
+    /**
+     * DefineMeaningRepo constructor.
+     */
     public function __construct()
     {
         $meaning=new DefineMeaning();
         $this->meaning=$meaning;
         $users=new UserRepo();
         $this->userRepo=$users;
-        $setting=new SettingController();
-        $this->selected_bids=$setting->getKeyValue(env('SELECTED_BIDS'))->values;
+        $this->setting=new SettingController();
     }
-    /*
+
+    /**
+     * @param $data
+     * @return mixed
      * save function
      */
     public function create($data){
@@ -43,31 +49,41 @@ class DefineMeaningRepo
     /*
      * check Meaning against context or phrase
      */
-    public function fetchMeaning($context_id, $phrase_id){
-        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id])->first();
+    public function fetchUserRecord($data){
+        return $this->meaning->where($data)->with('users')->first();
     }
-    /*
+
+    /**
+     * @param $data
+     * @param $meaning_id
+     * @return mixed
      * update record
      */
     public function update($data, $meaning_id){
         return $this->meaning->where('id', $meaning_id)->update($data);
     }
-    public function contributions($user_id){
-        return $this->meaning->where('user_id',$user_id);
-    }
-    /*
+
+    /**
+     * @param $user_id
+     * @return mixed
      * fetch total numbers of contributions of user
      */
     public function getUserContributions($user_id){
-        return $this->contributions($user_id)->where('coins', '!=', NULL)->count();
+        $data=['user_id'=>$user_id];
+        return $this->meaning->where($data)->where('coins', '!=', NULL)->count();
     }
-    /*
+
+    /**
+     * @param $data
+     * @return mixed
      * get all contributions of user
      */
-    public function getAllContributedMeaning(){
-       return $this->contributions(Auth::user()->id)->get();
+    public function getAllContributedMeaning($data){
+       return $this->meaning->where($data)->get();
     }
-    /*
+
+    /**
+     * @return mixed
      * get group of context and phrase
      */
     public function fetchContextPhraseMeaning(){
@@ -77,6 +93,11 @@ class DefineMeaningRepo
         })->select('*', DB::raw('count(*) as total'))->groupBy('define_meanings.context_id', 'define_meanings.phrase_id')->get();
     }
 
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return mixed
+     */
     public function getRecords($context_id, $phrase_id){
         return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id]);
     }
@@ -92,11 +113,15 @@ class DefineMeaningRepo
         endif;
         return $checkContextPhrase;
     }
-    /*
+
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return bool
      * update status except first 9
      */
     public function updateMeaningStatus($context_id, $phrase_id){
-
+        $this->selected_bids=$this->setting->getKeyValue(env('SELECTED_BIDS'))->values;
         /**update status for vote of first 9 contributor*/
 
         $records=$this->getRecords($context_id, $phrase_id)->orderBy('coins', 'desc')->limit($this->selected_bids)->update(['status'=>'1']);
@@ -114,34 +139,41 @@ class DefineMeaningRepo
         endforeach;
         return true;
     }
+
     /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return mixed
      * get Meaning for Vote
      */
     public function getAllVoteMeaning($context_id,  $phrase_id){
         return $this->getRecords($context_id, $phrase_id)->where('user_id','!=',Auth::user()->id)->where('status', '1')->get();
     }
+
     /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return mixed
      * update voting status
      */
     public function updateVoteStatus($context_id, $phrase_id){
-        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->update(['status'=>3]);
+        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'status'=>'1'])->update(['status'=>3]);
     }
+
     /**
+     * @return mixed
      * get Illustrate Records
      */
-    public function illustrates($contexts){
-        return $this->meaning->whereIn('context_id', $contexts)->where(['status'=>'3', 'position'=>'1'])->get();
+    public function illustrates(){
+        return $this->meaning->where(['status'=>'3', 'position'=>'1'])->get();
     }
+
     /**
+     * @param $data
+     * @return mixed
      * total meaning
      */
-    public function totalMeaning($context_id, $phrase_id){
-        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id])->count();
-    }
-    /**
-     * get first meaning for illustrator
-     */
-    public function selectedMeaning($context_id, $phrase_id){
-        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'position'=>'1'])->with('users')->first();
+    public function totalRecords($data){
+        return $this->meaning->where($data)->where('coins', '!=', NULL)->count();
     }
 }

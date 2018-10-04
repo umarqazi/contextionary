@@ -1,9 +1,13 @@
 $(document).ready(function () {
     $(".coins").val(1);
     new WOW().init();
-
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = '0' + (today.getMonth()+1); //January is 0!
+    var yyyy = today.getFullYear()-10; // change according to year 0 for current
+    var today1 = mm + '/' + dd + '/' + yyyy;
     if ($('#datepicker-example-1')[0]) {
-        $('#datepicker-example-1').datepicker({});
+        $('#datepicker-example-1').datepicker({endDate: today});
     }
 
     $("body").click(function () {
@@ -118,7 +122,11 @@ $(document).ready(function () {
     //Add minus coins
     $('.add').click(function () {
         var coins=$(".coins").val();
-        $(".coins").val(+coins + 1);
+        if(Number(coins) < Number(user_coins)){
+            $(".coins").val(+coins + 1);
+        }else{
+            $(".coins").val(user_coins);
+        }
     });
 
     $('.sub').click(function () {
@@ -142,40 +150,6 @@ $(document).ready(function () {
         var get_parent = $(".comment-icon").parent().get(0);
         $(get_parent).toggleClass('open');
     });
-    //light box
-    if ($('.fancybox')[0]) {
-        $('.fancybox').fancybox();
-        $(".fancybox-effects-a").fancybox({
-            helpers: {
-                title: {
-                    type: 'outside'
-                },
-                overlay: {
-                    speedOut: 0
-                }
-            }
-        })
-    }
-
-    //Pdf View
-    if ($(".fancybox")[0]) {
-        $(".fancybox")
-            .attr('rel', 'gallery')
-            .fancybox({
-                padding: 0
-            });
-    }
-
-    $(".gallerypdf").fancybox({
-        openEffect: 'elastic',
-        closeEffect: 'elastic',
-        autoSize: true,
-        type: 'iframe',
-        iframe: {
-            preload: false // fixes issue with iframe and IE
-        }
-    });
-
 });
 (function ($) {
     $(window).on("load", function () {

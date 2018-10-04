@@ -2,7 +2,7 @@
 /**
  * Contributor Meanings Menu
  */
-View::composer(['user.contributor.meaning.*', 'user.contributor.illustrator.*'], function($view)
+View::composer(['user.contributor.meaning.*', 'user.contributor.illustrator.*', 'user.contributor.translation.*'], function($view)
 {
     $roles = Auth::user()->roles->pluck('name');
     foreach($roles as $role):
@@ -16,7 +16,18 @@ View::composer(['user.contributor.meaning.*', 'user.contributor.illustrator.*'],
  */
 View::composer('user.contributor.votes.*', function($view)
 {
-    $page=['phrase-list'=>'Vote Meaning'];
+    $page=[];
+    if(Auth::check()):
+        if(Auth::user()->hasRole(Config::get('constant.contributorRole.define'))):
+            $page['phrase-list']='Vote Meaning';
+        endif;
+        if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrate'))):
+            $page['illustrator-vote-list']='Vote Illustrator';
+        endif;
+        if(Auth::user()->hasRole(Config::get('constant.contributorRole.translate'))):
+            $page['translate-vote-list']='Vote Translator';
+        endif;
+    endif;
     $view->with(['pageMenu'=>$page]);
 });
 

@@ -4,7 +4,7 @@
             <ul class="customTabs tabsView">
                 @if($pageMenu)
                     @foreach($pageMenu as $key=>$menu)
-                        <li class="{{ Request::path() == Config::get('app.locale').'/'.$key ? 'active' : '' }} title">{!! $menu !!} <a href="{!! lang_url($key) !!}"><i class="fas fa-pencil-alt"></i></a></li>
+                        <li class="{{ Request::segment(2) == Config::get('app.locale').'/'.$key ? 'active' : '' }} title">{!! $menu !!} <a href="{!! lang_url($key) !!}"><i class="fas fa-pencil-alt"></i></a></li>
                     @endforeach
                 @endif
             </ul>

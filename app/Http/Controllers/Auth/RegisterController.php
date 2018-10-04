@@ -44,10 +44,10 @@ class RegisterController extends Controller
      * @return void
      */
     public $userServices;
-    public function __construct(UserService $user)
+    public function __construct()
     {
         $this->middleware('guest');
-        $this->userServices=$user;
+        $this->userServices=new UserService();
     }
 
     /**

@@ -48,6 +48,12 @@ class User extends Authenticatable
     public function defineMeaning(){
         return $this->hasMany('App/DefineMeaning');
     }
+    /**
+     * relation with define meaning
+     */
+    public function illustrator(){
+        return $this->hasMany('App/Illustrator');
+    }
 
 
     /**
@@ -62,5 +68,12 @@ class User extends Authenticatable
      */
     public function feedback() {
         return $this->hasOne('App\Feedback');
+    }
+
+    /**
+     * relation with define meaning
+     */
+    public function translation(){
+        return $this->hasMany('App/Translation');
     }
 }

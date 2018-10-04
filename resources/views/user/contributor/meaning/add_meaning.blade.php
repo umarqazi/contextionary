@@ -20,14 +20,10 @@
             <div class="col-md-5 selectPhrase text-right">
                 <span class="whiteText"><strong>{!! t('Phrase Type') !!}:</strong> @if($data['phrase_type']) <span class="whiteText">{!! Config::get('constant.PhraseType.'.$data['phrase_type']) !!}</span>
                     @endif</span>
-                @if($data['close_bid']==1)
-                    <span class="whiteText">{!! Config::get('constant.PhraseType.'.$data['phrase_type']) !!}</span>
-                @else
-                    @if(!$data['phrase_type'])
-                        {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'customSelect'])!!}
-                        @if ($errors->has('phrase_type'))
-                            <div class="help-block"><strong>{{ $errors->first('phrase_type') }}</strong></div>
-                        @endif
+                @if(!$data['phrase_type'])
+                    {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'customSelect'])!!}
+                    @if ($errors->has('phrase_type'))
+                        <div class="help-block text-right"><strong>{{ $errors->first('phrase_type') }}</strong></div>
                     @endif
                 @endif
             </div>
@@ -37,7 +33,7 @@
                 <label class="customLabel">{!! t('Phrase Meaning') !!}</label>
                 @if(!$data['id'])
                     {!! Form::textarea('meaning', $data['meaning'], ['maxlength'=>"2500",'id'=>'meaning-area','class'=>'enter-phrase' ,'placeholder'=>'Enter Phrase Meaning']) !!}
-                    <p class="text-right white-text"><span id="count">{!! t('Characters') !!} 0/2500</span></p>
+                    <p class="text-right white-text"><span id="count">{!! t('Characters') !!} {!! strlen(Input::old('meaning')) !!}/2500</span></p>
                     @if ($errors->has('meaning'))
                         <div class="help-block"><strong>{{ $errors->first('meaning') }}</strong></div>
                     @endif
