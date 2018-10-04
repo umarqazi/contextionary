@@ -76,5 +76,54 @@ class SettingsTableSeeder extends Seeder
             'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+        DB::table('settings')->insert([
+            'id'            =>  10,
+            'keys'          =>  'minimum_votes',
+            'values'        =>  '3',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  11,
+            'keys'          =>  'minimum_bids',
+            'values'        =>  '4',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  12,
+            'keys'          =>  'total_context',
+            'values'        =>  '21',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  13,
+            'keys'          =>  'bid_expiry_days',
+            'values'        =>  '20',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  14,
+            'keys'          =>  'vote_expiry_days',
+            'values'        =>  '20',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  15,
+            'keys'          =>  'selected_bids',
+            'values'        =>  '3',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('settings')->insert([
+            'id'            =>  16,
+            'keys'          =>  'Contact Us Text',
+            'values'        =>  'You will be responded in approximately from 24hrs to 48hrs!',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
     }
 }
