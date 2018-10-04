@@ -74,7 +74,7 @@ MultiLang::routeGroup(function($router) {
         });
         Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');
         Route::get('fun-facts/{id}',  'FunFactsController@get');
-        Route::get('contactUs',  'SettingController@contactUs')->name('contactUs');
+        Route::get('contact-us',  'SettingController@contactUs')->name('contactUs');
         Route::post('contactUs',  'SettingController@sendMessage');
         Route::get('hangman',  'HangmanController@getPhrase');
     });
