@@ -14,12 +14,12 @@ return [
             '3'=>'6.99'],
     'Native Language'=>['Hindi'=>'Hindi', 'French'=>'French', 'Spanish'=>'Spanish', 'English'=>'English', 'Chinese'=>'Chinese', 'Other'=>'Other'],
     'ContextImages'=>'context_images',
-    'PhraseType'=>[''=>'Select Phrase Type','Proper noun', 'Common noun', 'Verb', 'Adjective', 'Adverb', 'Other'],
+    'PhraseType'=>[''=>'Select Phrase Type','1'=>'Proper noun', '2'=>'Common noun', '3'=>'Verb', '4'=>'Adjective', '5'=>'Adverb', '6'=>'Other'],
     'Storage'=>'local',
     'status'=>['0'=>'in Progress', '1'=>'Ready for Voting', '2'=>'Cancelled', '3'=>'Voting Done'],
     'phrase_status'=>['open'=>'Open', 'in-progress'=>'In-Progress', 'submitted'=>'Submitted'],
     'vote_status'=>['pending'=>'Pending', 'submitted'=>'Submitted'],
-    'selected_bids'=>'4',
-    'total_bids'=>'5'
+    'purchase_type'=>
+        ['purchase_coins'=>'Purchase Coins', 'buy_package'=>'Buy Package'],
 ];
 ?>
