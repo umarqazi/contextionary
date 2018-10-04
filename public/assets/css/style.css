@@ -344,6 +344,39 @@ color: #f7953a;
 .hide-button{
   display:none;
 }
+.gameOptionDiv .container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.gameOptionDiv .container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+.cont-div{
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+.cont-div a{
+  padding: 30px;
+  background-color: #f7952d;
+  border-radius: 30px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  color: #fff !important;
+  font-weight: bold;
+  float: right;
+}
 .attach-image{
   width: 100%;
   position: absolute;

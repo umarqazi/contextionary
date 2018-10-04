@@ -2806,6 +2806,11 @@ aside .topLinks {
     color: black;
     cursor: pointer;
 }
+.gameOptionActive {
+    background-color: orange !important;
+    color: black !important;
+    cursor: pointer !important;
+}
 .hidden{
     display: none;
 }

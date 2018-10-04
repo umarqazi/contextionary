@@ -4,12 +4,6 @@
  * @package
  * @copyright 2018 Techverx.com
  * @project contextionary
- */
-
-
-/**
- * Created by PhpStorm.
- * User: haris
  * Date: 31/08/18
  * Time: 16:48
  */
@@ -17,6 +11,7 @@
 namespace App\Admin\Controllers;
 
 
+use App\Import;
 use App\Pictionary;
 use Illuminate\Support\Facades\Storage;
 use \Illuminate\Database\Eloquent\Model;
@@ -29,6 +24,19 @@ use Illuminate\Http\Request;
 
 class PictionaryController extends Controller
 {
+    /**
+     * @var ImportController
+     */
+    protected $import_controller;
+
+    /**
+     * PictionaryController constructor.
+     */
+    public function __construct()
+    {
+        $import_controller          = new ImportController();
+        $this->import_controller    = $import_controller;
+    }
 
     /**
      * Index interface.
@@ -60,6 +68,7 @@ class PictionaryController extends Controller
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
             $grid->tools(function (Grid\Tools $tools) {
+                $tools->append("<a href='pictionary-import' class='btn btn-default btn-sm pull-right'>Import</a>");
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
                     $actions->disableDelete();
                 });
@@ -78,6 +87,20 @@ class PictionaryController extends Controller
             $content->header('Pictionary');
             $content->description('Create new question');
             $content->body($this->form());
+        });
+    }
+
+    /**
+     * Create interface.
+     *
+     * @return Content
+     */
+    public function import()
+    {
+        return Admin::content(function (Content $content) {
+            $content->header('Pictionary');
+            $content->description('Import questions');
+            $content->body($this->import_controller->form('pictionary', 'pictionary' ));
         });
     }
 
@@ -144,7 +167,6 @@ class PictionaryController extends Controller
         });
     }
 
-
     /**
      * Display the specified resource.
      *
@@ -167,7 +189,7 @@ class PictionaryController extends Controller
      *
      * @param int $id
      *
-     * @return Form
+     * @return mixed
      */
     public function update($id)
     {

@@ -54,7 +54,7 @@ View::composer('user.user_plan.games.*', function($view)
  */
 View::composer('guest_pages.*', function($view)
 {
-    $page=['fun-facts'=>'Fun Facts', 'contactUs'=>'Contact Us'];
+    $page=['fun-facts'=>'Fun Facts', 'contact-us'=>'Contact Us'];
     if(Auth::check()):
         if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan'))):
             $page['learning-center']='Learning Center';

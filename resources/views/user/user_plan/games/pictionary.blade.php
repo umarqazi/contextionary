@@ -38,25 +38,36 @@
                 <img src="{!! asset('storage/'.$pictionary->pic4) !!}">
             </div>
         </div>
-        <div class="col-sm-6">
-            <button class="gameOption" data-option="option1">
+        <div class="col-sm-6 gameOptionDiv">
+            <label class="container gameOption" data-option="option1">
+                <input type="radio" name="game_ans" value="option1">
+                <span class="checkmark"></span>
                 {{$pictionary->option1}}
-            </button>
+            </label>
         </div>
-        <div class="col-sm-6">
-            <button class="gameOption" data-option="option2">
+        <div class="col-sm-6 gameOptionDiv">
+            <label class="container gameOption" data-option="option2">
+                <input type="radio" name="game_ans" value="option2">
+                <span class="checkmark"></span>
                 {{$pictionary->option2}}
-            </button>
+            </label>
         </div>
-        <div class="col-sm-6">
-            <button class="gameOption"  data-option="option3">
+        <div class="col-sm-6 gameOptionDiv">
+            <label class="container gameOption" data-option="option3">
+                <input type="radio" name="game_ans" value="option3">
+                <span class="checkmark"></span>
                 {{$pictionary->option3}}
-            </button>
+            </label>
         </div>
-        <div class="col-sm-6">
-            <button class="gameOption" data-option="option4">
+        <div class="col-sm-6 gameOptionDiv">
+            <label class="container gameOption" data-option="option4">
+                <input type="radio" name="game_ans" value="option4">
+                <span class="checkmark"></span>
                 {{$pictionary->option4}}
-            </button>
+            </label>
+        </div>
+        <div class="col-sm-12 cont-div">
+            <a><span>Submit</span></a>
         </div>
         <div class="col-sm-12 correct-div hidden">
             <div class="row">
@@ -88,15 +99,19 @@
     </div>
 </div>
 <script>
-    $('button.gameOption').click(function() {
-        var opt= $(this).attr('data-option');
+    $(".gameOptionDiv").click(function () {
+        $(this).siblings().children('.gameOption').removeClass('gameOptionActive');
+        $(this).children('.gameOption').addClass('gameOptionActive');
+    });
+    $('.cont-div a').click(function() {
+        var opt= $("input[name='game_ans']:checked").val();
         $.ajax({
             type: "POST",
             url: '/en/verify-pictionary',
             async: false,
             data: { game_id:{{$game->id}}, ques_id:{{$pictionary->id}}, option: opt, _token: '{{csrf_token()}}'}
         }).done(function( res ) {
-            $('button.gameOption').remove();
+            $('.cont-div').remove();
             if( res.status){
                 $('.correct-div').removeClass('hidden');
                 $('#score-value').html(parseInt($('#score-value').html())+1);

@@ -22,6 +22,20 @@ use Illuminate\Http\Request;
 
 class SpotIntruderController extends Controller
 {
+    /**
+     * @var ImportController
+     */
+    protected $import_controller;
+
+    /**
+     * SpotIntruderController constructor.
+     */
+    public function __construct()
+    {
+        $import_controller          = new ImportController();
+        $this->import_controller    = $import_controller;
+    }
+
 
     /**
      * Index interface.
@@ -53,6 +67,7 @@ class SpotIntruderController extends Controller
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
             $grid->tools(function (Grid\Tools $tools) {
+                $tools->append("<a href='spot-import' class='btn btn-default btn-sm pull-right'>Import</a>");
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
                     $actions->disableDelete();
                 });
@@ -87,6 +102,20 @@ class SpotIntruderController extends Controller
             $content->header('Spot The Intruder');
             $content->description('Edit question');
             $content->body($this->form($id)->edit($id));
+        });
+    }
+
+    /**
+     * Create interface.
+     *
+     * @return Content
+     */
+    public function import()
+    {
+        return Admin::content(function (Content $content) {
+            $content->header('Spot The Intruder');
+            $content->description('Import questions');
+            $content->body($this->import_controller->form('spot_the_intruder', 'spot-the-intruder' ));
         });
     }
 
