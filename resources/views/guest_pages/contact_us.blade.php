@@ -50,7 +50,7 @@
         </div>
         <div class="row mt-5">
             @include('layouts.toaster')
-            <div class="col-lg-8 col-md-6">
+            <div class="col-lg-7 col-md-5">
                 {!! Form::open(['method'=>'POST', 'url'=>lang_route('contactUs')]) !!}
                 <div class="row contactForm">
                     <div class="col-md-6">
@@ -78,7 +78,9 @@
                         @endif
                     </div>
                     <div class="col-md-12">
-                        <p class="whiteText">{!! t('contact us form text') !!}</p>
+                        <p class="whiteText">
+                            {{$settings->where('keys', 'Contact Us Text')->first()->values}}
+                        </p>
                     </div>
 
                     <div class="col-md-12 text-center mb-5 mt-2">
@@ -87,7 +89,7 @@
                 </div>
                 {!! Form::close() !!}
             </div>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-5 col-md-7">
                 <div id="map" style="width:342px; height: 444px;">
 
                 </div>
