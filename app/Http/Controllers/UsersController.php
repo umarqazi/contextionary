@@ -270,4 +270,10 @@ class UsersController extends Controller
         $records=$this->mutualService->paginatedRecord($transationRecord, 'summary');
         return view::make('user.contributor.transactions.summary')->with('transactions', $records);
     }
+    /**
+     *
+     */
+    public function redeemPoints(){
+        return view::make('user.contributor.transactions.redeem-points');
+    }
 }

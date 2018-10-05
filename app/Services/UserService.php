@@ -11,6 +11,7 @@ namespace App\Services;
  */
 
 use App\Repositories\CoinsRepo;
+use App\Repositories\UserPointRepo;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,10 @@ class UserService extends BaseService implements IService
      * @var CoinsRepo
      */
     protected $coin;
+    /**
+     * @var userPoints
+     */
+    protected $userPoints;
 
     /**
      * UserService constructor.
@@ -48,6 +53,7 @@ class UserService extends BaseService implements IService
         $this->user_repo        =   new UserRepo();
         $this->transactionRepo  =    new TransactionRepo();
         $this->coin             =   new CoinsRepo();
+        $this->userPoints       =   new UserPointRepo();
     }
 
     /**
@@ -129,5 +135,12 @@ class UserService extends BaseService implements IService
      */
     public function updateRecord($id, $data){
         return $this->user_repo->update($id, $data);
+    }
+
+    /**
+     *
+     */
+    public function getUserPoints(){
+        return $this->userPoints->points();
     }
 }

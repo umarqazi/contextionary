@@ -11,7 +11,7 @@ use App\Repositories\IllustratorRepo;
 use App\Repositories\TranslationRepo;
 use App\Repositories\UserPointRepo;
 use App\DefineMeaning;
-View::composer(['layouts.*', 'user.contributor.bid'], function($view)
+View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transactions.redeem-points'], function($view)
 {
     $totalContributions='';
     $coins=0;

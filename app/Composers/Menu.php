@@ -36,7 +36,7 @@ View::composer('user.contributor.votes.*', function($view)
  */
 View::composer('user.contributor.transactions.*', function($view)
 {
-    $page=['coins-list'=>'Purchase Coins', 'Illustrator'=>'Redeem Points', 'summary'=>'Summary'];
+    $page=['coins-list'=>'Purchase Coins', 'redeem-points'=>'Redeem Points', 'summary'=>'Summary'];
     $view->with(['pageMenu'=>$page]);
 });
 

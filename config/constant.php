@@ -5,7 +5,7 @@ return [
     'contributorRole'=>
         ['define'=>'define', 'illustrate'=>'illustrate', 'translate'=>'translate'],
     'contributorNames'=>
-        ['define'=>'Writer', 'illustrate'=>'illustrator', 'translate'=>'translator'],
+        ['define'=>'Writer', 'illustrate'=>'illustrator', 'translate'=>'translator', 'meaning'=>'Writer'],
     'userRole'=>
         ['basic plan'=>'basic plan', 'premium plan'=>'premium plan', 'advance plan'=>'advance plan'],
     'plan_prices'=>

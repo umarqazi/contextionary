@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Purchase Coins') !!}
+    {!! t('Summary') !!}
 @stop
 @section('content')
     <div class="container-fluid">

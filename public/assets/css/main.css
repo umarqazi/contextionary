@@ -2348,7 +2348,6 @@ aside .topLinks {
 .redeemBg .redeem-container .wrapper {
     position: absolute;
     top: 50%;
-    width: 100%;
     transform: translateY(-50%);
     background: rgba(0, 0, 0, 0.4);
     padding: 30px 40px;

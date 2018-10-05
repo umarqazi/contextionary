@@ -125,12 +125,6 @@
                   <td><img src="{!! asset('assets/images/statistics-icon3.png') !!}"></td>
                 </tr>
                 <tr>
-                  <td class="name">{!! t('Highest Coins') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
-                </tr>
-                <tr>
                   <td class="name">{!! t('Highest Points') !!}</td>
                   <td>0</td>
                   <td>0</td>
