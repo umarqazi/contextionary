@@ -71,9 +71,15 @@ class User extends Authenticatable
     }
 
     /**
-     * relation with define meaning
+     * relation with translation
      */
     public function translation(){
         return $this->hasMany('App/Translation');
+    }
+    /**
+     * relation with transaction
+     */
+    public function transaction(){
+        return $this->hasMany(Transaction::class);
     }
 }

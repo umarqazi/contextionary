@@ -46,6 +46,6 @@
   <ul class="menuListing">
     <li><a href="{!! lang_url('coins-list') !!}" class="menu5"><span>{!! t('Purchase Coins') !!}</span></a></li>
     <li><a href="#" class="menu6"><span>{!! t('Redeem points') !!}</span></a></li>
-    <li><a href="#" class="menu7"><span>{!! t('Summary') !!}</span></a></li>
+    <li><a href="{!! lang_url('summary') !!}" class="menu7"><span>{!! t('Summary') !!}</span></a></li>
   </ul>
 </div>

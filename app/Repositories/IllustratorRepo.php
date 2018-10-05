@@ -67,8 +67,8 @@ class IllustratorRepo
      * @return mixed
      * update voting status
      */
-    public function updateVoteStatus($context_id, $phrase_id){
-        return $this->illustrator->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'status'=>'1'])->update(['status'=>3]);
+    public function updateVoteStatus($updateVoteStatus){
+        return $this->illustrator->where($updateVoteStatus)->update(['status'=>3]);
     }
 
     /**
@@ -100,10 +100,9 @@ class IllustratorRepo
      * @return bool
      * update status except first 9
      */
-    public function updateMeaningStatus($context_id, $phrase_id){
+    public function updateMeaningStatus($data){
         $this->selected_bids=$this->setting->getKeyValue(env('SELECTED_BIDS'))->values;
         /**update status for vote of first 9 contributor*/
-        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id];
         $records=$this->illustrator->where($data)->limit($this->selected_bids)->orderBy('coins', 'desc')->update(['status'=>'1']);
 
         /** update status for refund of contributor */

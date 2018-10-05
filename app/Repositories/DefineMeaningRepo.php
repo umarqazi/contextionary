@@ -120,18 +120,18 @@ class DefineMeaningRepo
      * @return bool
      * update status except first 9
      */
-    public function updateMeaningStatus($context_id, $phrase_id){
+    public function updateMeaningStatus($data){
         $this->selected_bids=$this->setting->getKeyValue(env('SELECTED_BIDS'))->values;
         /**update status for vote of first 9 contributor*/
 
-        $records=$this->getRecords($context_id, $phrase_id)->orderBy('coins', 'desc')->limit($this->selected_bids)->update(['status'=>'1']);
+        $records=$this->meaning->where($data)->orderBy('coins', 'desc')->limit($this->selected_bids)->update(['status'=>'1']);
 
         /** update status for refund of contributor */
 
-        $rejectedUsers=$this->getRecords($context_id, $phrase_id)->where(['status'=>'0'])->update(['status'=>'2']);
+        $rejectedUsers=$this->meaning->where($data)->where(['status'=>'0'])->update(['status'=>'2']);
 
         /** update coins in user tables */
-        $getUsers=$this->getRecords($context_id, $phrase_id)->where(['status'=>'2'])->get();
+        $getUsers=$this->meaning->where($data)->where(['status'=>'2'])->get();
         foreach($getUsers as $user):
             if($user['coins']!=NULL):
                 $this->userRepo->updateCoins($user['coins'], $user['user_id']);
@@ -156,8 +156,8 @@ class DefineMeaningRepo
      * @return mixed
      * update voting status
      */
-    public function updateVoteStatus($context_id, $phrase_id){
-        return $this->meaning->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'status'=>'1'])->update(['status'=>3]);
+    public function updateVoteStatus($updateVoteStatus){
+        return $this->meaning->where($updateVoteStatus)->update(['status'=>3]);
     }
 
     /**

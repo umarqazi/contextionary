@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Services\ContributorService;
 use App\Services\MutualService;
+use App\Services\TransactionService;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
 use App\User;
@@ -29,24 +30,25 @@ class UsersController extends Controller
 {
 
     use ModelForm;
-    protected  $userServices;
-    protected  $userRoles;
-    protected  $authService;
-    protected  $user;
+    protected $userServices;
+    protected $userRoles;
+    protected $authService;
+    protected $user;
     protected $register;
     protected $contributorService;
-
+    protected $transactions;
     /**
      * UsersController constructor.
      */
     public function __construct( )
     {
-        $this->userServices = new UserService();
-        $this->userRoles = new RoleService();
-        $this->authService = new AuthService();
-        $this->register=new RegisterController();
-        $this->mutualService=new MutualService();
-        $this->contributorService=new ContributorService();
+        $this->userServices         =   new UserService();
+        $this->userRoles            =   new RoleService();
+        $this->authService          =   new AuthService();
+        $this->register             =   new RegisterController();
+        $this->mutualService        =   new MutualService();
+        $this->contributorService   =   new ContributorService();
+        $this->transactions         =   new TransactionService();
     }
 
     /**
@@ -234,6 +236,10 @@ class UsersController extends Controller
      */
     public function switchToContributor(){
         if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan'))):
+            $roles=Auth::user()->user_roles;
+            if($roles==NULL):
+                return Redirect::to(lang_url('contributorPlan'));
+            endif;
             $roles=explode(',',Auth::user()->user_roles);
             $this->userRoles->assignRoleToUser(Auth::user()->id, $roles);
         endif;
@@ -249,5 +255,19 @@ class UsersController extends Controller
             $this->userRoles->assignRoleToUser(Auth::user()->id, $roles);
         endif;
         return Redirect::to(lang_url('dashboard'));
+    }
+
+    public function summary(){
+        $transaction=Auth::user()->transaction;
+        $transationRecord=[];
+        foreach($transaction as $key=>$record){
+            $transationRecord[$key]['created_at']=Carbon::parse($record['created_at'])->format('d/m/Y');
+            $transationRecord[$key]['coins']=$record['coins'];
+            $transationRecord[$key]['amount']=$record['amount'];
+            $transationRecord[$key]['purchase_type']=$record['purchase_type'];
+        }
+        $transationRecord=array_reverse($transationRecord);
+        $records=$this->mutualService->paginatedRecord($transationRecord, 'summary');
+        return view::make('user.contributor.transactions.summary')->with('transactions', $records);
     }
 }

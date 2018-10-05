@@ -290,6 +290,7 @@ class ContributorController
         unset($data['position']);
         $contextList['illustrator']=$this->contributor->getSelectedIllustrators($data);
         $data['user_id']=Auth::user()->id;
+        $data['language']=Auth::user()->profile->language_proficiency;
         $contextList['translation']=$this->contributor->getTranslation($data);
         if($contextList['translation']){
             if($contextList['translation']->user_id==Auth::user()->id && $contextList['translation']->coins!=NULL):

@@ -41,7 +41,7 @@
                         <img src="{!! asset('assets/images/dummy.png') !!}" id="profile-img-tag" />
                     </div>
                     {!! Form::open(['url'=>lang_route('postIllustrate'),'class'=>'illustrator-form','enctype'=>'multipart/form-data','method'=>'post', 'id'=>'form-submission']) !!}
-                    <label class="customLabel">{!! t('Upload Illustrator against this Meaning') !!}</label>
+                    <label class="customLabel">{!! t('Upload Illustration against this Meaning') !!}</label>
                     <label class="orangeBtn waves-light bidBtn">
                         {!! t('Browse') !!}
                         <input type="file" name="illustrate" id="profile-img" style="display: none">
