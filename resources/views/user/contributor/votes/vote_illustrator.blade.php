@@ -25,7 +25,7 @@
             </div>
             {!! Form::open(['url'=>lang_route('saveIllustratorVote'), 'method'=>'post']) !!}
             <div class="row mt-4">
-                <div class="col-md-8">
+                <div class="col-md-8" id="radio-check">
                     @if ($errors->has('illustrator'))
                         <div class="help-block"><strong>{{ t($errors->first('illustrator')) }}</strong></div>
                     @endif
@@ -51,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4" id="illustrator-rules">
                     <p class="white-text"><strong>{!! t('Qualifying Rules') !!}:</strong></p>
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">

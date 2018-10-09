@@ -21,5 +21,6 @@ return [
     'vote_status'=>['pending'=>'Pending', 'submitted'=>'Submitted'],
     'purchase_type'=>
         ['purchase_coins'=>'Purchase Coins', 'buy_package'=>'Buy Package'],
+    'points_range'=>['10-99'=>'0.01', '100-199'=>'0.10', '200-499'=>'0.50', '500-999'=>'3.00', '1000'=>'10.00']
 ];
 ?>

@@ -16,7 +16,7 @@
         .container {
             max-width: 400px;
             margin: 30px auto;
-            background: url(main-bg.png) no-repeat right top;
+            background: url({!! asset('assets/images/main-bg.png') !!}) no-repeat right top;
             padding: 40px 120px;
             font-family: Arial, Helvetica, sans-serif;
             -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.37);
@@ -89,8 +89,6 @@
     </style>
 
 </head>
-
 <body>
-
 <div class="container">
-    <img src="landing-logo.png" class="logo" />
+    <img src="{!! asset('assets/images/landing-logo.png') !!}" class="logo" />

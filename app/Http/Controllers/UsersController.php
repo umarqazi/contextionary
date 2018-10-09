@@ -3,28 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Mail\RedeemPoint;
+use App\Profile;
+use App\Services\AuthService;
 use App\Services\ContributorService;
 use App\Services\MutualService;
+use App\Services\RoleService;
 use App\Services\TransactionService;
+use App\Services\UserService;
+use App\User;
+use Carbon;
+use Config;
 use Encore\Admin\Controllers\ModelForm;
 use Illuminate\Http\Request;
-use App\User;
-use App\Transaction;
-use App\Profile;
-use App\Services\UserService;
-use App\Services\AuthService;
-use App\Services\RoleService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use View;
-use Carbon;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use App\Repositories\UserRepo;
-use Config;
+use Mail;
 
 class UsersController extends Controller
 {
@@ -145,7 +143,7 @@ class UsersController extends Controller
                 'message' => trans('content.profile_updated'),
                 'alert_type' => 'success'
             );
-            return Redirect::to('profile')->with($notification);
+            return Redirect::to(lang_url('profile'))->with($notification);
         }
     }
 
@@ -235,14 +233,12 @@ class UsersController extends Controller
      * @return mixed
      */
     public function switchToContributor(){
-        if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan'))):
-            $roles=Auth::user()->user_roles;
-            if($roles==NULL):
-                return Redirect::to(lang_url('contributorPlan'));
-            endif;
-            $roles=explode(',',Auth::user()->user_roles);
-            $this->userRoles->assignRoleToUser(Auth::user()->id, $roles);
+        $roles=Auth::user()->contributor_roles;
+        if($roles==NULL):
+            return Redirect::to(lang_url('contributorPlan'));
         endif;
+        $roles=explode(',',Auth::user()->contributor_roles);
+        $this->userRoles->assignRoleToUser(Auth::user()->id, $roles);
         return Redirect::to(lang_url('dashboard'));
     }
 
@@ -251,7 +247,23 @@ class UsersController extends Controller
      */
     public function switchToUser(){
         if(Auth::user()->hasRole(Config::get('constant.contributorRole'))):
-            $roles=Config::get('constant.userRole.premium plan');
+            if(Auth::user()->user_roles==NULL):
+                $writer=Auth::user()->defineMeaning->whereIn('status', ['1','3'])->count();
+                $illustrator=Auth::user()->illustrator->whereIn('status', ['1','3'])->count();
+                $translation=Auth::user()->defineMeaning->whereIn('status', ['1','3'])->count();
+                $totalContributions=$writer+$illustrator+$translation;
+                if($totalContributions <= 0):
+                    return Redirect::to(lang_url('userPlan'));
+                elseif($totalContributions >= 1 && $totalContributions <= 9):
+                    $roles=Config::get('constant.userRole.basic plan');
+                elseif($totalContributions >= 10 && $totalContributions <= 19):
+                    $roles=Config::get('constant.userRole.advance plan');
+                elseif($totalContributions >= 20):
+                    $roles=Config::get('constant.userRole.premium plan');
+                endif;
+            else:
+                $roles=Config::get('constant.packages.'.Auth::user()->user_roles);
+            endif;
             $this->userRoles->assignRoleToUser(Auth::user()->id, $roles);
         endif;
         return Redirect::to(lang_url('dashboard'));
@@ -270,10 +282,45 @@ class UsersController extends Controller
         $records=$this->mutualService->paginatedRecord($transationRecord, 'summary');
         return view::make('user.contributor.transactions.summary')->with('transactions', $records);
     }
+
+    /**
+     * @return mixed
+     */
+    public function redeemPoints(Request $request){
+        $modal=$request->modal;
+        return view::make('user.contributor.transactions.redeem-points')->with('modal', $modal);
+    }
+
     /**
      *
      */
-    public function redeemPoints(){
-        return view::make('user.contributor.transactions.redeem-points');
+    public function saveEarning(Request $request){
+        $point=Auth::user()->userPoints->where('type', $request->type)->sum('point');
+        $validators = Validator::make($request->all(), [
+            'type'       => 'required',
+            'points'     => 'numeric|min:10|max:'.$point,
+        ]);
+        if ($validators->fails()) {
+            return redirect::to(lang_url('redeem-points'))
+                ->withErrors($validators)
+                ->withInput()->with('modal', '1');
+        }
+        $earning=0;
+        foreach(Config::get('constant.points_range') as $key2=>$range):
+            $range_value=explode('-', $key2);
+            if(($range_value[0] >= $request->points) && ($request->points <= $range_value[1])):
+                $earning=$range*$request->points;
+                break;
+            endif;
+        endforeach;
+        $data=['points'=>$request->points, 'type'=>$request->type, 'earning'=>$earning, 'status'=>0, 'user_id'=>Auth::user()->id];
+        $services=$this->userServices->saveRedeemPoints($data);
+        $notification = array(
+            'message' => trans('content.redeem_points'),
+            'alert_type' => 'success'
+        );
+        $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$request->points, 'earning'=>$earning];
+        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
+        return Redirect::to(lang_url('redeem-points'))->with($notification);
     }
 }

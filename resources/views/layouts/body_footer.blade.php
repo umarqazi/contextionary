@@ -41,5 +41,11 @@
         {!! HTML::script('assets/js/mdb.min.js') !!}
         {!! HTML::script('assets/js/custom.js') !!}
         {!! HTML::script('assets/js/jquery.mCustomScrollbar.concat.min.js') !!}
+        <script>
+            var modal="<?php echo Input::old('points') ?>";
+            if(modal!=''){
+                $('#pointModal').modal('show');
+            }
+        </script>
         </body>
         </html>

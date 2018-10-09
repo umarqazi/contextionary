@@ -26,7 +26,7 @@
                     @if ($errors->has('meaning'))
                         <div class="help-block"><strong>{{ t($errors->first('meaning')) }}</strong></div>
                     @endif
-                    <ul class="nav nav-pills contextListing">
+                    <ul class="nav nav-pills contextListing" id="radio-check">
                         @if($phraseMeaning)
                             @foreach($phraseMeaning['allMeaning'] as $key=>$meaning)
                                 <li data-tab="tab-{!! $key+1 !!}" class="@if(old('meaning')==$meaning['id']) active @endif">
@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4" id="rules">
                     <p class="white-text"><strong>{!! t('Qualifying Rules') !!}:</strong></p>
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">

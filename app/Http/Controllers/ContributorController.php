@@ -79,7 +79,7 @@ class ContributorController
             $records['language']=$request->language;
             $records['user_id']=$request->user_id;
             $this->contributor->updateContributorRecord($records);
-            $data=['user_roles'=>implode(',',$request->role)];
+            $data=['contributor_roles'=>implode(',',$request->role)];
             $this->userService->updateRecord(Auth::user()->id, $data);
             if($request->profile==1):
                 $notification = array(

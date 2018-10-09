@@ -21,6 +21,7 @@ use App\Http\Controllers\UsersController;
 use App\TransactionDetail;
 use Carbon;
 use App\Repositories\TransactionRepo;
+use Auth;
 
 class TransactionService
 {
@@ -79,6 +80,8 @@ class TransactionService
                     $updateUser=$this->contService->updateCoins($request['user_id'], $request['package_id']);
                     return ['status'=>true];
                 }else{
+                    $data=['user_roles'=>$request['package_id']];
+                    $this->userServices->updateRecord(Auth::user()->id, $data);
                     $notify=$this->userServices->notifyUser($request['user_id'], $updateTransaction);
                     return ['status'=>true, 'user'=>$notify];
                 }
