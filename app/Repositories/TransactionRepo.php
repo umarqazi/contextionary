@@ -13,11 +13,20 @@ use App\TransactionDetail;
 
 class TransactionRepo extends BaseRepo implements IRepo
 {
+
+    protected $transaction;
+
     public function __construct()
     {
+        $this->transaction=new Transaction();
     }
 
     public function create($data){
-        return Transaction::create($data);
+        return $this->transaction->create($data);
+    }
+
+    public function getRecord($data){
+        return $this->transaction->where($data)->get();
+
     }
 }

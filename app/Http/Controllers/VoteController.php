@@ -82,14 +82,15 @@ class VoteController extends Controller
      * mark all meaning as poor quality
      */
     public function poorQuality(Request $request){
+        $data=['context_id'=>$request->context_id,'phrase_id'=>$request->phrase_id, 'type'=>$request->type];
         if($request->type==env('ILLUSTRATE')){
             $url=lang_url('illustrator-vote-list');
         }elseif($request->type==env('MEANING')){
             $url=lang_url('phrase-list');
         }else{
+            $data['language']=Auth::user()->profile->language_proficiency;
             $url=lang_url('translate-vote-list');
         }
-        $data=['context_id'=>$request->context_id,'phrase_id'=>$request->phrase_id, 'type'=>$request->type];
         $vote=$this->voteService->poorQualityVote($data);
         if(array_key_exists('voteStatus', $vote)){
             $notification = array(
@@ -139,7 +140,7 @@ class VoteController extends Controller
      */
     public function saveVoteIllustrator(Request $request){
         $validators = Validator::make($request->all(), [
-            'ambagious' => 'required',
+            'ambiguous' => 'required',
             'negative_contation' => 'required',
             'text_image' => 'required',
             'illustrator'=>'required'
@@ -166,7 +167,7 @@ class VoteController extends Controller
     }
 
     public function getSelectedTranslations($context_id, $phrase_id){
-        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id];
+        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id, 'language'=>Auth::user()->profile->lanugage_proficiency];
         $translations=$this->voteService->getVoteTranslators($data);
         if(array_key_exists('voteStatus', $translations)){
             $notification = array(
@@ -181,7 +182,7 @@ class VoteController extends Controller
 
     public function translationVote(VoteMeaning $voteMeaning){
         $voteMeaning->validate();
-        $data=['context_id'=>$voteMeaning['context_id'],'phrase_id'=>$voteMeaning['phrase_id'],'user_id'=>Auth::user()->id,'translation_id'=>$voteMeaning['meaning'], 'vote'=>1, 'type'=>env('TRANSLATE')];
+        $data=['context_id'=>$voteMeaning['context_id'],'phrase_id'=>$voteMeaning['phrase_id'],'user_id'=>Auth::user()->id,'translation_id'=>$voteMeaning['meaning'], 'vote'=>1, 'type'=>env('TRANSLATE'), 'language'=>Auth::user()->profile->language_proficiency];
         $addVote=$this->voteService->vote($data);
         if($addVote['status']==false){
             $notification = array(

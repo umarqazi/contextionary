@@ -110,6 +110,9 @@ class CronService
                 if($context_id!=NULL && $phrase_id!=NULL):
                     $cron_job='0';
                     $checkCount=['context_id'=>$context_id, 'phrase_id'=>$phrase_id];
+                    if($meaning['bid_type']==env('TRANSLATE')):
+                        $checkCount['language']=$meaning['language'];
+                    endif;
                     $checkTotal=$this->$model->totalRecords($checkCount);
                     if(Carbon::parse($expiry_date) < Carbon::parse($today)):
                         if($checkTotal >= $this->minimum_bids):
@@ -121,8 +124,13 @@ class CronService
                         endif;
                     endif;
                     if($cron_job=='1'):
-                        $updateMeaningStatus=$this->$model->updateMeaningStatus($context_id, $phrase_id);
-                        $this->voteService->addPhraseForVote($context_id, $phrase_id, $type);
+                        $voteArray=['context_id'=>$context_id, 'phrase_id'=>$phrase_id];
+                        if($type==env('TRANSLATE')):
+                            $voteArray['language']=$meaning['language'];
+                        endif;
+                        $updateMeaningStatus=$this->$model->updateMeaningStatus($voteArray);
+                        $voteArray['vote_type']=$type;
+                        $this->voteService->addPhraseForVote($voteArray);
                         $record_update=['status'=>'1'];
                         $updateBidding=$this->biddingRepo->updateBiddingStatus($meaning['id'], $record_update);
                         if($type==env('MEANING')):
@@ -150,6 +158,9 @@ class CronService
             foreach($getVote as $vote):
                 $cron_run='0';
                 $totalVotes=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'type'=>$type];
+                if($type==env('TRANSLATE')):
+                    $totalVotes['language']=$vote['language'];
+                endif;
                 $getTotalVote=$this->voteMeaningRepo->totalVotes($totalVotes);
                 if($vote['expiry_date'] < Carbon::now()):
                     if($getTotalVote >= $this->minimum_votes):
@@ -162,9 +173,16 @@ class CronService
                 endif;
                 if($cron_run=='1'):
                     $checkArray=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'type'=>$type, 'columnKey'=>$columnKey];
+                    if($type==env('TRANSLATE')):
+                        $checkArray['language']=$vote['language'];
+                    endif;
                     $getHighestVotes=$this->voteMeaningRepo->hightVotes($checkArray);
                     if(!empty($getHighestVotes)):
-                        $this->$model->updateVoteStatus($vote['context_id'], $vote['phrase_id']);
+                        $updateVoteStatus=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'status'=>'1'];
+                        if($type==env('TRANSLATE')):
+                            $updateVoteStatus['language']=$vote['language'];
+                        endif;
+                        $this->$model->updateVoteStatus($updateVoteStatus);
                         foreach($getHighestVotes as $key=>$hightesVotes):
                             if($key+1=='1'):
                                 $points=10;

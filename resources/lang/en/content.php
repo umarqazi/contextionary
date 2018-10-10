@@ -13,5 +13,6 @@ return [
     'bid_placed'=>'Bidding has been added Successfully',
     'illustrator_added'=>'Your Illustrator has been added against meaning. You can bid now',
     'profile_updated'=>'Successfully updated your Profile!',
-    'user_deleted'=>'Successfully deleted the user!'
+    'user_deleted'=>'Successfully deleted the user!',
+    'redeem_points'=>'Your request has been sent to the admin'
 ];

@@ -12,6 +12,7 @@ namespace App\Repositories;
 use App\BiddingExpiry;
 use App\Http\Controllers\SettingController;
 use Carbon\Carbon;
+use Auth;
 
 class BiddingExpiryRepo extends BaseRepo implements IRepo
 {
@@ -48,7 +49,11 @@ class BiddingExpiryRepo extends BaseRepo implements IRepo
             $this->total_context=$setting->values;
         }
         $date=Carbon::now()->addMinutes($this->total_context);
-        return $this->bidding->insert(['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'bid_type'=>$data['type'], 'expiry_date'=>$date]);
+        $insert_record=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'bid_type'=>$data['type'], 'expiry_date'=>$date];
+        if($data['type']==env('TRANSLATE')):
+            $insert_record['language']=Auth::user()->profile->language_proficiency;
+        endif;
+        return $this->bidding->insert($insert_record);
     }
 
     /**
@@ -57,6 +62,10 @@ class BiddingExpiryRepo extends BaseRepo implements IRepo
      * @param $type
      */
     public function checkPhraseExpiry($context_id, $phrase_id, $type){
-        return $records=$this->bidding->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id,'status'=> 0, 'bid_type'=>$type])->first();
+        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id,'status'=> 0, 'bid_type'=>$type];
+        if($type==env('TRANSLATE')):
+            $data['language']=Auth::user()->profile->language_proficiency;
+        endif;
+        return $records=$this->bidding->where($data)->first();
     }
 }

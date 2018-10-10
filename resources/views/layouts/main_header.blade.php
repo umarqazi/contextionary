@@ -63,12 +63,10 @@
             <a href="{!! lang_url('switchToUser') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to User Account') !!}</a>
           </div>
         @else
-          @if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan')))
-            <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
-            <div class="dropDown-block">
-              <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contibutor Account') !!}</a>
-            </div>
-          @endif
+          <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
+          <div class="dropDown-block">
+            <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contibutor Account') !!}</a>
+          </div>
         @endif
       </div>
       @if(Auth::check())
@@ -93,9 +91,9 @@
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Earning') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>${!! $earning[env('MEANING')] !!}</td>
+                  <td>${!! $earning[env('ILLUSTRATE')] !!}</td>
+                  <td>${!! $earning[env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Contributions') !!}</td>
@@ -125,12 +123,6 @@
                   <td><img src="{!! asset('assets/images/statistics-icon3.png') !!}"></td>
                 </tr>
                 <tr>
-                  <td class="name">{!! t('Highest Coins') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
-                </tr>
-                <tr>
                   <td class="name">{!! t('Highest Points') !!}</td>
                   <td>0</td>
                   <td>0</td>
@@ -151,7 +143,7 @@
         <span class="active"><img src="{!! asset('assets/images/') !!}/{!!Config::get('multilang.locales.'.App::getLocale().'.flag') !!}"> {!! Config::get('multilang.locales.'.App::getLocale().'.name') !!} <i class="fa fa-chevron-down"></i></span>
         <ul class="list">
           <a href="{!! lang_route('locale', ['locale'=>'en']) !!}"><li><img src="{!! asset('assets/images/english-flag.png') !!}"> English </li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><li><img src="{!! asset('assets/images/french-flag.png') !!}"> Frech</li></a>
+          <a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><li><img src="{!! asset('assets/images/french-flag.png') !!}"> French</li></a>
           <a href="{!! lang_route('locale', ['locale'=>'sp']) !!}"><li><img src="{!! asset('assets/images/spain-flag.png') !!}"> Spanish</li></a>
           <a href="{!! lang_route('locale', ['locale'=>'hi']) !!}"><li><img src="{!! asset('assets/images/hindi-flag.png') !!}"> Hindi</li></a>
         </ul>

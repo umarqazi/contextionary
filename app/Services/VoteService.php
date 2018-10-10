@@ -57,10 +57,9 @@ Class VoteService{
      * @return bool
      * update VoteExpiry
      */
-    public function addPhraseForVote($context, $phrase, $type){
+    public function addPhraseForVote($data){
         $this->voteExpiryDate   =   $this->setting->getKeyValue(env('VOTE_EXPIRY'))->values;
         $date=Carbon::now()->addMinutes($this->voteExpiryDate);
-        $data=['context_id'=>$context, 'phrase_id'=>$phrase, 'vote_type'=>$type];
         $record=$this->voteExpiry->checkRecords($data);
         if(!$record):
             $record['expiry_date']=$date;
@@ -123,6 +122,9 @@ Class VoteService{
         if($record):
             if($record->status=='0'){
                 $userVote=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'], 'user_id'=>Auth::user()->id];
+                if($data['type']==env('TRANSLATE')):
+                    $userVote['language']=Auth::user()->profile->language_proficiency;
+                endif;
                 $checkVote=$this->voteMeaning->checkUserVote($userVote, $data['type']);
                 if(empty($checkVote)):
                     $data['is_poor']='1';
@@ -152,14 +154,6 @@ Class VoteService{
         if($contextPhrase):
             foreach($contextPhrase as $key=>$context):
                 $data=['context_id'=>$context->context_id, 'phrase_id'=>$context->phrase_id,'status'=>'1'];
-                if($type==env('TRANSLATE')):
-                    $data['language']=Auth::user()->profile->language_proficiency;
-                    $checkLanguage=$this->$model->fetchUserRecord($data);
-                    unset($data['language']);
-                    if(empty($checkLanguage)):
-                        continue;
-                    endif;
-                endif;
                 $data['user_id']=Auth::user()->id;
                 $checkUserPhrase=$this->$model->fetchUserRecord($data);
                 unset($data['status']);
@@ -167,6 +161,9 @@ Class VoteService{
                     $records[$key]['status']=Config::get('constant.vote_status.pending');
                     $records[$key]['clickable']='1';
                     $records[$key]['expiry_date']='';
+                    if($type==env('TRANSLATE')):
+                        $data['language']=Auth::user()->profile->language_proficiency;
+                    endif;
                     $userVote=$this->voteMeaning->checkUserVote($data, $type);
                     if(!empty($userVote)):
                         $records[$key]['status']=Config::get('constant.vote_status.submitted');
@@ -175,6 +172,9 @@ Class VoteService{
                     $checkMeaning=['context_id'=>$context->context_id, 'phrase_id'=>$context->phrase_id];
                     $contexts=$this->contextPhrase->getFirstPositionMeaning($checkMeaning);
                     $checkMeaning['type']=$type;
+                    if($type==env('TRANSLATE')):
+                        $checkMeaning['language']=Auth::user()->profile->language_proficiency;
+                    endif;
                     $getTotalVote=$this->voteMeaning->totalVotes($checkMeaning);
                     if($getTotalVote >= $this->minimumVotes):
                         $records[$key]['expiry_date']=$this->mutual->displayHumanTimeLeft($context['expiry_date']);

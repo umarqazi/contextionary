@@ -4,11 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserPoint extends Model
+class RedeemPoint extends Model
 {
     protected $fillable = [
-        'point', 'context_id', 'phrase_id', 'user_id', 'position', 'type'
+        'points', 'earning', 'type','status', 'user_id'
     ];
+
 
     /**
      * relation with users
