@@ -303,7 +303,7 @@ li {
     display: none;
     background: #fff;
     top: 80px;
-    right: -10px;
+    left: 0;
 }
 .dropDown .dropDown-block:before {
     content: "";
@@ -311,7 +311,7 @@ li {
     width: 35px;
     height: 17px;
     top: -17px;
-    right: 10px;
+    left: 15px;
     background: url(../images/dropDown-arrow.png) no-repeat center center;
 }
 .companyName {

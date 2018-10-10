@@ -144,10 +144,11 @@
       <div class="languageBar">
         <span class="active"><img src="{!! asset('assets/images/') !!}/{!!Config::get('multilang.locales.'.App::getLocale().'.flag') !!}"> {!! Config::get('multilang.locales.'.App::getLocale().'.name') !!} <i class="fa fa-chevron-down"></i></span>
         <ul class="list">
-          <a href="{!! lang_route('locale', ['locale'=>'en']) !!}"><li><img src="{!! asset('assets/images/english-flag.png') !!}"> English </li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><li><img src="{!! asset('assets/images/french-flag.png') !!}"> French</li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'sp']) !!}"><li><img src="{!! asset('assets/images/spain-flag.png') !!}"> Spanish</li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'hi']) !!}"><li><img src="{!! asset('assets/images/hindi-flag.png') !!}"> Hindi</li></a>
+          <li><a href="{!! lang_route('locale', ['locale'=>'en']) !!}"><img src="{!! asset('assets/images/english-flag.png') !!}"> English </a></li>
+          <li><a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><img src="{!! asset('assets/images/french-flag.png') !!}"> French </a></li>
+          <li><a href="{!! lang_route('locale', ['locale'=>'sp']) !!}"><img src="{!! asset('assets/images/spain-flag.png') !!}"> Spanish </a></li>
+          <li><a href="{!! lang_route('locale', ['locale'=>'hi']) !!}"><img src="{!! asset('assets/images/hindi-flag.png') !!}"> Hindi </a></li>
+          <li><a href="{!! lang_route('locale', ['locale'=>'ch']) !!}"><img src="{!! asset('assets/images/china-flag.png') !!}"> Chinese </a></li>
         </ul>
       </div>
 
