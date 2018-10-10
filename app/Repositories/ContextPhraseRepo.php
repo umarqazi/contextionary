@@ -74,7 +74,7 @@ class ContextPhraseRepo
      */
     public function getPaginated(){
         $this->total_context = $this->setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
-        return $this->getList()->limit($this->total_context)->orderBy('context_phrase.work_order', 'ASC')->get();
+        return $context=$this->getList()->where('status', '=', NULL)->limit($this->total_context)->orderBy('context_phrase.work_order', 'ASC')->get();
     }
 
     /**
