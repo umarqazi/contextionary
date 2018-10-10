@@ -28,8 +28,8 @@ $('.make-unchecked').click(function () {
             $('#submit-button').removeClass('grey');
             $('#submit-button').removeAttr("disabled");
         }else if(illustrator >= 3){
-            $('#submit-button').addClass('grey');
-            $('#submit-button').attr("disabled", true);
+            $('#submit-button').removeClass('grey');
+            $('#submit-button').removeAttr("disabled", true);
         }
         else{
             $('#submit-button').addClass('grey');

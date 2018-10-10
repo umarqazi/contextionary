@@ -74,6 +74,7 @@ MultiLang::routeGroup(function($router) {
                 Route::get('summary',  'UsersController@summary')->name('summary');
                 Route::get('redeem-points',  'UsersController@redeemPoints')->name('redeemPoints');
                 Route::post('redeem-points',  'UsersController@saveEarning')->name('saveEarning');
+                Route::get('history',  'ContributorController@history')->name('history');
             });
             Route::group([ 'middleware'=>'checkUser'], function(){
                 Route::get('start-pictionary',  'PictionaryController@index')->name('start-pictionary');

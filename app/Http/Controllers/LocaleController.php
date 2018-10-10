@@ -18,8 +18,8 @@ class LocaleController extends Controller
     public function locale($locale){
       MultiLang::setLocale($locale);
       session(['locale' => $locale]);
-      $url=lang_URL('home');
-      return redirect::back();
+      $url=lang_URL('dashboard');
+      return redirect::to($url);
     }
 
     /**
