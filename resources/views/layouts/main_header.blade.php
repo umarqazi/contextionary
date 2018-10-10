@@ -57,6 +57,7 @@
     </div>
     <div class="col-md-5 col-sm-6 text-right">
       <div class="switch-account dropDown">
+	@if(Auth::check())
         @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
           <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
           <div class="dropDown-block">
@@ -70,6 +71,7 @@
             </div>
           @endif
         @endif
+	@endif
       </div>
       @if(Auth::check())
         @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
