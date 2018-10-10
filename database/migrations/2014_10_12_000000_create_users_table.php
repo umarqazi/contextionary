@@ -24,8 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('token')->nullable();
             $table->string('email_token')->nullable();
             $table->string('user_roles')->nullable();
-            $table->integer('coins');
             $table->string('contributor_roles')->nullable();
+            $table->integer('coins');
             $table->rememberToken();
             $table->timestamps();
         });

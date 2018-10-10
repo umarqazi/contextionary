@@ -1,4 +1,5 @@
 $(".voteMeaningBg .contextListing li").click(function () {
+    var check=$('#rules').find('input[type=checkbox]:checked').length;
     $('.make-unchecked').prop( "checked", false );
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
@@ -6,13 +7,34 @@ $(".voteMeaningBg .contextListing li").click(function () {
     $('.tab-pane').removeClass('current');
     $(this).addClass('current');
     $("#"+tab_id).addClass('current');
-    $('#submit-button').removeClass('grey');
-    $('#submit-button').removeAttr("disabled");
+    $('#submit-button').addClass('grey');
+    $('#submit-button').attr("disabled", true);
 });
 $(".illustrator-div .illustrators-active").click(function () {
     $('.make-unchecked').prop( "checked", false );
+    var check=$('#rules').find('input[type=checkbox]:checked').length;
     $(this).siblings().removeClass('active-illustrator');
     $(this).addClass('active-illustrator');
-    $('#submit-button').removeClass('grey');
-    $('#submit-button').removeAttr("disabled");
+    $('#submit-button').addClass('grey');
+    $('#submit-button').attr("disabled", true);
+});
+$('.make-unchecked').click(function () {
+
+    var check=$('#rules').find('input[type=checkbox]:checked').length;
+    var radioCheck=$('#radio-check').find('input[type=radio]:checked').length;
+    var illustrator=$('#illustrator-rules').find('input[type=checkbox]:checked').length;
+    if(radioCheck >= 1){
+        if(check >= 4){
+            $('#submit-button').removeClass('grey');
+            $('#submit-button').removeAttr("disabled");
+        }else if(illustrator >= 3){
+            $('#submit-button').addClass('grey');
+            $('#submit-button').attr("disabled", true);
+        }
+        else{
+            $('#submit-button').addClass('grey');
+            $('#submit-button').attr("disabled", true);
+        }
+    }
+
 });

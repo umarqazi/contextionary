@@ -41,9 +41,7 @@ $(document).ready(function () {
             $(get_parent).find('.active').html('').append(get_value + "<i class='fa fa-chevron-down'></i>");
         });
     });
-    //    $(window).on('resize orientationChange', function (event) {
-    //        $('.slider').slick('reinit');
-    //    });
+
     //Dashboard menu
     $(".menuIcon").click(function () {
 

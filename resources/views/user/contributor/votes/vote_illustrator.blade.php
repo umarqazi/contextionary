@@ -25,7 +25,7 @@
             </div>
             {!! Form::open(['url'=>lang_route('saveIllustratorVote'), 'method'=>'post']) !!}
             <div class="row mt-4">
-                <div class="col-md-8">
+                <div class="col-md-8" id="radio-check">
                     @if ($errors->has('illustrator'))
                         <div class="help-block"><strong>{{ t($errors->first('illustrator')) }}</strong></div>
                     @endif
@@ -51,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4" id="illustrator-rules">
                     <p class="white-text"><strong>{!! t('Qualifying Rules') !!}:</strong></p>
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
@@ -66,7 +66,7 @@
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
                             {!! Form::checkbox('negative_contation', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox2']) !!}
-                            <label class="custom-control-label" for="checkBox2">{!! t('No negative conotation') !!}</label>
+                            <label class="custom-control-label" for="checkBox2">{!! t('No negative connotation') !!}</label>
                         </div>
                         @if ($errors->has('negative_contation'))
                             <div class="help-block"><strong>{{ t($errors->first('negative_contation')) }}</strong></div>
@@ -75,11 +75,11 @@
 
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
-                            {!! Form::checkbox('ambagious', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox3']) !!}
-                            <label class="custom-control-label" for="checkBox3">{!! t('NNo ambagious interpretation') !!}</label>
+                            {!! Form::checkbox('ambiguous', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox3']) !!}
+                            <label class="custom-control-label" for="checkBox3">{!! t('No ambiguous interpretation') !!}</label>
                         </div>
-                        @if ($errors->has('ambagious'))
-                            <div class="help-block"><strong>{{ t($errors->first('ambagious')) }}</strong></div>
+                        @if ($errors->has('ambiguous'))
+                            <div class="help-block"><strong>{{ t($errors->first('ambiguous')) }}</strong></div>
                         @endif
                     </div>
                 </div>

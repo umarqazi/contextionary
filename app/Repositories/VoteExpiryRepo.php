@@ -52,7 +52,11 @@ class VoteExpiryRepo
      * @return mixed
      */
     public function votes($type){
-        return $this->voteExpiry->where(['vote_type'=>$type, 'status'=>'0'])->select('vote_expiries.*');
+        $data=['vote_type'=>$type, 'status'=>'0'];
+        if($type==env('TRANSLATE')):
+            $data['language']=Auth::user()->profile->language_proficiency;
+        endif;
+        return $this->voteExpiry->where($data)->select('vote_expiries.*');
     }
     /**
      * get latest pharse for vote

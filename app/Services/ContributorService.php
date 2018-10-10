@@ -246,17 +246,23 @@ class ContributorService implements IService
     public function bidPhraseList($contextPhrase, $type, $repoName, $url){
         $this->total_context    =   $this->setting->getKeyValue(env('TOTAL_CONTEXT'))->values;
         $this->min_bids         =   $this->setting->getKeyValue(env('MINIMUM_BIDS'))->values;
-        $this->contextArray=$this->mutualService->getFamiliarContext(Auth::user()->id);
+        $this->contextArray     =   $this->mutualService->getFamiliarContext(Auth::user()->id);
         $totalContext=[];
         foreach($contextPhrase as $key=>$record):
             if(in_array($record['context_id'], $this->contextArray)){
                 $checkActiveContext=['context_id'=>$record['context_id'], 'phrase_id'=>$record['phrase_id'], 'vote_type'=>$type];
+                if($type==env('TRANSLATE')):
+                    $checkActiveContext['language']=Auth::user()->profile->language_proficiency;
+                endif;
                 $checkVote=$this->voteExpiryRepo->checkRecords($checkActiveContext);
                 if(!empty($checkVote)):
                     unset($contextPhrase[$key]);
                 else:
                     $totalContext[$key]['expiry_date']='';
                     $checkMeaning=['context_id'=>$record['context_id'], 'phrase_id'=>$record['phrase_id']];
+                    if($type==env('TRANSLATE')):
+                        $checkMeaning['language']=Auth::user()->profile->language_proficiency;
+                    endif;
                     $totalCount=$this->$repoName->totalRecords($checkMeaning);
                     if($totalCount >= $this->min_bids){
                         $checkBidExpiry=$this->bidExpiryRepo->checkPhraseExpiry($record['context_id'],$record['phrase_id'],  $type);

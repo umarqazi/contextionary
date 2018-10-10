@@ -79,7 +79,7 @@ class ContributorController
             $records['language']=$request->language;
             $records['user_id']=$request->user_id;
             $this->contributor->updateContributorRecord($records);
-            $data=['user_roles'=>implode(',',$request->role)];
+            $data=['contributor_roles'=>implode(',',$request->role)];
             $this->userService->updateRecord(Auth::user()->id, $data);
             if($request->profile==1):
                 $notification = array(
@@ -290,6 +290,7 @@ class ContributorController
         unset($data['position']);
         $contextList['illustrator']=$this->contributor->getSelectedIllustrators($data);
         $data['user_id']=Auth::user()->id;
+        $data['language']=Auth::user()->profile->language_proficiency;
         $contextList['translation']=$this->contributor->getTranslation($data);
         if($contextList['translation']){
             if($contextList['translation']->user_id==Auth::user()->id && $contextList['translation']->coins!=NULL):

@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Permission;
 use App\Profile;
 use App\Feedback;
 use App\Transaction;
+use App\DefineMeaning;
 
 class User extends Authenticatable
 {
@@ -46,13 +47,13 @@ class User extends Authenticatable
      * relation with define meaning
      */
     public function defineMeaning(){
-        return $this->hasMany('App/DefineMeaning');
+        return $this->hasMany(DefineMeaning::class);
     }
     /**
      * relation with define meaning
      */
     public function illustrator(){
-        return $this->hasMany('App/Illustrator');
+        return $this->hasMany(Illustrator::class);
     }
 
 
@@ -71,9 +72,29 @@ class User extends Authenticatable
     }
 
     /**
-     * relation with define meaning
+     * relation with translation
      */
     public function translation(){
-        return $this->hasMany('App/Translation');
+        return $this->hasMany(Translation::class);
+    }
+    /**
+     * relation with transaction
+     */
+    public function transaction(){
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function redeemPoints(){
+        return $this->hasMany(RedeemPoint::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userPoints(){
+        return $this->hasMany(UserPoint::class);
     }
 }

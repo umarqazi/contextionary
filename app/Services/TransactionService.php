@@ -11,6 +11,7 @@ namespace App\Services;
  *
  */
 
+use App\Repositories\CoinsRepo;
 use App\User;
 use App\Notifications\InvoicePaid;
 use App\Transaction;
@@ -20,6 +21,7 @@ use App\Http\Controllers\UsersController;
 use App\TransactionDetail;
 use Carbon;
 use App\Repositories\TransactionRepo;
+use Auth;
 
 class TransactionService
 {
@@ -28,6 +30,7 @@ class TransactionService
     protected $transactionDetail;
     protected $transactionRepo;
     protected $contService;
+    protected $coinsRepo;
 
     /**
      * TransactionService constructor.
@@ -37,6 +40,7 @@ class TransactionService
         $this->transactionRepo  =   new TransactionRepo();
         $this->userServices     =   new UserService();
         $this->contService      =   new ContributorService();
+        $this->coinsRepo        =   new CoinsRepo();
     }
 
     /**
@@ -66,17 +70,18 @@ class TransactionService
                 'amount' => $request['price'],
                 'description' => 'Add in wallet',
             ]);
-
             if($charge['status'] == 'succeeded') {
                 /**
                  * Write Here Your Database insert logic.
                  */
-                $data=['transaction_id'=>$charge['id'], 'user_id'=>$request['user_id'], 'package_id'=>$request['package_id'], 'type'=>$request['type']];
+                $data=['transaction_id'=>$charge['id'], 'user_id'=>$request['user_id'], 'package_id'=>$request['package_id'], 'type'=>$request['type'],'amount' => $request['price']];
                 $updateTransaction=$this->success($data);
                 if($request['type']=='purchase_coins'){
                     $updateUser=$this->contService->updateCoins($request['user_id'], $request['package_id']);
                     return ['status'=>true];
                 }else{
+                    $data=['user_roles'=>$request['package_id']];
+                    $this->userServices->updateRecord(Auth::user()->id, $data);
                     $notify=$this->userServices->notifyUser($request['user_id'], $updateTransaction);
                     return ['status'=>true, 'user'=>$notify];
                 }
@@ -114,11 +119,26 @@ class TransactionService
      * @return mixed
      */
     public function success($params){
-        $data=['transaction_id'=>$params['transaction_id'], 'purchase_type'=>$params['type'],'user_id'=>$params['user_id'], ($params['type']=='purchase_coins')?'coin_id':'package_id'=>$params['package_id'], 'expiry_date'=>Carbon::parse()->addMonth()];
+
+        $data=['transaction_id'=>$params['transaction_id'], 'purchase_type'=>$params['type'],'user_id'=>$params['user_id']];
+        if($params['type']=='purchase_coins'){
+            $coins=$this->coinsRepo->findById($params['package_id']);
+            if($coins){
+                $data['coins']=$coins->coins;
+            }
+        }else{
+            $data['package_id']=$params['package_id'];
+            $data['expiry_date']=Carbon::parse()->addMonth();
+        }
+        $data['amount']=$params['amount'];
         $new_transaction=$this->transactionRepo->create($data);
         if($params['type']=='buy_package'):
             $assignRoleToUser=$this->role->assign($params['user_id'], $params['package_id']);
         endif;
         return $new_transaction;
+    }
+
+    public function getTransaction($user_id){
+        return $this->transactionRepo->getRecord($user_id);
     }
 }

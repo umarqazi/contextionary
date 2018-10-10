@@ -44,16 +44,16 @@ MultiLang::routeGroup(function($router) {
                     Route::post('add-translation',  'ContributorController@postTranslate')->name('postTranslate');
                 });
                 Route::post('applyBidding',  'ContributorController@applyBidding')->name('applyBidding');
-                Route::group(array('prefix' => 'phrase-list'), function(){
+                Route::group(array('prefix' => 'phrase-list', 'middleware'=>'define'), function(){
                     Route::get('/',  'VoteController@phraseList')->name('plist');
                     Route::get('vote-meaning/{context_id}/{phrase_id}',  'VoteController@voteMeaning')->name('voteMeaning');
                     Route::get('poor-quality/{context_id}/{phrase_id}/{type}',  'VoteController@poorQuality')->name('poor-quality');
                 });
-                Route::group(array('prefix' => 'illustrator-vote-list'), function(){
+                Route::group(array('prefix' => 'illustrator-vote-list', 'middleware'=>'illustrator'), function(){
                     Route::get('/',  'VoteController@voteIllustrator')->name('vIllustratorList');
                     Route::get('vote-illustrator/{context_id}/{phrase_id}',  'VoteController@getSelectedIllustrators')->name('voteIllustrator');
                 });
-                Route::group(array('prefix' => 'translate-vote-list'), function(){
+                Route::group(array('prefix' => 'translate-vote-list', 'middleware'=>'translate'), function(){
                     Route::get('/',  'VoteController@voteTranslator')->name('vTranslatorList');
                     Route::get('vote-translator/{context_id}/{phrase_id}',  'VoteController@getSelectedTranslations')->name('voteTranslator');
                     Route::post('save-translation-vote',  'VoteController@translationVote')->name('postTranslationVote');
@@ -71,6 +71,9 @@ MultiLang::routeGroup(function($router) {
                     Route::get('add-coins',  'ContributorController@addCoins')->name('addCoins');
                 });
                 Route::get('/switchToUser', 'UsersController@switchToUser')->name('switchToUser');
+                Route::get('summary',  'UsersController@summary')->name('summary');
+                Route::get('redeem-points',  'UsersController@redeemPoints')->name('redeemPoints');
+                Route::post('redeem-points',  'UsersController@saveEarning')->name('saveEarning');
             });
             Route::group([ 'middleware'=>'checkUser'], function(){
                 Route::get('start-pictionary',  'PictionaryController@index')->name('start-pictionary');

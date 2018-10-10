@@ -53,7 +53,7 @@ class TranslationRepo
      * total meaning
      */
     public function totalRecords($data){
-        return $this->translation->where($data)->where('coins', '!=', NULL)->count();
+        return $count=$this->translation->where($data)->where('coins', '!=', NULL)->count();
     }
 
     /**
@@ -74,7 +74,7 @@ class TranslationRepo
         $getContextInfo=$this->translation->where('id', $meaning_id)->first();
         if($getContextInfo):
             $data=['context_id'=>$getContextInfo->context_id, 'phrase_id'=>$getContextInfo->phrase_id];
-            $checkContextPhrase=$this->translation->where($data)->where('coins', '!=', NULL)->count();
+            $checkContextPhrase=$this->translation->where($data)->where('language', Auth::user()->profile->language_proficiency)->where('coins', '!=', NULL)->count();
         endif;
         return $checkContextPhrase;
     }
@@ -84,11 +84,10 @@ class TranslationRepo
      * @return bool
      * update status except first 9
      */
-    public function updateMeaningStatus($context_id, $phrase_id){
+    public function updateMeaningStatus($data){
         $this->selected_bids    =   $this->setting->getKeyValue(env('SELECTED_BIDS'))->values;
 
         /**update status for vote of first 9 contributor*/
-        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id];
         $records=$this->translation->where($data)->orderBy('coins', 'desc')->limit($this->selected_bids)->update(['status'=>'1']);
 
         /** update status for refund of contributor */
@@ -132,7 +131,7 @@ class TranslationRepo
      * @return mixed
      * update voting status
      */
-    public function updateVoteStatus($context_id, $phrase_id){
-        return $this->translation->where(['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'status'=>'1'])->update(['status'=>3]);
+    public function updateVoteStatus($updateVoteStatus){
+        return $this->translation->where($updateVoteStatus)->update(['status'=>3]);
     }
 }
