@@ -319,7 +319,7 @@ class ContributorController
         $data=['id'=>$id,'translation'=>$request->translation, 'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id, 'language'=>Auth::user()->profile->language_proficiency];
         $saveTranslation=$this->contributor->saveTranslation($data);
         $notification = array(
-            'message' => trans('content.illustrator_added'),
+            'message' => trans('content.translator_added'),
             'alert_type' => 'success',
         );
         return Redirect::back()->with($notification);
