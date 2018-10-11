@@ -125,10 +125,16 @@ $(document).ready(function () {
         }else{
             $(".coins").val(user_coins);
         }
+        $('#bid-button').removeClass('grey');
+        $('#bid-button').removeAttr("disabled", true);
     });
 
     $('.sub').click(function () {
         var coins=$(".coins").val();
+        if(parseInt(user_coins) >= parseInt(coins)){
+            $('#bid-button').removeClass('grey');
+            $('#bid-button').removeAttr("disabled", true);
+        }
         if(coins > 0){
             $(".coins").val(+coins - 1);
         }

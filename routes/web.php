@@ -21,9 +21,11 @@ MultiLang::routeGroup(function($router) {
         Route::group(['middleware'=>['auth']], function(){
             Route::get('validateRole', 'UsersController@validateRole')->name('validate');
             Route::get('/dashboard', 'UsersController@index')->name('dashboard');
-            Route::get('profile',  'UsersController@profile')->name('profile');
-            Route::get('edit-profile',  'UsersController@edit')->name('edit profile');
-            Route::get('edit-roles',  'UsersController@editRoles')->name('edit roles');
+            Route::group([ 'prefix'=>'profile'], function(){
+                Route::get('/',  'UsersController@profile')->name('profile');
+                Route::get('edit-profile',  'UsersController@edit')->name('edit-profile');
+            });
+            Route::get('edit-roles',  'UsersController@editRoles')->name('edit-roles');
             Route::get('selectPlan',  'UsersController@selectPlan')->name('selectPlan');
             Route::get('userPlan',  'UsersController@userPlan')->name('userPlan');
             Route::get('payment/{plan}',  'UsersController@showPaymentInfo')->name('payment');
@@ -74,7 +76,8 @@ MultiLang::routeGroup(function($router) {
                 Route::get('summary',  'UsersController@summary')->name('summary');
                 Route::get('redeem-points',  'UsersController@redeemPoints')->name('redeemPoints');
                 Route::post('redeem-points',  'UsersController@saveEarning')->name('saveEarning');
-                Route::get('history',  'ContributorController@history')->name('history');
+                Route::get('user-history',  'ContributorController@history')->name('history');
+                Route::post('search',  'ContributorController@search')->name('search');
             });
             Route::group([ 'middleware'=>'checkUser'], function(){
                 Route::get('start-pictionary',  'PictionaryController@index')->name('start-pictionary');

@@ -108,6 +108,7 @@ class MutualService
      */
     public function displayHumanTimeLeft($expiry_date)
     {
-        return Carbon::parse($expiry_date)->format('d M Y h:i A');
+        $time = strtotime($expiry_date);
+        return $dateInLocal = date("d M Y h:i A", $time);
     }
 }
