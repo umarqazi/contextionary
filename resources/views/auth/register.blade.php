@@ -96,7 +96,7 @@
 
         <div class="col-md-6">
           <div class="customForm-group">
-            @include('countries')
+            {!! Form::select('country', Config::get('countries.countries'), Input::old('country'), ['class'=>'customSelect w-100', 'placeholder'=>t('Country of Residence')]) !!}
             <span class="focus-border"></span>
           </div>
         </div>

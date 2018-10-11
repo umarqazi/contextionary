@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-md-12">
                         <p class="whiteText">
-                            {{$settings->where('keys', 'Contact Us Text')->first()->values}}
+                            {!! t('Contact Us Line') !!}}
                         </p>
                     </div>
 

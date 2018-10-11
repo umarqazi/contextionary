@@ -47,13 +47,13 @@ class User extends Authenticatable
      * relation with define meaning
      */
     public function defineMeaning(){
-        return $this->hasMany(DefineMeaning::class);
+        return $this->hasMany(DefineMeaning::class)->orderBy('created_at', 'desc');
     }
     /**
      * relation with define meaning
      */
     public function illustrator(){
-        return $this->hasMany(Illustrator::class);
+        return $this->hasMany(Illustrator::class)->orderBy('created_at', 'desc');
     }
 
 
@@ -75,7 +75,7 @@ class User extends Authenticatable
      * relation with translation
      */
     public function translation(){
-        return $this->hasMany(Translation::class);
+        return $this->hasMany(Translation::class)->orderBy('created_at', 'desc');
     }
     /**
      * relation with transaction

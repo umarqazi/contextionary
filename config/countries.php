@@ -1,5 +1,6 @@
-{!! Form::select('country', array(
-'Select a Country' => 'Select a Country',
+<?php
+return [
+    'countries'=>['Select a Country' => 'Select a Country',
 'Ascension Island' => 'Ascension Island',
 'Andorra' => 'Andorra',
 'United Arab Emirates' => 'United Arab Emirates',
@@ -247,4 +248,5 @@
 'South Africa' => 'South Africa',
 'Zambia' => 'Zambia',
 'Zimbabwe' => 'Zimbabwe'
-), Input::old('country'), ['class'=>'customSelect w-100', 'placeholder'=>t('Country of Residence')]) !!}
+]];
+?>

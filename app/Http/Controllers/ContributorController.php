@@ -100,7 +100,7 @@ class ContributorController
             return Redirect::back()->with($notification);
         }
     }
-    
+
     /**
      * @return mixed
      * Get context from postgres for definition
@@ -323,5 +323,23 @@ class ContributorController
             'alert_type' => 'success',
         );
         return Redirect::back()->with($notification);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function history(){
+        $history=$this->contributor->userHistory(Auth::user()->id);
+        return view::make('user.contributor.transactions.history')->with('history', $history);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function search(Request $request){
+        $data=['type'=>$request->type, 'position'=>$request->positions, 'status'=>$request->status];
+        $history=$this->contributor->userHistory(Auth::user()->id, $data);
+        return view::make('user.contributor.transactions.history')->with('history', $history);
     }
 }
