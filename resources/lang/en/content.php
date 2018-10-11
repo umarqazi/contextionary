@@ -12,6 +12,7 @@ return [
     'purchase_coins'=>'Purchase coins for bidding on your meaning',
     'bid_placed'=>'Bidding has been added Successfully',
     'illustrator_added'=>'Your Illustrator has been added against meaning. You can bid now',
+    'translator_added'=>'Your Translation has been added. You can bid now',
     'profile_updated'=>'Successfully updated your Profile!',
     'user_deleted'=>'Successfully deleted the user!',
     'redeem_points'=>'Your request has been sent to the admin'
