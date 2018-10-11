@@ -134,6 +134,7 @@ class UsersController extends Controller
             $updateProfile->phone_number=Input::get('phone_number');
             $updateProfile->gender=Input::get('gender');
             $updateProfile->country=Input::get('country');
+            $updateProfile->date_birth=Input::get('date_birth');
             $updateProfile->native_language=Input::get('native_language');
             $updateProfile->pseudonyme=Input::get('pseudonyme');
             $updateProfile->bio=Input::get('bio');

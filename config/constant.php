@@ -16,7 +16,8 @@ return [
     'ContextImages'=>'context_images',
     'PhraseType'=>[''=>'Select Phrase Type','1'=>'Proper noun', '2'=>'Common noun', '3'=>'Verb', '4'=>'Adjective', '5'=>'Adverb', '6'=>'Other'],
     'Storage'=>'local',
-    'status'=>['0'=>'in Progress', '1'=>'Ready for Voting', '2'=>'Cancelled', '3'=>'Voting Done'],
+    'status'=>['0'=>'Pending', '1'=>'Accepted', '2'=>'Rejected', '3'=>'Completed'],
+    'position'=>[ '1'=>'First', '2'=>'Second', '3'=>'Third'],
     'phrase_status'=>['open'=>'Open', 'in-progress'=>'In-Progress', 'submitted'=>'Submitted'],
     'vote_status'=>['pending'=>'Pending', 'submitted'=>'Submitted'],
     'purchase_type'=>

@@ -47,3 +47,14 @@ $(".pricing-palden .pricing-item").mouseleave(function () {
 $("#meaning-area").keyup(function(){
   $("#count").text("Characters: " + ($(this).val().length)+" / 2500");
 });
+
+function restrictBid(bid){
+  var coins=bid.value;
+  if(parseInt(user_coins) < parseInt(coins)){
+    $('#bid-button').addClass('grey');
+    $('#bid-button').attr("disabled", true);
+  }else{
+    $('#bid-button').removeClass('grey');
+    $('#bid-button').removeAttr("disabled", true);
+  }
+}

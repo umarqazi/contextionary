@@ -361,4 +361,101 @@ class ContributorService implements IService
     public function getTranslation($data){
         return $this->translationRepo->fetchUserRecord($data);
     }
+
+    /**
+     * @param $user_id
+     * @return \Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function userHistory($user_id, $data=[]){
+        $user_history=[];
+        $translator=$illustrate=$define='';
+        $user=$this->userRepo->findById($user_id);
+        $define=$user->defineMeaning;
+        $illustrate=$user->illustrator;
+        $translator=$user->translation;
+        if(!empty($data)):
+            if($data['type']):
+                if($data['type']=='writer'):
+                    $illustrate='';
+                    $translator='';
+                elseif($data['type']=='illustrator'):
+                    $define='';
+                    $translator='';
+                elseif($data['type']=='translator'):
+                    $define='';
+                    $illustrate='';
+                endif;
+            endif;
+            if($data['status']!=''):
+                if($define):
+                    $define=$define->where('status',$data['status']);
+                endif;
+                if($illustrate):
+                    $illustrate=$illustrate->where('status',$data['status']);
+                endif;
+                if($translator):
+                    $translator=$translator->where('status',$data['status']);
+                endif;
+            endif;
+            if($data['position']):
+                if($define):
+                    $define=$define->where('position',$data['position']);
+                endif;
+                if($illustrate):
+                    $illustrate=$illustrate->where('position',$data['position']);
+                endif;
+                if($translator):
+                    $translator=$translator->where('position',$data['position']);
+                endif;
+            endif;
+        endif;
+        $i=0;
+        $familiar_contexts     =   $this->mutualService->getFamiliarContext($user_id);
+        if($define):
+            foreach($define as $writer):
+                $context_name=$this->contextRepo->getContextName($writer['context_id']);
+                $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
+                if(in_array($writer['context_id'], $familiar_contexts)):
+                    $route=lang_route('defineMeaning', ['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id']]);
+                else:
+                    $route='';
+                endif;
+                $user_history[$i]=['route'=>$route,'contribution'=>$writer['meaning'], 'type'=>'writer','date'=>$writer['created_at'],
+                    'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
+                    'position'=>$writer['position'], 'coins'=>$writer['coins'], 'status'=>$writer['status']];
+                $i++;
+            endforeach;
+        endif;
+        if($illustrate):
+            foreach($illustrate as $writer):
+                $context_name=$this->contextRepo->getContextName($writer['context_id']);
+                $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
+                if(in_array($writer['context_id'], $familiar_contexts)):
+                    $route=lang_route('addIllustrate', ['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id']]);
+                else:
+                    $route='';
+                endif;
+                $user_history[$i]=['route'=>$route,'contribution'=>$writer['illustrator'], 'type'=>'illustrator','date'=>$writer['created_at'],
+                    'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
+                    'position'=>$writer['position'], 'coins'=>$writer['coins'], 'status'=>$writer['status']];
+                $i++;
+            endforeach;
+        endif;
+        if($translator):
+            foreach($translator as $writer):
+                $context_name=$this->contextRepo->getContextName($writer['context_id']);
+                $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
+                if(in_array($writer['context_id'], $familiar_contexts)):
+                    $route=lang_route('addTranslate', ['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id']]);
+                else:
+                    $route='';
+                endif;
+                $user_history[$i]=['route'=>$route,'contribution'=>$writer['translation'], 'type'=>'translator','language'=>$writer['language'],'date'=>$writer['created_at'],
+                    'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
+                    'position'=>$writer['position'], 'coins'=>$writer['coins'], 'status'=>$writer['status']];
+                $i++;
+            endforeach;
+        endif;
+        return $records=$this->mutualService->paginatedRecord($user_history, 'user-history');
+    }
 }
