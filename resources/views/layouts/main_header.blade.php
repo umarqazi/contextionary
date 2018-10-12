@@ -57,19 +57,19 @@
     </div>
     <div class="col-md-5 col-sm-6 text-right">
       <div class="switch-account dropDown">
-	@if(Auth::check())
-        @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
-          <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
-          <div class="dropDown-block">
-            <a href="{!! lang_url('switchToUser') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to User Account') !!}</a>
-          </div>
-        @else
-          <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
-          <div class="dropDown-block">
-            <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contibutor Account') !!}</a>
-          </div>
+        @if(Auth::check())
+          @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
+            <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
+            <div class="dropDown-block">
+              <a href="{!! lang_url('switchToUser') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to User Account') !!}</a>
+            </div>
+          @else
+            <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
+            <div class="dropDown-block">
+              <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contibutor Account') !!}</a>
+            </div>
+          @endif
         @endif
-	@endif
       </div>
       @if(Auth::check())
         @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
@@ -87,33 +87,33 @@
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Points') !!}</td>
-                  <td>{!! $points[env('MEANING')]!!}</td>
-                  <td>{!! $points[env('ILLUSTRATE')] !!}</td>
-                  <td>{!! $points[env('TRANSLATE')] !!}</td>
+                  <td>{!! $contributions['points'][env('MEANING')]!!}</td>
+                  <td>{!! $contributions['points'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['points'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Earning') !!}</td>
-                  <td>${!! $earning[env('MEANING')] !!}</td>
-                  <td>${!! $earning[env('ILLUSTRATE')] !!}</td>
-                  <td>${!! $earning[env('TRANSLATE')] !!}</td>
+                  <td>${!! $contributions['earning'][env('MEANING')] !!}</td>
+                  <td>${!! $contributions['earning'][env('ILLUSTRATE')] !!}</td>
+                  <td>${!! $contributions['earning'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Contributions') !!}</td>
-                  <td>{!! $contributions[env('MEANING')] !!}</td>
-                  <td>{!! $contributions[env('ILLUSTRATE')] !!}</td>
-                  <td>{!! $contributions[env('TRANSLATE')] !!}</td>
+                  <td>{!! $contributions['user_contributions'][env('MEANING')] !!}</td>
+                  <td>{!! $contributions['user_contributions'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['user_contributions'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Pole Positions') !!}</td>
-                  <td>{!! $pole[env('MEANING')] !!}</td>
-                  <td>{!! $pole[env('ILLUSTRATE')] !!}</td>
-                  <td>{!! $pole[env('TRANSLATE')] !!}</td>
+                  <td>{!! $contributions['user_pole_positions'][env('MEANING')] !!}</td>
+                  <td>{!! $contributions['user_pole_positions'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['user_pole_positions'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Runner-ups') !!}</td>
-                  <td>{!! $runnerUp[env('MEANING')] !!}</td>
-                  <td>{!! $runnerUp[env('ILLUSTRATE')] !!}</td>
-                  <td>{!! $runnerUp[env('TRANSLATE')] !!}</td>
+                  <td>{!! $contributions['user_runner_up'][env('MEANING')] !!}</td>
+                  <td>{!! $contributions['user_runner_up'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['user_runner_up'][env('TRANSLATE')] !!}</td>
                 </tr>
               </table>
               <h2 class="mt-3">{!! t('Other Contributors') !!}</h2>
@@ -126,15 +126,15 @@
                 </tr>
                 <tr>
                   <td class="name">{!! t('Highest Points') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $contributions['otherContributors'][env('MEANING')] !!}</td>
+                  <td>{!! $contributions['otherContributors'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['otherContributors'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('Highest Earning') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('MEANING')] !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('ILLUSTRATE')] !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('TRANSLATE')] !!}</td>
                 </tr>
               </table>
             </div>
