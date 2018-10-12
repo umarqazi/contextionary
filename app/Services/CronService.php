@@ -12,8 +12,10 @@ namespace App\Services;
 use App\Http\Controllers\SettingController;
 use App\Repositories\BiddingExpiryRepo;
 use App\Repositories\ContextPhraseRepo;
+use App\Repositories\ContextRepo;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\IllustratorRepo;
+use App\Repositories\PhraseRepo;
 use App\Repositories\TranslationRepo;
 use App\Repositories\UserPointRepo;
 use App\Repositories\VoteExpiryRepo;
@@ -39,6 +41,8 @@ class CronService
     protected $translateRepo;
     protected $setting;
     protected $contextPhrase;
+    protected $context;
+    protected $phrase;
 
     /**
      * CronService constructor.
@@ -55,6 +59,8 @@ class CronService
         $this->translateRepo    =   new TranslationRepo();
         $this->setting          =   new SettingController();
         $this->contextPhrase    =   new ContextPhraseRepo();
+        $this->context          =   new ContextRepo();
+        $this->phrase           =   new PhraseRepo();
     }
 
     /**
@@ -200,6 +206,15 @@ class CronService
                                 $position='3rd';
                             endif;
                             $hightesVotes['position']=$position;
+                            $getContextName=$this->context->getContextName($vote['context_id']);
+                            $getPhraseName=$this->phrase->getPhraseName($vote['phrase_id']);
+                            if($getContextName):
+                                $hightesVotes['context_name']=$getContextName->context_name;
+                            endif;
+                            if($getPhraseName):
+                                $hightesVotes['phrase_name']=$getPhraseName->phrase_text;
+                            endif;
+                            $hightesVotes['type']=$type;
                             Mail::to($hightesVotes[$type]['users']['email'])->send(new Meanings($hightesVotes));
                             $this->$model->update(['position'=>$key+1], $hightesVotes[$type]['id']);
                         endforeach;

@@ -1,5 +1,5 @@
 @include('email.header')
-<h2>Hi  {{$data['first_name']}} {{$data['last_name']}} </h2>
+<h2 class="footer-text">Hi  {{$data['first_name']}} {{$data['last_name']}} </h2>
 <br/>
 <p>Your registered email-id is {{$data['email']}}, Please click on the below link to verify your Email account</p>
 <br/>
