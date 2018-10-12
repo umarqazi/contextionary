@@ -99,7 +99,12 @@
             text-transform: uppercase;
             margin-top: 17px;
         }
-
+        .footer-text{
+            text-align:left;
+        }
+        .text-transform{
+            text-transform: capitalize;
+        }
     </style>
 
 </head>
