@@ -39,4 +39,11 @@ class RedeemPointRepo
     public function points(){
         return $this->redeemPoints->where('user_id', Auth::user()->id)->selectRaw('sum(points) as sum, type')->groupBy('type')->get();
     }
+    /**
+     * @return mixed
+     * get redeem points of other users
+     */
+    public function otherContributors(){
+        return $this->redeemPoints->where('user_id','!=', Auth::user()->id)->selectRaw('sum(earning) as sum, type')->groupBy('type')->get();
+    }
 }
