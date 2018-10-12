@@ -36,16 +36,22 @@ class UsersController extends Controller
     protected $register;
     protected $contributorService;
 
-    public function __construct(RegisterController $registerController, UserService $userServices, RoleService $role, AuthService $authService)
+    /**
+     * UsersController constructor.
+     */
+    public function __construct( )
     {
-        $this->userServices = $userServices;
-        $this->userRoles = $role;
-        $this->authService = $authService;
-        $this->register=$registerController;
+        $this->userServices = new UserService();
+        $this->userRoles = new RoleService();
+        $this->authService = new AuthService();
+        $this->register=new RegisterController();
         $this->mutualService=new MutualService();
-        $contributor=new ContributorService();
-        $this->contributorService=$contributor;
+        $this->contributorService=new ContributorService();
     }
+
+    /**
+     * @return mixed
+     */
     public function validateRole(){
         if(Auth::check()){
             $userRole=$this->userRoles->checkRole(Auth::user()->id);
@@ -57,9 +63,17 @@ class UsersController extends Controller
         }
 
     }
+
+    /**
+     * @return mixed
+     */
     public function index(){
         return view::make('home');
     }
+
+    /**
+     * @return View
+     */
     public function userCount(){
         $countUsers = $this->userServices->countUsers();
         return view('admin::dashboard.blocks',
@@ -71,10 +85,19 @@ class UsersController extends Controller
             ]
         );
     }
+
+    /**
+     * @return mixed
+     */
     public function edit(){
         $user = Auth::user();
         return view::make('user.edit')->with('user', $user);
     }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function profileUpdate(Request $request)
     {
         // validate
@@ -117,13 +140,16 @@ class UsersController extends Controller
             $updateProfile->save();
             // redirect
             $notification = array(
-                'message' => 'Successfully updated your Profile!',
+                'message' => trans('content.profile_updated'),
                 'alert_type' => 'success'
             );
             return Redirect::to('profile')->with($notification);
         }
     }
 
+    /**
+     * @return View
+     */
     public function profile()
     {
         $user = Auth::user();
@@ -131,6 +157,10 @@ class UsersController extends Controller
         return view('user.profile', compact('user'));
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($id)
     {
         // delete
@@ -138,25 +168,36 @@ class UsersController extends Controller
         $user->delete();
 
         // redirect
-        Session::flash('message', 'Successfully deleted the user!');
+        Session::flash('message', trans('content.user_deleted'));
         return back();
     }
 
+    /**
+     * @return mixed
+     */
     public function selectPlan(){
         $this->user = Auth::user();
         return view::make('user.user_plan.select_plan')->with(['user'=>$this->user]);
     }
 
+    /**
+     * @return mixed
+     */
     public function userPlan(){
         $this->user = Auth::user();
         return view::make('user.user_plan.user_plan')->with(['id'=> $this->user->id]);
     }
 
+    /**
+     * @param $plan
+     * @return mixed
+     */
     public function showPaymentInfo($plan){
         $this->user = Auth::user();
         return view::make('user.user_plan.pay_with_stripe')->with(['id'=>$this->user->id, 'plan'=>$plan]);
     }
     /**
+     * @return mixed
      * get roles of user
      */
     public function editRoles(){
@@ -186,5 +227,27 @@ class UsersController extends Controller
         endforeach;
         $language=$user->profile->language_proficiency;
         return view::make('user.roles')->with(['roles'=>$userRoles,'language'=>$language, 'contextList'=>$contributor, 'id'=>$user->id, 'familiar_context'=>$familiarContext]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function switchToContributor(){
+        if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan'))):
+            $roles=explode(',',Auth::user()->user_roles);
+            $this->userRoles->assignRoleToUser(Auth::user()->id, $roles);
+        endif;
+        return Redirect::to(lang_url('dashboard'));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function switchToUser(){
+        if(Auth::user()->hasRole(Config::get('constant.contributorRole'))):
+            $roles=Config::get('constant.userRole.premium plan');
+            $this->userRoles->assignRoleToUser(Auth::user()->id, $roles);
+        endif;
+        return Redirect::to(lang_url('dashboard'));
     }
 }

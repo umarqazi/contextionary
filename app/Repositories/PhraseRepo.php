@@ -1,10 +1,13 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: haris
+ * User: adi
+ * Date: 10/1/18
+ * Time: 2:36 PM
  */
 
 namespace App\Repositories;
+
 
 use App\BiddingExpiry;
 
@@ -17,12 +20,19 @@ class PhraseRepo extends BaseRepo implements IRepo
     private $bidding_expiry;
 
     /**
+     * @var Phrase
+     */
+    protected $phrase;
+
+    /**
      * PhraseRepo constructor.
      */
     public function __construct()
     {
         $bidding_expiry = new BiddingExpiry();
         $this->bidding_expiry = $bidding_expiry;
+        $phrase = new Phrase();
+        $this->phrase= $phrase;
     }
 
     /**
@@ -46,4 +56,11 @@ class PhraseRepo extends BaseRepo implements IRepo
         return $this->bidding_expiry->countPharseInTranslationPhase();
     }
 
+    /**
+     * @param $phrase_id
+     * @return mixed
+     */
+    public function getPhraseName($phrase_id){
+        return $this->phrase->where('phrase_id', $phrase_id)->first();
+    }
 }

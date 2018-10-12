@@ -15,7 +15,13 @@ class Phrase extends Model
      * @var string
      */
     protected $connection = 'pgsql';
+    protected $primaryKey = 'phrase_id';
 
+
+    public function contexts(){
+        return $this->belongsToMany('App\Context', 'context_phrase', 'phrase_id', 'context_id')->withPivot('work_order');
+    }
+  
     /**
      * @param $id
      * @return mixed
@@ -31,5 +37,4 @@ class Phrase extends Model
     public function getLengthed($length){
         return self::where('phrase_length', $length)->inRandomOrder()->get()->first();
     }
-
 }

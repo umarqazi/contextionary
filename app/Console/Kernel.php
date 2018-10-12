@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\CheckMeaning',
-        'App\Console\Commands\CheckMeaningVotes',
+        'App\Console\Commands\CheckIllustratorBids',
+        'App\Console\Commands\CheckTranslations',
     ];
 
     /**
@@ -28,7 +29,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
         $schedule->command('meaning:vote')->everyMinute();
-        $schedule->command('define:illustrator')->everyMinute();
+        $schedule->command('illustrator:bids')->everyMinute();
+        $schedule->command('translations:bids')->everyMinute();
     }
 
     /**

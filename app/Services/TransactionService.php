@@ -29,16 +29,20 @@ class TransactionService
     protected $transactionRepo;
     protected $contService;
 
+    /**
+     * TransactionService constructor.
+     */
     public function __construct(){
-        $roles= new RoleService();
-        $transaction_repo= new TransactionRepo();
-        $services= new UserService();
-        $contributorService= new ContributorService();
-        $this->userServices= $services;
-        $this->transactionRepo= $transaction_repo;
-        $this->role=$roles;
-        $this->contService=$contributorService;
+        $this->role             =   new RoleService();
+        $this->transactionRepo  =   new TransactionRepo();
+        $this->userServices     =   new UserService();
+        $this->contService      =   new ContributorService();
     }
+
+    /**
+     * @param $request
+     * @return array|\Illuminate\Http\RedirectResponse
+     */
     public function paymentProcess($request){
         $input = array_except($request,array('_token'));
         $stripe = Stripe::make(env('STRIPE_SECRET'));
@@ -79,7 +83,7 @@ class TransactionService
 
             } else {
                 $notification = array(
-                    'message' => 'Money not add in wallet!!',
+                    'message' => trans('content.no_money'),
                     'alert_type' => 'danger'
                 );
                 return ['status'=>false, 'notification'=>$notification];
@@ -104,6 +108,11 @@ class TransactionService
             return ['status'=>false, 'notification'=>$notification];
         }
     }
+
+    /**
+     * @param $params
+     * @return mixed
+     */
     public function success($params){
         $data=['transaction_id'=>$params['transaction_id'], 'purchase_type'=>$params['type'],'user_id'=>$params['user_id'], ($params['type']=='purchase_coins')?'coin_id':'package_id'=>$params['package_id'], 'expiry_date'=>Carbon::parse()->addMonth()];
         $new_transaction=$this->transactionRepo->create($data);

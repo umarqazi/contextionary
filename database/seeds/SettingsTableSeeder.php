@@ -78,7 +78,7 @@ class SettingsTableSeeder extends Seeder
         ]);
         DB::table('settings')->insert([
             'id'            =>  10,
-            'keys'          =>  'minimum_votes',
+            'keys'          =>  'bid_expiry_days',
             'values'        =>  '3',
             'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
@@ -94,13 +94,6 @@ class SettingsTableSeeder extends Seeder
             'id'            =>  12,
             'keys'          =>  'total_context',
             'values'        =>  '21',
-            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
-        DB::table('settings')->insert([
-            'id'            =>  13,
-            'keys'          =>  'bid_expiry_days',
-            'values'        =>  '20',
             'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
         ]);
