@@ -17,9 +17,9 @@ class CreateUserProfilesTable extends Migration
             $table->increments('id');
             $table->string('pseudonyme')->nullable();
             $table->string('date_birth')->nullable();
-            $table->string('gender');
-            $table->string('phone_number');
-            $table->string('country');
+            $table->string('gender')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('country')->nullable();
             $table->string('native_language')->nullable();
             $table->text('bio')->nullable();
             $table->string('language_proficiency')->nullable();

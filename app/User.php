@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Permission;
 use App\Profile;
 use App\Feedback;
 use App\Transaction;
+use App\DefineMeaning;
 
 class User extends Authenticatable
 {
@@ -22,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'first_name', 'last_name','status', 'token'
+        'name', 'email', 'password', 'first_name', 'last_name','status', 'token', 'email_token'
     ];
 
     /**
@@ -46,7 +47,13 @@ class User extends Authenticatable
      * relation with define meaning
      */
     public function defineMeaning(){
-        return $this->hasMany('App/DefineMeaning');
+        return $this->hasMany(DefineMeaning::class)->orderBy('created_at', 'desc');
+    }
+    /**
+     * relation with define meaning
+     */
+    public function illustrator(){
+        return $this->hasMany(Illustrator::class)->orderBy('created_at', 'desc');
     }
 
 
@@ -62,5 +69,32 @@ class User extends Authenticatable
      */
     public function feedback() {
         return $this->hasOne('App\Feedback');
+    }
+
+    /**
+     * relation with translation
+     */
+    public function translation(){
+        return $this->hasMany(Translation::class)->orderBy('created_at', 'desc');
+    }
+    /**
+     * relation with transaction
+     */
+    public function transaction(){
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function redeemPoints(){
+        return $this->hasMany(RedeemPoint::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userPoints(){
+        return $this->hasMany(UserPoint::class);
     }
 }

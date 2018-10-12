@@ -3,17 +3,19 @@
         <div class="coinsWrapper">
             <span class="white-text">{!! t('Available Coins') !!}:  <span class="green-color">{!! $coins  !!}</span></span>
             <button type="button" class="sub"><i class="fa fa-minus"></i></button>
-            {!! Form::number('bid', '1',['class'=>'coins', 'min'=>'1']) !!}
+            {!! Form::number('bid', null,['class'=>'coins', 'max'=>($coins!=0)? $coins:'', 'onkeyup'=>"restrictBid(this)"]) !!}
             <button type="button" class="add"><i class="fa fa-plus"></i></button>
             @if ($errors->has('coins'))
                 <div class="help-block"><strong>{{ $errors->first('coins') }}</strong></div>
             @endif
         </div>
-        <button type="submit" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Bid') !!}</button>
+        <button type="submit" class="orangeBtn ml-3 waves-light bidBtn @if($coins==0) grey @endif" @if($coins==0) disabled @endif id="bid-button">{!! t('Bid') !!}</button>
         @if(\Route::current()->getName() == App::getLocale().'.defineMeaning')
             <a href="{!! lang_route('editMeaning', ['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'id'=>$data['id']]) !!}" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</a>
+            <a href="{!! lang_url('define')!!}" class="orangeBtn ml-3 waves-light bidBtn waves-effect waves-light">{!! t('Return') !!}</a>
         @else
             <button type="button" onclick="showButtons()" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</button>
+            <a href="{!! lang_url('illustrate')!!}" class="orangeBtn ml-3 waves-light bidBtn waves-effect waves-light">{!! t('Return') !!}</a>
         @endif
     </div>
 </div>

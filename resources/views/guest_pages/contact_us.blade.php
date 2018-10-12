@@ -78,7 +78,9 @@
                         @endif
                     </div>
                     <div class="col-md-12">
-                        <p class="whiteText">{!! t('contact us form text') !!}</p>
+                        <p class="whiteText">
+                            {!! t('Contact Us Line') !!}
+                        </p>
                     </div>
 
                     <div class="col-md-12 text-center mb-5 mt-2">

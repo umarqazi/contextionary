@@ -1,5 +1,6 @@
-{!! Form::select('country', array(
-'Select a Country' => 'Select a Country',
+<?php
+return [
+    'countries'=>['Select a Country' => 'Select a Country',
 'Ascension Island' => 'Ascension Island',
 'Andorra' => 'Andorra',
 'United Arab Emirates' => 'United Arab Emirates',
@@ -16,7 +17,6 @@
 'Austria' => 'Austria',
 'Australia' => 'Australia',
 'Aruba' => 'Aruba',
-'Ãƒâ€¦land' => 'Ãƒâ€¦land',
 'Azerbaijan' => 'Azerbaijan',
 'Bosnia And Herzegovina' => 'Bosnia And Herzegovina',
 'Barbados' => 'Barbados',
@@ -43,11 +43,10 @@
 'Central African Republic' => 'Central African Republic',
 'Congo (Republic)' => 'Congo (Republic)',
 'Switzerland' => 'Switzerland',
-'Cote DÃ¢â‚¬â„¢Ivoire' => 'Cote DÃ¢â‚¬â„¢Ivoire',
 'Cook Islands' => 'Cook Islands',
 'Chile' => 'Chile',
 'Cameroon' => 'Cameroon',
-'PeopleÃ¢â‚¬â„¢s Republic of China' => 'PeopleÃ¢â‚¬â„¢s Republic of China',
+'China' => 'China',
 'Colombia' => 'Colombia',
 'Costa Rica' => 'Costa Rica',
 'Cuba' => 'Cuba',
@@ -123,7 +122,7 @@
 'Kuwait' => 'Kuwait',
 'Cayman Islands' => 'Cayman Islands',
 'Kazakhstan' => 'Kazakhstan',
-'Lao PeopleÃ¢â‚¬â„¢s Democratic Republic' => 'Lao PeopleÃ¢â‚¬â„¢s Democratic Republic',
+'Lao People' => 'Lao People',
 'Lebanon' => 'Lebanon',
 'Saint Lucia' => 'Saint Lucia',
 'Liechtenstein' => 'Liechtenstein',
@@ -246,5 +245,7 @@
 'Mayotte' => 'Mayotte',
 'South Africa' => 'South Africa',
 'Zambia' => 'Zambia',
-'Zimbabwe' => 'Zimbabwe'
-), Input::old('country'), ['class'=>'customSelect w-100', 'placeholder'=>t('Country of Residence')]) !!}
+'Zimbabwe' => 'Zimbabwe',
+        'Other' => 'Other'
+]];
+?>

@@ -22,6 +22,20 @@ use Illuminate\Http\Request;
 
 class SpotIntruderController extends Controller
 {
+    /**
+     * @var ImportController
+     */
+    protected $import_controller;
+
+    /**
+     * SpotIntruderController constructor.
+     */
+    public function __construct()
+    {
+        $import_controller          = new ImportController();
+        $this->import_controller    = $import_controller;
+    }
+
 
     /**
      * Index interface.
@@ -53,6 +67,7 @@ class SpotIntruderController extends Controller
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
             $grid->tools(function (Grid\Tools $tools) {
+                $tools->append("<a href='spot-import' class='btn btn-default btn-sm pull-right'>Import</a>");
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
                     $actions->disableDelete();
                 });
@@ -91,6 +106,20 @@ class SpotIntruderController extends Controller
     }
 
     /**
+     * Create interface.
+     *
+     * @return Content
+     */
+    public function import()
+    {
+        return Admin::content(function (Content $content) {
+            $content->header('Spot The Intruder');
+            $content->description('Import questions');
+            $content->body($this->import_controller->form('spot_the_intruder', 'spot-the-intruder' ));
+        });
+    }
+
+    /**
      * Make a form builder.
      *
      * @param $id
@@ -101,16 +130,16 @@ class SpotIntruderController extends Controller
         return Admin::form(SpotIntruder::class, function (Form $form) use ($id) {
             $form->text('question', trans('Question'))->rules('required')->placeholder('Enter Question...');
             $form->display('id', 'ID');
-            $form->text('option1', trans('Option 1'));
-            $form->text('option2', trans('Option 2'));
-            $form->text('option3', trans('Option 3'));
-            $form->text('option4', trans('Option 4'));
+            $form->text('option1', trans('Option 1'))->rules('required');
+            $form->text('option2', trans('Option 2'))->rules('required');
+            $form->text('option3', trans('Option 3'))->rules('required');
+            $form->text('option4', trans('Option 4'))->rules('required');
             $form->radio('answer', trans('Answer'))->options([
                 'option1' => 'Option 1',
                 'option2' => 'Option 2',
                 'option3' => 'Option 3',
                 'option4' => 'Option 4',
-            ]);
+            ])->rules('required');
             $form->saved(function (Form $form) use ($id) {
                 if($id){
                     admin_toastr(trans('Updated successfully!'));

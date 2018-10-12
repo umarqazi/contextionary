@@ -20,7 +20,7 @@
             <div class="col-md-5 selectPhrase text-right">
                 <span class="whiteText"><strong>{!! t('Phrase Type') !!}:</strong> </span>
                 </span>
-                {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'form-control'])!!}
+                {!! Form::select('phrase_type', Config::get('constant.PhraseType'), $data['phrase_type'], ['class'=>'customSelect'])!!}
                 @if ($errors->has('phrase_type'))
                     <div class="help-block"><strong>{{ $errors->first('phrase_type') }}</strong></div>
                 @endif
@@ -29,8 +29,8 @@
         <div class="row mt-4">
             <div class="col-md-12">
                 <label class="customLabel">Phrase Meaning</label>
-                {!! Form::textarea('meaning', $data['meaning'], ['class'=>'enter-phrase' ,'placeholder'=>'Enter Phrase Meaning']) !!}
-                <p class="text-right white-text">{!! t('Characters') !!} 0/2500</p>
+                {!! Form::textarea('meaning', $data['meaning'], ['id'=>'meaning-area','maxlength'=>'2500', 'class'=>'enter-phrase' ,'placeholder'=>'Enter Phrase Meaning']) !!}
+                <p class="text-right white-text" id="count">{!! t('Characters') !!} {!! strlen($data['meaning']) !!}/2500</p>
                 @if ($errors->has('meaning'))
                     <div class="help-block"><strong>{{ $errors->first('meaning') }}</strong></div>
                 @endif
@@ -46,4 +46,5 @@
         </div>
         {!! Form::close() !!}
     </div>
+    {!! HTML::script('assets/js/login.js') !!}
 @endsection

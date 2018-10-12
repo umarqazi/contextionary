@@ -11,6 +11,8 @@ namespace App\Services;
  */
 
 use App\Repositories\CoinsRepo;
+use App\Repositories\RedeemPointRepo;
+use App\Repositories\UserPointRepo;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,25 +41,38 @@ class UserService extends BaseService implements IService
      * @var CoinsRepo
      */
     protected $coin;
-
+    /**
+     * @var userPoints
+     */
+    protected $userPoints;
+    /**
+     * @var redeemRepo
+     */
+    protected $redeemRepo;
     /**
      * UserService constructor.
      */
     public function __construct()
     {
-        $user_repo= new UserRepo();
-        $transaction_repo= new TransactionRepo();
-        $coin= new CoinsRepo();
-        $this->user_repo = $user_repo;
-        $this->transactionRepo=$transaction_repo;
-        $this->coin=$coin;
+        $this->user_repo        =   new UserRepo();
+        $this->transactionRepo  =    new TransactionRepo();
+        $this->coin             =   new CoinsRepo();
+        $this->userPoints       =   new UserPointRepo();
+        $this->redeemRepo       =   new RedeemPointRepo();
     }
 
     /**
      * @return int
      */
     public function count(){
-        return User::all()->count();
+        return $this->user_repo->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function countActive(){
+        return $this->user_repo->countActive();
     }
 
     /**
@@ -115,5 +130,33 @@ class UserService extends BaseService implements IService
     public function verificationEmail($id){
         $user   =   $this->user_repo->findById($id);
         return SendVerificationEmail::dispatch($user);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function get($id){
+        return $this->user_repo->findById($id);
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
+    public function updateRecord($id, $data){
+        return $this->user_repo->update($id, $data);
+    }
+
+    /**
+     *
+     */
+    public function getUserPoints(){
+        return $this->userPoints->points();
+    }
+
+    public function saveRedeemPoints($data){
+        return $this->redeemRepo->create($data);
     }
 }

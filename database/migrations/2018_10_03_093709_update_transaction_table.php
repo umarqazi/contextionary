@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateCoinIdInTransaction extends Migration
+class UpdateTransactionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class UpdateCoinIdInTransaction extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->integer('coin_id')->unsigned()->nullable();
-            $table->foreign('coin_id')->references('id')->on('coins')->onDelete('cascade');
+            $table->integer('coins');
+            $table->integer('amount');
         });
     }
 
@@ -26,9 +26,9 @@ class UpdateCoinIdInTransaction extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropForeign('transactions_coin_id_foreign');
-            $table->dropColumn('coin_id');
+        Schema::table('vote_meanings', function (Blueprint $table) {
+            $table->dropColumn('coins');
+            $table->dropColumn('amount');
         });
     }
 }

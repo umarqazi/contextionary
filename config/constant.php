@@ -3,7 +3,9 @@ return [
     'packages'=>
         ['1'=>'Basic Plan', '2'=>'Premium Plan', '3'=>'Advance Plan'],
     'contributorRole'=>
-        ['define'=>'define', 'illustrate'=>'illustrate', 'translator'=>'translator'],
+        ['define'=>'define', 'illustrate'=>'illustrate', 'translate'=>'translate'],
+    'contributorNames'=>
+        ['define'=>'Writer', 'illustrate'=>'illustrator', 'translate'=>'translator', 'meaning'=>'Writer'],
     'userRole'=>
         ['basic plan'=>'basic plan', 'premium plan'=>'premium plan', 'advance plan'=>'advance plan'],
     'plan_prices'=>
@@ -12,12 +14,14 @@ return [
             '3'=>'6.99'],
     'Native Language'=>['Hindi'=>'Hindi', 'French'=>'French', 'Spanish'=>'Spanish', 'English'=>'English', 'Chinese'=>'Chinese', 'Other'=>'Other'],
     'ContextImages'=>'context_images',
-    'PhraseType'=>[''=>'Select Phrase Type','Proper noun', 'Common noun', 'Verb', 'Adjective', 'Adverb', 'Other'],
+    'PhraseType'=>[''=>'Select Phrase Type','1'=>'Proper noun', '2'=>'Common noun', '3'=>'Verb', '4'=>'Adjective', '5'=>'Adverb', '6'=>'Other'],
     'Storage'=>'local',
-    'status'=>['0'=>'in Progress', '1'=>'Ready for Voting', '2'=>'Cancelled', '3'=>'Voting Done'],
+    'status'=>['0'=>'Pending', '1'=>'Accepted', '2'=>'Rejected', '3'=>'Completed'],
+    'position'=>[ '1'=>'First', '2'=>'Second', '3'=>'Third'],
     'phrase_status'=>['open'=>'Open', 'in-progress'=>'In-Progress', 'submitted'=>'Submitted'],
     'vote_status'=>['pending'=>'Pending', 'submitted'=>'Submitted'],
-    'selected_bids'=>'4',
-    'total_bids'=>'5'
+    'purchase_type'=>
+        ['purchase_coins'=>'Purchase Coins', 'buy_package'=>'Buy Package'],
+    'points_range'=>['10-99'=>'0.01', '100-199'=>'0.10', '200-499'=>'0.50', '500-999'=>'3.00', '1000'=>'10.00']
 ];
 ?>

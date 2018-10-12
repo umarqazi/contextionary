@@ -11,7 +11,6 @@ use App\Repositories\PictionaryRepo;
 
 class PictionaryService extends BaseService implements IService
 {
-
     /**
      * @var PictionaryRepo
      */

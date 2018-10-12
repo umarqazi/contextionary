@@ -303,7 +303,7 @@ li {
     display: none;
     background: #fff;
     top: 80px;
-    right: -10px;
+    left: 0;
 }
 .dropDown .dropDown-block:before {
     content: "";
@@ -311,7 +311,7 @@ li {
     width: 35px;
     height: 17px;
     top: -17px;
-    right: 10px;
+    left: 15px;
     background: url(../images/dropDown-arrow.png) no-repeat center center;
 }
 .companyName {
@@ -1417,7 +1417,7 @@ aside .topLinks {
     text-transform: uppercase;
     cursor: pointer;
     color: #737373;
-    margin-right: 20px;
+    margin-right: 18px;
     position: relative;
     padding: 5px;
 }
@@ -2348,7 +2348,6 @@ aside .topLinks {
 .redeemBg .redeem-container .wrapper {
     position: absolute;
     top: 50%;
-    width: 100%;
     transform: translateY(-50%);
     background: rgba(0, 0, 0, 0.4);
     padding: 30px 40px;
@@ -2449,7 +2448,7 @@ aside .topLinks {
     background: rgba(255, 255, 255, 0.15);
 }
 .glossarybg .glossary-block {
-    width: 205px;
+    width: 100%;
     position: relative;
     display: inline-block;
     margin-bottom: 30px;
@@ -2805,6 +2804,11 @@ aside .topLinks {
     background-color: orange;
     color: black;
     cursor: pointer;
+}
+.gameOptionActive {
+    background-color: orange !important;
+    color: black !important;
+    cursor: pointer !important;
 }
 .hidden{
     display: none;

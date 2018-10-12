@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Welcome Email</title>
-</head>
-
-<body>
-<h2>Welcome to the Contextionary {{$data['first_name']}} {{$data['last_name']}}</h2>
+@include('email.header')
+<h2 class="footer-text">Hi  {{$data['first_name']}} {{$data['last_name']}} </h2>
 <br/>
-Your registered email-id is {{$data['email']}} , Please click on the below link to verify your email account
+<p>Your registered email-id is {{$data['email']}}, Please click on the below link to verify your Email account</p>
 <br/>
-<a href="{{lang_url('verifyEmail', ['token'=>$data->email_token])}}">Verify Email</a>
-</body>
-
-</html>
+<a href="{{lang_url('verifyEmail', ['token'=>$data['email_token']])}}" class="orangeBtn">Verify Account</a>
+@include('email.footer')

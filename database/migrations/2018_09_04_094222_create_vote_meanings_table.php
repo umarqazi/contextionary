@@ -17,10 +17,6 @@ class CreateVoteMeaningsTable extends Migration
             $table->increments('id');
             $table->integer('define_meaning_id')->unsigned()->nullable();
             $table->foreign('define_meaning_id')->references('id')->on('define_meanings')->onDelete('cascade');
-            $table->integer('grammer')->nullable();
-            $table->integer('spelling')->nullable();
-            $table->integer('audience')->nullable();
-            $table->integer('part_of_speech')->nullable();
             $table->integer('is_poor')->nullable();
             $table->integer('vote')->nullable();
             $table->integer('context_id');

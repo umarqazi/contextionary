@@ -31,6 +31,7 @@
                         </div>
                     </div>
                 </div>
+                <label class="customLabel float-right">{!! t('Written By: ') !!}{!! $data['writer'] !!}</label>
             </div>
         </div>
         @if(empty($data['illustrator']))
@@ -40,7 +41,7 @@
                         <img src="{!! asset('assets/images/dummy.png') !!}" id="profile-img-tag" />
                     </div>
                     {!! Form::open(['url'=>lang_route('postIllustrate'),'class'=>'illustrator-form','enctype'=>'multipart/form-data','method'=>'post', 'id'=>'form-submission']) !!}
-                    <label class="customLabel">{!! t('Upload Illustrator against this Meaning') !!}</label>
+                    <label class="customLabel">{!! t('Upload Illustration against this Meaning') !!}</label>
                     <label class="orangeBtn waves-light bidBtn">
                         {!! t('Browse') !!}
                         <input type="file" name="illustrate" id="profile-img" style="display: none">
@@ -93,17 +94,33 @@
                         <img src="{!! asset('storage') !!}/{!! $data['illustrator']->illustrator !!}" id="profile-img-tag" />
                     </div>
                 </div>
-                {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
-                @include('user.contributor.bid')
-                {!! Form::hidden('meaning_id', $data['illustrator']['id'], []) !!}
-                {!! Form::hidden('context_id', $data['context_id'], []) !!}
-                {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
-                {!! Form::hidden('model', 'illustrate', []) !!}
-                {!! Form::hidden('type', env("ILLUSTRATE"), []) !!}
-                {!! Form::hidden('route', 'illustrate', []) !!}
-                {!! Form::close() !!}
+                @if($data['illustrator']->coins)
+                    <div class="col-md-12">
+                        <div class="coinsWrapper">
+                            <span class="white-text">{!! t('Bid') !!}:  <span class="green-color">{!! $data['illustrator']->coins !!} {!! t('Coins') !!}</span></span>
+                        </div>
+                    </div>
+                @endif
+                @if($data['close_bid']!='1')
+                    {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
+                    @include('user.contributor.bid')
+                    {!! Form::hidden('meaning_id', $data['illustrator']['id'], []) !!}
+                    {!! Form::hidden('context_id', $data['context_id'], []) !!}
+                    {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
+                    {!! Form::hidden('model', 'illustrate', []) !!}
+                    {!! Form::hidden('type', env("ILLUSTRATE"), []) !!}
+                    {!! Form::hidden('route', 'illustrate', []) !!}
+                    {!! Form::close() !!}
+                @elseif($data['close_bid']=='1')
+                    <div class="row mt-4">
+                        <div class="col-md-12 mt-4 text-center actionsBtn bid-div">
+                            <a href="{!! URL::previous() !!}" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Return') !!}</a>
+                        </div>
+                    </div>
+                @endif
             </div>
         @endif
+
     </div>
     {!! HTML::script('assets/js/login.js') !!}
 @endsection

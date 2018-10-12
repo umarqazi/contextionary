@@ -48,5 +48,6 @@ class CheckMeaning extends Command
     public function handle()
     {
         $this->contributor->meaningToVote();
+        $this->contributor->checkExpiredVotes();
     }
 }

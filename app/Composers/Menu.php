@@ -2,7 +2,7 @@
 /**
  * Contributor Meanings Menu
  */
-View::composer(['user.contributor.meaning.*', 'user.contributor.illustrator.*'], function($view)
+View::composer(['user.contributor.meaning.*', 'user.contributor.illustrator.*', 'user.contributor.translation.*'], function($view)
 {
     $roles = Auth::user()->roles->pluck('name');
     foreach($roles as $role):
@@ -16,7 +16,18 @@ View::composer(['user.contributor.meaning.*', 'user.contributor.illustrator.*'],
  */
 View::composer('user.contributor.votes.*', function($view)
 {
-    $page=['phrase-list'=>'Vote Meaning'];
+    $page=[];
+    if(Auth::check()):
+        if(Auth::user()->hasRole(Config::get('constant.contributorRole.define'))):
+            $page['phrase-list']='Vote Meaning';
+        endif;
+        if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrate'))):
+            $page['illustrator-vote-list']='Vote Illustrator';
+        endif;
+        if(Auth::user()->hasRole(Config::get('constant.contributorRole.translate'))):
+            $page['translate-vote-list']='Vote Translator';
+        endif;
+    endif;
     $view->with(['pageMenu'=>$page]);
 });
 
@@ -25,7 +36,7 @@ View::composer('user.contributor.votes.*', function($view)
  */
 View::composer('user.contributor.transactions.*', function($view)
 {
-    $page=['coins-list'=>'Purchase Coins', 'Illustrator'=>'Redeem Points', 'Translator'=>'Summary'];
+    $page=['coins-list'=>'Purchase Coins', 'redeem-points'=>'Redeem Points', 'summary'=>'Summary', 'user-history'=>'History'];
     $view->with(['pageMenu'=>$page]);
 });
 
@@ -43,7 +54,12 @@ View::composer('user.user_plan.games.*', function($view)
  */
 View::composer('guest_pages.*', function($view)
 {
-    $page=['fun-facts'=>'Fun Facts', 'Illustrator'=>'Learning Center', 'contactUs'=>'Contact Us'];
+    $page=['fun-facts'=>'Fun Facts', 'contact-us'=>'Contact Us'];
+    if(Auth::check()):
+        if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan'))):
+            $page['learning-center']='Learning Center';
+        endif;
+    endif;
     $view->with(['pageMenu'=>$page]);
 });
 

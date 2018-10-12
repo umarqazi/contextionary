@@ -6,13 +6,21 @@
       @if(Auth::check())
         <div class="userAvtar dropDown">
           <div class="img-holder">
-            <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+            @if(Auth::user()->profile_image)
+              <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+            @else
+              <img src="{!! asset('assets/images/default.jpg')!!}">
+            @endif
           </div>
-          <span class="name cursor">{!! Auth::user()->first_name !!} <i class="fa fa-chevron-down"></i></span>
+          <span class="name cursor"><i class="fa fa-chevron-down"></i></span>
           <div class="dropDown-block">
             <div class="avtar-holder">
               <div class="img-holder">
-                <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+                @if(Auth::user()->profile_image)
+                  <img src="{!! asset('storage/').'/'.Auth::user()->profile_image !!}">
+                @else
+                  <img src="{!! asset('assets/images/default.jpg')!!}">
+                @endif
               </div>
               <span class="name">{!! Auth::user()->first_name !!} {!! Auth::user()->last_name !!}</span>
             </div>
@@ -41,7 +49,7 @@
           <div class="topLinks">
             <?php $roles = Auth::user()->roles->pluck('name');?>
             @foreach($roles as $role)
-              <p>{!! $role !!} @if($role==Config::get('constant.contributorRole.translator')) ({!! Auth::user()->profile->language_proficiency !!}) @endif</p>
+              <p>{!! Config::get('constant.contributorNames.'.$role) !!} @if($role==Config::get('constant.contributorRole.translate')) ({!! Auth::user()->profile->language_proficiency !!}) @endif</p>
             @endforeach
           </div>
         @endif
@@ -49,10 +57,19 @@
     </div>
     <div class="col-md-5 col-sm-6 text-right">
       <div class="switch-account dropDown">
-        <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span>{!! t('Switch') !!} <i class="fa fa-angle-down"></i></span>
-        <div class="dropDown-block">
-          <a href="#" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to user account') !!}</a>
-        </div>
+        @if(Auth::check())
+          @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
+            <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
+            <div class="dropDown-block">
+              <a href="{!! lang_url('switchToUser') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to User Account') !!}</a>
+            </div>
+          @else
+            <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
+            <div class="dropDown-block">
+              <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contibutor Account') !!}</a>
+            </div>
+          @endif
+        @endif
       </div>
       @if(Auth::check())
         @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
@@ -70,33 +87,33 @@
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Points') !!}</td>
-                  <td>{!! ($points!=NULL)? $points:'0'!!}</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $contributions['points'][env('MEANING')]!!}</td>
+                  <td>{!! $contributions['points'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['points'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Earning') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>${!! $contributions['earning'][env('MEANING')] !!}</td>
+                  <td>${!! $contributions['earning'][env('ILLUSTRATE')] !!}</td>
+                  <td>${!! $contributions['earning'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Contributions') !!}</td>
-                  <td>{!! $Contributions !!}</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $contributions['user_contributions'][env('MEANING')] !!}</td>
+                  <td>{!! $contributions['user_contributions'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['user_contributions'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Pole Positions') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $contributions['user_pole_positions'][env('MEANING')] !!}</td>
+                  <td>{!! $contributions['user_pole_positions'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['user_pole_positions'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Runner-ups') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $contributions['user_runner_up'][env('MEANING')] !!}</td>
+                  <td>{!! $contributions['user_runner_up'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['user_runner_up'][env('TRANSLATE')] !!}</td>
                 </tr>
               </table>
               <h2 class="mt-3">{!! t('Other Contributors') !!}</h2>
@@ -108,22 +125,16 @@
                   <td><img src="{!! asset('assets/images/statistics-icon3.png') !!}"></td>
                 </tr>
                 <tr>
-                  <td class="name">{!! t('Highest Coins') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
-                </tr>
-                <tr>
                   <td class="name">{!! t('Highest Points') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>{!! $contributions['otherContributors'][env('MEANING')] !!}</td>
+                  <td>{!! $contributions['otherContributors'][env('ILLUSTRATE')] !!}</td>
+                  <td>{!! $contributions['otherContributors'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('Highest Earning') !!}</td>
-                  <td>0</td>
-                  <td>0</td>
-                  <td>0</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('MEANING')] !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('ILLUSTRATE')] !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('TRANSLATE')] !!}</td>
                 </tr>
               </table>
             </div>
@@ -133,10 +144,11 @@
       <div class="languageBar">
         <span class="active"><img src="{!! asset('assets/images/') !!}/{!!Config::get('multilang.locales.'.App::getLocale().'.flag') !!}"> {!! Config::get('multilang.locales.'.App::getLocale().'.name') !!} <i class="fa fa-chevron-down"></i></span>
         <ul class="list">
-          <a href="{!! lang_route('locale', ['locale'=>'en']) !!}"><li><img src="{!! asset('assets/images/english-flag.png') !!}"> English </li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><li><img src="{!! asset('assets/images/french-flag.png') !!}"> Frech</li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'sp']) !!}"><li><img src="{!! asset('assets/images/spain-flag.png') !!}"> Spanish</li></a>
-          <a href="{!! lang_route('locale', ['locale'=>'hi']) !!}"><li><img src="{!! asset('assets/images/hindi-flag.png') !!}"> Hindi</li></a>
+          <li><a href="{!! lang_route('locale', ['locale'=>'en']) !!}"><img src="{!! asset('assets/images/english-flag.png') !!}"> English </a></li>
+          <li><a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><img src="{!! asset('assets/images/french-flag.png') !!}"> French </a></li>
+          <li><a href="{!! lang_route('locale', ['locale'=>'sp']) !!}"><img src="{!! asset('assets/images/spain-flag.png') !!}"> Spanish </a></li>
+          <li><a href="{!! lang_route('locale', ['locale'=>'hi']) !!}"><img src="{!! asset('assets/images/hindi-flag.png') !!}"> Hindi </a></li>
+          <li><a href="{!! lang_route('locale', ['locale'=>'ch']) !!}"><img src="{!! asset('assets/images/china-flag.png') !!}"> Chinese </a></li>
         </ul>
       </div>
 

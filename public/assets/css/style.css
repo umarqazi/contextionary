@@ -124,7 +124,7 @@ color: #f7953a;
   margin-bottom: 15px;
 }
 
-.voteMeaningBg .contextListing li input[type="radio"]{
+.voteMeaningBg .contextListing li input[type="radio"], .illustrators-active .illustrations-block input[type="radio"]{
   width: 100%;
   height: 100%;
   position: absolute;
@@ -132,6 +132,7 @@ color: #f7953a;
   top: 0;
   opacity: 0;
   z-index: 5;
+  cursor:pointer;
   display: block;
 }
 
@@ -237,10 +238,13 @@ color: #f7953a;
 .dashBoard-container .topLinks p{
   color: #737373;
   display: inline-block;
-  padding: 0px 8px;
+  padding: 0px 5px;
   font-weight: 500;
   text-transform: uppercase;
   font-size:9pt !important;
+}
+.dashBoard-container .topLinks{
+  margin-left:30px;
 }
 .funfact .funFact-listing .readMore{
   top:0;
@@ -333,4 +337,98 @@ color: #f7953a;
 
 .dashBoard-container .userHeader .rightMenu .menu:hover span{
   color: #f7953a;
+}
+.commentBox{
+  right:-310px !important;
+}
+.hide-button{
+  display:none;
+}
+.gameOptionDiv .container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.gameOptionDiv .container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+.cont-div{
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+.cont-div a{
+  padding: 30px;
+  background-color: #f7952d;
+  border-radius: 30px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  color: #fff !important;
+  font-weight: bold;
+  float: right;
+}
+.attach-image{
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+}
+.active-illustrator .mask{
+  opacity: 0.8;
+  visibility: visible;
+}
+.llustrator-div{
+  display: block;
+  width:100%;
+}
+.illustrations-block .main-img {
+  height: 150px;
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  width:auto;
+}
+.illustrations-block{
+  cursor: pointer;
+}
+.illustrator input{
+  z-index: 9999 !important;
+  cursor: pointer;
+}
+.illustrations-block .fa-search{
+  z-index: 99999;
+}
+.active-link a span{
+  color:#f7941d;
+}
+aside .menuCate .menuListing .active-link a{
+  background: url(../images/menu-icon1.png) no-repeat 0 -40px;
+  color: #f7941d;
+  background-size: 16px;
+}
+.switch-account{
+  cursor:pointer;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance:textfield;
+}
+.languageBar .list a{
+  color:#f7941d;
 }
