@@ -159,6 +159,9 @@ class CronService
     public function checkExpiredVotes($type, $model,$columnKey){
         $this->minimum_votes    =   $this->setting->getKeyValue(env('MINIMUM_VOTES'))->values;
         $this->vote_expiry      =   $this->setting->getKeyValue(env('VOTE_EXPIRY'))->values;
+        $first_position         =   $this->setting->getKeyValue(env('FIRST'))->values;
+        $second_position        =   $this->setting->getKeyValue(env('SECOND'))->values;
+        $third_position         =   $this->setting->getKeyValue(env('THIRD'))->values;
         $getVote=$this->voteExpiryRepo->getAllMeaningVotes($type);
         if($getVote):
             foreach($getVote as $vote):
@@ -190,21 +193,19 @@ class CronService
                         endif;
                         $this->$model->updateVoteStatus($updateVoteStatus);
                         foreach($getHighestVotes as $key=>$hightesVotes):
-                            if($key+1=='1'):
-                                $points=10;
+                            if($key+1==1):
+                                $position='1st';
+                                $points=$first_position;
+                            elseif($key+1==2):
+                                $position='2nd';
+                                $points=$second_position;
                             else:
-                                $points=1;
+                                $position='3rd';
+                                $points=$third_position;
                             endif;
                             $data=['type'=>$type,'point'=>$points,'context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'user_id'=>$hightesVotes[$type]['user_id'], 'position'=>$key+1];
                             $this->userPoint->create($data);
                             $hightesVotes['points']=$points;
-                            if($key+1==1):
-                                $position='1st';
-                            elseif($key+1==2):
-                                $position='2nd';
-                            else:
-                                $position='3rd';
-                            endif;
                             $hightesVotes['position']=$position;
                             $getContextName=$this->context->getContextName($vote['context_id']);
                             $getPhraseName=$this->phrase->getPhraseName($vote['phrase_id']);
