@@ -100,8 +100,8 @@
 </div>
 <script>
     $(".gameOptionDiv").click(function () {
-        $(this).siblings().children('.gameOption').removeClass('gameOptionActive');
-        $(this).children('.gameOption').addClass('gameOptionActive');
+        $(this).siblings().removeClass('gameOptionActive');
+        $(this).addClass('gameOptionActive');
     });
     $('.cont-div a').click(function() {
         var opt= $("input[name='game_ans']:checked").val();
