@@ -63,4 +63,11 @@ class UserPointRepo
     public function runnerUp(){
         return $this->userPoints->where('user_id',Auth::user()->id)->where('position', '!=', 1)->selectRaw('count(position) as total, type')->groupBy('type')->get();
     }
+    /**
+     * @return mixed
+     * get points of other user
+     */
+    public function otherContributors(){
+        return $this->userPoints->where('user_id','!=', Auth::user()->id)->selectRaw('sum(point) as sum, type')->groupBy('type')->get();
+    }
 }
