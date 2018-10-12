@@ -85,10 +85,24 @@
                 padding: 40px 60px;
             }
         }
+        .orangeBtn {
+            background: #f7941d;
+            padding: 10px 40px;
+            border: none;
+            border-radius: 50px;
+            display: inline-block;
+            vertical-align: middle;
+            font-weight: 500;
+            font-size: 14px;
+            outline: none !important;
+            color: #ffffff !important;
+            text-transform: uppercase;
+            margin-top: 17px;
+        }
 
     </style>
 
 </head>
 <body>
 <div class="container">
-    <img src="{!! asset('assets/images/landing-logo.png') !!}" class="logo" />
+    <a href="{!! lang_url('/') !!}"><img src="{!! asset('assets/images/landing-logo.png') !!}" class="logo" /></a>

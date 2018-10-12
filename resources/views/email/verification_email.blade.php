@@ -1,7 +1,7 @@
 @include('email.header')
-<h2>Welcome to the Contextionary {{$data['first_name']}} {{$data['last_name']}}</h2>
+<h2>Hi  {{$data['first_name']}} {{$data['last_name']}} </h2>
 <br/>
-Your registered email-id is {{$data['email']}} , Please click on the below link to verify your email account
+<p>Your registered email-id is {{$data['email']}}, Please click on the below link to verify your Email account</p>
 <br/>
-<a href="{{lang_url('verifyEmail', ['token'=>$data['email_token']])}}">Verify Email</a>
+<a href="{{lang_url('verifyEmail', ['token'=>$data['email_token']])}}" class="orangeBtn">Verify Account</a>
 @include('email.footer')
