@@ -3,8 +3,6 @@
 namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Admin\Controllers\UserController;
-use App\Services\UserService;
 use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Column;
@@ -15,22 +13,41 @@ use App\User;
 
 class HomeController extends Controller
 {
-    protected $userService;
-    protected $userController;
-    public function __construct(UserService $service, UserController $userController)
+    /**
+     * @var UserController
+     */
+    protected $user_controller;
+
+    /**
+     * @var BiddingExpiryController
+     */
+    protected $bidding_expiry_controller;
+
+    /**
+     * HomeController constructor.
+     */
+    public function __construct()
     {
-        $this->userService     =   $service;
-        $this->userController  =   $userController;
+        $user_controller                    = new UserController();
+        $this->user_controller              = $user_controller;
+        $bidding_expiry_controller          = new BiddingExpiryController();
+        $this->bidding_expiry_controller    = $bidding_expiry_controller;
     }
 
 
     public function index()
     {
-        $usersController = $this->userController;
-        return Admin::content(function (Content $content) use ($usersController){
+        $user_controller            = $this->user_controller;
+        $bidding_expiry_controller  = $this->bidding_expiry_controller;
+        return Admin::content(function (Content $content) use ($user_controller, $bidding_expiry_controller){
             $content->header('Dashboard');
             $content->description('Admin Dashboard');
-            $content->row($usersController->userCount().$usersController->userCount().$usersController->userCount().$usersController->userCount());
+            $content->row(
+                $user_controller->userCount().
+                $bidding_expiry_controller->phraseCountInDefine().
+                $bidding_expiry_controller->phrasecountInIllustration().
+                $bidding_expiry_controller->phraseCountInTranslation()
+            );
         });
     }
     public function userListing()

@@ -40,7 +40,7 @@ class TutorialsController extends Controller
     public function form($id = null)
     {
         return Admin::form(Tutorial::class, function (Form $form) use ($id) {
-            $form->ckeditor('content', trans('Content'));
+            $form->ckeditor('content', trans('Content'))->rules('required');
             $form->tools(function (Form\Tools $tools) {
                 $tools->disableListButton();
             });

@@ -18,17 +18,19 @@ class UserController extends Controller
 {
     protected  $userServices;
 
-    public function __construct(UserService $userServices)
+    public function __construct()
     {
+        $userServices = new UserService();
         $this->userServices = $userServices;
     }
 
     public function userCount(){
-        $countUsers = $this->userServices->count();
-        return view('admin::dashboard.blocks',
+        $countUsers         = $this->userServices->count();
+        $countActiveUsers   = $this->userServices->countActive();
+        return view('admin::dashboard.user_block',
             [
-                'value'      => $countUsers,
-                'label'      => 'Users',
+                'value1'     => $countUsers,
+                'value2'     => $countActiveUsers,
                 'url'        => '/admin/auth/simple-users',
                 'urlLabel'   => 'All Users'
             ]
@@ -140,13 +142,13 @@ class UserController extends Controller
                 ->default(function ($form) {
                     return $form->model()->password;
                 })->placeholder('Confirm Password...');
-            $form->radio('role', trans('Roles'))->options($roles)->default($current_role);
-            $form->text('profile.pseudonyme', 'Pseudonyme');
-            $form->radio('profile.gender', trans('Gender'))->options(['Male'=>'Male','Female'=>'Female']);
-            $form->date('profile.date_birth', 'Date of Birth');
-            $form->mobile('profile.phone_number', 'Phone #');
-            $form->radio('profile.native_language', trans('Language'))->options(['English'=>'English','French'=>'French','Spanish'=>'Spanish','Hindi'=>'Hindi','Chinese'=>'Chinese']);
-            $form->text('profile.country', 'Country');
+            $form->radio('role', trans('Roles'))->options($roles)->default($current_role)->rules('required');
+            $form->text('profile.pseudonyme', 'Pseudonyme')->rules('required');
+            $form->radio('profile.gender', trans('Gender'))->options(['Male'=>'Male','Female'=>'Female'])->rules('required');
+            $form->date('profile.date_birth', 'Date of Birth')->rules('required');
+            $form->mobile('profile.phone_number', 'Phone #')->rules('required');
+            $form->radio('profile.native_language', trans('Language'))->options(['English'=>'English','French'=>'French','Spanish'=>'Spanish','Hindi'=>'Hindi','Chinese'=>'Chinese'])->rules('required');
+            $form->text('profile.country', 'Country')->rules('required');
             $form->ignore(['password_confirmation', 'role']);
             $form->saving(function (Form $form) use ($user){
                 if ($form->password && $form->model()->password != $form->password) {

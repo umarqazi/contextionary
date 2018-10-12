@@ -62,7 +62,7 @@ class UserRepo {
 
     /**
      * create Post
-     * @return Post
+     * @return mixed
      */
     private function perpareData($data)
     {
@@ -98,6 +98,21 @@ class UserRepo {
         $sumCoins=['coins'=>$coins+$user->coins];
         return $this->update($user_id, $sumCoins);
 
+    }
+
+
+    /**
+     * @return int
+     */
+    public function count(){
+        return User::all()->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function countActive(){
+        return User::where('status',1)->get()->count();
     }
 }
 ?>

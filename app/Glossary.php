@@ -29,7 +29,7 @@ class Glossary extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name','price','description','thumbnail','file', 'url'];
+    protected $fillable = ['name','price','description','thumbnail','file', 'url', 'status'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

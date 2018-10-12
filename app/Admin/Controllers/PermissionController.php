@@ -151,7 +151,7 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function store()
     {

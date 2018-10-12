@@ -65,7 +65,14 @@ class UserService extends BaseService implements IService
      * @return int
      */
     public function count(){
-        return User::all()->count();
+        return $this->user_repo->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function countActive(){
+        return $this->user_repo->countActive();
     }
 
     /**

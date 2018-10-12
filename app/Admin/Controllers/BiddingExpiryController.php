@@ -14,6 +14,7 @@ namespace App\Admin\Controllers;
 use App\BiddingExpiry;
 use App\Context;
 use App\Phrase;
+use App\Services\PhraseService;
 use Illuminate\Support\Facades\Storage;
 use \Illuminate\Database\Eloquent\Model;
 use Encore\Admin\Controllers\ModelForm;
@@ -25,6 +26,19 @@ use Illuminate\Http\Request;
 
 class BiddingExpiryController extends Controller
 {
+    /**
+     * @var PhraseService
+     */
+    protected $phrase_service;
+
+    /**
+     * BiddingExpiryController constructor.
+     */
+    public function __construct()
+    {
+        $phrase_service = new PhraseService();
+        $this->phrase_service = $phrase_service;
+    }
 
     /**
      * Index interface.
@@ -122,4 +136,51 @@ class BiddingExpiryController extends Controller
         return $this->form()->update($id);
     }
 
+    /**
+     * @return mixed
+     */
+    public function phraseCountInDefine(){
+        $phrase_count  = $this->phrase_service->countInDefinePhase();
+        return view('admin::dashboard.phrase_block',
+            [
+                'color'     => 'red',
+                'label'     => 'Phrase in Define Phase',
+                'value'     => $phrase_count,
+                'url'       => '/admin/auth/simple-users',
+                'urlLabel'  => 'All Phrases in Define Phase'
+            ]
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function phraseCountInIllustration(){
+        $phrase_count  = $this->phrase_service->countInIllustrationPhase();
+        return view('admin::dashboard.phrase_block',
+            [
+                'color'     => 'yellow',
+                'label'     => 'Phrase in Illustrator Phase',
+                'value'     => $phrase_count,
+                'url'       => '/admin/auth/simple-users',
+                'urlLabel'  => 'All Phrases in Illustrator Phase'
+            ]
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function phraseCountInTranslation(){
+        $phrase_count  = $this->phrase_service->countInTranslationPhase();
+        return view('admin::dashboard.phrase_block',
+            [
+                'color'     => 'green',
+                'label'     => 'Phrase in Translator Phase',
+                'value'     => $phrase_count,
+                'url'       => '/admin/auth/simple-users',
+                'urlLabel'  => 'All Phrases in Translator Phase'
+            ]
+        );
+    }
 }
