@@ -29,7 +29,7 @@ class EmailVerification extends Mailable
      */
     public function build()
     {
-        return $this->view('email.verification_email')->with([
+        return $this->subject('Welcome to Contextionary!')->view('email.verification_email')->with([
             'data' => $this->user,
         ]);
     }
