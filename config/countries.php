@@ -124,7 +124,7 @@ return [
 'Kuwait' => 'Kuwait',
 'Cayman Islands' => 'Cayman Islands',
 'Kazakhstan' => 'Kazakhstan',
-'Lao PeopleÃ¢â‚¬â„¢s Democratic Republic' => 'Lao PeopleÃ¢â‚¬â„¢s Democratic Republic',
+'Lao People' => 'Lao People',
 'Lebanon' => 'Lebanon',
 'Saint Lucia' => 'Saint Lucia',
 'Liechtenstein' => 'Liechtenstein',
