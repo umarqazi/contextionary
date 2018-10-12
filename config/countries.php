@@ -17,7 +17,6 @@ return [
 'Austria' => 'Austria',
 'Australia' => 'Australia',
 'Aruba' => 'Aruba',
-'Ãƒâ€¦land' => 'Ãƒâ€¦land',
 'Azerbaijan' => 'Azerbaijan',
 'Bosnia And Herzegovina' => 'Bosnia And Herzegovina',
 'Barbados' => 'Barbados',
@@ -44,7 +43,6 @@ return [
 'Central African Republic' => 'Central African Republic',
 'Congo (Republic)' => 'Congo (Republic)',
 'Switzerland' => 'Switzerland',
-'Cote DÃ¢â‚¬â„¢Ivoire' => 'Cote DÃ¢â‚¬â„¢Ivoire',
 'Cook Islands' => 'Cook Islands',
 'Chile' => 'Chile',
 'Cameroon' => 'Cameroon',
@@ -247,6 +245,7 @@ return [
 'Mayotte' => 'Mayotte',
 'South Africa' => 'South Africa',
 'Zambia' => 'Zambia',
-'Zimbabwe' => 'Zimbabwe'
+'Zimbabwe' => 'Zimbabwe',
+        'Other' => 'Other'
 ]];
 ?>
