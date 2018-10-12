@@ -24,8 +24,8 @@
                                         </thead>
                                         <tbody>
                                         <?php $sum=0;?>
-                                        @if($points)
-                                            @foreach($points as $key=>$point)
+                                        @if($contributions['points'])
+                                            @foreach($contributions['points'] as $key=>$point)
                                                 <?php $earning=0; ?>
                                                 @foreach(Config::get('constant.points_range') as $key2=>$range)
                                                     <?php $range_value=explode('-', $key2);
