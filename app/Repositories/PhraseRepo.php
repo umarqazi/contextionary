@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 
+use App\Phrase;
 use App\BiddingExpiry;
 
 class PhraseRepo extends BaseRepo implements IRepo
