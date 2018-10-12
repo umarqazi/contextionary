@@ -44,21 +44,32 @@ class UserRepo {
 
     /**
      * create Post
-     * @return Post
+     * @return mixed
      */
     private function perpareData($data)
     {
         return new User($data);
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function updateToken($id){
         $user=$this->findById($id);
         $user->token=md5(microtime());
         $user->save();
         return $user;
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function makeActive($id){
         return $this->user->where('id', $id)->update(['status'=>'1']);
     }
+
     /**
      * update coins
      */
@@ -67,6 +78,21 @@ class UserRepo {
         $sumCoins=['coins'=>$coins+$user->coins];
         return $this->update($user_id, $sumCoins);
 
+    }
+
+
+    /**
+     * @return int
+     */
+    public function count(){
+        return User::all()->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function countActive(){
+        return User::where('status',1)->get()->count();
     }
 }
 ?>

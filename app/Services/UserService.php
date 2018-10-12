@@ -45,19 +45,26 @@ class UserService extends BaseService implements IService
      */
     public function __construct()
     {
-        $user_repo= new UserRepo();
-        $transaction_repo= new TransactionRepo();
-        $coin= new CoinsRepo();
-        $this->user_repo = $user_repo;
-        $this->transactionRepo=$transaction_repo;
-        $this->coin=$coin;
+        $user_repo              = new UserRepo();
+        $transaction_repo       = new TransactionRepo();
+        $coin                   = new CoinsRepo();
+        $this->user_repo        = $user_repo;
+        $this->transactionRepo  = $transaction_repo;
+        $this->coin             = $coin;
     }
 
     /**
      * @return int
      */
     public function count(){
-        return User::all()->count();
+        return $this->user_repo->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function countActive(){
+        return $this->user_repo->countActive();
     }
 
     /**
