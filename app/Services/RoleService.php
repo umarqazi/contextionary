@@ -32,7 +32,7 @@ class RoleService extends BaseService implements IRoleService
     public function assign($user_id, $package_id){
         $package_name   =   strtolower(Config::get('constant.packages.'.$package_id));
         $user           =   $this->user->findById($user_id);
-        $assignRole     =   $user->assignRole($package_name);
+        $assignRole     =   $user->syncRoles($package_name);
         return true;
     }
 
