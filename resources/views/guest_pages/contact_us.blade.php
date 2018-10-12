@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-md-12">
                         <p class="whiteText">
-                            {!! t('Contact Us Line') !!}}
+                            {!! t('Contact Us Line') !!}
                         </p>
                     </div>
 
