@@ -2,9 +2,18 @@
     <!-- small box -->
     <div class="small-box bg-aqua">
         <div class="inner">
-            <h3>{{$value}}</h3>
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>{{$value1}}</h3>
 
-            <p>{{$label}}</p>
+                    <p>Users</p>
+                </div>
+                <div class="col-md-3">
+                    <h3>{{$value2}}</h3>
+
+                    <p>Active Users</p>
+                </div>
+            </div>
         </div>
         <div class="icon">
             <i class="fa fa-users"></i>

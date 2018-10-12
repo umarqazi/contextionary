@@ -9,20 +9,53 @@
 namespace App\Repositories;
 
 
-use App\Phrase;
+use App\BiddingExpiry;
 
-class PhraseRepo
+class PhraseRepo extends BaseRepo implements IRepo
 {
+
+    /**
+     * @var BiddingExpiry
+     */
+    private $bidding_expiry;
+
+    /**
+     * @var Phrase
+     */
     protected $phrase;
 
     /**
-     * ContextRepo constructor.
+     * PhraseRepo constructor.
      */
     public function __construct()
     {
-        $this->phrase= new Phrase();
+        $bidding_expiry = new BiddingExpiry();
+        $this->bidding_expiry = $bidding_expiry;
+        $phrase = new Phrase();
+        $this->phrase= $phrase;
     }
-    
+
+    /**
+     * @return mixed
+     */
+    public function countInDefinePhase(){
+        return $this->bidding_expiry->countPharseInDefinePhase();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function countInIllustrationPhase(){
+        return $this->bidding_expiry->countPharseInIllustrationPhase();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function countInTranslationPhase(){
+        return $this->bidding_expiry->countPharseInTranslationPhase();
+    }
+
     /**
      * @param $phrase_id
      * @return mixed

@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\FunFact;
+use App\PointsPrice;
 use \Illuminate\Database\Eloquent\Model;
 use Encore\Admin\Controllers\ModelForm;
 use Encore\Admin\Facades\Admin;
@@ -10,10 +10,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Permission\Models\Role;
 
-class FunFactsController extends Controller
+class PointPricesController extends Controller
 {
     /**
      * Index interface.
@@ -23,8 +21,8 @@ class FunFactsController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('Fun Facts'));
-            $content->description(trans('Fun Facts List'));
+            $content->header(trans('Points Price'));
+            $content->description(trans('List'));
             $content->body($this->grid()->render());
         });
     }
@@ -39,8 +37,8 @@ class FunFactsController extends Controller
     public function edit($id)
     {
         return Admin::content(function (Content $content) use ($id) {
-            $content->header('Fun Facts');
-            $content->description('Edit fun fact');
+            $content->header('Points Price');
+            $content->description('Edit');
             $content->body($this->form($id)->edit($id));
         });
     }
@@ -53,8 +51,8 @@ class FunFactsController extends Controller
     public function create()
     {
         return Admin::content(function (Content $content) {
-            $content->header('Fun Facts');
-            $content->description('Create a new fun fact');
+            $content->header('Points Price');
+            $content->description('Create new');
             $content->body($this->form());
         });
     }
@@ -66,29 +64,12 @@ class FunFactsController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(FunFact::class, function (Grid $grid) {
+        return Admin::grid(PointsPrice::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
-            $grid -> option('useWidth', true);
-            $grid->thumbnail()->display(function ($thumbnail) {
-                $thumbnail= Storage::disk(config("admin.upload.disk"))->url($thumbnail);
-                return "<img class='img-thumbnail' src='{$thumbnail}' />";
-            })->setAttributes(["style" => "width:10% !important;"]);
-            $grid->image()->display(function ($image) {
-                $image= Storage::disk(config("admin.upload.disk"))->url($image);
-                return "<img class='img-thumbnail' src='{$image}' />";
-            })->setAttributes(["style" => "width:10% !important;"]);
-            $grid->title()->sortable();
-            $grid->author()->sortable();
-            $grid->description();
-            $grid->column('created_at','Created at')->sortable();
-            $grid->column('updated_at','Last Updated at')->sortable();
-            $grid->filter(function ($filter){
-                $filter->like('title');
-                $filter->like('author');
-            });
+            $grid->column('min_points', 'Min Points')->sortable();
+            $grid->column('max_points', 'Max Points')->sortable();
+            $grid->column('price', 'Price')->sortable();
             $grid->actions(function (Grid\Displayers\Actions $actions) {
-                $action = "".$actions->getResource()."/".$actions->getKey()."";
-                $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
             $grid->tools(function (Grid\Tools $tools) {
                 $tools->batch(function (Grid\Tools\BatchActions $actions) {
@@ -106,28 +87,24 @@ class FunFactsController extends Controller
      */
     public function form($id = null)
     {
-        $dir1 ='images/fun-fact/thumb';
-        $dir2 ='images/fun-fact/img';
-        return Admin::form(FunFact::class, function (Form $form) use ($id, $dir1, $dir2) {
+        return Admin::form(PointsPrice::class, function (Form $form) use ($id) {
             $form->display('id', 'ID');
-            $form->image('thumbnail')->move($dir1)->rules('required');
-            $form->image('image')->move($dir2)->rules('required');
-            $form->text('title', trans('Title'))->rules('required')->placeholder('Enter Title...');
-            $form->text('author', trans('Author'))->rules('required');
-            $form->ckeditor('description', trans('Description'))->rules('required')->placeholder('Enter Description...');
+            $form->number('min_points', 'Min Points')->rules("required|regex:/^\d+$/|min:0", [
+                "regex" => "Must be numbers",
+                "min"   => "Cant be less than 0",
+            ]);
+            $form->number('max_points', 'Max Points')->rules("required|regex:/^\d+$/|min:0", [
+                "regex" => "Must be numbers",
+                "min"   => "Cant be less than Min Points",
+            ]);
+            $form->currency('price', 'Price');
             $form->saved(function (Form $form) use ($id) {
-                $thumb_name = explode('/',$form->model()->thumbnail);
-                $image_name = explode('/',$form->model()->image);
-                $funfact = FunFact::find($form->model()->id);
-                $funfact->thumbnail = 'images/fun-fact/thumb/'.$thumb_name[3];
-                $funfact->image = 'images/fun-fact/img/'.$image_name[3];
-                $funfact->update();
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
                 }else{
-                    admin_toastr(trans('New Fun Fact created successfully!'));
+                    admin_toastr(trans('New Points Price created successfully!'));
                 }
-                return redirect(admin_base_path('auth/fun-facts'));
+                return redirect(admin_base_path('auth/point-price'));
             });
         });
     }
@@ -142,8 +119,8 @@ class FunFactsController extends Controller
     public function show($id)
     {
         return Admin::content(function (Content $content) use ($id) {
-            $content->header('Fun Facts');
-            $content->description('View fun facts');
+            $content->header('Points Price');
+            $content->description('View');
             $content->body($this->form($id)->view($id));
         });
     }
@@ -154,7 +131,7 @@ class FunFactsController extends Controller
      *
      * @param int $id
      *
-     * @return Form
+     * @return mixed
      */
     public function update($id)
     {
@@ -170,8 +147,8 @@ class FunFactsController extends Controller
      */
     public function destroy($id)
     {
-        $package = FunFact::find($id);
-        if ($package->delete()) {
+        $point = PointsPrice::find($id);
+        if ($point->delete()) {
             admin_toastr(trans('admin.delete_succeeded'));
             return response()->json([
                 'status'  => true,
@@ -194,4 +171,5 @@ class FunFactsController extends Controller
     {
         return $this->form()->store();
     }
+
 }

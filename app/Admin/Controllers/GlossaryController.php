@@ -76,8 +76,13 @@ class GlossaryController extends Controller
             $grid->name()->sortable();
             $grid->price()->sortable();
             $grid->url();
-            $grid->column('created_at','Created at')->sortable();
-            $grid->column('updated_at','Last Updated at')->sortable();
+            $grid->column('status')->display(function ($status) {
+                if($status == 0){
+                    return " ";
+                }else{
+                    return "<i class='fa fa-check-circle' style='color: green;'></i>";
+                }
+            });
             $grid->filter(function ($filter){
                 $filter->like('name');
                 $filter->like('url');
@@ -107,12 +112,16 @@ class GlossaryController extends Controller
         $dir2 ='images/glossary/files';
         return Admin::form(Glossary::class, function (Form $form) use ($id, $dir1, $dir2) {
             $form->display('id', 'ID');
-            $form->image('thumbnail')->move($dir1);
+            $form->image('thumbnail')->move($dir1)->rules('required|dimensions:width=210,height=295')->help('Note: Please upload an image of 210px*295px.');
             $form->text('name', trans('Name'))->rules('required')->placeholder('Enter Name...');
-            $form->currency('price', trans('Price'));
-            $form->ckeditor('description', trans('Description'))->rules('required')->placeholder('Enter Description...');
-            $form->file('file')->move($dir2);
+            $form->currency('price', trans('Price'))->rules('required');
+            $form->file('file')->move($dir2)->rules('required');
             $form->text('url', trans('Url'))->rules('required')->placeholder('Enter URL...');
+            $states = [
+                'on'  => ['value' => 1, 'text' => 'Active', 'color' => 'success'],
+                'off' => ['value' => 0, 'text' => 'Inactive', 'color' => 'danger'],
+            ];
+            $form->switch('status','Status')->states($states);
             $form->saved(function (Form $form) use ($id) {
                 $thumb_name = explode('/',$form->model()->thumbnail);
                 $file_name = explode('/',$form->model()->file);
@@ -152,7 +161,7 @@ class GlossaryController extends Controller
      *
      * @param int $id
      *
-     * @return Form
+     * @return mixed
      */
     public function update($id)
     {
