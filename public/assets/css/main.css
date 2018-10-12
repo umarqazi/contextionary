@@ -2807,7 +2807,6 @@ aside .topLinks {
     cursor: pointer;
 }
 .gameOptionActive {
-    background-color: orange !important;
     color: black !important;
     cursor: pointer !important;
 }
@@ -2907,4 +2906,7 @@ aside .topLinks {
 }
 .score .orangeBtn{
     padding: 10px;
+}
+.gameOptionActive .gameOption {
+    background-color: orange !important;
 }
