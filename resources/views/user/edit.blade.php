@@ -132,7 +132,10 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-
+                    <div class="customForm-group"><span class="asterick">*</span>
+                        {!! Form::select('timezone', Config::get('countries.timezone'), $user->timezone, ['class'=>'customSelect w-100', 'placeholder'=>t('Timezone')]) !!}
+                        <span class="focus-border"></span>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="customForm-group">

@@ -105,7 +105,8 @@ class UsersController extends Controller
             'first_name'       => 'required',
             'last_name'       => 'required',
             'email'      => 'required|email',
-            'password'   => 'nullable|min:6|confirmed'
+            'password'   => 'nullable|min:6|confirmed',
+            'timezone'   => 'required'
         );
         $validator = Validator::make(Input::all(), $rules);
         // process the login
@@ -129,6 +130,7 @@ class UsersController extends Controller
                 $fileName=$this->register->uploadImage($image, $user->id);
             }
             $user->profile_image=$fileName;
+            $user->timezone=Input::get('timezone');
             $user->save();
             $updateProfile=Profile::where('user_id', $user->id)->first();
             $updateProfile->phone_number=Input::get('phone_number');
