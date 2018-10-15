@@ -238,6 +238,9 @@ Class VoteService{
      */
     public function checkActiveVotes($data, $type){
         $checkActiveVote=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'], 'vote_type'=>$type];
+        if($type==env('TRANSLATE')):
+            $checkActiveVote['language']=$data['language'];
+        endif;
         return $record=$this->voteExpiry->checkRecords($checkActiveVote);
     }
     /**

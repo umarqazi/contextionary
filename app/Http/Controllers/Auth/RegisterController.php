@@ -67,7 +67,8 @@ class RegisterController extends Controller
             'pseudonyme'=>'string|nullable',
             'gender'=>'required',
             'phone_number'=>'required',
-            'native_language'=>'required'
+            'native_language'=>'required',
+            'timezone'=>'required'
         ]);
     }
 
@@ -88,6 +89,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'token' => md5(microtime()),
             'email_token' => base64_encode($data['email']),
+            'timezone' => $data['timezone'],
         ]);
         /**
          * Update User Profile
