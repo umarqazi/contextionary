@@ -57,4 +57,8 @@ function restrictBid(bid){
     $('#bid-button').removeClass('grey');
     $('#bid-button').removeAttr("disabled", true);
   }
+  if(coins < 1){
+    $('#bid-button').addClass('grey');
+    $('#bid-button').attr("disabled", true);
+  }
 }

@@ -22,6 +22,7 @@ use Config;
 use App\Coin;
 use Input;
 use Image;
+use Illuminate\Support\Facades\Validator;
 
 class ContributorController
 {
@@ -178,6 +179,16 @@ class ContributorController
      * place bid against their meaning
      */
     public function applyBidding(Request $request){
+        $rules = array(
+            'bid'       => 'numeric|min:1',
+        );
+        $validator = Validator::make(Input::all(), $rules);
+        // process the login
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         $data=['coins'=>$request->bid,'context_id'=>$request->context_id,'phrase_id'=>$request->phrase_id, 'model'=>$request->model, 'type'=>$request->type];
         $updateRecord=$this->contributor->bidding($data, $request->meaning_id);
         if($updateRecord==false):
@@ -311,12 +322,13 @@ class ContributorController
     public function postTranslate(Request $request){
         $validators = $request->validate([
             'translation' => 'required',
+            'phrase_translation' => 'required',
         ]);
         $id='';
         if($request->has('id')):
             $id=$request->id;
         endif;
-        $data=['id'=>$id,'translation'=>$request->translation, 'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id, 'language'=>Auth::user()->profile->language_proficiency];
+        $data=['id'=>$id,'translation'=>$request->translation, 'phrase_translation'=>$request->phrase_translation,'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id, 'language'=>Auth::user()->profile->language_proficiency];
         $saveTranslation=$this->contributor->saveTranslation($data);
         $notification = array(
             'message' => trans('content.translator_added'),

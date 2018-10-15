@@ -15,6 +15,7 @@ use App\Repositories\FamiliarContextRepo;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use Auth;
 
 class MutualService
 {
@@ -108,7 +109,12 @@ class MutualService
      */
     public function displayHumanTimeLeft($expiry_date)
     {
-        $time = strtotime($expiry_date);
-        return $dateInLocal = date("d M Y h:i A", $time);
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $expiry_date);
+        if (Auth::check()) {
+            if(Auth::user()->timezone!=NULL){
+                $date->setTimezone(new \DateTimeZone(Auth::user()->timezone));
+            }
+        }
+        return $formatted_date = $date->format('d M Y h:i A');
     }
 }

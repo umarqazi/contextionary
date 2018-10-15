@@ -135,7 +135,7 @@ $(document).ready(function () {
             $('#bid-button').removeClass('grey');
             $('#bid-button').removeAttr("disabled", true);
         }
-        if(coins > 0){
+        if(coins > 1){
             $(".coins").val(+coins - 1);
         }
     });
