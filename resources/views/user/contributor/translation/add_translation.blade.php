@@ -95,13 +95,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="row ">
-                    <div class="col-md-12">
-                        <div class="coinsWrapper">
-                            <span class="white-text">{!! t('Bid') !!}:  <span class="green-color">{!! $data['coins'] !!} {!! t('Coins') !!}</span></span>
+                @if($data['translation']['coins'])
+                    <div class="row ">
+                        <div class="col-md-12">
+                            <div class="coinsWrapper">
+                                <span class="white-text">{!! t('Bid') !!}:  <span class="green-color">{!! $data['translation']['coins'] !!} {!! t('Coins') !!}</span></span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
                 @if($data['close_bid']!='1')
                     {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
                     @include('user.contributor.bid')
