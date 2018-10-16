@@ -435,3 +435,6 @@ input[type=number] {
 .fancybox-lock .fancybox-overlay{
   z-index: 100000;
 }
+.dashBoard-container .userHeader .userAvtar{
+  cursor:pointer;
+}
