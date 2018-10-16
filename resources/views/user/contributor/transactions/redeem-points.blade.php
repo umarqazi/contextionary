@@ -27,10 +27,13 @@
                                         @if($contributions['points'])
                                             @foreach($contributions['points'] as $key=>$point)
                                                 <?php $earning=0; ?>
-                                                @foreach(Config::get('constant.points_range') as $key2=>$range)
-                                                    <?php $range_value=explode('-', $key2);
-                                                    if(($range_value[0] >= $point) && ($point <= $range_value[1])):
-                                                        $earning=$range*$point;
+                                                @foreach($pointsPrices as $key2=>$range)
+                                                    <?php
+                                                    if($point >=1000 && ($range['min_points']==0) && ($point >= $range['max_points'])):
+                                                        $earning=$range['price']*$point;
+                                                        break;
+                                                    elseif(($point >= $range['min_points']) && ($point <= $range['max_points'])):
+                                                        $earning=$range['price']*$point;
                                                         break;
                                                     endif;
                                                     ?>
@@ -97,7 +100,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="orangeBtn waves-light align-center grey" disabled id="request-redeem">{!! t('Send Request') !!}</button>
+                    <button type="submit" class="orangeBtn waves-light align-center @if(!Input::old('points')) grey @endif" @if(!Input::old('points')) disabled @endif id="request-redeem">{!! t('Send Request') !!}</button>
                 </div>
                 {!! Form::close() !!}
             </div>
