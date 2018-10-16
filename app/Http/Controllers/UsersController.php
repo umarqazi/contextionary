@@ -311,10 +311,13 @@ class UsersController extends Controller
                 ->withInput()->with('modal', '1');
         }
         $earning=0;
-        foreach(Config::get('constant.points_range') as $key2=>$range):
-            $range_value=explode('-', $key2);
-            if(($range_value[0] >= $request->points) && ($request->points <= $range_value[1])):
-                $earning=$range*$request->points;
+        $pointsPrices=PointsPrice::all();
+        foreach($pointsPrices as $key2=>$range):
+            if($request->points >=1000 && ($range['min_points']==0) && ($request->points >= $range['max_points'])):
+                $earning=$range['price']*$request->points;
+                break;
+            elseif(($request->points >= $range['min_points']) && ($request->points <= $range['max_points'])):
+                $earning=$range['price']*$request->points;
                 break;
             endif;
         endforeach;
