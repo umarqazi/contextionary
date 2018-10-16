@@ -12,6 +12,7 @@ use App\Services\RoleService;
 use App\Services\TransactionService;
 use App\Services\UserService;
 use App\User;
+use App\PointsPrice;
 use Carbon;
 use Config;
 use Encore\Admin\Controllers\ModelForm;
@@ -291,7 +292,8 @@ class UsersController extends Controller
      */
     public function redeemPoints(Request $request){
         $modal=$request->modal;
-        return view::make('user.contributor.transactions.redeem-points')->with('modal', $modal);
+        $prices=PointsPrice::all();
+        return view::make('user.contributor.transactions.redeem-points')->with(['modal'=> $modal, 'pointsPrices'=>$prices]);
     }
 
     /**
