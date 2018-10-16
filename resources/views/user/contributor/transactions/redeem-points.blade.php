@@ -29,7 +29,8 @@
                                                 <?php $earning=0; ?>
                                                 @foreach(Config::get('constant.points_range') as $key2=>$range)
                                                     <?php $range_value=explode('-', $key2);
-                                                    if(($range_value[0] >= $point) && ($point <= $range_value[1])):
+                                                    if(($point >= $range_value[0]) && ($point <= $range_value[1])):
+                                                        echo $point;
                                                         $earning=$range*$point;
                                                         break;
                                                     endif;
@@ -97,7 +98,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="orangeBtn waves-light align-center grey" disabled id="request-redeem">{!! t('Send Request') !!}</button>
+                    <button type="submit" class="orangeBtn waves-light align-center @if(!Input::old('points')) grey @endif" @if(!Input::old('points')) disabled @endif id="request-redeem">{!! t('Send Request') !!}</button>
                 </div>
                 {!! Form::close() !!}
             </div>
