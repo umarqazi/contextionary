@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Vote Meaning') !!}
+    {!! t('Vote Translation') !!}
 @stop
 @section('content')
     <div class="container-fluid contributorMain voteMeaningBg" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $phraseMeaning['context_picture'] !!}); background-size:cover">
