@@ -27,11 +27,13 @@
                                         @if($contributions['points'])
                                             @foreach($contributions['points'] as $key=>$point)
                                                 <?php $earning=0; ?>
-                                                @foreach(Config::get('constant.points_range') as $key2=>$range)
-                                                    <?php $range_value=explode('-', $key2);
-                                                    if(($point >= $range_value[0]) && ($point <= $range_value[1])):
-                                                        echo $point;
-                                                        $earning=$range*$point;
+                                                @foreach($pointsPrices as $key2=>$range)
+                                                    <?php
+                                                    if($point >=1000 && ($range['min_points']==0) && ($point >= $range['max_points'])):
+                                                        $earning=$range['price']*$point;
+                                                        break;
+                                                    elseif(($point >= $range['min_points']) && ($point <= $range['max_points'])):
+                                                        $earning=$range['price']*$point;
                                                         break;
                                                     endif;
                                                     ?>
