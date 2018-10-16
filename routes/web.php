@@ -25,7 +25,6 @@ MultiLang::routeGroup(function($router) {
                 Route::get('/',  'UsersController@profile')->name('profile');
                 Route::get('edit-profile',  'UsersController@edit')->name('edit-profile');
             });
-            Route::get('edit-roles',  'UsersController@editRoles')->name('edit-roles');
             Route::get('selectPlan',  'UsersController@selectPlan')->name('selectPlan');
             Route::get('userPlan',  'UsersController@userPlan')->name('userPlan');
             Route::get('payment/{plan}',  'UsersController@showPaymentInfo')->name('payment');
@@ -34,6 +33,7 @@ MultiLang::routeGroup(function($router) {
             Route::get('contributorPlan',  'ContributorController@contributorPlan')->name('contributorPlan');
             Route::post('saveContributor', 'ContributorController@saveContributor')->name('saveContributor');
             Route::group([ 'middleware'=>'checkContributor'], function(){
+                Route::get('edit-roles',  'UsersController@editRoles')->name('edit-roles');
                 Route::group(array('prefix' => 'define', 'middleware'=>'define'), function(){
                     Route::get('/',  'ContributorController@define')->name('define');
                     Route::get('define-meaning/{context_id}/{phrase_id}',  'ContributorController@defineMeaning')->name('defineMeaning');
@@ -97,6 +97,8 @@ MultiLang::routeGroup(function($router) {
                 Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
                 Route::get('tutorials',  'TutorialsController@index')->name('tutorials');
                 Route::get('/switchToContributor', 'UsersController@switchToContributor')->name('switchToContributor');
+                Route::get('/active-plan', 'UsersController@activeUserPlan')->name('activeUserPlan');
+                Route::get('/delete-card/{card}', 'UsersController@deleteCard')->name('deleteCard');
             });
         });
         Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');

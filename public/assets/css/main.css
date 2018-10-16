@@ -2909,3 +2909,136 @@ aside .topLinks {
 .gameOptionActive .gameOption {
     background-color: orange !important;
 }
+
+.userPlanBg {
+    background: url(../images/user-planBg.jpg) no-repeat center center;
+    background-size: cover;
+}
+.userPlanBg .planTitle {
+    font-size: 30px;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+.userPlanBg .planTitle span {
+    font-size: 16px;
+    color: #f7941d;
+}
+.userPlanBg .planBlock {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 30px;
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
+    -moz-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
+}
+.userPlanBg .planBlock .img-holder {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 320px;
+}
+.userPlanBg .planBlock .img-holder img {
+    max-width: 100%;
+}
+.userPlanBg .planBlock .planInfo {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 30px;
+    width: calc(100% - 325px);
+}
+.userPlanBg .planBlock .planInfo .activePlan {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+.userPlanBg .planBlock .planInfo .activePlan i {
+    color: #f7941d;
+    padding-right: 8px;
+}
+.userPlanBg .planBlock .planInfo h2 {
+    margin-bottom: 10px;
+}
+.userPlanBg .planBlock .planInfo .features {
+    display: block;
+    margin: 0px;
+}
+.userPlanBg .planBlock .planInfo .features li {
+    font-size: 14px;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    margin-bottom: 5px;
+    border-bottom: #c1c1c1 solid 1px;
+    padding: 5px 0px 5px 10px;
+}
+.userPlanBg .planBlock .planInfo .features li span {
+    font-weight: normal;
+    font-size: 14px;
+}
+.userPlanBg .planBlock .planInfo .cardBlock {
+    background: rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
+    -moz-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
+    max-width: 280px;
+    border-radius: 5px;
+    min-height: 150px;
+    position: relative;
+}
+.userPlanBg .planBlock .planInfo .cardBlock > img {
+    margin: 10px 0px 0px 10px;
+}
+.userPlanBg .planBlock .planInfo .cardBlock .del-btn {
+    float: right;
+    padding: 2px 7px;
+    background: #f7941d;
+    font-size: 14px;
+    color: #000;
+}
+.userPlanBg .planBlock .planInfo .cardBlock p {
+    padding-left: 10px;
+    position: absolute;
+    bottom: 10px;
+    margin-bottom: 0;
+    font-size: 14px;
+    padding-right: 10px;
+}
+.userPlanBg .planBlock .planInfo .cardBlock p span {
+    font-size: 13px;
+}
+
+
+.card-div .cardBlock {
+    background: rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
+    -moz-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.22);
+    max-width: 280px;
+    border-radius: 5px;
+    min-height: 150px;
+    position: relative;
+}
+.card-div .cardBlock > img {
+    margin: 10px 0px 0px 10px;
+}
+.card-div .cardBlock .del-btn {
+    float: right;
+    padding: 2px 7px;
+    background: #f7941d;
+    font-size: 14px;
+    color: #000;
+}
+.card-div .cardBlock p {
+    padding-left: 10px;
+    position: absolute;
+    bottom: 10px;
+    margin-bottom: 0;
+    font-size: 14px;
+    padding-right: 10px;
+}
+.card-div .cardBlock p span {
+    font-size: 13px;
+}

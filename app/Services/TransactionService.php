@@ -74,6 +74,15 @@ class TransactionService
                 /**
                  * Write Here Your Database insert logic.
                  */
+                $latestCard=['user_id'=>$request['user_id'], 'last4'=>$charge['source']['last4']];
+                $getCard=$this->userServices->getCard($latestCard);
+                if(empty($getCard)):
+                    $latestCard['exp_month']=$charge['source']['exp_month'];
+                    $latestCard['exp_year']=$charge['source']['exp_year'];
+                    $latestCard['card_id']=$charge['source']['id'];
+                    $latestCard['brand']=$charge['source']['brand'];
+                    $this->userServices->insertCardInfo($latestCard);
+                endif;
                 $data=['transaction_id'=>$charge['id'], 'user_id'=>$request['user_id'], 'package_id'=>$request['package_id'], 'type'=>$request['type'],'amount' => $request['price']];
                 $updateTransaction=$this->success($data);
                 if($request['type']=='purchase_coins'){
@@ -129,6 +138,9 @@ class TransactionService
         }else{
             $data['package_id']=$params['package_id'];
             $data['expiry_date']=Carbon::parse()->addMonth();
+            $data['status']=1;
+            $updatePrevious=['user_id'=>$params['user_id'], 'purchase_type'=>'buy_package'];
+            $this->transactionRepo->update($updatePrevious, ['status'=>0]);
         }
         $data['amount']=$params['amount'];
         $new_transaction=$this->transactionRepo->create($data);
