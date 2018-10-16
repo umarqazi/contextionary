@@ -100,7 +100,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="orangeBtn waves-light align-center grey" disabled id="request-redeem">{!! t('Send Request') !!}</button>
+                    <button type="submit" class="orangeBtn waves-light align-center @if(!Input::old('points')) grey @endif" @if(!Input::old('points')) disabled @endif id="request-redeem">{!! t('Send Request') !!}</button>
                 </div>
                 {!! Form::close() !!}
             </div>
