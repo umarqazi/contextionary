@@ -14,7 +14,7 @@
                 <a href="{!! lang_url('define')!!}" class="orangeBtn ml-3 waves-light bidBtn waves-effect waves-light">{!! t('Return') !!}</a>
             @else
                 <button type="button" onclick="showButtons()" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Edit') !!}</button>
-                <a href="{!! lang_url('illustrate')!!}" class="orangeBtn ml-3 waves-light bidBtn waves-effect waves-light">{!! t('Return') !!}</a>
+                <a href="{!! URL::previous()!!}" class="orangeBtn ml-3 waves-light bidBtn waves-effect waves-light">{!! t('Return') !!}</a>
             @endif
             <div class="col-md-12 mt-4 text-center actionsBtn bid-div">
                 @if ($errors->has('bid'))
