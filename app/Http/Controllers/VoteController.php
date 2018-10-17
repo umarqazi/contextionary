@@ -167,7 +167,7 @@ class VoteController extends Controller
     }
 
     public function getSelectedTranslations($context_id, $phrase_id){
-        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id, 'language'=>Auth::user()->profile->lanugage_proficiency];
+        $data=['context_id'=>$context_id, 'phrase_id'=>$phrase_id, 'user_id'=>Auth::user()->id, 'language'=>Auth::user()->profile->language_proficiency];
         $translations=$this->voteService->getVoteTranslators($data);
         if(array_key_exists('voteStatus', $translations)){
             $notification = array(
