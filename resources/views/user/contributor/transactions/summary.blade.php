@@ -14,11 +14,11 @@
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th>Date</th>
-                                    <th>Transaction Type</th>
-                                    <th>Role</th>
-                                    <th>Coins / Points</th>
-                                    <th>Amount</th>
+                                    <th>{!! t('Date') !!}</th>
+                                    <th>{!! t('Transaction Type') !!}</th>
+                                    <th>{!! t('Role') !!}</th>
+                                    <th>{!! t('Coins / Points') !!}</th>
+                                    <th>{!! t('Amount') !!}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -27,7 +27,7 @@
                                     <tr>
                                         <td>{!! $transaction['created_at'] !!}</td>
                                         <td>{!! Config::get('constant.purchase_type.'.$transaction['purchase_type']) !!}</td>
-                                        <td></td>
+                                        <td class="text-capitalize">{!! ($transaction['role'])? Config::get('constant.contributorNames.'.$transaction['role']):'N/A' !!}</td>
                                         <td>{!! $transaction['coins'] !!}</td>
                                         <td>${!! $transaction['amount'] !!}</td>
                                     </tr>
