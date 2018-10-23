@@ -229,7 +229,15 @@ h3 {
     outline: none;
     padding: 0;
     height: 36px;
+    background: url('../images/select-menu-arrow.png') no-repeat right 5px top 12px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+    background-size:12px;
+    min-width: 200px;
 }
+
 .customSelect:focus {
     border-color: #f7941e;
 }
