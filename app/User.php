@@ -97,4 +97,10 @@ class User extends Authenticatable
     public function userPoints(){
         return $this->hasMany(UserPoint::class);
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userCards(){
+        return $this->hasMany(UserCard::class);
+    }
 }
