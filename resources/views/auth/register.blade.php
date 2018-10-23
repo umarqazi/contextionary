@@ -106,6 +106,11 @@
             {!! Form::select('timezone', Config::get('countries.timezone'), Input::old('timezone'), ['class'=>'customSelect w-100', 'placeholder'=>t('Timezone')]) !!}
             <span class="focus-border"></span>
           </div>
+          @if ($errors->has('timezone'))
+            <span class="help-block">
+            <strong>{{ t($errors->first('timezone')) }}</strong>
+          </span>
+          @endif
         </div>
 
         <div class="col-md-6">

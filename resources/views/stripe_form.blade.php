@@ -3,7 +3,7 @@
     <div class='form-row1'>
         <div class='col-md-12 form-group required'>
             <label class='control-label'>Card Number</label>
-            {!! Form::text('card_no', '', ['class'=>'customInput card-number', 'maxlength'=>'20', 'placeholder'=>'Card Number'])!!}
+            {!! Form::text('card_no', '', ['class'=>'customInput card-number', 'maxlength'=>'20', 'placeholder'=>'Card Number', 'id'=>'credit-card'])!!}
             @if ($errors->has('card_no'))
                 <div class="help-block"><strong>{{ $errors->first('card_no') }}</strong></div>
             @endif

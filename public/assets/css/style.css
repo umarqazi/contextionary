@@ -438,3 +438,6 @@ input[type=number] {
 .dashBoard-container .userHeader .userAvtar{
   cursor:pointer;
 }
+.profile-anchor:hover{
+  color:#737373 !important;
+}

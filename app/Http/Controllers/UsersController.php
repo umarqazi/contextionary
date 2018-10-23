@@ -276,12 +276,21 @@ class UsersController extends Controller
 
     public function summary(){
         $transaction=Auth::user()->transaction;
+        $redeemPoints=Auth::user()->redeemPoints;
         $transationRecord=[];
         foreach($transaction as $key=>$record){
             $transationRecord[$key]['created_at']=Carbon::parse($record['created_at'])->format('d/m/Y');
             $transationRecord[$key]['coins']=$record['coins'];
             $transationRecord[$key]['amount']=$record['amount'];
             $transationRecord[$key]['purchase_type']=$record['purchase_type'];
+            $transationRecord[$key]['role']='';
+        }
+        foreach($redeemPoints as $key=>$record){
+            $transationRecord[$key]['created_at']=Carbon::parse($record['created_at'])->format('d/m/Y');
+            $transationRecord[$key]['coins']=$record['points'];
+            $transationRecord[$key]['amount']=$record['earning'];
+            $transationRecord[$key]['purchase_type']='redeem_point';
+            $transationRecord[$key]['role']=$record['type'];
         }
         $transationRecord=array_reverse($transationRecord);
         $records=$this->mutualService->paginatedRecord($transationRecord, 'summary');

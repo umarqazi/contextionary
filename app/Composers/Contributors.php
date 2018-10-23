@@ -34,13 +34,13 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
 
         $points_group=$pointsRepo->points();
 
-        $contributors=$pointsRepo->otherContributors();
+        $allContributions['otherContributors']=$pointsRepo->otherContributors();
 
         $pole=$pointsRepo->postions();
 
         $runnerUp=$pointsRepo->runnerUp();
 
-        $redeemPoints=$redeem->otherContributors();
+        $allContributions['otherContributorsRedeem']=$redeem->otherContributors();
 
         foreach($points_group as $user_point){
             $getRedeemPoints=Auth::user()->redeemPoints->where('type', $user_point['type'])->sum('points');
@@ -55,14 +55,7 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         foreach($runnerUp as $user_pole){
             $allContributions['user_runner_up'][$user_pole['type']]=$user_pole['total'];
         }
-
-        foreach($contributors as $contribute){
-            $allContributions['otherContributors'][$contribute['type']]=$contribute['sum'];
-        }
-
-        foreach($redeemPoints as $contribute){
-            $allContributions['otherContributorsRedeem'][$contribute['type']]=$contribute['sum'];
-        }
+    
     endif;
     $view->with(['contributions'=>$allContributions, 'coins'=>$coins]);
 });

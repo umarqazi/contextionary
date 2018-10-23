@@ -45,7 +45,7 @@ class UserPointRepo
      * get points of login user
      */
     public function points(){
-       return $this->userPoints->where('user_id', Auth::user()->id)->selectRaw('sum(point) as sum, type')->groupBy('type')->get();
+        return $this->userPoints->where('user_id', Auth::user()->id)->selectRaw('sum(point) as sum, type')->groupBy('type')->get();
     }
 
     /**
@@ -68,6 +68,13 @@ class UserPointRepo
      * get points of other user
      */
     public function otherContributors(){
-        return $this->userPoints->where('user_id','!=', Auth::user()->id)->selectRaw('sum(point) as sum, type')->groupBy('type')->get();
+        $otherPoints=$this->userPoints->selectRaw('sum(point) as sum, type, user_id')->groupBy('type','user_id')->orderBy('sum', 'desc')->get();
+        $types=[env('MEANING')=>0,env('ILLUSTRATE')=>0,env('TRANSLATE')=>0];
+        foreach($otherPoints as $key=>$points):
+            if($types[$points['type']]==0):
+                $types[$points['type']]=$points['sum'];
+            endif;
+        endforeach;
+        return $types;
     }
 }
