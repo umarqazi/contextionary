@@ -11,6 +11,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PDFMerger;
 use Spatie\Permission\Models\Role;
 
 class GlossaryController extends Controller
@@ -112,7 +113,7 @@ class GlossaryController extends Controller
         $dir2 ='images/glossary/files';
         return Admin::form(Glossary::class, function (Form $form) use ($id, $dir1, $dir2) {
             $form->display('id', 'ID');
-            $form->image('thumbnail')->move($dir1)->rules('required|dimensions:width=210,height=295')->help('Note: Please upload an image of 210px*295px.');
+            $form->image('thumbnail')->move($dir1)->rules('required|dimensions:min_width=300,min_height=300')->help('Note: Please upload an image of minimum 300px*300px.');
             $form->text('name', trans('Name'))->rules('required')->placeholder('Enter Name...');
             $form->currency('price', trans('Price'))->rules('required');
             $form->file('file')->move($dir2)->rules('required');
@@ -128,6 +129,16 @@ class GlossaryController extends Controller
                 $glossary = Glossary::find($form->model()->id);
                 $glossary->thumbnail = 'images/glossary/thumb/'.$thumb_name[3];
                 $glossary->file = 'images/glossary/files/'.$file_name[3];
+                $glossary->update();
+
+                $path = pathinfo(public_path('storage/'.$glossary->file));
+
+                $pdf = new PDFMerger();
+
+                $pdf->addPDF(public_path('storage/'.$glossary->file), '1, 2, 3, 4, 5');
+                $pathForTheMergedPdf = $path['dirname'].'/'.$path['filename'].'_short.pdf';
+                $pdf->merge('file', $pathForTheMergedPdf);
+                $glossary->file = 'images/glossary/files/'.$path['filename'].'_short.pdf';
                 $glossary->update();
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
