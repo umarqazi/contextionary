@@ -48,7 +48,8 @@
     {!! HTML::script('assets/js/source/jquery.fancybox.pack.js') !!}
     {!! HTML::script(asset('assets/js/toaster.js')) !!}
     {!! HTML::style('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css') !!}
-    <script> $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             $(".gallerypdf").fancybox({
                 openEffect: 'elastic',
                 closeEffect: 'elastic',
