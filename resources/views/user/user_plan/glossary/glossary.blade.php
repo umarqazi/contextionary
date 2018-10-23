@@ -26,11 +26,11 @@
                                     <div class="view">
                                         <p>{{$glossary_item->name}}</p>
                                         <a class="fancybox gallerypdf" rel="fancybox-thumb" href="{!! asset('storage/'.$glossary_item->file) !!}" title=""><i class="fa fa-eye"></i> Quick View</a>
+                                        <p>${{$glossary_item->price}}</p>
                                     </div>
                                 </div>
                                 <div class="actionsBtns mt-3">
-                                    <a class="orangeBtn waves-light blue float-left">${{$glossary_item->price}}</a>
-                                    <a href="{{$glossary_item->url}}" class="orangeBtn waves-light float-right">Buy Now</a>
+                                    <a href="{{$glossary_item->url}}" class="orangeBtn waves-light">Buy Now</a>
                                 </div>
                             </div>
                         </div>
@@ -48,13 +48,28 @@
     {!! HTML::script('assets/js/source/jquery.fancybox.pack.js') !!}
     {!! HTML::script(asset('assets/js/toaster.js')) !!}
     {!! HTML::style('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css') !!}
+    <script> $(document).ready(function() {
+            $(".gallerypdf").fancybox({
+                openEffect: 'elastic',
+                closeEffect: 'elastic',
+                autoSize: true,
+                type: 'iframe',
+                showNavArrows : false,
+                iframe: {
+                    preload: false // fixes issue with iframe and IE
+                },
+                loop : false
+            });
+        });
+    </script>
     <script>
         function fav(event, elem, book_id){
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: '/en/add-to-fav',
-                data: { book_id:book_id, _token: '{{csrf_token()}}'}
+                data: { book_id:book_id, _token: '{{csrf_token()}}'},
+                async: false
             }).done(function( res ) {
                 if(res == 1){
                     toastr.success("Added to your collection!");
@@ -68,7 +83,8 @@
             $.ajax({
                 type: "POST",
                 url: '/en/remove-from-fav',
-                data: { book_id:book_id, _token: '{{csrf_token()}}'}
+                data: { book_id:book_id, _token: '{{csrf_token()}}'},
+                async: false
             }).done(function( res ) {
                 if(res == 1){
                     toastr.success("Removed from your collection!");
