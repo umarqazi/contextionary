@@ -45,12 +45,28 @@
     {!! HTML::script(asset('assets/js/toaster.js')) !!}
     {!! HTML::style('//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css') !!}
     <script>
+        $(document).ready(function() {
+            $(".gallerypdf").fancybox({
+                openEffect: 'elastic',
+                closeEffect: 'elastic',
+                autoSize: true,
+                type: 'iframe',
+                showNavArrows : false,
+                iframe: {
+                    preload: false // fixes issue with iframe and IE
+                },
+                loop : false
+            });
+        });
+    </script>
+    <script>
         function unfav(event, elem, book_id){
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: '/en/remove-from-fav',
-                data: { book_id:book_id, _token: '{{csrf_token()}}'}
+                data: { book_id:book_id, _token: '{{csrf_token()}}'},
+                async: false
             }).done(function( res ) {
                 if(res == 1){
                     toastr.success("Removed from your collection!");
