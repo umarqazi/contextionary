@@ -2088,6 +2088,7 @@ aside .topLinks {
 .voteMeaningBg .contextContent .tab-pane {
     height: 160px;
     padding: 15px 0px 15px 15px;
+    overflow: hidden;
 }
 .voteMeaningBg .contextContent .tab-pane p {
     color: #fff;

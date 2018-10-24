@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Mail\RedeemPoint;
 use App\Profile;
+use App\Repositories\UserPointRepo;
 use App\Services\AuthService;
 use App\Services\ContributorService;
 use App\Services\MutualService;
@@ -37,6 +38,7 @@ class UsersController extends Controller
     protected $register;
     protected $contributorService;
     protected $transactions;
+    protected $user_points;
     /**
      * UsersController constructor.
      */
@@ -49,6 +51,7 @@ class UsersController extends Controller
         $this->mutualService        =   new MutualService();
         $this->contributorService   =   new ContributorService();
         $this->transactions         =   new TransactionService();
+        $this->user_points          =   new UserPointRepo();
     }
 
     /**
@@ -324,18 +327,7 @@ class UsersController extends Controller
                 ->withInput()->with('modal', '1');
         }
         $earning=0;
-        $pointsPrices=PointsPrice::all();
-        foreach($pointsPrices as $key2=>$range):
-            if($request->points >=1000 && ($range['min_points']==0) && ($request->points >= $range['max_points'])):
-                $earning=$range['price']*$request->points;
-                break;
-            elseif(($request->points >= $range['min_points']) && ($request->points <= $range['max_points'])):
-                $earning=$range['price']*$request->points;
-                break;
-            endif;
-        endforeach;
-        $data=['points'=>$request->points, 'type'=>$request->type, 'earning'=>$earning, 'status'=>0, 'user_id'=>Auth::user()->id];
-        $services=$this->userServices->saveRedeemPoints($data);
+        $earning=$this->createPoint($request->points, $request->type);
         $notification = array(
             'message' => trans('content.redeem_points'),
             'alert_type' => 'success'
@@ -377,5 +369,61 @@ class UsersController extends Controller
             'alert_type' => 'success'
         );
         return Redirect::to(lang_url('active-plan'))->with($notification);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function redeemAllPoints(){
+        $user_data=['user_id'=>Auth::user()->id];
+        $points=$this->user_points->points($user_data);
+        $remainingPoints=0;
+        $total=0;
+        foreach($points as $user_point){
+            $getRedeemPoints=Auth::user()->redeemPoints->where('type', $user_point['type'])->sum('points');
+            $remainingPoints=$user_point['sum']-$getRedeemPoints;
+            $total=$total+$remainingPoints;
+            if($remainingPoints > 0):
+                $savePoint=$this->createPoint($remainingPoints, $user_point['type']);
+            endif;
+        }
+        $notification = array(
+            'message' => trans('content.redeem_points'),
+            'alert_type' => 'success'
+        );
+        $earning=$this->getEarning($total);
+        $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$total, 'earning'=>$earning];
+        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
+        return Redirect::to(lang_url('redeem-points'))->with($notification);
+    }
+
+    /**
+     * @param $points
+     * @param $type
+     * @return mixed
+     */
+    public function createPoint($points, $type){
+        $earning=$this->getEarning($points);
+        $data=['points'=>$points, 'type'=>$type, 'earning'=>$earning, 'status'=>0, 'user_id'=>Auth::user()->id];
+        $services=$this->userServices->saveRedeemPoints($data);
+        return $earning;
+    }
+
+    /**
+     * @param $points
+     * @return \___PHPSTORM_HELPERS\static|mixed
+     */
+    public function getEarning($points){
+        $pointsPrices=PointsPrice::all();
+        foreach($pointsPrices as $key2=>$range):
+            if($points >=1000 && ($range['min_points']==0) && ($points >= $range['max_points'])):
+                $earning=$range['price']*$points;
+                break;
+            elseif(($points >= $range['min_points']) && ($points <= $range['max_points'])):
+                $earning=$range['price']*$points;
+                break;
+            endif;
+        endforeach;
+        return $earning;
     }
 }

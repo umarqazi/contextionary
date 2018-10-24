@@ -19,6 +19,7 @@ use App\Repositories\FamiliarContextRepo;
 use App\Repositories\ContextRepo;
 use App\Repositories\RoleRepo;
 use App\Repositories\TranslationRepo;
+use App\Repositories\UserPointRepo;
 use App\Repositories\UserRepo;
 use App\Repositories\VoteExpiryRepo;
 use Auth;
@@ -49,6 +50,7 @@ class ContributorService implements IService
     protected $translationRepo;
     protected $setting;
     protected $min_bids;
+    protected $userPoint;
 
     public function __construct()
     {
@@ -70,6 +72,7 @@ class ContributorService implements IService
         $this->phraseRepo       =   new PhraseRepo();
         $this->translationRepo  =   new TranslationRepo();
         $this->setting          =   new SettingController();
+        $this->userPoint        =   new UserPointRepo();
 
     }
 
@@ -413,8 +416,14 @@ class ContributorService implements IService
         $familiar_contexts     =   $this->mutualService->getFamiliarContext($user_id);
         if($define):
             foreach($define as $writer):
+                $user_point='N/A';
                 $context_name=$this->contextRepo->getContextName($writer['context_id']);
                 $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
+                $checkPoint=['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id'], 'user_id'=>$writer['user_id'], 'type'=>env('MEANING')];
+                $point=$this->userPoint->getPoint($checkPoint);
+                if($point):
+                    $user_point=$point->point;
+                endif;
                 if(in_array($writer['context_id'], $familiar_contexts)):
                     $route=lang_route('defineMeaning', ['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id']]);
                 else:
@@ -422,14 +431,20 @@ class ContributorService implements IService
                 endif;
                 $user_history[$i]=['route'=>$route,'contribution'=>$writer['meaning'], 'type'=>'writer','date'=>$writer['created_at'],
                     'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
-                    'position'=>$writer['position'], 'coins'=>$writer['coins'], 'status'=>$writer['status']];
+                    'position'=>$writer['position'],'point'=>$user_point, 'coins'=>$writer['coins'], 'status'=>$writer['status']];
                 $i++;
             endforeach;
         endif;
         if($illustrate):
             foreach($illustrate as $writer):
+                $user_point='N/A';
                 $context_name=$this->contextRepo->getContextName($writer['context_id']);
                 $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
+                $checkPoint=['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id'], 'user_id'=>$writer['user_id'], 'type'=>env('ILLUSTRATE')];
+                $point=$this->userPoint->getPoint($checkPoint);
+                if($point):
+                    $user_point=$point->point;
+                endif;
                 if(in_array($writer['context_id'], $familiar_contexts)):
                     $route=lang_route('addIllustrate', ['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id']]);
                 else:
@@ -437,14 +452,20 @@ class ContributorService implements IService
                 endif;
                 $user_history[$i]=['route'=>$route,'contribution'=>$writer['illustrator'], 'type'=>'illustrator','date'=>$writer['created_at'],
                     'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
-                    'position'=>$writer['position'], 'coins'=>$writer['coins'], 'status'=>$writer['status']];
+                    'position'=>$writer['position'],'point'=>$user_point,  'coins'=>$writer['coins'], 'status'=>$writer['status']];
                 $i++;
             endforeach;
         endif;
         if($translator):
             foreach($translator as $writer):
+                $user_point='N/A';
                 $context_name=$this->contextRepo->getContextName($writer['context_id']);
                 $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
+                $checkPoint=['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id'], 'user_id'=>$writer['user_id'], 'type'=>env('TRANSLATE')];
+                $point=$this->userPoint->getPoint($checkPoint);
+                if($point):
+                    $user_point=$point->point;
+                endif;
                 if(in_array($writer['context_id'], $familiar_contexts)):
                     $route=lang_route('addTranslate', ['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id']]);
                 else:
@@ -452,7 +473,7 @@ class ContributorService implements IService
                 endif;
                 $user_history[$i]=['route'=>$route,'contribution'=>$writer['translation'], 'type'=>'translator','language'=>$writer['language'],'date'=>$writer['created_at'],
                     'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
-                    'position'=>$writer['position'], 'coins'=>$writer['coins'], 'status'=>$writer['status']];
+                    'position'=>$writer['position'],'point'=>$user_point, 'coins'=>$writer['coins'], 'status'=>$writer['status']];
                 $i++;
             endforeach;
         endif;

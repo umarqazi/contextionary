@@ -18,8 +18,8 @@
                                         <thead>
                                         <tr>
                                             <th></th>
-                                            <th class="text-center">Points</th>
-                                            <th class="text-right">Earnings</th>
+                                            <th class="text-center">{!! t('Points') !!}</th>
+                                            <th class="text-right">{!! t('Earnings') !!}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -55,15 +55,17 @@
 
                                         </tbody>
                                     </table>
-
-                                    <div class="text-center mt-4">
-                                        <button class="orangeBtn waves-light" data-toggle="modal" data-target="#pointModal">Redeem</button>
-                                    </div>
+                                    @if($sum)
+                                        <div class="text-center mt-4">
+                                            <button class="orangeBtn waves-light" data-toggle="modal" data-target="#pointModal">{!! t('Redeem') !!}</button>
+                                        </div>
+                                    @endif
 
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -71,7 +73,7 @@
     <!-- Modal -->
     <div class="modal fade" id="pointModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content .modal-lg">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">{!! t('Redeem Points') !!}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -100,7 +102,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="orangeBtn waves-light align-center @if(!Input::old('points')) grey @endif" @if(!Input::old('points')) disabled @endif id="request-redeem">{!! t('Send Request') !!}</button>
+                    <a href="{!! lang_route('redeemAllPoints') !!}" class="orangeBtn waves-light">{!! t('Redeem all Points') !!}</a> <button type="submit" class="orangeBtn waves-light align-center @if(!Input::old('points')) grey @endif" @if(!Input::old('points')) disabled @endif id="request-redeem">{!! t('Send Request') !!}</button>
                 </div>
                 {!! Form::close() !!}
             </div>
