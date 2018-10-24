@@ -103,6 +103,18 @@
 
         <div class="col-md-6">
           <div class="customForm-group"><span class="asterick">*</span>
+            {!! Form::select('timezone', Config::get('countries.timezone'), Input::old('timezone'), ['class'=>'customSelect w-100', 'placeholder'=>t('Timezone')]) !!}
+            <span class="focus-border"></span>
+          </div>
+          @if ($errors->has('timezone'))
+            <span class="help-block">
+            <strong>{{ t($errors->first('timezone')) }}</strong>
+          </span>
+          @endif
+        </div>
+
+        <div class="col-md-6">
+          <div class="customForm-group"><span class="asterick">*</span>
             {!! Form::select('native_language', Config::get('constant.Native Language'),null, ['class'=>'customSelect w-100', 'placeholder'=>t('Native Language')]) !!}
           </div>
           @if ($errors->has('native_language'))
@@ -127,7 +139,7 @@
             @endif
           </div>
         </div>
-
+        <div class="col-md-6"></div>
         <div class="col-md-6">
           <div class="customForm-group">
             {!! Form::password('password', ['class'=>'customInput','id'=>"password-field", 'placeholder'=>'Password']) !!}

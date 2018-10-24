@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Vote Meaning') !!}
+    {!! t('Vote Translation') !!}
 @stop
 @section('content')
     <div class="container-fluid contributorMain voteMeaningBg" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $phraseMeaning['context_picture'] !!}); background-size:cover">
@@ -18,10 +18,6 @@
                 <div class="col-md-4 text-center">
                     <p class="whiteText"><strong>{!! t('Phrase') !!}:</strong> {!! $phraseMeaning['phrase_text'] !!}</p>
                 </div>
-
-                <div class="col-md-4 text-center">
-                    <p class="whiteText"><strong>{!! t('Meaning') !!}:</strong> {!! $phraseMeaning['phrase_text'] !!}</p>
-                </div>
             </div>
             {!! Form::open(['url'=>lang_route('postTranslationVote'), 'method'=>'post']) !!}
             <div class="row mt-4">
@@ -35,7 +31,7 @@
                                 @if($meaning['language']==Auth::user()->profile->language_proficiency)
                                     <li data-tab="tab-{!! $key+1 !!}" class="@if(old('meaning')==$meaning['id']) active @endif">
                                         <label class="coin"><input type="radio" name="meaning" @if(old('meaning')==$meaning['id']) checked @endif value="{!! $meaning['id'] !!}"> </label>
-                                        <a href="#tab{!! $key+1 !!}" data-toggle="pill">{!! t('Translation') !!} {!! $key+1 !!}
+                                        <a href="#tab{!! $key+1 !!}" data-toggle="pill" class="text-capitalize">{!! $meaning['phrase_translation'] !!}
                                         </a>
                                     </li>
                                 @endif
@@ -56,7 +52,7 @@
                     </div>
 
                     <div class="text-center">
-                        <a href="#" class="orangeBtn waves-light mb-3 mr-3">{!! t('Return') !!}</a>
+                        <a href="{!! URL::previous() !!}" class="orangeBtn waves-light mb-3 mr-3">{!! t('Return') !!}</a>
                         <button type="submit" class="orangeBtn waves-light mb-3 mr-3 @if(old('meaning')==NULL) grey @endif" @if(old('meaning')==NULL) disabled @endif id="submit-button">{!! t('Submit') !!}</button>
                         <a href="{!! lang_route('poor-quality', ['context_id'=>$phraseMeaning['context_id'],'phrase_id'=>$phraseMeaning['phrase_id'],'type'=>env('TRANSLATE')]) !!}" class="orangeBtn waves-light mb-3">{!! t('Poor Quality') !!}</a>
                     </div>

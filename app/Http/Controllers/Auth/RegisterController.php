@@ -67,7 +67,8 @@ class RegisterController extends Controller
             'pseudonyme'=>'string|nullable',
             'gender'=>'required',
             'phone_number'=>'required',
-            'native_language'=>'required'
+            'native_language'=>'required',
+            'timezone'=>'required'
         ]);
     }
 
@@ -88,6 +89,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'token' => md5(microtime()),
             'email_token' => base64_encode($data['email']),
+            'timezone' => $data['timezone'],
         ]);
         /**
          * Update User Profile
@@ -117,10 +119,13 @@ class RegisterController extends Controller
         Session::put('user', $user);
     }
 
-    public function sendVerificationEmail(){
-        $id=User::where('status',0)->orderBy('id', 'desc')->select('id')->first();
+    public function sendVerificationEmail($id=NULL){
+        if($id==NULL){
+            $user=User::where('status',0)->orderBy('id', 'desc')->select('id')->first();
+            $id=$user->id;
+        }
         if($id){
-            $this->userServices->verificationEmail($id->id);
+            $this->userServices->verificationEmail($id);
         }
         $notification = array(
             'message' => t('You have successfully registered. An email is sent to you for verification.'),

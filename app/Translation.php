@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Translation extends Model
 {
     protected $fillable = [
-        'translation','context_id', 'phrase_id','position', 'coins', 'status', 'user_id', 'language'
+        'translation','context_id', 'phrase_id','position', 'coins', 'status', 'user_id', 'language', 'phrase_translation'
     ];
 
     /**

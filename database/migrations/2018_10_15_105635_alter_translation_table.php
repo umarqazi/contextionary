@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateTransactionTable extends Migration
+class AlterTranslationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class UpdateTransactionTable extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->integer('coins');
-            $table->integer('status');
-            $table->float('amount');
+        Schema::table('translations', function (Blueprint $table) {
+            $table->string('phrase_translation');
         });
     }
 
@@ -27,9 +25,8 @@ class UpdateTransactionTable extends Migration
      */
     public function down()
     {
-        Schema::table('vote_meanings', function (Blueprint $table) {
-            $table->dropColumn('coins');
-            $table->dropColumn('amount');
+        Schema::table('translations', function (Blueprint $table) {
+            $table->dropColumn('phrase_translation');
         });
     }
 }

@@ -12,6 +12,8 @@ use App\Services\RoleService;
 use App\Services\TransactionService;
 use App\Services\UserService;
 use App\User;
+use App\PointsPrice;
+use App\UserCard;
 use Carbon;
 use Config;
 use Encore\Admin\Controllers\ModelForm;
@@ -105,7 +107,8 @@ class UsersController extends Controller
             'first_name'       => 'required',
             'last_name'       => 'required',
             'email'      => 'required|email',
-            'password'   => 'nullable|min:6|confirmed'
+            'password'   => 'nullable|min:6|confirmed',
+            'timezone'   => 'required'
         );
         $validator = Validator::make(Input::all(), $rules);
         // process the login
@@ -129,6 +132,7 @@ class UsersController extends Controller
                 $fileName=$this->register->uploadImage($image, $user->id);
             }
             $user->profile_image=$fileName;
+            $user->timezone=Input::get('timezone');
             $user->save();
             $updateProfile=Profile::where('user_id', $user->id)->first();
             $updateProfile->phone_number=Input::get('phone_number');
@@ -272,12 +276,21 @@ class UsersController extends Controller
 
     public function summary(){
         $transaction=Auth::user()->transaction;
+        $redeemPoints=Auth::user()->redeemPoints;
         $transationRecord=[];
         foreach($transaction as $key=>$record){
             $transationRecord[$key]['created_at']=Carbon::parse($record['created_at'])->format('d/m/Y');
             $transationRecord[$key]['coins']=$record['coins'];
             $transationRecord[$key]['amount']=$record['amount'];
             $transationRecord[$key]['purchase_type']=$record['purchase_type'];
+            $transationRecord[$key]['role']='';
+        }
+        foreach($redeemPoints as $key=>$record){
+            $transationRecord[$key]['created_at']=Carbon::parse($record['created_at'])->format('d/m/Y');
+            $transationRecord[$key]['coins']=$record['points'];
+            $transationRecord[$key]['amount']=$record['earning'];
+            $transationRecord[$key]['purchase_type']='redeem_point';
+            $transationRecord[$key]['role']=$record['type'];
         }
         $transationRecord=array_reverse($transationRecord);
         $records=$this->mutualService->paginatedRecord($transationRecord, 'summary');
@@ -289,17 +302,21 @@ class UsersController extends Controller
      */
     public function redeemPoints(Request $request){
         $modal=$request->modal;
-        return view::make('user.contributor.transactions.redeem-points')->with('modal', $modal);
+        $prices=PointsPrice::all();
+        return view::make('user.contributor.transactions.redeem-points')->with(['modal'=> $modal, 'pointsPrices'=>$prices]);
     }
 
     /**
-     *
+     * @param Request $request
+     * @return mixed
      */
     public function saveEarning(Request $request){
         $point=Auth::user()->userPoints->where('type', $request->type)->sum('point');
+        $earning=Auth::user()->redeemPoints->where('type', $request->type)->sum('points');
+        $reamaining=$point-$earning;
         $validators = Validator::make($request->all(), [
             'type'       => 'required',
-            'points'     => 'numeric|min:10|max:'.$point,
+            'points'     => 'numeric|min:10|max:'.$reamaining,
         ]);
         if ($validators->fails()) {
             return redirect::to(lang_url('redeem-points'))
@@ -307,10 +324,13 @@ class UsersController extends Controller
                 ->withInput()->with('modal', '1');
         }
         $earning=0;
-        foreach(Config::get('constant.points_range') as $key2=>$range):
-            $range_value=explode('-', $key2);
-            if(($range_value[0] >= $request->points) && ($request->points <= $range_value[1])):
-                $earning=$range*$request->points;
+        $pointsPrices=PointsPrice::all();
+        foreach($pointsPrices as $key2=>$range):
+            if($request->points >=1000 && ($range['min_points']==0) && ($request->points >= $range['max_points'])):
+                $earning=$range['price']*$request->points;
+                break;
+            elseif(($request->points >= $range['min_points']) && ($request->points <= $range['max_points'])):
+                $earning=$range['price']*$request->points;
                 break;
             endif;
         endforeach;
@@ -323,5 +343,39 @@ class UsersController extends Controller
         $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$request->points, 'earning'=>$earning];
         Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
         return Redirect::to(lang_url('redeem-points'))->with($notification);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function activeUserPlan(){
+        $role=Auth::user()->getRoleNames();
+        $currentDate=Carbon::now();
+        $duration=0;
+        $plans='';
+        $cards='';
+        if(Auth::check()):
+            $plans=Auth::user()->transaction->where('status','1')->first();
+            if($plans):
+                $start = Carbon::parse($plans->expiry_date);
+                $duration = $currentDate->diffInDays($start);
+            endif;
+            $cards=Auth::user()->userCards;
+        endif;
+        return view::make('user.user_plan.plan.active_plan')->with(['days'=>$duration, 'activePlan'=>$plans, 'cards'=>$cards]);
+    }
+
+    /**
+     * @param UserCard $card
+     * @return mixed
+     * @throws \Exception
+     */
+    public function deleteCard(UserCard $card){
+        $card->delete();
+        $notification = array(
+            'message' => trans('content.card_deleted'),
+            'alert_type' => 'success'
+        );
+        return Redirect::to(lang_url('active-plan'))->with($notification);
     }
 }

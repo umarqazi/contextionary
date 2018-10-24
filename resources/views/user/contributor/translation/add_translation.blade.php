@@ -45,11 +45,7 @@
                 <div class="col-md-12">
                     {!! Form::open(['url'=>lang_route('postTranslate'),'class'=>'','enctype'=>'multipart/form-data','method'=>'post', 'id'=>'form-submission']) !!}
 
-                    <label class="customLabel">{!! t('Translation') !!}</label>
-                    {!! Form::textarea('translation', null, ['maxlength'=>"2500",'id'=>'meaning-area','class'=>'enter-phrase' ,'placeholder'=>t('Translate Phrase')]) !!}
-                    @if ($errors->has('translation'))
-                        <div class="help-block"><strong>{{ $errors->first('translation') }}</strong></div>
-                    @endif
+                    @include('user.contributor.translation')
                     {!! Form::hidden('context_id', $data['context_id'], []) !!}
                     {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
 
@@ -68,10 +64,7 @@
                     <div class="col-md-12">
 
                         {!! Form::open(['url'=>lang_route('postTranslate'),'class'=>'','enctype'=>'multipart/form-data','method'=>'post', 'id'=>'form-submission']) !!}
-                        {!! Form::textarea('translation', $data['translation']['translation'], ['maxlength'=>"2500",'id'=>'meaning-area','class'=>'enter-phrase' ,'placeholder'=>t('Translate Phrase')]) !!}
-                        @if ($errors->has('illustrate'))
-                            <div class="help-block"><strong>{{ $errors->first('illustrate') }}</strong></div>
-                        @endif
+                        @include('user.contributor.translation')
                         {!! Form::hidden('context_id', $data['context_id'], []) !!}
                         {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
                         {!! Form::hidden('id', $data['translation']['id'], []) !!}
@@ -85,6 +78,16 @@
                 {!! Form::close() !!}
             </div>
             <div class="show-bid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="customLabel mt-1"><strong>{!! t('Phrase Translation') !!}: </strong> {!! $data['translation']['phrase_translation'] !!}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="customLabel mt-1"><strong>{!! t('Meaning Translation') !!}</strong></label>
+                    </div>
+                </div>
                 <div class="voteMeaningBg defineMeaningBackground">
                     <div class="tab-content contextContent ">
                         <div id="tab1" class="tab-pane mCustomScrollbar fade show active">
@@ -92,6 +95,15 @@
                         </div>
                     </div>
                 </div>
+                @if($data['translation']['coins'])
+                    <div class="row ">
+                        <div class="col-md-12">
+                            <div class="coinsWrapper">
+                                <span class="white-text">{!! t('Bid') !!}:  <span class="green-color">{!! $data['translation']['coins'] !!} {!! t('Coins') !!}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 @if($data['close_bid']!='1')
                     {!! Form::open(['url'=>lang_route('applyBidding'), 'method'=>'post', 'id'=>'bid-submission']) !!}
                     @include('user.contributor.bid')

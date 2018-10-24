@@ -432,3 +432,12 @@ input[type=number] {
 .languageBar .list a{
   color:#f7941d;
 }
+.fancybox-lock .fancybox-overlay{
+  z-index: 100000;
+}
+.dashBoard-container .userHeader .userAvtar{
+  cursor:pointer;
+}
+.profile-anchor:hover{
+  color:#737373 !important;
+}

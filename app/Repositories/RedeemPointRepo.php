@@ -44,6 +44,13 @@ class RedeemPointRepo
      * get redeem points of other users
      */
     public function otherContributors(){
-        return $this->redeemPoints->where('user_id','!=', Auth::user()->id)->selectRaw('sum(earning) as sum, type')->groupBy('type')->get();
+        $otherPoints=$this->redeemPoints->selectRaw('sum(earning) as sum, type, user_id')->groupBy('type','user_id')->orderBy('sum', 'desc')->get();
+        $types=[env('MEANING')=>0,env('ILLUSTRATE')=>0,env('TRANSLATE')=>0];
+        foreach($otherPoints as $key=>$points):
+            if($types[$points['type']]==0):
+                $types[$points['type']]=$points['sum'];
+            endif;
+        endforeach;
+        return $types;
     }
 }

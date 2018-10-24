@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'first_name', 'last_name','status', 'token', 'email_token'
+        'name', 'email', 'password', 'first_name', 'last_name','status', 'token', 'email_token','timezone'
     ];
 
     /**
@@ -96,5 +96,11 @@ class User extends Authenticatable
      */
     public function userPoints(){
         return $this->hasMany(UserPoint::class);
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userCards(){
+        return $this->hasMany(UserCard::class);
     }
 }

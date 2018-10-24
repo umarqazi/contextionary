@@ -135,7 +135,7 @@ $(document).ready(function () {
             $('#bid-button').removeClass('grey');
             $('#bid-button').removeAttr("disabled", true);
         }
-        if(coins > 0){
+        if(coins > 1){
             $(".coins").val(+coins - 1);
         }
     });
@@ -161,3 +161,8 @@ $(document).ready(function () {
     });
 })(jQuery);
 
+$('#credit-card').on('keypress change', function () {
+    $(this).val(function (index, value) {
+        return value.replace(/\W/gi, '').replace(/(.{4})/g, '$1 ');
+    });
+});
