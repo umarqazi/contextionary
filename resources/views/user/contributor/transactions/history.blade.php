@@ -33,6 +33,7 @@
                                     <th>{!! t('Context Name') !!}</th>
                                     <th>{!! t('Phrase Name') !!}</th>
                                     <th>{!! t('Position') !!}</th>
+                                    <th>{!! t('Points') !!}</th>
                                     <th>{!! t('Coins') !!}</th>
                                     <th>{!! t('Status') !!}</th>
                                     <th>{!! t('Action') !!}</th>
@@ -54,9 +55,10 @@
                                             <td>{!! $userHistory['date'] !!}</td>
                                             <td>@if($userHistory['type']=='illustrator') <img src="{!! asset('storage') !!}/{!! $userHistory['contribution']  !!}" class="img-thumbnail"> @else {!! substr($userHistory['contribution'],0,150) !!}@endif</td>
                                             <td><span class="text-capitalize">{!! $userHistory['type'] !!}</span></td>
-                                            <td>{!! $userHistory['context_name'] !!}</td>
-                                            <td>{!! $userHistory['phrase_name'] !!}</td>
-                                            <td>{!! Config::get('constant.position.'.$userHistory['position']) !!}</td>
+                                            <td class="text-capitalize">{!! $userHistory['context_name'] !!}</td>
+                                            <td class="text-capitalize">{!! $userHistory['phrase_name'] !!}</td>
+                                            <td>{!! ($userHistory['position'])? Config::get('constant.position.'.$userHistory['position']):'N/A' !!}</td>
+                                            <td>{!! ($userHistory['point']) !!}</td>
                                             <td>{!! $userHistory['coins'] !!}</td>
                                             <td><strong class="{!! $class !!}">{!! Config::get('constant.status.'.$userHistory['status']) !!}</strong></td>
                                             <td>@if($userHistory['route'])<a href="{!!  $userHistory['route']!!}" class="btn btn-primary">View</a>@endif</td>

@@ -9,7 +9,7 @@
         <div class="col-md-12">
             @include('layouts.toaster')
         </div>
-        <div class="col-md-8 col-lg-8">
+        <div class="col-md-9 col-lg-9">
             <div class="userBlock">
                 <div class="img-holder">
                     @if(Auth::user()->profile_image)
@@ -36,6 +36,7 @@
                       <p>{!! $user->profile->bio!!}</p>
                   </div>
                 @endif
+                <a href="{!! lang_route('edit-profile') !!}" class="orangeBtn mt-4">{!! t('Edit Profile') !!}</a>
             </div>
         </div>
 

@@ -16,6 +16,7 @@ MultiLang::routeGroup(function($router) {
         Route::get('/', function () {return view('landing');})->name('homescreen');
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('verificationEmail', 'Auth\RegisterController@sendVerificationEmail');
+        Route::get('resend-email/{id}', 'Auth\RegisterController@sendVerificationEmail');
         Route::get('/verifyEmail/{token}', 'Auth\RegisterController@verifyEmail');
         Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
         Route::group(['middleware'=>['auth']], function(){
@@ -25,7 +26,6 @@ MultiLang::routeGroup(function($router) {
                 Route::get('/',  'UsersController@profile')->name('profile');
                 Route::get('edit-profile',  'UsersController@edit')->name('edit-profile');
             });
-            Route::get('edit-roles',  'UsersController@editRoles')->name('edit-roles');
             Route::get('selectPlan',  'UsersController@selectPlan')->name('selectPlan');
             Route::get('userPlan',  'UsersController@userPlan')->name('userPlan');
             Route::get('payment/{plan}',  'UsersController@showPaymentInfo')->name('payment');
@@ -34,6 +34,7 @@ MultiLang::routeGroup(function($router) {
             Route::get('contributorPlan',  'ContributorController@contributorPlan')->name('contributorPlan');
             Route::post('saveContributor', 'ContributorController@saveContributor')->name('saveContributor');
             Route::group([ 'middleware'=>'checkContributor'], function(){
+                Route::get('edit-roles',  'UsersController@editRoles')->name('edit-roles');
                 Route::group(array('prefix' => 'define', 'middleware'=>'define'), function(){
                     Route::get('/',  'ContributorController@define')->name('define');
                     Route::get('define-meaning/{context_id}/{phrase_id}',  'ContributorController@defineMeaning')->name('defineMeaning');
@@ -76,8 +77,9 @@ MultiLang::routeGroup(function($router) {
                 Route::get('summary',  'UsersController@summary')->name('summary');
                 Route::get('redeem-points',  'UsersController@redeemPoints')->name('redeemPoints');
                 Route::post('redeem-points',  'UsersController@saveEarning')->name('saveEarning');
+                Route::get('redeem-all-points',  'UsersController@redeemAllPoints')->name('redeemAllPoints');
                 Route::get('user-history',  'ContributorController@history')->name('history');
-                Route::post('search',  'ContributorController@search')->name('search');
+                Route::post('user-history/search',  'ContributorController@search')->name('search');
             });
             Route::group([ 'middleware'=>'checkUser'], function(){
                 Route::get('start-pictionary',  'PictionaryController@index')->name('start-pictionary');
@@ -97,6 +99,8 @@ MultiLang::routeGroup(function($router) {
                 Route::post('verify-spot-the-intruder',  'SpotIntruderController@verifyAnswer');
                 Route::get('tutorials',  'TutorialsController@index')->name('tutorials');
                 Route::get('/switchToContributor', 'UsersController@switchToContributor')->name('switchToContributor');
+                Route::get('/active-plan', 'UsersController@activeUserPlan')->name('activeUserPlan');
+                Route::get('/delete-card/{card}', 'UsersController@deleteCard')->name('deleteCard');
             });
         });
         Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');
