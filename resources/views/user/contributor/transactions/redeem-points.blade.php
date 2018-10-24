@@ -84,7 +84,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            {!! Form::select('type', [''=>'Select Type',env('MEANING')=>'Writer', env('ILLUSTRATE')=>'Illustrator', env('TRANSLATE')=>'Translator'], null,['class'=>'form-control role', 'onchange'=>'getCoins()']) !!}
+                            {!! Form::select('type', [''=>'Select Type',env('MEANING')=>'Writer', env('ILLUSTRATE')=>'Illustrator', env('TRANSLATE')=>'Translator'], null,['id'=>'role-dropdown','class'=>'form-control role', 'onchange'=>'getCoins()']) !!}
                             @if ($errors->has('type'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('type') }}</strong>
@@ -92,7 +92,7 @@
                             @endif
                         </div>
                         <div class="col-md-6">
-                            {!! Form::text('points', null,['class'=>'form-control', 'id'=>'role_points']) !!}
+                            {!! Form::text('points', null,['class'=>'form-control', 'id'=>'role_points', 'onkeyup'=>'checkPoint()']) !!}
                             @if ($errors->has('points'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('points') }}</strong>
@@ -102,7 +102,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="{!! lang_route('redeemAllPoints') !!}" class="orangeBtn waves-light">{!! t('Redeem all Points') !!}</a> <button type="submit" class="orangeBtn waves-light align-center @if(!Input::old('points')) grey @endif" @if(!Input::old('points')) disabled @endif id="request-redeem">{!! t('Send Request') !!}</button>
+                    <a onclick="redeemPoint('<?php echo lang_route("redeemAllPoints") ?>')" class="orangeBtn waves-light">{!! t('Redeem all Points') !!}</a>
+                    <button type="submit" class="orangeBtn waves-light align-center @if(!Input::old('points')) grey @endif" @if(!Input::old('points')) disabled @endif id="request-redeem">{!! t('Send Request') !!}</button>
                 </div>
                 {!! Form::close() !!}
             </div>
