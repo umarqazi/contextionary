@@ -13,6 +13,7 @@ use App\Services\TransactionService;
 use App\Services\UserService;
 use App\User;
 use App\PointsPrice;
+use App\UserCard;
 use Carbon;
 use Config;
 use Encore\Admin\Controllers\ModelForm;
@@ -306,7 +307,8 @@ class UsersController extends Controller
     }
 
     /**
-     *
+     * @param Request $request
+     * @return mixed
      */
     public function saveEarning(Request $request){
         $point=Auth::user()->userPoints->where('type', $request->type)->sum('point');
@@ -341,5 +343,39 @@ class UsersController extends Controller
         $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$request->points, 'earning'=>$earning];
         Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
         return Redirect::to(lang_url('redeem-points'))->with($notification);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function activeUserPlan(){
+        $role=Auth::user()->getRoleNames();
+        $currentDate=Carbon::now();
+        $duration=0;
+        $plans='';
+        $cards='';
+        if(Auth::check()):
+            $plans=Auth::user()->transaction->where('status','1')->first();
+            if($plans):
+                $start = Carbon::parse($plans->expiry_date);
+                $duration = $currentDate->diffInDays($start);
+            endif;
+            $cards=Auth::user()->userCards;
+        endif;
+        return view::make('user.user_plan.plan.active_plan')->with(['days'=>$duration, 'activePlan'=>$plans, 'cards'=>$cards]);
+    }
+
+    /**
+     * @param UserCard $card
+     * @return mixed
+     * @throws \Exception
+     */
+    public function deleteCard(UserCard $card){
+        $card->delete();
+        $notification = array(
+            'message' => trans('content.card_deleted'),
+            'alert_type' => 'success'
+        );
+        return Redirect::to(lang_url('active-plan'))->with($notification);
     }
 }

@@ -15,5 +15,6 @@ return [
     'translator_added'=>'Your Translation has been added. You can bid now',
     'profile_updated'=>'Successfully updated your Profile!',
     'user_deleted'=>'Successfully deleted the user!',
-    'redeem_points'=>'Your request has been sent to the admin'
+    'redeem_points'=>'Your request has been sent to the admin',
+    'card_deleted'=>'Card has been deleted Successfully'
 ];

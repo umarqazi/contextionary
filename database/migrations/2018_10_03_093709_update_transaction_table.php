@@ -15,7 +15,8 @@ class UpdateTransactionTable extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             $table->integer('coins');
-            $table->integer('amount');
+            $table->integer('status');
+            $table->float('amount');
         });
     }
 

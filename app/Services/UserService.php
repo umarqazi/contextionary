@@ -12,6 +12,7 @@ namespace App\Services;
 
 use App\Repositories\CoinsRepo;
 use App\Repositories\RedeemPointRepo;
+use App\Repositories\UserCardRepo;
 use App\Repositories\UserPointRepo;
 use App\User;
 use Illuminate\Http\Request;
@@ -50,6 +51,10 @@ class UserService extends BaseService implements IService
      */
     protected $redeemRepo;
     /**
+     * @var
+     */
+    protected $userCard;
+    /**
      * UserService constructor.
      */
     public function __construct()
@@ -59,6 +64,7 @@ class UserService extends BaseService implements IService
         $this->coin             =   new CoinsRepo();
         $this->userPoints       =   new UserPointRepo();
         $this->redeemRepo       =   new RedeemPointRepo();
+        $this->userCard         =   new UserCardRepo();
     }
 
     /**
@@ -150,13 +156,33 @@ class UserService extends BaseService implements IService
     }
 
     /**
-     *
+     * @return mixed
      */
     public function getUserPoints(){
         return $this->userPoints->points();
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function saveRedeemPoints($data){
         return $this->redeemRepo->create($data);
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function getCard($data){
+        return $this->userCard->getCard($data);
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function insertCardInfo($data){
+        return $this->userCard->create($data);
     }
 }

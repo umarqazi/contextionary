@@ -27,19 +27,19 @@
             <ul class="userMenu">
               @if(Auth::user()->hasRole(Config::get('constant.userRole')))
                 <li>
-                  <a href="#">
-                    <div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> User Plan
+                  <a href="{!! lang_route('activeUserPlan') !!}">
+                    <div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> {!! t('User Plan') !!}
                   </a>
                 </li>
               @endif
               <li>
                 <a href="{!! lang_route('profile') !!}">
-                  <div class="img-holder"><img src="{!! asset('assets/images/view-profile-icon.png') !!}"></div> View Profile
+                  <div class="img-holder"><img src="{!! asset('assets/images/view-profile-icon.png') !!}"></div> {!! t('View Profile') !!}
                 </a>
               </li>
               <li>
                 <a href="{!! lang_route('logout') !!}">
-                  <div class="img-holder"><img src="{!! asset('assets/images/logout-icon.png') !!}"></div> Log out
+                  <div class="img-holder"><img src="{!! asset('assets/images/logout-icon.png') !!}"></div> {!! t('Logout') !!}
                 </a>
               </li>
             </ul>
