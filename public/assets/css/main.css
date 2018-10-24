@@ -2469,8 +2469,9 @@ aside .topLinks {
     position: relative;
 }
 .glossarybg .glossary-block .img-holder img {
-    width: 100%;
     max-height: 295px;
+    min-height: 100%;
+    min-width: 100%;
 }
 .glossarybg .glossary-block .img-holder .mask {
     position: absolute;
