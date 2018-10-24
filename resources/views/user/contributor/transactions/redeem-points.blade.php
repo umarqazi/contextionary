@@ -23,7 +23,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php $sum=0;?>
+                                        <?php $sum=0; $total_points=0;?>
                                         @if($contributions['points'])
                                             @foreach($contributions['points'] as $key=>$point)
                                                 <?php $earning=0; ?>
@@ -38,7 +38,7 @@
                                                     endif;
                                                     ?>
                                                 @endforeach
-                                                <?php $sum=$sum+$earning;?>
+                                                <?php $sum=$sum+$earning; $total_points=$total_points+$point?>
                                                 <tr>
                                                     <td><span class="text-uppercase">{!! Config::get('constant.contributorNames.'.$key) !!}</span></td>
                                                     <td class="text-center"><span id="{!! $key !!}">{!! $point !!}</span></td>
@@ -48,7 +48,7 @@
                                             @endforeach
                                             <tr>
                                                 <td>Total</td>
-                                                <td class="text-center"></td>
+                                                <td class="text-center">{!! $total_points !!}</td>
                                                 <td class="text-right">${!! $sum !!}</td>
                                             </tr>
                                         @endif
