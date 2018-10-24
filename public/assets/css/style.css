@@ -441,3 +441,6 @@ input[type=number] {
 .profile-anchor:hover{
   color:#737373 !important;
 }
+.menuListing li.active a span{
+  color:#f7941d;
+}
