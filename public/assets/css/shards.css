@@ -4057,7 +4057,7 @@ button.list-group-item-dark.active {
 
 @media (min-width: 576px) {
     .modal-dialog {
-        max-width: 500px;
+        max-width: 600px;
         margin: 1.875rem auto;
     }
     .modal-dialog-centered {

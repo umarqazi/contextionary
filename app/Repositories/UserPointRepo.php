@@ -44,8 +44,8 @@ class UserPointRepo
      * @return mixed
      * get points of login user
      */
-    public function points(){
-        return $this->userPoints->where('user_id', Auth::user()->id)->selectRaw('sum(point) as sum, type')->groupBy('type')->get();
+    public function points($check){
+        return $this->userPoints->where($check)->selectRaw('sum(point) as sum, type')->groupBy('type')->get();
     }
 
     /**
@@ -76,5 +76,9 @@ class UserPointRepo
             endif;
         endforeach;
         return $types;
+    }
+
+    public function getPoint($data){
+        return $this->userPoints->where($data)->first();
     }
 }

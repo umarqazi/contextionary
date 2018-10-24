@@ -31,8 +31,8 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
 
         $coins=Auth::user()->coins;
         /* get points of login user*/
-
-        $points_group=$pointsRepo->points();
+        $user_data=['user_id'=>Auth::user()->id];
+        $points_group=$pointsRepo->points($user_data);
 
         $allContributions['otherContributors']=$pointsRepo->otherContributors();
 
