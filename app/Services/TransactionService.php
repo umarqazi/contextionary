@@ -51,7 +51,6 @@ class TransactionService extends BaseService implements IService
     public function paymentProcess($request){
         $input = array_except($request,array('_token'));
         try {
-//            $cardInfo['user_id']=$request['user_id'];
             if($request['type']=='buy_package') {
                 $cus_data = $this->createOrFetchCustomer($request);
                 $arr= [
