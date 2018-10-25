@@ -68,6 +68,7 @@ class PointsController extends Controller
     {
         return Admin::grid(Point::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->column('Name')->display(function () {
                 return $this->slug;
             })->sortable();
