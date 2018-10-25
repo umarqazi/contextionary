@@ -67,6 +67,7 @@ class BiddingExpiryController extends Controller
         return Admin::grid(BiddingExpiry::class, function (Grid $grid) use ($status){
             $grid->model()->where('status', '=', $status);
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->option('useWidth', true);
             $grid->column('context_id')->display(function ($context_id) {
                 $context = Context::where('context_id','=',$context_id)->first();
