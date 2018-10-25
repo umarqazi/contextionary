@@ -67,7 +67,7 @@ $(document).ready(function () {
     });
 
     $(".rightMenu").click(function () {
-        $(".rightMenu .rightDropdown").fadeIn();
+        $(".rightMenu .rightDropdown").toggle();
     });
 
     $(".rightMenu").click(function (event) {
