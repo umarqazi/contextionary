@@ -61,6 +61,7 @@ class PictionaryController extends Controller
     {
         return Admin::grid(Pictionary::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->question()->sortable();
             $grid->answer()->sortable();
             $grid->actions(function (Grid\Displayers\Actions $actions) {
