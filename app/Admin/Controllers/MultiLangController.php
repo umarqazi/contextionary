@@ -39,6 +39,7 @@ class MultiLangController extends Controller
     {
         return Admin::grid(Text::class, function (Grid $grid) {
             $grid->key('Key')->sortable();
+            $grid->disableExport();
             $grid->column('lang', 'Language')->sortable();
             $grid->column('value', 'Text')->sortable()->editable();
 //            $grid->scope()->sortable();
