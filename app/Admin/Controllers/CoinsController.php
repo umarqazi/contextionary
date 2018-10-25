@@ -67,6 +67,7 @@ class CoinsController extends Controller
     {
         return Admin::grid(Coin::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->option('useWidth', true);
             $grid->price()->sortable();
             $grid->coins()->sortable();
