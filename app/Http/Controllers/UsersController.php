@@ -116,7 +116,7 @@ class UsersController extends Controller
         $validator = Validator::make(Input::all(), $rules);
         // process the login
         if ($validator->fails()) {
-            return Redirect::to('/edit-profile')
+            return Redirect::to(lang_route('edit-profile'))
                 ->withErrors($validator)
                 ->withInput(Input::except('password'));
         } else {
