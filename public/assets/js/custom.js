@@ -34,7 +34,7 @@ $(document).ready(function () {
         });
     });
 
-    $(".languageBar").click(function () {
+    $(".languageBar").click(function (event) {
         event.stopPropagation();
         $(this).find(".list").toggle();
         $(".list li").click(function () {
