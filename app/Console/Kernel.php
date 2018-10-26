@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CheckMeaning',
         'App\Console\Commands\CheckIllustratorBids',
         'App\Console\Commands\CheckTranslations',
+        'App\Console\Commands\SubscriptionCheck',
     ];
 
     /**
@@ -31,6 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('meaning:vote')->everyMinute();
         $schedule->command('illustrator:bids')->everyMinute();
         $schedule->command('translations:bids')->everyMinute();
+        $schedule->command('subscription:check')->daily();
     }
 
     /**
