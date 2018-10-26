@@ -444,3 +444,10 @@ input[type=number] {
 .menuListing li.active a span{
   color:#f7941d;
 }
+.contactPage .contactInfo li .img-holder img{
+  width:50%;
+  display:inline-block;
+}
+.hide-div{
+  display:none;
+}
