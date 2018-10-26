@@ -868,7 +868,7 @@ aside {
     -moz-transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
-    background: #333b47;
+    background: #333b47 !important;
 }
 aside .logBg {
     width: 100%;
