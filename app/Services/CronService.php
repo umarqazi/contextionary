@@ -16,11 +16,14 @@ use App\Repositories\ContextRepo;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\IllustratorRepo;
 use App\Repositories\PhraseRepo;
+use App\Repositories\TransactionRepo;
 use App\Repositories\TranslationRepo;
 use App\Repositories\UserPointRepo;
+use App\Repositories\UserRepo;
 use App\Repositories\VoteExpiryRepo;
 use App\Repositories\VoteMeaningRepo;
 use Carbon\Carbon;
+use Cartalyst\Stripe\Stripe;
 use Config;
 use Mail;
 use App\Mail\Meanings;
@@ -43,24 +46,30 @@ class CronService
     protected $contextPhrase;
     protected $context;
     protected $phrase;
+    protected $transactionRepo;
+    protected $userRepo;
+    protected $stripe;
 
     /**
      * CronService constructor.
      */
     public function __construct()
     {
-        $this->biddingRepo      =   new BiddingExpiryRepo();
-        $this->defineMeaning    =   new DefineMeaningRepo();
-        $this->voteService      =   new VoteService();
-        $this->illustrator      =   new IllustratorRepo();
-        $this->voteExpiryRepo   =   new VoteExpiryRepo();
-        $this->voteMeaningRepo  =   new VoteMeaningRepo();
-        $this->userPoint        =   new UserPointRepo();
-        $this->translateRepo    =   new TranslationRepo();
-        $this->setting          =   new SettingController();
-        $this->contextPhrase    =   new ContextPhraseRepo();
-        $this->context          =   new ContextRepo();
-        $this->phrase           =   new PhraseRepo();
+        $this->biddingRepo          =   new BiddingExpiryRepo();
+        $this->defineMeaning        =   new DefineMeaningRepo();
+        $this->voteService          =   new VoteService();
+        $this->illustrator          =   new IllustratorRepo();
+        $this->voteExpiryRepo       =   new VoteExpiryRepo();
+        $this->voteMeaningRepo      =   new VoteMeaningRepo();
+        $this->userPoint            =   new UserPointRepo();
+        $this->translateRepo        =   new TranslationRepo();
+        $this->setting              =   new SettingController();
+        $this->contextPhrase        =   new ContextPhraseRepo();
+        $this->context              =   new ContextRepo();
+        $this->phrase               =   new PhraseRepo();
+        $this->transactionRepo      =   new TransactionRepo();
+        $this->userRepo             =   new UserRepo();
+        $this->stripe               =   Stripe::make(env('STRIPE_SECRET'));
     }
 
     /**
@@ -225,5 +234,20 @@ class CronService
                 endif;
             endforeach;
         endif;
+    }
+
+    public function subscriptionCheck(){
+        $transactions = $this->transactionRepo->getRecord(['sub'=> 1]);
+        foreach ($transactions as $transaction){
+            $user = $this->userRepo->findById($transaction->user_id);
+            if($transaction->expiry_date != '' && $transaction->expiry_date < carbon::now() && $transaction->status == 1){
+                $subscription = $this->stripe->subscriptions()->find($user->cus_id, $transaction->transaction_id);
+                if($subscription['status'] == 'trialing' || $subscription['status'] == 'active'){
+                    $this->transactionRepo->update(['id' => $transaction->id], ['expiry_date' => date("Y-m-d H:i:s", $subscription['current_period_end'])]);
+                }else{
+                    $this->transactionRepo->update($transaction->id, ['status' => 0]);
+                }
+            }
+        }
     }
 }
