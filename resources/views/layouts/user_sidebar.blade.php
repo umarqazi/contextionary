@@ -24,7 +24,7 @@
 
     </div>
     <ul class="menuListing">
-        <li class="{{ (Request::segment(2) == 'pictionary') ? 'active' : '' }}"><a href="{!! lang_route('start-pictionary') !!}" style="{{ (Request::segment(2) == 'start-pictionary') ? 'background-position: 0 -40px' : '' }}"><span>Pictionary</span></a></li>
+        <li class="{{ (Request::segment(2) == 'pictionary') ? 'active' : '' }}"><a href="{!! lang_route('start-pictionary') !!}" style="{{ (Request::segment(2) == 'pictionary') ? 'background-position: 0 -40px' : '' }}"><span>Pictionary</span></a></li>
         <li class="{{ (Request::segment(2) == 'intruder') ? 'active' : '' }}"><a href="{!! lang_route('intruder') !!}" class="menu2" style="{{ (Request::segment(2) == 'intruder') ? 'background-position: 0 -40px' : '' }}"><span>Spot the Intruder</span></a></li>
         <li class="{{ (Request::segment(2) == 'hangman') ? 'active' : '' }}"><a href="#" class="menu3" style="{{ (Request::segment(2) == 'hangman') ? 'background-position: 0 -40px' : '' }}"><span>Hangman</span></a></li>
     </ul>
