@@ -8,7 +8,7 @@ use App\User;
 class Transaction extends Model
 {
     protected $fillable = [
-        'transaction_id', 'package_id', 'user_id', 'expiry_date', 'purchase_type', 'coins', 'amount', 'status'
+        'transaction_id', 'package_id', 'user_id', 'expiry_date', 'purchase_type', 'coins', 'amount', 'status', 'sub',
     ];
 
     public function users(){
