@@ -12,6 +12,7 @@ namespace App\Services;
 
 use App\Repositories\CoinsRepo;
 use App\Notifications\InvoicePaid;
+use App\Repositories\PlanRepo;
 use App\Repositories\UserRepo;
 use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
@@ -30,6 +31,7 @@ class TransactionService extends BaseService implements IService
     protected $coinsRepo;
     protected $userRepo;
     protected $stripe;
+    protected $plan_service;
 
     /**
      * TransactionService constructor.
@@ -41,7 +43,8 @@ class TransactionService extends BaseService implements IService
         $this->contService      =   new ContributorService();
         $this->coinsRepo        =   new CoinsRepo();
         $this->userRepo         =   new UserRepo();
-        $this->stripe           = Stripe::make(env('STRIPE_SECRET'));
+        $this->stripe           =   Stripe::make(env('STRIPE_SECRET'));
+        $this->plan_service     =   new PlanService();
     }
 
     /**
@@ -52,14 +55,29 @@ class TransactionService extends BaseService implements IService
         $input = array_except($request,array('_token'));
         try {
             if($request['type']=='buy_package') {
-                $cus_data = $this->createOrFetchCustomer($request);
-                $arr= [
-                    'customer' => $cus_data['cus_id'],
-                    'card' => $cus_data['card_id'],
-                    'currency' => 'USD',
-                    'amount' => $request['price'],
-                    'description' => 'Add in wallet',
-                ];
+                if($request['auto']=='on'){
+                    $user       =   $this->userRepo->findById($request['user_id']);
+                    $token      =   $this->getToken($request);
+                    $cus_data   =   $this->createOrFetchCustomer($user, $token['id']);
+                    $token      =   $this->getToken($request);
+                    $card_data  =   $this->createCard($cus_data['cus_id'], $token['id']);
+                    $plan       =   $this->plan_service->get($request['package_id']);
+                    return $this->createSubscription($cus_data['cus_id'], $plan->plan_id, $request);
+                }else{
+                    $user       =   $this->userRepo->findById($request['user_id']);
+                    $token      =   $this->getToken($request);
+                    $cus_data   =   $this->createOrFetchCustomer($user, $token['id']);
+                    $token      =   $this->getToken($request);
+                    $card_data  =   $this->createCard($cus_data['cus_id'], $token['id']);
+                    $arr= [
+                        'customer'      => $cus_data['cus_id'],
+                        'card'          => $card_data['id'],
+                        'currency'      => 'USD',
+                        'amount'        => $request['price'],
+                        'description'   => 'Add in wallet',
+                    ];
+                    return $this->createCharge($arr, $request);
+                }
             }else{
                 $token = $this->getToken($request);
                 $arr= [
@@ -68,48 +86,7 @@ class TransactionService extends BaseService implements IService
                     'amount' => $request['price'],
                     'description' => 'Add in wallet',
                 ];
-            }
-            $charge = $this->stripe->charges()->create($arr);
-            if($charge['status'] == 'succeeded') {
-                /**
-                 * Write Here Your Database insert logic.
-                 */
-                $latestCard =   [
-                                    'user_id'   =>  $request['user_id'],
-                                    'last4'     =>  $charge['source']['last4']
-                                ];
-                $getCard    =   $this->userServices->getCard($latestCard);
-                if(empty($getCard)):
-                    $latestCard['exp_month']    =   $charge['source']['exp_month'];
-                    $latestCard['exp_year']     =   $charge['source']['exp_year'];
-                    $latestCard['card_id']      =   $charge['source']['id'];
-                    $latestCard['brand']        =   $charge['source']['brand'];
-                    $this->userServices->insertCardInfo($latestCard);
-                endif;
-                $data=[
-                        'transaction_id'=>  $charge['id'],
-                        'user_id'       =>  $request['user_id'],
-                        'package_id'    =>  $request['package_id'],
-                        'type'          =>  $request['type'],
-                        'amount'        =>  $request['price']
-                ];
-                $updateTransaction  =   $this->success($data);
-                if($request['type']=='purchase_coins'){
-                    $updateUser=$this->contService->updateCoins($request['user_id'], $request['package_id']);
-                    return ['status'=>true];
-                }else{
-                    $data=['user_roles'=>$request['package_id']];
-                    $this->userServices->updateRecord(Auth::user()->id, $data);
-                    $notify=$this->userServices->notifyUser($request['user_id'], $updateTransaction);
-                    return ['status'=>true, 'user'=>$notify];
-                }
-
-            } else {
-                $notification = array(
-                    'message' => trans('content.no_money'),
-                    'alert_type' => 'danger'
-                );
-                return ['status'=>false, 'notification'=>$notification];
+                return $this->createCharge($arr, $request);
             }
         } catch (Exception $e) {
             $notification = array(
@@ -132,38 +109,155 @@ class TransactionService extends BaseService implements IService
         }
     }
 
-    public function createOrFetchCustomer($request){
-        $user = $this->userRepo->findById($request['user_id']);
+    /**
+     * @param $package_id
+     * @return array
+     */
+    public function autoPaymentProcess($package_id){
+        $user       =   $this->userRepo->findById(Auth::user()->id);
+        $plan       =   $this->plan_service->get($package_id);
+        $data=[
+            'user_id'           =>  Auth::user()->id,
+            'package_id'        =>  $package_id,
+            'type'              =>  'buy_package',
+            'price'             =>  $plan['amount'],
+            'auto'              =>  'on',
+            'transition'        =>  1,
+        ];
+        $sub = $this->createSubscription($user->cus_id, $plan->plan_id, $data);
+        return $sub;
+    }
+    /**
+     * @param $arr
+     * @param $request
+     * @return array
+     */
+    public function createCharge($arr, $request){
+        $charge = $this->stripe->charges()->create($arr);
+        if($charge['status'] == 'succeeded') {
+            /**
+             * Write Here Your Database insert logic.
+             */
+            $latestCard =   [
+                'user_id'   =>  $request['user_id'],
+                'last4'     =>  $charge['source']['last4']
+            ];
+            $getCard    =   $this->userServices->getCard($latestCard);
+            if(empty($getCard)):
+                $latestCard['exp_month']    =   $charge['source']['exp_month'];
+                $latestCard['exp_year']     =   $charge['source']['exp_year'];
+                $latestCard['card_id']      =   $charge['source']['id'];
+                $latestCard['brand']        =   $charge['source']['brand'];
+                $this->userServices->insertCardInfo($latestCard);
+            endif;
+            $data=[
+                'transaction_id'    =>  $charge['id'],
+                'user_id'           =>  $request['user_id'],
+                'package_id'        =>  $request['package_id'],
+                'type'              =>  $request['type'],
+                'amount'            =>  $request['price'],
+                'auto'              =>  'off'
+            ];
+            $updateTransaction  =   $this->success($data);
+            if($request['type']=='purchase_coins'){
+                $updateUser=$this->contService->updateCoins($request['user_id'], $request['package_id']);
+                return ['status'=>true];
+            }else{
+                $data   =   ['user_roles'=>$request['package_id']];
+                $this->userServices->updateRecord(Auth::user()->id, $data);
+                $notify =   $this->userServices->notifyUser($request['user_id'], $updateTransaction);
+                return ['status'=>true, 'user'=>$notify];
+            }
+
+        }
+        else {
+            $notification = array(
+                'message' => trans('content.no_money'),
+                'alert_type' => 'danger'
+            );
+            return ['status'=>false, 'notification'=>$notification];
+        }
+    }
+
+    /**
+     * @param $cus
+     * @param $plan
+     * @param $request
+     * @return array
+     */
+    public function createSubscription($cus, $plan, $request){
+        if($request['transition'] == '1'){
+             $transaction = $this->transactionRepo->getRecord([
+                'user_id' => $request['user_id'],
+                'status' => 1,
+                ]);
+            $subscription   = $this->stripe->subscriptions()->create( $cus,
+                    [
+                        'plan'      =>  $plan,
+                        'trial_end' =>  strtotime($transaction[0]->expiry_date),
+                    ]
+                );
+        }else{
+            $subscription = $this->stripe->subscriptions()->create($cus, ['plan' => $plan]);
+        }
+        if($subscription['status'] == 'active' || $subscription['status'] == 'trialing') {
+            $data=[
+                'transaction_id'    =>  $subscription['id'],
+                'user_id'           =>  $request['user_id'],
+                'package_id'        =>  $request['package_id'],
+                'type'              =>  $request['type'],
+                'amount'            =>  $request['price'],
+                'auto'              =>  $request['auto'],
+                'expiry_date'       =>  $request['current_period_end'],
+            ];
+            $updateTransaction      =   $this->success($data);
+            $data                   =   ['user_roles'=>$request['package_id']];
+            $this->userServices->updateRecord(Auth::user()->id, $data);
+            $notify =   $this->userServices->notifyUser($request['user_id'], $updateTransaction);
+            return ['status'=>true, 'user'=>$notify];
+        }
+        else {
+            $notification = array(
+                'message' => trans('content.no_money'),
+                'alert_type' => 'danger'
+            );
+            return ['status'=>false, 'notification'=>$notification];
+        }
+    }
+
+    /**
+     * @param $user
+     * @param $token_id
+     * @return array
+     */
+    public function createOrFetchCustomer($user, $token_id){
         if($user->cus_id == ''){
-            $token = $this->getToken($request);
             $customer = $this->stripe->customers()->create([
-                'email' => $user['email'],
-                'source'=> $token['id'],
+                'email' => $user->email,
+                'source'=> $token_id,
             ]);
-            $token = $this->getToken($request);
-            $card = $this->stripe->cards()->create($customer['id'], $token['id']);
             $data1 = [
                 'cus_id' => $customer['id'],
             ];
-            $data2 = [
-                'cus_id' => $customer['id'],
-                'card_id'=> $card['id']
-            ];
             $this->userRepo->update($user->id, $data1);
-            return $data2;
-        }else{
-            $token = $this->getToken($request);
-            $card = $this->stripe->cards()->create($user->cus_id, $token['id']);
+            return $data1;
+        }
+        else{
             $data1 = [
                 'cus_id' => $user->cus_id
             ];
-            $data2 = [
-                'cus_id' => $user->cus_id,
-                'card_id'=> $card['id']
-            ];
-            $this->userRepo->update($request['user_id'], $data1);
-            return $data2;
+            $this->userRepo->update($user->cus_id, $data1);
+            return $data1;
         }
+    }
+
+    /**
+     * @param $cus_id
+     * @param $token_id
+     * @return mixed
+     */
+    public function createCard($cus_id, $token_id){
+        return $card = $this->stripe->cards()->create($cus_id, $token_id);
     }
 
     /**
@@ -203,14 +297,21 @@ class TransactionService extends BaseService implements IService
                 $data['coins']=$coins->coins;
             }
         }else{
-            $data['package_id']     =   $params['package_id'];
-            $data['expiry_date']    =   Carbon::parse()->addMonth();
-            $data['status']         =   1;
-            $updatePrevious         =   [
-                                            'user_id'       =>  $params['user_id'],
-                                            'purchase_type' =>  'buy_package'
-                                        ];
-            $this->transactionRepo->update($updatePrevious, ['status'=>0]);
+            if($params['auto']=='on'){
+                $data['sub'] = 1;
+                $data['expiry_date'] = Carbon::parse()->addMonth();
+            }
+            else {
+                $data['sub'] = 0;
+                $data['expiry_date'] = $params['expiry_date'];
+            }
+            $data['status'] = 1;
+            $data['package_id'] = $params['package_id'];
+            $updatePrevious = [
+                'user_id' => $params['user_id'],
+                'purchase_type' => 'buy_package'
+            ];
+            $this->transactionRepo->update($updatePrevious, ['status' => 0]);
         }
         $data['amount']     =   $params['amount'];
         $new_transaction    =   $this->transactionRepo->create($data);
@@ -220,6 +321,10 @@ class TransactionService extends BaseService implements IService
         return $new_transaction;
     }
 
+    /**
+     * @param $user_id
+     * @return mixed
+     */
     public function getTransaction($user_id){
         return $this->transactionRepo->getRecord($user_id);
     }
