@@ -1785,6 +1785,7 @@ aside .topLinks {
 }
 .userProfile .userBlock .basicInfo ul li span {
     font-weight: 600;
+    word-wrap: break-word;
 }
 .userProfile .userBlock p {
     color: #fff;
@@ -1956,6 +1957,7 @@ aside .topLinks {
     color: #fff;
     font-weight: 500;
     margin-bottom: 5px;
+    word-wrap:break-word;
 }
 .contactPage .contactInfo li .info a:hover {
     color: #f7941d;
