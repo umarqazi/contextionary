@@ -38,7 +38,7 @@ function redeemPoint(url){
 function checkPoint(){
     var selected_option = $('#role-dropdown option:selected').val();
     var point=$('#role_points').val();
-    if(point > 0 && selected_option!=NULL){
+    if(point > 0 && selected_option!=''){
         $('#request-redeem').removeClass('grey');
         $('#request-redeem').removeAttr("disabled");
     }else{

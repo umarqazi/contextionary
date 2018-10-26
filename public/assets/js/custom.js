@@ -10,10 +10,11 @@ $(document).ready(function () {
         $('#datepicker-example-1').datepicker({endDate: today});
     }
 
-    $("body").click(function () {
+    $("body").click(function (e) {
         $("header .mainMenu").animate({
             left: '-250px'
         });
+        $(".languageBar .list").hide();
     });
 
     $("#menu").click(function () {
@@ -34,7 +35,8 @@ $(document).ready(function () {
     });
 
     $(".languageBar").click(function () {
-        $(this).find(".list").slideToggle();
+        event.stopPropagation();
+        $(this).find(".list").toggle();
         $(".list li").click(function () {
             var get_value = $(this).html();
             var get_parent = $(this).parent().parent().get(0);
@@ -76,7 +78,7 @@ $(document).ready(function () {
 
     $(".dropDown").click(function (event) {
         event.stopPropagation();
-        $(this).find('.dropDown-block').fadeIn();
+        $(this).find('.dropDown-block').toggle();
     });
 
     $(".dropDown-block").click(function (event) {

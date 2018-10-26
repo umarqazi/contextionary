@@ -92,7 +92,7 @@
                             @endif
                         </div>
                         <div class="col-md-6">
-                            {!! Form::text('points', null,['class'=>'form-control', 'id'=>'role_points', 'onkeyup'=>'checkPoint()']) !!}
+                            {!! Form::number('points', null,['class'=>'form-control', 'id'=>'role_points', 'onkeyup'=>'checkPoint()']) !!}
                             @if ($errors->has('points'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('points') }}</strong>

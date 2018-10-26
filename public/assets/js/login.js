@@ -33,7 +33,17 @@ function showButtons(){
   $('.hide_form').show();
 }
 $("#profile-img").change(function(){
-  readURL(this);
+  var ext = $('#profile-img').val().split('.').pop().toLowerCase();
+  if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+    $('#show-error').removeClass('hide-div');
+    $('.disabled-save').addClass('grey');
+    $('.disabled-save').attr("disabled", true);
+  }else{
+    readURL(this);
+    $('#show-error').addClass('hide-div');
+    $('.disabled-save').removeClass('grey');
+    $('.disabled-save').removeAttr("disabled", true);
+  }
 });
 $(".pricing-palden .pricing-item").hover(function () {
   $(this).siblings().removeClass('active');
