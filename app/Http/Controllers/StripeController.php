@@ -37,6 +37,7 @@ class StripeController extends Controller
             'price'=>$stripe->price,
             'package_id'=>$stripe->package_id,
             'type'=>$stripe->type,
+            'auto'=>$stripe->auto,
         ];
         $payment=$this->stripe->paymentProcess($cardInfo);
         if($payment['status']==true){
@@ -49,6 +50,20 @@ class StripeController extends Controller
             }
         }else{
             return Redirect::back()->with($payment['notification'])->withInput(Input::all());
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function postAutoPaymentWithStripe($plan){
+        $payment    =   $this->stripe->autoPaymentProcess($plan);
+        if($payment['status']==true){
+            if($payment['user']){
+                return Redirect::to('/dashboard');
+            }
+        }else{
+            return Redirect::back()->with($payment['notification']);
         }
     }
 }
