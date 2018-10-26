@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Http\Controllers\CronController;
 use Illuminate\Console\Command;
 
-class AutoRenewal extends Command
+class SubscriptionCheck extends Command
 {
     /**
      * The name and signature of the console command.
