@@ -356,6 +356,7 @@ class UsersController extends Controller
         $cards='';
         if(Auth::check()):
             $plans=Auth::user()->transaction->where('status','1')->first();
+            $plans->total_contribution = $this->contributorService->countContributions();
             if($plans):
                 $start = Carbon::parse($plans->expiry_date);
                 $duration = $currentDate->diffInDays($start);
