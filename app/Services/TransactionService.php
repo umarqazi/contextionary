@@ -14,12 +14,12 @@ use App\Repositories\CoinsRepo;
 use App\Notifications\InvoicePaid;
 use App\Repositories\PlanRepo;
 use App\Repositories\UserRepo;
+use Illuminate\Support\Facades\Auth;
 use Stripe\Error\Card;
 use Cartalyst\Stripe\Stripe;
 use App\TransactionDetail;
 use Carbon;
 use App\Repositories\TransactionRepo;
-use Auth;
 
 class TransactionService extends BaseService implements IService
 {
@@ -113,6 +113,7 @@ class TransactionService extends BaseService implements IService
      * @param $package_id
      * @return array
      */
+
     public function autoPaymentProcess($package_id){
         $user       =   $this->userRepo->findById(Auth::user()->id);
         $plan       =   $this->plan_service->get($package_id);
@@ -127,6 +128,32 @@ class TransactionService extends BaseService implements IService
         $sub = $this->createSubscription($user->cus_id, $plan->plan_id, $data);
         return $sub;
     }
+
+    /**
+     * @return mixed
+     */
+    public function cancelAutoPaymentProcess(){
+        $user       =   $this->userRepo->findById(Auth::user()->id);
+        $transaction = $this->transactionRepo->getRecord([
+            'user_id' => $user->id,
+            'status' => 1,
+        ]);
+        $sub = $this->cancelSubscription($user->cus_id, $transaction[0]->transaction_id);
+        if($sub['cancel_at_period_end'] == 1){
+            $this->transactionRepo->update(['user_id' => Auth::user()->id], ['auto' => 0]);
+        }
+        return $sub;
+    }
+
+    /**
+     * @param $cus_id
+     * @param $sub_id
+     * @return mixed
+     */
+    public function cancelSubscription($cus_id, $sub_id){
+        return $subscription = $this->stripe->subscriptions()->cancel($cus_id, $sub_id, true);
+    }
+
     /**
      * @param $arr
      * @param $request
@@ -208,12 +235,12 @@ class TransactionService extends BaseService implements IService
                 'type'              =>  $request['type'],
                 'amount'            =>  $request['price'],
                 'auto'              =>  $request['auto'],
-                'expiry_date'       =>  $request['current_period_end'],
+                'expiry_date'       =>  date('Y-m-d H:i:s', $subscription['current_period_end']),
             ];
             $updateTransaction      =   $this->success($data);
             $data                   =   ['user_roles'=>$request['package_id']];
             $this->userServices->updateRecord(Auth::user()->id, $data);
-            $notify =   $this->userServices->notifyUser($request['user_id'], $updateTransaction);
+            $notify                 =   $this->userServices->notifyUser($request['user_id'], $updateTransaction);
             return ['status'=>true, 'user'=>$notify];
         }
         else {
@@ -294,16 +321,19 @@ class TransactionService extends BaseService implements IService
         if($params['type']=='purchase_coins'){
             $coins=$this->coinsRepo->findById($params['package_id']);
             if($coins){
-                $data['coins']=$coins->coins;
+                $data['coins']          =   $coins->coins;
+                $data['auto']           =   0;
             }
         }else{
             if($params['auto']=='on'){
-                $data['sub'] = 1;
-                $data['expiry_date'] = Carbon::parse()->addMonth();
+                $data['sub']            =   1;
+                $data['expiry_date']    =   $params['expiry_date'];
+                $data['auto']           =   1;
             }
             else {
-                $data['sub'] = 0;
-                $data['expiry_date'] = $params['expiry_date'];
+                $data['sub']            =   0;
+                $data['expiry_date']    =   Carbon::parse()->addMonth();
+                $data['auto']           =   0;
             }
             $data['status'] = 1;
             $data['package_id'] = $params['package_id'];
@@ -311,7 +341,7 @@ class TransactionService extends BaseService implements IService
                 'user_id' => $params['user_id'],
                 'purchase_type' => 'buy_package'
             ];
-            $this->transactionRepo->update($updatePrevious, ['status' => 0]);
+            $this->transactionRepo->update($updatePrevious, ['status' => 0, 'auto' => 0]);
         }
         $data['amount']     =   $params['amount'];
         $new_transaction    =   $this->transactionRepo->create($data);
