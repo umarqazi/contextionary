@@ -37,8 +37,11 @@
                         </div>
                     @endif
                 @else
+                    {{--<div class="planTitle">--}}
+                        {{--{!! t('Current plan') !!} <span>({!! t('remaining time') !!}: {!! $days !!} {{ t(str_plural('day', $days)) }})</span>--}}
+                    {{--</div>--}}
                     <div class="planTitle">
-                        {!! t('Current plan') !!} <span>({!! t('remaining time') !!}: {!! $days !!} {{ t(str_plural('day', $days)) }})</span>
+                        {!! t('Current plan') !!} <span>({!! t('Free Unlimited Access') !!})</span>
                     </div>
                 @endif
             </div>
@@ -75,10 +78,18 @@
                             </ul>
                             @if($activePlan->expiry_date == '')
                             @elseif($activePlan->expiry_date <= carbon::now())
+                                @if($activePlan->total_contribution >= 3)
+                                @else
                                 <a href="{!! lang_url('payment', ['id'=>$activePlan->package_id]) !!}" class="orangeBtn mb-3 mt-3">Renew Plan</a>
+                                @endif
                             @elseif($activePlan->expiry_date > carbon::now())
-                                @if(!$activePlan->sub)
-                                    <a href="{!! lang_url('autopay', ['id'=>$activePlan->package_id]) !!}" class="orangeBtn mb-3 mt-3">Auto Renewal</a>
+                                @if($activePlan->total_contribution >= 3)
+                                @else
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name='auto' id="check_box_auto_renew"
+                                        @if($activePlan->auto) checked @endif>
+                                        <label class="custom-control-label" for="check_box_auto_renew">Activate auto renewal</label>
+                                    </div>
                                 @endif
                             @endif
                         </div>
@@ -101,6 +112,8 @@
                             @endif
                         </div>
                     </div>
+                @else
+                    <h3>{{t('You are given free access of the premium plan.')}}</h3>
                 @endif
                 <div class="planTitle">{!! t('other plans') !!}</div>
                 @foreach(Config::get('constant.packages') as $key=>$package)
@@ -175,4 +188,38 @@
             </div>
         </div>
     </div>
+    {!! HTML::script(asset('assets/js/toaster.js')) !!}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#check_box_auto_renew').change(function() {
+                $('.default-loader').css('display', 'block');
+                if($(this).is(":checked")) {
+                    $.ajax({
+                        type    : "POST",
+                        url     : "{!! lang_url('autopay', ['id'=>$activePlan->package_id]) !!}",
+                        data    : { _token: '{{csrf_token()}}'},
+                        async   : false,
+                    }).done(function( res ) {
+                        if(res == 1){
+                            $('.default-loader').css('display', 'none');
+                            toastr.success("{{ t('Auto Renewal Active') }}");
+                        }
+                    });
+                }
+                else {
+                    $.ajax({
+                        type    :   "POST",
+                        url     :   "{!! lang_url('cancelautopay') !!}",
+                        data    :   { _token: '{{csrf_token()}}'},
+                        async   :   false,
+                    }).done(function( res ) {
+                        if(res == 1){
+                            $('.default-loader').css('display', 'none');
+                            toastr.success("{{ t('Auto Renewal Disabled') }}");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 @endsection
