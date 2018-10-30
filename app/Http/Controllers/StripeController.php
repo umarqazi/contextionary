@@ -60,10 +60,22 @@ class StripeController extends Controller
         $payment    =   $this->stripe->autoPaymentProcess($plan);
         if($payment['status']==true){
             if($payment['user']){
-                return Redirect::to('/dashboard');
+                return 1;
             }
         }else{
-            return Redirect::back()->with($payment['notification']);
+            return 2;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function cancelAutoPayment(){
+        $sub    =   $this->stripe->cancelAutoPaymentProcess();
+        if($sub['cancel_at_period_end'] == 1){
+            return 1;
+        }else{
+            return 2;
         }
     }
 }
