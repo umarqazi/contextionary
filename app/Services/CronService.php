@@ -49,6 +49,7 @@ class CronService
     protected $transactionRepo;
     protected $userRepo;
     protected $stripe;
+    protected $userService;
 
     /**
      * CronService constructor.
@@ -62,6 +63,7 @@ class CronService
         $this->voteExpiryRepo       =   new VoteExpiryRepo();
         $this->voteMeaningRepo      =   new VoteMeaningRepo();
         $this->userPoint            =   new UserPointRepo();
+        $this->userService          =   new UserService();
         $this->translateRepo        =   new TranslationRepo();
         $this->setting              =   new SettingController();
         $this->contextPhrase        =   new ContextPhraseRepo();
@@ -237,15 +239,23 @@ class CronService
     }
 
     public function subscriptionCheck(){
-        $transactions = $this->transactionRepo->getRecord(['sub'=> 1]);
+        $transactions = $this->transactionRepo->getRecord(['status'=> 1]);
         foreach ($transactions as $transaction){
             $user = $this->userRepo->findById($transaction->user_id);
-            if($transaction->expiry_date != '' && $transaction->expiry_date < carbon::now() && $transaction->status == 1){
-                $subscription = $this->stripe->subscriptions()->find($user->cus_id, $transaction->transaction_id);
-                if($subscription['status'] == 'trialing' || $subscription['status'] == 'active'){
-                    $this->transactionRepo->update(['id' => $transaction->id], ['expiry_date' => date("Y-m-d H:i:s", $subscription['current_period_end'])]);
-                }else{
-                    $this->transactionRepo->update($transaction->id, ['status' => 0]);
+            if($transaction->sub == 1){
+                if($transaction->expiry_date != '' && $transaction->expiry_date < carbon::now()) {
+                    $subscription = $this->stripe->subscriptions()->find($user->cus_id, $transaction->transaction_id);
+                    if ($subscription['status'] == 'trialing' || $subscription['status'] == 'active') {
+                        $this->transactionRepo->update(['id' => $transaction->id], ['expiry_date' => date("Y-m-d H:i:s", $subscription['current_period_end'])]);
+                    } else {
+                        $this->userService->updateRecord($transaction->user_id, ['user_roles' => 7]);
+                        $this->transactionRepo->update($transaction->id, ['status' => 0]);
+                    }
+                }
+            }
+            else{
+                if($transaction->expiry_date != '' && $transaction->expiry_date < carbon::now()) {
+                    $this->userService->updateRecord($transaction->user_id, ['user_roles' => 7]);
                 }
             }
         }
