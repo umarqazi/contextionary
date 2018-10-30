@@ -5,6 +5,7 @@
  * Date: 8/30/18
  * Time: 3:16 PM
  */
+
 use Illuminate\Support\Facades\View;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\IllustratorRepo;
@@ -12,6 +13,7 @@ use App\Repositories\TranslationRepo;
 use App\Repositories\UserPointRepo;
 use App\Repositories\RedeemPointRepo;
 use App\DefineMeaning;
+
 View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transactions.redeem-points'], function($view)
 {
     $totalContributions='';
