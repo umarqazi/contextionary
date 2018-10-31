@@ -70,6 +70,7 @@ class RoleController extends Controller
     {
         return Admin::grid(Role::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->name()->sortable();
             $grid->permissions()->pluck('name')->label();
             $grid->column('created_at','Created at')->sortable();

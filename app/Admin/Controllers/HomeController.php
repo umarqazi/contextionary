@@ -64,6 +64,7 @@ class HomeController extends Controller
         return Admin::grid(User::class, function (Grid $grid){
             $grid->id('ID')->sortable();
             $grid->name()->sortable();
+            $grid->disableExport();
             $grid->column('email','Email');
             $grid->column('Roles')->display(function () {
                 return ucfirst($this->getRoleNames()[0]);

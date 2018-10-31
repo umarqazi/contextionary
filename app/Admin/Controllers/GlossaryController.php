@@ -70,6 +70,7 @@ class GlossaryController extends Controller
         return Admin::grid(Glossary::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
             $grid -> option('useWidth', true);
+            $grid->disableExport();
             $grid->thumbnail()->display(function ($thumbnail) {
                 $thumbnail= Storage::disk(config("admin.upload.disk"))->url($thumbnail);
                 return "<img class='img-thumbnail' src='{$thumbnail}' />";

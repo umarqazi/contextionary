@@ -479,4 +479,11 @@ class ContributorService implements IService
         endif;
         return $records=$this->mutualService->paginatedRecord($user_history, 'user-history');
     }
+
+    /**
+     * @return mixed
+     */
+    public function countContributions(){
+        return $this->defineMeaning->getUserContributions(Auth::user()->id) + $this->illustrate->getUserContributions(Auth::user()->id) + $this->translationRepo->getUserContributions(Auth::user()->id);
+    }
 }

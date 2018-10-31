@@ -20,6 +20,10 @@
             {!! Form::hidden('user_id', $id, []) !!}
             {!! Form::hidden('package_id', $plan, []) !!}
             {!! Form::hidden('type', 'buy_package', []) !!}
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name='auto' id="checkBox3">
+                <label class="custom-control-label" for="checkBox3">Activate auto renewel</label>
+              </div>
           </div>
           <div class="mt-4">
             <a href="{!! URL::previous()!!}" class="back-button orangeBtn waves-effect waves-light">{!! t('Back') !!}</a>

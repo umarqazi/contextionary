@@ -68,6 +68,7 @@ class FunFactsController extends Controller
     {
         return Admin::grid(FunFact::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid -> option('useWidth', true);
             $grid->thumbnail()->display(function ($thumbnail) {
                 $thumbnail= Storage::disk(config("admin.upload.disk"))->url($thumbnail);

@@ -66,6 +66,7 @@ class PointPricesController extends Controller
     {
         return Admin::grid(PointsPrice::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->column('min_points', 'Min Points')->sortable();
             $grid->column('max_points', 'Max Points')->sortable();
             $grid->column('price', 'Price')->sortable();

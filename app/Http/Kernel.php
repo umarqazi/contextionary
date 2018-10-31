@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'translate' => \App\Http\Middleware\Translator::class,
         'checkContributor' => \App\Http\Middleware\Contributors::class,
         'checkUser' => \App\Http\Middleware\UsersPlan::class,
+        'checkGuestUser' => \App\Http\Middleware\CheckGuestUser::class,
     ];
 }

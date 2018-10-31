@@ -60,6 +60,7 @@ class UserController extends Controller
     {
         return Admin::grid(User::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->column('Name')->display(function () {
                 return $this->first_name . ' ' . $this->last_name;
             });

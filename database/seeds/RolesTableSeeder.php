@@ -16,6 +16,7 @@ class RolesTableSeeder extends Seeder
         Role::create(['name' => 'basic plan']);
         Role::create(['name' => 'premium plan']);
         Role::create(['name' => 'advance plan']);
+        Role::create(['name' => 'guest']);
         Role::create(['name' => 'define']);
         Role::create(['name' => 'illustrate']);
         Role::create(['name' => 'translate']);

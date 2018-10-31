@@ -1,3 +1,5 @@
+@if(Auth::check())
+    @if(Auth::user()->user_roles != Config::get('constant.userRoleIds.guest'))
 <div class="menuCate">
     <div class="title">
         {!! t('Reading Assistant')!!}
@@ -29,3 +31,5 @@
         <li class="{{ (Request::segment(2) == 'hangman') ? 'active' : '' }}"><a href="#" class="menu3" style="{{ (Request::segment(2) == 'hangman') ? 'background-position: 0 -40px' : '' }}"><span>Hangman</span></a></li>
     </ul>
 </div>
+@endif
+@endif

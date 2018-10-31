@@ -81,6 +81,7 @@ class SettingsController extends Controller
     {
         return Admin::grid(Setting::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid -> option('useWidth', true);
             $grid->keys()->sortable();
             $grid->values()->sortable()->editable();
