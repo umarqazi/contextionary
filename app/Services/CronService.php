@@ -197,6 +197,16 @@ class CronService
                         $checkArray['language']=$vote['language'];
                     endif;
                     $getHighestVotes=$this->voteMeaningRepo->hightVotes($checkArray);
+                    foreach($getHighestVotes as $key=>$vote):
+                        foreach ($getHighestVotes as $key2=>$checkVote):
+                            if($vote['id']!=$checkVote['id'] && $vote['total']==$checkVote['total']):
+                                if($checkVote[$type]['coins'] > $vote[$type]['coins']):
+                                    $getHighestVotes[$key]=$checkVote;
+                                    $getHighestVotes[$key2]=$vote;
+                                endif;
+                            endif;
+                        endforeach;
+                    endforeach;
                     if(!empty($getHighestVotes)):
                         $updateVoteStatus=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'status'=>'1'];
                         if($type==env('TRANSLATE')):

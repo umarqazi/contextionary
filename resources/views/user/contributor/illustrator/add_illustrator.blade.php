@@ -49,6 +49,7 @@
                     @if ($errors->has('illustrate'))
                         <div class="help-block"><strong>{{ $errors->first('illustrate') }}</strong></div>
                     @endif
+                    <div class="help-block"><strong class="hide-div" id="show-error">{!! t('Wrong Extension') !!}</strong></div>
                     {!! Form::hidden('context_id', $data['context_id'], []) !!}
                     {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
 
@@ -56,7 +57,7 @@
             </div>
             <div class="col-md-12 mt-4 text-center actionsBtn pb-4">
                 <a href="{!! URL::previous() !!}" class="orangeBtn ml-3 waves-light">{!! t('Return') !!}</a>
-                <button class="orangeBtn ml-3 waves-light">{!! t('Save') !!}</button>
+                <button class="orangeBtn ml-3 waves-light disabled-save">{!! t('Save') !!}</button>
             </div>
             {!! Form::close() !!}
         @endif
@@ -79,12 +80,12 @@
                         {!! Form::hidden('context_id', $data['context_id'], []) !!}
                         {!! Form::hidden('phrase_id', $data['phrase_id'], []) !!}
                         {!! Form::hidden('id', $data['illustrator']['id'], []) !!}
-
+                        <div class="help-block"><strong class="hide-div" id="show-error">{!! t('Wrong Extension') !!}</strong></div>
                     </div>
                 </div>
                 <div class="col-md-12 mt-4 text-center actionsBtn pb-4">
                     <a href="{!! URL::previous() !!}" class="orangeBtn ml-3 waves-light">{!! t('Return') !!}</a>
-                    <button class="orangeBtn ml-3 waves-light">{!! t('Update') !!}</button>
+                    <button class="orangeBtn ml-3 waves-light disabled-save">{!! t('Update') !!}</button>
                 </div>
                 {!! Form::close() !!}
             </div>

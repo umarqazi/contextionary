@@ -60,12 +60,12 @@
         @if(Auth::check())
           @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
             <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
-            <div class="dropDown-block">
+            <div class="dropDown-block right-dropdown">
               <a href="{!! lang_url('switchToUser') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to User Account') !!}</a>
             </div>
           @else
             <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
-            <div class="dropDown-block">
+            <div class="dropDown-block right-dropdown">
               <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contibutor Account') !!}</a>
             </div>
           @endif

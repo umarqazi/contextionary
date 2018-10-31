@@ -15,13 +15,13 @@
 
         </div>
         <ul class="menuListing">
-            <li><a href="{!! lang_route('fun-facts') !!}" class="menu12"><span>{!! t('Fun Facts') !!}</span></a></li>
+            <li class="{{ (Request::segment(2) == 'fun-facts') ? 'active' : '' }}"><a href="{!! lang_route('fun-facts') !!}" class="menu12" style="{{ (Request::segment(2) == 'fun-facts') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Fun Facts') !!}</span></a></li>
             @if(Auth::check())
                 @if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan')))
-                    <li><a href="" class="menu11"><span>{!! t('Learning Center') !!}</span></a></li>
+                    <li class="{{ (Request::segment(2) == 'fun-facts') ? 'active' : '' }}" ><a href="" class="menu11" style="{{ (Request::segment(2) == 'user-history') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Learning Center') !!}</span></a></li>
                 @endif
             @endif
-            <li><a href="{!! lang_route('contactUs') !!}" class="menu13"><span>{!! t('Contact Us') !!}</span></a></li>
+            <li class="{{ (Request::segment(2) == 'contact-us') ? 'active' : '' }}"><a href="{!! lang_route('contactUs') !!}" class="menu13" style="{{ (Request::segment(2) == 'contact-us') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Contact Us') !!}</span></a></li>
         </ul>
     </div>
 </aside>

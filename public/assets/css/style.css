@@ -204,7 +204,19 @@ color: #f7953a;
   font-size: 18px;
   border-radius: 50px;
   padding: 2px 5px;
-  display: none;
+}
+.tut-div li{
+  list-style: disc !important;
+}
+a.disabled{
+  background-color: grey !important;
+  cursor: not-allowed !important;
+}
+.col-sm-12.cont-div a {
+  cursor: pointer !important;
+}
+.col-sm-12.cont-div a.disabled {
+  cursor: not-allowed !important;
 }
 .favIcon2{
    color: red !important;
@@ -377,6 +389,10 @@ color: #f7953a;
   font-weight: bold;
   float: right;
 }
+.cont-div a:hover{
+  background-color: yellow !Important;
+  color: black !Important;
+}
 .attach-image{
   width: 100%;
   position: absolute;
@@ -440,4 +456,14 @@ input[type=number] {
 }
 .profile-anchor:hover{
   color:#737373 !important;
+}
+.menuListing li.active a span{
+  color:#f7941d;
+}
+.contactPage .contactInfo li .img-holder img{
+  width:50%;
+  display:inline-block;
+}
+.hide-div{
+  display:none;
 }
