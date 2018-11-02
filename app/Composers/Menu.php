@@ -76,7 +76,7 @@ View::composer('user.user_plan.glossary.*', function($view)
 /**
  * Learning Center Menus
  */
-View::composer('user.user_plan.reading_assistant.*', function($view)
+View::composer('user.user_plan.learning_center.*', function($view)
 {
 //    $page=['context-finder'=>'Context Finder', 'text-history'=>'Test History', 'tutorials'=>'Tutorials'];
 //    $view->with(['pageMenu'=>$page]);
