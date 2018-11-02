@@ -8,7 +8,6 @@
                     @endforeach
                 @endif
             </ul>
-            @include('search')
         </div>
     </div>
 </div>

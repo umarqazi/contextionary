@@ -57,7 +57,6 @@ fonts
 body {
     margin: 0px;
     padding: 0px;
-    background: #fff;
     font-size: 16px;
     color: #000000;
     line-height: 1.5;
@@ -313,6 +312,10 @@ li {
     top: 80px;
     left: 0;
 }
+.dropDown .dropDown-block.right-dropdown{
+    right: 10px;
+    left:auto;
+}
 .dropDown .dropDown-block:before {
     content: "";
     position: absolute;
@@ -321,6 +324,10 @@ li {
     top: -17px;
     left: 15px;
     background: url(../images/dropDown-arrow.png) no-repeat center center;
+}
+.dropDown .dropDown-block.right-dropdown:before{
+    left:auto;
+    right: 15px;
 }
 .companyName {
     color: #fff;
@@ -861,7 +868,7 @@ aside {
     -moz-transition: all 0.5s ease;
     -webkit-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
-    background: #333b47;
+    background: #333b47 !important;
 }
 aside .logBg {
     width: 100%;
@@ -1777,6 +1784,7 @@ aside .topLinks {
 }
 .userProfile .userBlock .basicInfo ul li span {
     font-weight: 600;
+    word-wrap: break-word;
 }
 .userProfile .userBlock p {
     color: #fff;
@@ -1908,7 +1916,7 @@ aside .topLinks {
     padding: 15px 0px;
 }
 .contactPage .contactInfo li {
-    padding: 15px 30px;
+    padding: 15px 15px;
     border-right: solid #a5a8aa 1px;
     display: inline-block;
     vertical-align: middle;
@@ -1918,6 +1926,7 @@ aside .topLinks {
     display: inline-block;
     vertical-align: middle;
     min-width: 100px;
+    text-align: center;
 }
 .contactPage .contactInfo li .info {
     display: inline-block;
@@ -1947,6 +1956,7 @@ aside .topLinks {
     color: #fff;
     font-weight: 500;
     margin-bottom: 5px;
+    word-wrap:break-word;
 }
 .contactPage .contactInfo li .info a:hover {
     color: #f7941d;
@@ -2088,6 +2098,7 @@ aside .topLinks {
 .voteMeaningBg .contextContent .tab-pane {
     height: 160px;
     padding: 15px 0px 15px 15px;
+    overflow: hidden;
 }
 .voteMeaningBg .contextContent .tab-pane p {
     color: #fff;
@@ -2468,8 +2479,9 @@ aside .topLinks {
     position: relative;
 }
 .glossarybg .glossary-block .img-holder img {
-    width: 100%;
     max-height: 295px;
+    min-height: 100%;
+    min-width: 100%;
 }
 .glossarybg .glossary-block .img-holder .mask {
     position: absolute;

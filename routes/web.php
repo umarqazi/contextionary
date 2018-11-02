@@ -81,11 +81,12 @@ MultiLang::routeGroup(function($router) {
                     Route::get('add-coins', 'ContributorController@addCoins')->name('addCoins');
                 });
                 Route::get('/switchToUser', 'UsersController@switchToUser')->name('switchToUser');
-                Route::get('summary', 'UsersController@summary')->name('summary');
-                Route::get('redeem-points', 'UsersController@redeemPoints')->name('redeemPoints');
-                Route::post('redeem-points', 'UsersController@saveEarning')->name('saveEarning');
-                Route::get('user-history', 'ContributorController@history')->name('history');
-                Route::post('search', 'ContributorController@search')->name('search');
+                Route::get('summary',  'UsersController@summary')->name('summary');
+                Route::get('redeem-points',  'UsersController@redeemPoints')->name('redeemPoints');
+                Route::post('redeem-points',  'UsersController@saveEarning')->name('saveEarning');
+                Route::get('redeem-all-points',  'UsersController@redeemAllPoints')->name('redeemAllPoints');
+                Route::get('user-history',  'ContributorController@history')->name('history');
+                Route::post('user-history/search',  'ContributorController@search')->name('search');
             });
             Route::group(['middleware' => 'checkUser'], function () {
                 Route::group(['middleware' => ['checkGuestUser']], function () {

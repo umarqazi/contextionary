@@ -18,12 +18,12 @@
                                         <thead>
                                         <tr>
                                             <th></th>
-                                            <th class="text-center">Points</th>
-                                            <th class="text-right">Earnings</th>
+                                            <th class="text-center">{!! t('Points') !!}</th>
+                                            <th class="text-right">{!! t('Earnings') !!}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <?php $sum=0;?>
+                                        <?php $sum=0; $total_points=0;?>
                                         @if($contributions['points'])
                                             @foreach($contributions['points'] as $key=>$point)
                                                 <?php $earning=0; ?>
@@ -38,7 +38,7 @@
                                                     endif;
                                                     ?>
                                                 @endforeach
-                                                <?php $sum=$sum+$earning;?>
+                                                <?php $sum=$sum+$earning; $total_points=$total_points+$point?>
                                                 <tr>
                                                     <td><span class="text-uppercase">{!! Config::get('constant.contributorNames.'.$key) !!}</span></td>
                                                     <td class="text-center"><span id="{!! $key !!}">{!! $point !!}</span></td>
@@ -48,22 +48,24 @@
                                             @endforeach
                                             <tr>
                                                 <td>Total</td>
-                                                <td class="text-center"></td>
+                                                <td class="text-center">{!! $total_points !!}</td>
                                                 <td class="text-right">${!! $sum !!}</td>
                                             </tr>
                                         @endif
 
                                         </tbody>
                                     </table>
-
-                                    <div class="text-center mt-4">
-                                        <button class="orangeBtn waves-light" data-toggle="modal" data-target="#pointModal">Redeem</button>
-                                    </div>
+                                    @if($sum)
+                                        <div class="text-center mt-4">
+                                            <button class="orangeBtn waves-light" data-toggle="modal" data-target="#pointModal">{!! t('Redeem') !!}</button>
+                                        </div>
+                                    @endif
 
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -71,7 +73,7 @@
     <!-- Modal -->
     <div class="modal fade" id="pointModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content .modal-lg">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">{!! t('Redeem Points') !!}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -82,7 +84,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
-                            {!! Form::select('type', [''=>'Select Type',env('MEANING')=>'Writer', env('ILLUSTRATE')=>'Illustrator', env('TRANSLATE')=>'Translator'], null,['class'=>'form-control role', 'onchange'=>'getCoins()']) !!}
+                            {!! Form::select('type', [''=>'Select Type',env('MEANING')=>'Writer', env('ILLUSTRATE')=>'Illustrator', env('TRANSLATE')=>'Translator'], null,['id'=>'role-dropdown','class'=>'form-control role', 'onchange'=>'getCoins()']) !!}
                             @if ($errors->has('type'))
                                 <span class="help-block">
                                 <strong>{{ $errors->first('type') }}</strong>
@@ -90,7 +92,7 @@
                             @endif
                         </div>
                         <div class="col-md-6">
-                            {!! Form::text('points', null,['class'=>'form-control', 'id'=>'role_points']) !!}
+                            {!! Form::number('points', null,['class'=>'form-control', 'id'=>'role_points', 'onkeyup'=>'checkPoint()']) !!}
                             @if ($errors->has('points'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('points') }}</strong>
@@ -100,6 +102,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <a onclick="redeemPoint('<?php echo lang_route("redeemAllPoints") ?>')" class="orangeBtn waves-light">{!! t('Redeem all Points') !!}</a>
                     <button type="submit" class="orangeBtn waves-light align-center @if(!Input::old('points')) grey @endif" @if(!Input::old('points')) disabled @endif id="request-redeem">{!! t('Send Request') !!}</button>
                 </div>
                 {!! Form::close() !!}

@@ -47,7 +47,7 @@
             </label>
         </div>
         <div class="col-sm-12 cont-div">
-            <a><span>Submit</span></a>
+            <a class="disabled"><span>Submit</span></a>
         </div>
         <div class="col-sm-12 correct-div hidden">
             <div class="row">
@@ -78,28 +78,43 @@
         </div>
     </div>
 </div>
+<script> $(document).ready(function() {
+        $(".gallerypdf").fancybox({
+            openEffect: 'elastic',
+            closeEffect: 'elastic',
+            autoSize: true,
+            type: 'iframe',
+            iframe: {
+                preload: false // fixes issue with iframe and IE
+            }
+        });
+    });
+</script>
 <script>
     $(".gameOptionDiv").click(function () {
+        $('.cont-div a').removeClass('disabled');
         $(this).siblings().children('.gameOption').removeClass('gameOptionActive');
         $(this).children('.gameOption').addClass('gameOptionActive');
     });
     $('.cont-div a').click(function() {
-        var opt= $("input[name='game_ans']:checked").val();
-        $.ajax({
-            type: "POST",
-            url: '/en/verify-spot-the-intruder',
-            data: { game_id:{{$game->id}}, ques_id:{{$question->id}}, option: opt, _token: '{{csrf_token()}}'}
-        }).done(function( res ) {
-            $('.cont-div').remove();
-            if( res.status){
-                $('.correct-div').removeClass('hidden');
-                $('#score-value').html(parseInt($('#score-value').html())+1);
-            }else{
-                $('.wrong-div').removeClass('hidden');
-                $('#answer').html(res.body);
-            }
-        })
-
+        if(!$(this).hasClass('disabled')){
+            var opt= $("input[name='game_ans']:checked").val();
+            $.ajax({
+                type: "POST",
+                url: '/en/verify-spot-the-intruder',
+                data: { game_id:{{$game->id}}, ques_id:{{$question->id}}, option: opt, _token: '{{csrf_token()}}'}
+            }).done(function( res ) {
+                $('.cont-div').remove();
+                $(".gameOptionDiv").off();
+                if( res.status){
+                    $('.correct-div').removeClass('hidden');
+                    $('#score-value').html(parseInt($('#score-value').html())+1);
+                }else{
+                    $('.wrong-div').removeClass('hidden');
+                    $('#answer').html(res.body);
+                }
+            })
+        }
     });
 </script>
 @endsection

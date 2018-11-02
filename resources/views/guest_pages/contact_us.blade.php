@@ -18,20 +18,6 @@
                             </div>
                         </li>
                         <li>
-                            <div class="img-holder"><img src="{!! asset('assets/images/clock-icon.png') !!}"></div>
-                            <div class="info">
-                                <h2>Office hours</h2>
-                                <p>
-                                    {{$settings->where('keys', 'Office Hours Monday')->first()->values}}<br>
-                                    {{$settings->where('keys', 'Office Hours Tuesday')->first()->values}}<br>
-                                    {{$settings->where('keys', 'Office Hours Wednesday')->first()->values}}<br>
-                                    {{$settings->where('keys', 'Office Hours Thursday')->first()->values}}<br>
-                                    {{$settings->where('keys', 'Office Hours Friday')->first()->values}}
-                                </p>
-                            </div>
-                        </li>
-
-                        <li>
                             <div class="img-holder"><img src="{!! asset('assets/images/phone-icon.png') !!}"></div>
                             <div class="info">
                                 <h2>email & phone</h2>
@@ -41,6 +27,19 @@
                                 </p>
                                 <p>
                                     {{$settings->where('keys', 'Phone')->first()->values}}
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="img-holder"><img src="{!! asset('assets/images/clock-icon.png') !!}"></div>
+                            <div class="info">
+                                <h2>Office hours</h2>
+                                <p>
+                                    {{$settings->where('keys', 'Office Hours Monday')->first()->values}}<br>
+                                    {{$settings->where('keys', 'Office Hours Tuesday')->first()->values}}<br>
+                                    {{$settings->where('keys', 'Office Hours Wednesday')->first()->values}}<br>
+                                    {{$settings->where('keys', 'Office Hours Thursday')->first()->values}}<br>
+                                    {{$settings->where('keys', 'Office Hours Friday')->first()->values}}
                                 </p>
                             </div>
                         </li>
@@ -54,25 +53,25 @@
                 {!! Form::open(['method'=>'POST', 'url'=>lang_route('contactUs')]) !!}
                 <div class="row contactForm">
                     <div class="col-md-6">
-                        {!! Form::text('first_name', null, ['class'=>'fld', 'placeholder'=>t('First Name')]) !!}
+                        {!! Form::text('first_name', null, ['class'=>'fld', 'placeholder'=>t('First Name').' *']) !!}
                         @if ($errors->has('first_name'))
                             <div class="help-block"><strong>{{ $errors->first('first_name') }}</strong></div>
                         @endif
                     </div>
                     <div class="col-md-6">
-                        {!! Form::text('last_name', null, ['class'=>'fld', 'placeholder'=>t('Last Name')]) !!}
+                        {!! Form::text('last_name', null, ['class'=>'fld', 'placeholder'=>t('Last Name').' *']) !!}
                         @if ($errors->has('last_name'))
                             <div class="help-block"><strong>{{ $errors->first('last_name') }}</strong></div>
                         @endif
                     </div>
                     <div class="col-md-12">
-                        {!! Form::text('email', null, ['class'=>'fld', 'placeholder'=>t('Email')]) !!}
+                        {!! Form::text('email', null, ['class'=>'fld', 'placeholder'=>t('Email').' *']) !!}
                         @if ($errors->has('email'))
                             <div class="help-block"><strong>{{ $errors->first('email') }}</strong></div>
                         @endif
                     </div>
                     <div class="col-md-12">
-                        {!! Form::textarea('message', null, ['class'=>'fld textArea', 'placeholder'=>t('Comments or Questions')]) !!}
+                        {!! Form::textarea('message', null, ['class'=>'fld textArea', 'placeholder'=>t('Comments or Questions').' *']) !!}
                         @if ($errors->has('message'))
                             <div class="help-block"><strong>{{ $errors->first('message') }}</strong></div>
                         @endif
