@@ -473,3 +473,15 @@ input[type=number] {
   bottom:6px;
   right: 0;
 }
+.userExploreContext2 ul.pagination li {
+  padding: 7px;
+}
+.userExploreContext2 ul.pagination li{
+  font-weight: 600;
+}
+.userExploreContext2 ul.pagination li.active{
+  color: #fff;
+}
+.userExploreContext2 ul.pagination li.disabled{
+  color: #fff;
+}
