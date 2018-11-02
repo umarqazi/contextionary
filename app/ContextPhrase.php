@@ -32,4 +32,11 @@ class ContextPhrase extends Model
     public function getRand(){
         return self::inRandomOrder()->get()->first();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getContextPhrase($context){
+        return self::where('context_id', $context)->with('phrases')->get();
+    }
 }
