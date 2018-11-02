@@ -90,13 +90,11 @@ MultiLang::routeGroup(function($router) {
             Route::group(['middleware' => 'checkUser'], function () {
                 Route::group(['middleware' => ['checkGuestUser']], function () {
                     Route::get('learning-center', 'LearningCenterController@index')->name('l-center');
-                    Route::get('explore-context', 'ReadingAssistantController@exploreContext')->name('explore-context');
-                    Route::get('explore-context/{context}', 'ReadingAssistantController@exploreContextPhrase');
-                    Route::get('explore-context/{context}/{phrase}', 'ReadingAssistantController@phraseDetail');
-                    Route::get('explore-word', 'ReadingAssistantController@exploreWord')->name('explore-word');
-                    Route::post('explore-word-search', 'ReadingAssistantController@search_context')->name('explore-word-search');
-                    Route::get('detail-context', 'ReadingAssistantController@detailContext')->name('detail-context');
-                    Route::get('detail-word', 'ReadingAssistantController@detailWord')->name('detail-word');
+                    Route::get('explore-context', 'LearningCenterController@exploreContext')->name('explore-context');
+                    Route::get('explore-context/{context}', 'LearningCenterController@exploreContextPhrase');
+                    Route::get('explore-context/{context}/{phrase}', 'LearningCenterController@phraseDetail');
+                    Route::get('explore-word', 'LearningCenterController@exploreWord')->name('explore-word');
+                    Route::post('explore-word-search', 'LearningCenterController@search_context')->name('explore-word-search');
                     Route::get('start-pictionary', 'PictionaryController@index')->name('start-pictionary');
                     Route::get('continue-pictionary', 'PictionaryController@continue')->name('continue-pictionary');
                     Route::get('reset-pictionary', 'PictionaryController@reset')->name('reset-pictionary');
