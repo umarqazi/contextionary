@@ -37,6 +37,6 @@ class ContextPhrase extends Model
      * @return mixed
      */
     public function getContextPhrase($context){
-        return self::where('context_id', $context)->with('phrases')->get();
+        return self::where('context_id', $context)->with('phrases')->paginate(100);
     }
 }
