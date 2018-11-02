@@ -17,6 +17,8 @@ class UpdateTransactionTable extends Migration
             $table->integer('coins');
             $table->integer('status');
             $table->float('amount');
+            $table->integer('sub');
+            $table->integer('auto');
         });
     }
 
