@@ -27,11 +27,11 @@
                         <div class="planTitle">
                             {!! t('Current plan') !!} <span>({!! t('remaining time') !!}: {{t('Unlimited')}} {{ t('days') }})</span>
                         </div>
-                    @elseif($activePlan->expiry_date <= carbon::now())
+                    @elseif($activePlan->expiry_date < carbon::now())
                         <div class="planTitle">
                             {!! t('Current plan') !!} <span>({!! t('Expired') !!})</span>
                         </div>
-                    @else
+                    @elseif($activePlan->expiry_date >= carbon::now())
                         <div class="planTitle">
                             {!! t('Current plan') !!} <span>({!! t('remaining time') !!}: {!! $days !!} {{ t(str_plural('day', $days)) }})</span>
                         </div>
