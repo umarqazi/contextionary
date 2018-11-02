@@ -38,11 +38,13 @@
                     @endif
                 @else
                     {{--<div class="planTitle">--}}
-                        {{--{!! t('Current plan') !!} <span>({!! t('remaining time') !!}: {!! $days !!} {{ t(str_plural('day', $days)) }})</span>--}}
+                    {{--{!! t('Current plan') !!} <span>({!! t('remaining time') !!}: {!! $days !!} {{ t(str_plural('day', $days)) }})</span>--}}
                     {{--</div>--}}
-                    <div class="planTitle">
-                        {!! t('Current plan') !!} <span>({!! t('Free Unlimited Access') !!})</span>
-                    </div>
+                    @if($total_contribution >= 3)
+                        <div class="planTitle">
+                            {!! t('Current plan') !!} <span>({!! t('Free Unlimited Access') !!})</span>
+                        </div>
+                    @endif
                 @endif
             </div>
 
@@ -113,10 +115,16 @@
                         </div>
                     </div>
                 @else
-                    <h3>{{t('You are given free access of the premium plan.')}}</h3>
+                    @if($total_contribution >= 3)
+                        <h3>{{t('You are given free access of the premium plan.')}}</h3>
+                    @endif
                 @endif
                 <div class="planTitle">{!! t('other plans') !!}</div>
-                @foreach(Config::get('constant.packages') as $key=>$package)
+                @php
+                    $packages = Config::get('constant.packages');
+                    array_pop($packages);
+                @endphp
+                @foreach($packages as $key=>$package)
                     @if($activePlan)
                         @if($key!=$activePlan->package_id)
                             <div class="planBlock">
@@ -189,6 +197,8 @@
         </div>
     </div>
     {!! HTML::script(asset('assets/js/toaster.js')) !!}
+
+    @if($activePlan)
     <script type="text/javascript">
         $(document).ready(function() {
             $('#check_box_auto_renew').change(function() {
@@ -222,4 +232,5 @@
             });
         });
     </script>
+    @endif
 @endsection
