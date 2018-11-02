@@ -50,6 +50,7 @@ class CronService
     protected $userRepo;
     protected $stripe;
     protected $userService;
+    protected $roleService;
 
     /**
      * CronService constructor.
@@ -64,6 +65,7 @@ class CronService
         $this->voteMeaningRepo      =   new VoteMeaningRepo();
         $this->userPoint            =   new UserPointRepo();
         $this->userService          =   new UserService();
+        $this->roleService          =   new RoleService();
         $this->translateRepo        =   new TranslationRepo();
         $this->setting              =   new SettingController();
         $this->contextPhrase        =   new ContextPhraseRepo();
@@ -258,6 +260,7 @@ class CronService
                     if ($subscription['status'] == 'trialing' || $subscription['status'] == 'active') {
                         $this->transactionRepo->update(['id' => $transaction->id], ['expiry_date' => date("Y-m-d H:i:s", $subscription['current_period_end'])]);
                     } else {
+                        $this->roleService->assign($user->id, 7);
                         $this->userService->updateRecord($transaction->user_id, ['user_roles' => 7]);
                         $this->transactionRepo->update($transaction->id, ['status' => 0]);
                     }
@@ -265,6 +268,7 @@ class CronService
             }
             else{
                 if($transaction->expiry_date != '' && $transaction->expiry_date < carbon::now()) {
+                    $this->roleService->assign($user->id, 7);
                     $this->userService->updateRecord($transaction->user_id, ['user_roles' => 7]);
                 }
             }

@@ -348,14 +348,14 @@ class UsersController extends Controller
         $cards='';
         if(Auth::check()):
             $plans=Auth::user()->transaction->where('status','1')->first();
-            $plans->total_contribution = $this->contributorService->countContributions();
+            $total_contribution = $this->contributorService->countContributions();
             if($plans):
                 $start = Carbon::parse($plans->expiry_date);
                 $duration = $currentDate->diffInDays($start);
             endif;
             $cards=Auth::user()->userCards;
         endif;
-        return view::make('user.user_plan.plan.active_plan')->with(['days'=>$duration, 'activePlan'=>$plans, 'cards'=>$cards]);
+        return view::make('user.user_plan.plan.active_plan')->with(['days'=>$duration, 'activePlan'=>$plans, 'cards'=>$cards, 'total_contribution' => $total_contribution]);
     }
 
     /**

@@ -34,9 +34,9 @@ class TutorialsController extends Controller
         $tutorial = $this->tutorials_service->first();
         if(!empty($tutorial)){
             $tutorial = $tutorial->content;
-            return View::make('tutorials')->with('tutorial', $tutorial);
+            return View::make('user.user_plan.reading_assistant.tutorials')->with('tutorial', $tutorial);
         }else{
-            return View::make('tutorials')->with('tutorial', null);
+            return View::make('user.user_plan.reading_assistant.tutorials')->with('tutorial', null);
         }
 
     }

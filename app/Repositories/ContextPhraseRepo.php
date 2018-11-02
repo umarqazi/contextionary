@@ -108,6 +108,13 @@ class ContextPhraseRepo
     }
 
     /**
+     * @return mixed
+     */
+    public function getContextPhrase($context){
+        return $this->contextPhrase->getContextPhrase($context);
+    }
+
+    /**
      * @param $id
      * @return mixed
      */

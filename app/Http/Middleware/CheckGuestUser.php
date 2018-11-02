@@ -16,8 +16,7 @@ class CheckGuestUser
      */
     public function handle($request, Closure $next)
     {
-
-        if ($request->user()->user_roles == 7) {
+        if ($request->user()->hasRole('guest')) {
             return redirect('/en/active-plan');
         }else{
             return $next($request);

@@ -37,6 +37,13 @@ class ContextPhraseService extends BaseService implements IService
     }
 
     /**
+     * @return mixed
+     */
+    public function getContextPhrase($context){
+        return $this->context_phrase_repo->getContextPhrase($context);
+    }
+
+    /**
      * @param $id
      * @return mixed
      */

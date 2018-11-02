@@ -25,4 +25,20 @@ class Context extends Model
         return $this->phrases()
             ->wherePivot('work_order','!=', NULL);
     }
+
+    /**
+     * @param $context
+     * @return mixed
+     */
+    public function findById($context){
+        return self::where('context_id', $context)->first();
+    }
+
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function findAllLike($key){
+        return self::where('context_name','like', '%' . $key . '%')->get();
+    }
 }

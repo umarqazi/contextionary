@@ -366,6 +366,14 @@ class ContributorService implements IService
     }
 
     /**
+     * @param $data
+     * @return mixed
+     */
+    public function getTranslations($data){
+        return $this->translationRepo->fetchRecord($data);
+    }
+
+    /**
      * @param $user_id
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
