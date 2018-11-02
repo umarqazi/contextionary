@@ -206,8 +206,8 @@
                 if($(this).is(":checked")) {
                     $.ajax({
                         type    : "POST",
-                        url     : "{!! lang_url('autopay', ['id'=>$activePlan->package_id]) !!}",
-                        data    : { _token: '{{csrf_token()}}'},
+                        url     : "{!! lang_url('autopay') !!}",
+                        data    : { id:{{$activePlan->package_id}}, _token: '{{csrf_token()}}'},
                         async   : false,
                     }).done(function( res ) {
                         if(res == 1){

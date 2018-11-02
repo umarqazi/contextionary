@@ -34,7 +34,7 @@ MultiLang::routeGroup(function($router) {
             Route::get('userPlan', 'UsersController@userPlan')->name('userPlan');
             Route::get('payment/{plan}', 'UsersController@showPaymentInfo')->name('payment');
             Route::post('addmoney/stripe', array('as' => 'addmoney.stripe', 'uses' => 'StripeController@postPaymentWithStripe'));
-            Route::post('autopay/{plan}', 'StripeController@postAutoPaymentWithStripe')->name('autopay');
+            Route::post('autopay', 'StripeController@postAutoPaymentWithStripe')->name('autopay');
             Route::post('cancelautopay/', 'StripeController@cancelAutoPayment')->name('cancelautopay');
             Route::post('update-profile', 'UsersController@profileUpdate')->name('update-profile');
             Route::get('contributorPlan', 'ContributorController@contributorPlan')->name('contributorPlan');
