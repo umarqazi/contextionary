@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="info">
                                     <h3>{!! $record['title'] !!}</h3>
-                                    <p>{!! strip_tags(substr($record['description'],0,150)) !!}</p>
+                                    <p>{!! strip_tags(mb_strimwidth($record['description'],0,150, '....')) !!}</p>
                                 </div>
                                 <a href="{!! lang_url('fun-facts', ['id'=>$record['id']]) !!}" class="readMore"><img src="{!! asset('assets/images/readMore.png') !!}"></a>
                             </div>

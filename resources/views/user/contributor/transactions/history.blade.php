@@ -8,20 +8,23 @@
             <div class="container-fluid contributorMain purchasCoinBg">
                 @include('layouts.flc_header')
                 @include('layouts.toaster')
-                <div class="row mt-4">
-                    {!! Form::open(['url'=>lang_route('search'), 'method'=>'post', 'id'=>'form-submission']) !!}
+                {!! Form::open(['url'=>lang_route('search'), 'method'=>'post', 'id'=>'form-submission']) !!}
+                <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-striped">
+                        <table class="table table-striped history-table">
                             <tr>
                                 <td>{!! Form::select('type', [''=>'Search by Type','writer'=>'Writer', 'illustrator'=>'Illustrator', 'translator'=>'Translator'], null,['class'=>'customSelect w-100']) !!}</td>
                                 <td>{!! Form::select('positions', [''=>'Search by Position','1'=>'First', '2'=>'Second', '3'=>'Third'], null,['class'=>'customSelect w-100']) !!}</td>
                                 <td>{!! Form::select('status', [''=>'Search by Status','0'=>'Pending', '1'=>'Accepted', '2'=>'Rejected', '3'=>'Completed'], null,['class'=>'customSelect w-100']) !!}</td>
-                                <td>{!! Form::submit('Search', ['class'=>'orangeBtn ml-3 waves-effect']) !!}</td>
-                                <td><a href="{!! lang_url('user-history') !!}" class='orangeBtn ml-3 waves-effect'>{!! t('Reset Filter') !!}</a> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" align="center">{!! Form::submit('Search', ['class'=>'orangeBtn ml-3 waves-effect']) !!} <a href="{!! lang_url('user-history') !!}" class='orangeBtn ml-3 waves-effect'>{!! t('Reset Filter') !!}</a></td>
                             </tr>
                         </table>
                     </div>
-                    {!! Form::close() !!}
+                </div>
+                {!! Form::close() !!}
+                <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="table-responsive">
                             <table class="table table-striped">

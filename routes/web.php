@@ -17,7 +17,7 @@ MultiLang::routeGroup(function($router) {
             return view('landing');
         })->name('homescreen');
         Route::get('/home', 'HomeController@index')->name('home');
-//        Route::get('/test', 'CronController@subscriptionCheck');
+        Route::get('/test', 'CronController@subscriptionCheck');
         Route::get('verificationEmail', 'Auth\RegisterController@sendVerificationEmail');
         Route::get('resend-email/{id}', 'Auth\RegisterController@sendVerificationEmail');
         Route::get('/verifyEmail/{token}', 'Auth\RegisterController@verifyEmail');

@@ -1,6 +1,6 @@
 <div class="userHeader">
   <div class="row">
-    <div class="col-md-7 col-sm-6">
+    <div class="col-md-7 col-sm-4">
       <img src="{!! asset('assets/images/dashboard-icon.png') !!}" class="menuIcon cursor">
       <img src="{!! asset('assets/images/dashboard-icon.png') !!}" class="mobileIcon cursor">
       @if(Auth::check())
@@ -55,7 +55,7 @@
         @endif
       @endif
     </div>
-    <div class="col-md-5 col-sm-6 text-right">
+    <div class="col-md-5 col-sm-8 text-right">
       <div class="switch-account dropDown">
         @if(Auth::check())
           @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))
