@@ -56,8 +56,8 @@ class StripeController extends Controller
     /**
      * @return mixed
      */
-    public function postAutoPaymentWithStripe($plan){
-        $payment    =   $this->stripe->autoPaymentProcess($plan);
+    public function postAutoPaymentWithStripe(Request $request){
+        $payment    =   $this->stripe->autoPaymentProcess($request->id);
         if($payment['status']==true){
             if($payment['user']){
                 return 1;
