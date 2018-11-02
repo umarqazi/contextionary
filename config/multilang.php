@@ -41,7 +41,7 @@ return [
         ],'ch' => [
             'name'             => 'Chinese',
             'native_name'      => 'Chinese',
-            'flag'             => 'chinese-flag.png',
+            'flag'             => 'china-flag.png',
             'locale'           => 'ch', // ISO 639-1
             'canonical_locale' => 'ch_GB', // ISO 3166-1
             'full_locale'      => 'ch_GB.UTF-8',
