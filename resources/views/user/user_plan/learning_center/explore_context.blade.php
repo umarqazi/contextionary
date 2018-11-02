@@ -14,7 +14,7 @@
         </div>
 
         <div class="col-sm-12 mt-3">
-            @include('user.user_plan.reading_assistant.context_search')
+            @include('user.user_plan.learning_center.context_search')
         </div>
 
         <div class="col-lg-12 col-md-6 mt-5">

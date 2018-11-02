@@ -9,7 +9,7 @@
             <div class="wrapper">
                 <div class="companyName">Explore A Word</div>
                 <div class="actions-btn mt-5">
-                    @include('user.user_plan.reading_assistant.context_search')
+                    @include('user.user_plan.learning_center.context_search')
                 </div>
             </div>
         </div>
