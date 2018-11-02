@@ -5,7 +5,7 @@
                 {!! t('Reading Assistant')!!}
             </div>
             <ul class="menuListing">
-                <li><a href="{!! lang_route('context-finder') !!}" class="menu4"><span>Context Finder</span></a></li>
+                <li><a href="#" class="menu4"><span>Context Finder</span></a></li>
                 <li><a href="#" class="menu4"><span>Text History</span></a></li>
                 <li><a href="{!! lang_route('tutorials') !!}" class="menu4"><span>Tutorials</span></a></li>
             </ul>
