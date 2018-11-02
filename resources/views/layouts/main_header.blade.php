@@ -64,10 +64,12 @@
               <a href="{!! lang_url('switchToUser') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to User Account') !!}</a>
             </div>
           @else
+            @if(!Auth::user()->hasRole(Config::get('constant.userRole.guest')))
             <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
             <div class="dropDown-block">
               <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contibutor Account') !!}</a>
             </div>
+            @endif
           @endif
         @endif
       </div>
