@@ -51,4 +51,8 @@ class CronController extends Controller
     public function translateVote(){
         $this->cronService->translationVotes();
     }
+
+    public function subscriptionCheck(){
+        $this->cronService->subscriptionCheck();
+    }
 }

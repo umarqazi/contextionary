@@ -51,6 +51,7 @@ class VoteExpiryController extends Controller
     {
         return Admin::grid(VoteExpiry::class, function (Grid $grid) use ($status){
             $grid->model()->where('status', '=', $status);
+            $grid->disableExport();
             $grid->id('ID')->sortable();
             $grid->option('useWidth', true);
             $grid->column('context_id')->display(function ($context_id) {

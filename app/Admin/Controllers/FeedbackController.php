@@ -61,6 +61,7 @@ class FeedbackController extends Controller
     {
         return Admin::grid(Feedback::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->option('useWidth', true);
             $grid->email()->sortable();
             $grid->message();

@@ -68,6 +68,7 @@ class PackagesController extends Controller
     {
         return Admin::grid(Package::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->name()->sortable();
             $grid->price()->sortable();
             $grid->points()->pluck('name')->label();

@@ -75,7 +75,7 @@ class AdminController extends Controller
             $grid->roles(trans('admin.roles'))->pluck('name')->label();
             $grid->created_at(trans('admin.created_at'));
             $grid->updated_at(trans('admin.updated_at'));
-
+            $grid->disableExport();
             $grid->actions(function (Grid\Displayers\Actions $actions) {
                 if ($actions->getKey() == 1) {
                     $actions->disableDelete();

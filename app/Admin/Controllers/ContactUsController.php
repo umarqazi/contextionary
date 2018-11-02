@@ -61,6 +61,7 @@ class ContactUsController extends Controller
     {
         return Admin::grid(ContactUs::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
+            $grid->disableExport();
             $grid->option('useWidth', true);
             $grid->first_name()->sortable();
             $grid->last_name()->sortable();

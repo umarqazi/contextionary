@@ -71,6 +71,7 @@ class PermissionController extends Controller
         return Admin::grid(Permission::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
             $grid->name()->sortable();
+            $grid->disableExport();
             $grid->column('created_at','Created at')->sortable();
             $grid->column('updated_at','Last Modified at')->sortable();
             $grid->filter(function ($filter){

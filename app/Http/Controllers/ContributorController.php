@@ -33,9 +33,9 @@ class ContributorController
 
     public function __construct()
     {
-        $this->authService=new AuthService();
-        $this->contributor= new ContributorService();
-        $this->userService= new UserService();
+        $this->authService      =   new AuthService();
+        $this->contributor      =   new ContributorService();
+        $this->userService      =   new UserService();
     }
 
     /**
