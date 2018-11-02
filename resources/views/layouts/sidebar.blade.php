@@ -18,7 +18,7 @@
             <li><a href="{!! lang_route('fun-facts') !!}" class="menu12"><span>{!! t('Fun Facts') !!}</span></a></li>
             @if(Auth::check())
                 @if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan')))
-                    <li><a href="" class="menu11"><span>{!! t('Learning Center') !!}</span></a></li>
+                    <li><a href="{!! lang_route('l-center') !!}" class="menu11"><span>{!! t('Learning Center') !!}</span></a></li>
                 @endif
             @endif
             <li><a href="{!! lang_route('contactUs') !!}" class="menu13"><span>{!! t('Contact Us') !!}</span></a></li>
