@@ -33,6 +33,28 @@ class ContextRepo
 
     /**
      * @return mixed
+     */
+    public function listing(){
+        return $this->context->orderBy('context_name', 'asc')->get();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function findById($context){
+        return $this->context->findById($context);
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function findAllLike($key){
+        return $this->context->findAllLike($key);
+    }
+
+    /**
+     * @return mixed
      * get All Records
      */
     public function getRecords(){
