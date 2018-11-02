@@ -54,12 +54,13 @@ View::composer('user.user_plan.games.*', function($view)
  */
 View::composer('guest_pages.*', function($view)
 {
-    $page=['fun-facts'=>'Fun Facts', 'contact-us'=>'Contact Us'];
+    $page=['fun-facts'=>'Fun Facts'];
     if(Auth::check()):
         if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan'))):
             $page['learning-center']='Learning Center';
         endif;
     endif;
+    $page['contact-us']='Contact Us';
     $view->with(['pageMenu'=>$page]);
 });
 
@@ -69,6 +70,23 @@ View::composer('guest_pages.*', function($view)
 View::composer('user.user_plan.glossary.*', function($view)
 {
     $page=['glossary'=>'Glossary', 'my-collection'=>'My Collection'];
+    $view->with(['pageMenu'=>$page]);
+});
+
+/**
+ * Learning Center Menus
+ */
+View::composer('user.user_plan.reading_assistant.*', function($view)
+{
+//    $page=['context-finder'=>'Context Finder', 'text-history'=>'Test History', 'tutorials'=>'Tutorials'];
+//    $view->with(['pageMenu'=>$page]);
+    $page=['fun-facts'=>'Fun Facts'];
+    if(Auth::check()):
+        if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan'))):
+            $page['learning-center']='Learning Center';
+        endif;
+    endif;
+    $page['contact-us']='Contact Us';
     $view->with(['pageMenu'=>$page]);
 });
 
