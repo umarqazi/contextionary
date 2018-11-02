@@ -511,3 +511,17 @@ input[type=number] {
 .hide-div{
   display:none;
 }
+.history-table td{
+  border-top:0px !important;
+}
+.history-table tr{
+  background-color:transparent !important;
+}
+.history-table td select{
+  min-width:100% !important;
+}
+.sidebar-container{
+  background: #333b47 !important;
+  display: inline-block;
+  width:100%;
+}

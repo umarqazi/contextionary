@@ -29,15 +29,15 @@ class StripeController extends Controller
     {
         $validator = $stripe->validated();
         $cardInfo=[
-            'card_no' => $stripe->card_no,
-            'ccExpiryMonth' => $stripe->ccExpiryMonth,
-            'ccExpiryYear' => $stripe->ccExpiryYear,
-            'cvvNumber' => $stripe->cvvNumber,
+            'card_no' => strip_tags($stripe->card_no),
+            'ccExpiryMonth' => strip_tags($stripe->ccExpiryMonth),
+            'ccExpiryYear' => strip_tags($stripe->ccExpiryYear),
+            'cvvNumber' => strip_tags($stripe->cvvNumber),
             'user_id'=>$stripe->user_id,
-            'price'=>$stripe->price,
-            'package_id'=>$stripe->package_id,
-            'type'=>$stripe->type,
-            'auto'=>$stripe->auto,
+            'price'=>strip_tags($stripe->price),
+            'package_id'=>strip_tags($stripe->package_id),
+            'type'=>strip_tags($stripe->type),
+            'auto'=>strip_tags($stripe->auto),
         ];
         $payment=$this->stripe->paymentProcess($cardInfo);
         if($payment['status']==true){
