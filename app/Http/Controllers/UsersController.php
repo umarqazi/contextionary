@@ -122,9 +122,9 @@ class UsersController extends Controller
         } else {
             // update
             $user = Auth::user();
-            $user->first_name       = Input::get('first_name');
-            $user->last_name       = Input::get('last_name');
-            $user->email      = Input::get('email');
+            $user->first_name       = strip_tags(Input::get('first_name'));
+            $user->last_name       = strip_tags(Input::get('last_name'));
+            $user->email      = strip_tags(Input::get('email'));
             $fileName=$user->profile_image;
             if(Input::get('password') != ''){
                 $user->password = bcrypt(Input::get('password'));
@@ -135,16 +135,16 @@ class UsersController extends Controller
                 $fileName=$this->register->uploadImage($image, $user->id);
             }
             $user->profile_image=$fileName;
-            $user->timezone=Input::get('timezone');
+            $user->timezone=strip_tags(Input::get('timezone'));
             $user->save();
             $updateProfile=Profile::where('user_id', $user->id)->first();
-            $updateProfile->phone_number=Input::get('phone_number');
-            $updateProfile->gender=Input::get('gender');
-            $updateProfile->country=Input::get('country');
-            $updateProfile->date_birth=Input::get('date_birth');
-            $updateProfile->native_language=Input::get('native_language');
-            $updateProfile->pseudonyme=Input::get('pseudonyme');
-            $updateProfile->bio=Input::get('bio');
+            $updateProfile->phone_number=strip_tags(Input::get('phone_number'));
+            $updateProfile->gender=strip_tags(Input::get('gender'));
+            $updateProfile->country=strip_tags(Input::get('country'));
+            $updateProfile->date_birth=strip_tags(Input::get('date_birth'));
+            $updateProfile->native_language=strip_tags(Input::get('native_language'));
+            $updateProfile->pseudonyme=strip_tags(Input::get('pseudonyme'));
+            $updateProfile->bio=strip_tags(Input::get('bio'));
             $updateProfile->save();
             // redirect
             $notification = array(
@@ -327,7 +327,7 @@ class UsersController extends Controller
                 ->withInput()->with('modal', '1');
         }
         $earning=0;
-        $earning=$this->createPoint($request->points, $request->type);
+        $earning=$this->createPoint(strip_tags($request->points), $request->type);
         $notification = array(
             'message' => trans('content.redeem_points'),
             'alert_type' => 'success'

@@ -82,26 +82,26 @@ class RegisterController extends Controller
     {
         $fileName='';
         $user = User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'],
+            'first_name' => strip_tags($data['first_name']),
+            'last_name' => strip_tags($data['last_name']),
+            'email' => strip_tags($data['email']),
             'status' => 0,
             'password' => bcrypt($data['password']),
             'token' => md5(microtime()),
             'email_token' => base64_encode($data['email']),
-            'timezone' => $data['timezone'],
+            'timezone' => strip_tags($data['timezone']),
         ]);
         /**
          * Update User Profile
          */
         $id=$user->id;
         $userProfile = new Profile;
-        $userProfile->pseudonyme = $data['pseudonyme'];
-        $userProfile->date_birth=$data['date_birth'];
-        $userProfile->gender= $data['gender'];
-        $userProfile->phone_number=$data['phone_number'];
-        $userProfile->country=$data['country'];
-        $userProfile->native_language=$data['native_language'];
+        $userProfile->pseudonyme = strip_tags($data['pseudonyme']);
+        $userProfile->date_birth=strip_tags($data['date_birth']);
+        $userProfile->gender= strip_tags($data['gender']);
+        $userProfile->phone_number=strip_tags($data['phone_number']);
+        $userProfile->country=strip_tags($data['country']);
+        $userProfile->native_language=strip_tags($data['native_language']);
         $userProfile->user_id =$id;
         $userProfile->save();
         if (Input::hasFile('profile_image')) {

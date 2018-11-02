@@ -162,7 +162,7 @@ class ContributorController
         if($addContextMeaning['id']){
             $id=$addContextMeaning['id'];
         }
-        $meaningData=['id'=>$id,'status'=>'0','meaning'=>$addContextMeaning['meaning'], 'context_id'=>$addContextMeaning['context_id'], 'phrase_id'=>$addContextMeaning['phrase_id'],'phrase_type'=>$addContextMeaning['phrase_type'], 'user_id'=>$addContextMeaning['user_id']];
+        $meaningData=['id'=>$id,'status'=>'0','meaning'=>strip_tags($addContextMeaning['meaning']), 'context_id'=>$addContextMeaning['context_id'], 'phrase_id'=>$addContextMeaning['phrase_id'],'phrase_type'=>strip_tags($addContextMeaning['phrase_type']), 'user_id'=>$addContextMeaning['user_id']];
         $saveRecord=$this->contributor->saveContextMeaning($meaningData);
         $notification = array(
             'message' => trans('content.meaning_added'),
@@ -328,7 +328,7 @@ class ContributorController
         if($request->has('id')):
             $id=$request->id;
         endif;
-        $data=['id'=>$id,'translation'=>$request->translation, 'phrase_translation'=>$request->phrase_translation,'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id, 'language'=>Auth::user()->profile->language_proficiency];
+        $data=['id'=>$id,'translation'=>strip_tags($request->translation), 'phrase_translation'=>strip_tags($request->phrase_translation),'context_id'=>$request->context_id, 'phrase_id'=>$request->phrase_id, 'user_id'=>Auth::user()->id, 'language'=>Auth::user()->profile->language_proficiency];
         $saveTranslation=$this->contributor->saveTranslation($data);
         $notification = array(
             'message' => trans('content.translator_added'),
