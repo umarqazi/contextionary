@@ -1,7 +1,7 @@
 <?php
 return [
     'packages'=>
-        ['1'=>'Basic Plan', '2'=>'Premium Plan', '3'=>'Advance Plan'],
+        ['1'=>'Basic Plan', '2'=>'Premium Plan', '3'=>'Advance Plan', '7'=>'Guest'],
     'contributorRole'=>
         ['define'=>'define', 'illustrate'=>'illustrate', 'translate'=>'translate'],
     'contributorNames'=>

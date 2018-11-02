@@ -457,6 +457,50 @@ input[type=number] {
 .profile-anchor:hover{
   color:#737373 !important;
 }
+.explore-search {
+  text-align: center;
+  width: 400px;
+  display: inline-block;
+  position: relative;
+}
+
+.explore-search .fld {
+  background: none;
+  border: none;
+  border-bottom: #fff solid 1px;
+  width: 100%;
+  height: 30px;
+  outline: none;
+  color: #fff;
+}
+
+.explore-search label{
+  color: #fff;
+  text-align: left;
+  display: block;
+  font-weight: 600;
+}
+
+.explore-search .search-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  position: absolute;
+  bottom:6px;
+  right: 0;
+}
+.userExploreContext2 ul.pagination li {
+  padding: 7px;
+}
+.userExploreContext2 ul.pagination li{
+  font-weight: 600;
+}
+.userExploreContext2 ul.pagination li.active{
+  color: #fff;
+}
+.userExploreContext2 ul.pagination li.disabled {
+  color: #fff;
+}
 .menuListing li.active a span{
   color:#f7941d;
 }

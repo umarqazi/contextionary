@@ -46,4 +46,12 @@ class PhraseService extends BaseService implements IService
         return $this->phrase_repo->countInTranslationPhase();
    }
 
+    /**
+     * @param $phrase_id
+     * @return mixed
+     */
+   public function findById($phrase_id){
+        return $this->phrase_repo->getPhraseName($phrase_id);
+   }
+
 }

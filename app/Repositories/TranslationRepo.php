@@ -66,6 +66,15 @@ class TranslationRepo
     }
 
     /**
+     * @param $data
+     * @return mixed
+     * check Translation against context or phrase
+     */
+    public function fetchRecord($data){
+        return $this->translation->where($data)->get();
+    }
+
+    /**
      * @param $meaning_id
      * @return bool
      */

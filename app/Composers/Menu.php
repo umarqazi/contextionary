@@ -52,25 +52,27 @@ View::composer('user.user_plan.games.*', function($view)
 /**
  * Guest Menus
  */
-View::composer('guest_pages.*', function($view)
+View::composer(['guest_pages.*', 'user.user_plan.learning_center.*'], function($view)
 {
-    $page=['fun-facts'=>'Fun Facts', 'contact-us'=>'Contact Us'];
+    $page=['fun-facts'=>'Fun Facts'];
     if(Auth::check()):
         if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan'))):
             $page['learning-center']='Learning Center';
         endif;
     endif;
+    $page['contact-us']='Contact Us';
     $view->with(['pageMenu'=>$page]);
 });
 
 /**
  * Glossary Menus
  */
-View::composer('user.user_plan.glossary.*', function($view)
+View::composer(['user.user_plan.glossary.*'], function($view)
 {
     $page=['glossary'=>'Glossary', 'my-collection'=>'My Collection'];
     $view->with(['pageMenu'=>$page]);
 });
+
 
 /**
  * Guest Menus
