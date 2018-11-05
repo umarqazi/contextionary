@@ -62,6 +62,7 @@ class TransactionService extends BaseService implements IService
                     $token      =   $this->getToken($request);
                     $card_data  =   $this->createCard($cus_data['cus_id'], $token['id']);
                     $plan       =   $this->plan_service->get($request['package_id']);
+                    $request['transition'] = 0;
                     return $this->createSubscription($cus_data['cus_id'], $plan->plan_id, $request);
                 }else{
                     $user       =   $this->userRepo->findById($request['user_id']);
