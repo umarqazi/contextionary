@@ -1,5 +1,8 @@
 @if(Auth::check())
-    @if((count($feedback) == 0)  || ($feedback[0]->user_id != Auth::user()->id))
+    @if((count($feedback) == 0 || ($feedback[0]->user_id != Auth::user()->id)) )
+        {{--@php--}}
+        {{--dd($feedback[0]->user_id != Auth::user()->id);--}}
+        {{--@endphp--}}
         <div class="commentBox">
             <button class="icon comment-icon"></button>
             <div class="box">
@@ -34,8 +37,8 @@
                 })
             }
         </script>
-        @endif
-        @endif
+    @endif
+@endif
         {!! HTML::script('assets/js/popper.min.js') !!}
         {!! HTML::script('assets/js/bootstrap.min.js') !!}
         {!! HTML::script('assets/js/mdb.min.js') !!}
@@ -48,5 +51,5 @@
                 $('#pointModal').modal('show');
             }
         </script>
-        </body>
-        </html>
+    </body>
+</html>

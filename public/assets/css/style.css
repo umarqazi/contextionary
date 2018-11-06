@@ -351,7 +351,7 @@ a.disabled{
   color: #f7953a;
 }
 .commentBox{
-  right:-310px !important;
+  /*right:-310px !important;*/
 }
 .hide-button{
   display:none;
@@ -524,4 +524,10 @@ input[type=number] {
   background: #333b47 !important;
   display: inline-block;
   width:100%;
+}
+.text-white a{
+  color: #fff !important;
+}
+.text-white a:hover{
+  color: #f7941d !important;
 }
