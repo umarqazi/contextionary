@@ -86,11 +86,7 @@ class PointsController extends Controller
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
             });
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
         });
     }
 

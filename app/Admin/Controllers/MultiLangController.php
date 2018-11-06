@@ -38,18 +38,15 @@ class MultiLangController extends Controller
     protected function grid()
     {
         return Admin::grid(Text::class, function (Grid $grid) {
+            $grid->id('ID')->sortable();
             $grid->key('Key')->sortable();
             $grid->disableExport();
             $grid->column('lang', 'Language')->sortable();
             $grid->column('value', 'Text')->sortable()->editable();
-//            $grid->scope()->sortable();
-//            $grid->column('created_at','Created at')->sortable();
-//            $grid->column('updated_at','Last Updated at')->sortable();
             $grid->filter(function ($filter){
                 $filter->like('key');
                 $filter->like('lang');
                 $filter->like('value');
-//                $filter->like('scope');
             });
             $grid->disableActions();
             $grid->actions(function (Grid\Displayers\Actions $actions) {
@@ -57,11 +54,7 @@ class MultiLangController extends Controller
                 $actions->disableDelete();
                 $actions->disableView();
             });
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
         });
     }
 
