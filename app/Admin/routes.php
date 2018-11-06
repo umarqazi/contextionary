@@ -29,6 +29,7 @@ Route::group([
     $router->resource('auth/spot-the-intruder', 'SpotIntruderController');
     $router->resource('auth/packages', 'PackagesController');
     $router->resource('auth/points', 'PointsController');
+    $router->resource('auth/redeem', 'RedeemController');
     $router->resource('auth/vote-expiry', 'VoteExpiryController')->only('index', 'show', 'update');
     $router->resource('auth/bidding-expiry', 'BiddingExpiryController')->only('index', 'show', 'update');
 });
