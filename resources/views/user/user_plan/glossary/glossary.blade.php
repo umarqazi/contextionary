@@ -14,14 +14,16 @@
                                 <div class="img-holder">
                                     <img src="{!! asset('storage/'.$glossary_item->thumbnail) !!}" class="cover-img">
                                     <div class="mask"></div>
-                                    @if(!$glossary_item->users->contains(Auth::user()->id))
-                                        <a href="#" class="favIcon" onclick="fav(event, this,{{$glossary_item->id}});">
-                                            <i class="fa fa-star"></i>
-                                        </a>
-                                    @elseif($glossary_item->users->contains(Auth::user()->id))
-                                        <a href="#" class="favIcon favIcon2" onclick="unfav(event, this,{{$glossary_item->id}});">
-                                            <i class="fa fa-star"></i>
-                                        </a>
+                                    @if(Auth::check())
+                                        @if(!$glossary_item->users->contains(Auth::user()->id))
+                                            <a href="#" class="favIcon" onclick="fav(event, this,{{$glossary_item->id}});">
+                                                <i class="fa fa-star"></i>
+                                            </a>
+                                        @elseif($glossary_item->users->contains(Auth::user()->id))
+                                            <a href="#" class="favIcon favIcon2" onclick="unfav(event, this,{{$glossary_item->id}});">
+                                                <i class="fa fa-star"></i>
+                                            </a>
+                                        @endif
                                     @endif
                                     <div class="view">
                                         <p>{{$glossary_item->name}}</p>
