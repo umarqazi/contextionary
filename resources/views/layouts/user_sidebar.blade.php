@@ -5,9 +5,9 @@
         {!! t('Reading Assistant')!!}
     </div>
     <ul class="menuListing">
-        <li><a href="#" class="menu4"><span>Context Finder</span></a></li>
+        <li class="{{ (Request::segment(2) == 'context-finder') ? 'active' : '' }}"><a href="{!! lang_route('context-finder') !!}" class="menu4" style="{{ (Request::segment(2) == 'context-finder') ? 'background-position: 0 -40px' : '' }}"><span>Context Finder</span></a></li>
         <li><a href="#" class="menu4"><span>Text History</span></a></li>
-        <li class="">
+        <li class="{{ (Request::segment(2) == 'tutorials') ? 'active' : '' }}">
             <a href="{!! lang_route('tutorials') !!}" class="menu4" style="{{ (Request::segment(2) == 'tutorials') ? 'background-position: 0 -40px' : '' }}">
                 <span>Tutorials</span>
             </a>

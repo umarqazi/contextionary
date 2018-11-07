@@ -46,3 +46,21 @@ function checkPoint(){
         $('#request-redeem').attr("disabled", true);
     }
 }
+
+$(".payment_method").change(function(){
+        $("input[type='radio'].custom-control-input").is(':checked')
+        var card_type = $("input[type='radio'].custom-control-input:checked").val();
+    if(card_type == 'method1'){
+        $('#payment_input_1').show();
+        $('#payment_input_2').hide();
+    }
+    if(card_type == 'method2'){
+        $('#payment_input_1').hide();
+        $('#payment_input_2').show();
+    }
+});
+
+
+
+
+
