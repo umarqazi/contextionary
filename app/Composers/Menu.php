@@ -88,3 +88,12 @@ View::composer(['user.profile', 'user.edit', 'user.roles'], function($view)
 
     $view->with(['pageMenu'=>$page]);
 });
+
+/**
+ * Glossary Menus
+ */
+View::composer(['user.user_plan.reading_assistant.*'], function($view)
+{
+    $page=['context-finder'=>'Context Finder','tutorials'=>'Tutorials'];
+    $view->with(['pageMenu'=>$page]);
+});

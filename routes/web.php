@@ -105,7 +105,6 @@ MultiLang::routeGroup(function($router) {
                     Route::get('continue-spot-the-intruder', 'SpotIntruderController@continue')->name('continue-spot-the-intruder');
                     Route::get('reset-spot-the-intruder', 'SpotIntruderController@reset')->name('reset-spot-the-intruder');
                     Route::get('spot-the-intruder', 'SpotIntruderController@getQuestion')->name('spot-the-intruder');
-                    Route::get('glossary', 'GlossaryController@index')->name('glossary');
                     Route::get('my-collection', 'GlossaryController@getListingForAuthUser')->name('my-collection');
                     Route::post('add-to-fav', 'GlossaryController@addToFav');
                     Route::post('remove-from-fav', 'GlossaryController@removeFromFav');
@@ -114,10 +113,12 @@ MultiLang::routeGroup(function($router) {
                     Route::get('tutorials', 'TutorialsController@index')->name('tutorials');
                     Route::get('/switchToContributor', 'UsersController@switchToContributor')->name('switchToContributor');
                     Route::get('/delete-card/{card}', 'UsersController@deleteCard')->name('deleteCard');
-
+                    Route::get('context-finder', 'ReadingAssistantController@contextFinder')->name('context-finder');
+                    Route::post('context-finder', 'ReadingAssistantController@pContextFinder')->name('pContext-finder');
                 });
             });
         });
+        Route::get('glossary', 'GlossaryController@index')->name('glossary');
         Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');
         Route::get('fun-facts/{id}',  'FunFactsController@get');
         Route::get('contact-us',  'SettingController@contactUs')->name('contactUs');
