@@ -199,12 +199,12 @@ class CronService
                         $checkArray['language']=$vote['language'];
                     endif;
                     $getHighestVotes=$this->voteMeaningRepo->hightVotes($checkArray);
-                    foreach($getHighestVotes as $key=>$vote):
+                    foreach($getHighestVotes as $key=>$getVote):
                         foreach ($getHighestVotes as $key2=>$checkVote):
-                            if($vote['id']!=$checkVote['id'] && $vote['total']==$checkVote['total']):
-                                if($checkVote[$type]['coins'] > $vote[$type]['coins']):
+                            if($getVote['id']!=$checkVote['id'] && $getVote['total']==$checkVote['total']):
+                                if($checkVote[$type]['coins'] > $getVote[$type]['coins']):
                                     $getHighestVotes[$key]=$checkVote;
-                                    $getHighestVotes[$key2]=$vote;
+                                    $getHighestVotes[$key2]=$getVote;
                                 endif;
                             endif;
                         endforeach;
