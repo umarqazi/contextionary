@@ -38,13 +38,23 @@ class HangmanController extends Controller
         $this->context_service          = $context_service;
     }
 
+
     /**
+     * Display a listing of the resource.
      *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return View::make('user.user_plan.games.hangman_index');
+    }
+
+    /**
+     * @return mixed
      */
     public function getPhrase(){
         $context    = $this->context_service->get();
         $context_phrases    = $this->context_phrase_service->getRandContextPhrase($context->context_id);
-//        dd($context_phrases[0]->phrases);
         return View::make('user.user_plan.games.hangman')->with(['context_phrases'=> $context_phrases, 'context' => $context->context_name]);
     }
 }
