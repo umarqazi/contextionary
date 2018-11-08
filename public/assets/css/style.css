@@ -208,6 +208,9 @@ color: #f7953a;
 .tut-div li{
   list-style: disc !important;
 }
+.tut-div ul{
+  margin-left: 22px !important;
+}
 a.disabled{
   background-color: grey !important;
   cursor: not-allowed !important;
@@ -530,4 +533,7 @@ input[type=number] {
 }
 .text-white a:hover{
   color: #f7941d !important;
+}
+img#hangman {
+  height: 300px !important;
 }

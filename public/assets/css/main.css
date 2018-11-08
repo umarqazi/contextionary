@@ -2805,6 +2805,10 @@ aside .topLinks {
     background: url(../images/pictionaryQuizLanding.jpg) no-repeat center center;
     background-size: cover;
 }
+.hangmanQuizLanding {
+    background: url(../images/hangmanQuizLanding.jpg) no-repeat center center;
+    background-size: cover;
+}
 .spotIntruderQuizLanding {
     background: url(../images/spotIntruderQuizLanding.jpg) no-repeat center center;
     background-size: cover;
