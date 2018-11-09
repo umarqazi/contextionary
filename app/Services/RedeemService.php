@@ -9,19 +9,38 @@
 namespace App\Services;
 
 
-use App\Repositories\TextHistoryRepo;
+use App\Repositories\RedeemRepo;
 
-class ReadingAssistantService
+class RedeemService extends BaseService implements IService
 {
 
-    protected $text_history;
+    /**
+     * @var RedeemRepo
+     */
+    protected $redeem_repo;
 
+    /**
+     * RedeemService constructor.
+     */
     public function __construct()
     {
-        $this->text_history = new TextHistoryRepo();
+        $this->redeem_repo = new RedeemRepo();
     }
 
-    public function saveHistory($data){
-        return $this->text_history->create($data);
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function findByID($id){
+        return $this->redeem_repo->findByID($id);
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
+    public function update($id, $data){
+        return $this->redeem_repo->update($id, $data);
     }
 }

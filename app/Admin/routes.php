@@ -22,6 +22,7 @@ Route::group([
     $router->get('auth/spot-import', 'SpotIntruderController@import');
     $router->resource('auth/import', 'ImportController')->only( 'store', 'update');
     /* Add in Seeder*/
+    $router->get('auth/redeem-points/{id}', 'RedeemController@redeem');
     $router->resource('auth/point-price', 'PointPricesController');
     $router->resource('auth/glossary', 'GlossaryController');/*Admin Seeder Done*/
     $router->resource('auth/coins-deals', 'CoinsController');/*Admin Seeder Done*/

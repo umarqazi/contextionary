@@ -6,22 +6,41 @@
  * Time: 3:11 PM
  */
 
-namespace App\Services;
+namespace App\Repositories;
 
 
-use App\Repositories\TextHistoryRepo;
+use App\RedeemPoint;
 
-class RedeemService extends BaseService implements IService
+class RedeemRepo extends BaseRepo implements IRepo
 {
 
-    protected $redeem_repo;
+    /**
+     * @var RedeemPoint
+     */
+    protected $redeem_point;
 
+    /**
+     * RedeemRepo constructor.
+     */
     public function __construct()
     {
-        $this->redeem_repo = new TextHistoryRepo();
+        $this->redeem_point = new RedeemPoint();
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function findByID($id){
-        return $this->redeem_repo->findByID($id);
+        return $this->redeem_point->findByID($id);
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
+    public function update($id, $data){
+        return $this->redeem_point->where('id', $id)->update($data);
     }
 }
