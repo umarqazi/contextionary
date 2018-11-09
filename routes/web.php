@@ -18,6 +18,8 @@ MultiLang::routeGroup(function($router) {
         })->name('homescreen');
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/test', 'CronController@subscriptionCheck');
+        Route::get('/test-redeem-success', 'UserdController@ts');
+        Route::get('/test-redeem-cancel', 'UserdController@tc');
         Route::get('verificationEmail', 'Auth\RegisterController@sendVerificationEmail');
         Route::get('resend-email/{id}', 'Auth\RegisterController@sendVerificationEmail');
         Route::get('/verifyEmail/{token}', 'Auth\RegisterController@verifyEmail');
@@ -107,7 +109,6 @@ MultiLang::routeGroup(function($router) {
                     Route::get('spot-the-intruder', 'SpotIntruderController@getQuestion')->name('spot-the-intruder');
                     Route::get('start-hangman',  'HangmanController@index')->name('start-hangman');
                     Route::get('hangman',  'HangmanController@getPhrase')->name('hangman');
-                    Route::get('glossary', 'GlossaryController@index')->name('glossary');
                     Route::get('my-collection', 'GlossaryController@getListingForAuthUser')->name('my-collection');
                     Route::post('add-to-fav', 'GlossaryController@addToFav');
                     Route::post('remove-from-fav', 'GlossaryController@removeFromFav');
@@ -116,10 +117,12 @@ MultiLang::routeGroup(function($router) {
                     Route::get('tutorials', 'TutorialsController@index')->name('tutorials');
                     Route::get('/switchToContributor', 'UsersController@switchToContributor')->name('switchToContributor');
                     Route::get('/delete-card/{card}', 'UsersController@deleteCard')->name('deleteCard');
-
+                    Route::get('context-finder', 'ReadingAssistantController@contextFinder')->name('context-finder');
+                    Route::post('context-finder', 'ReadingAssistantController@pContextFinder')->name('pContext-finder');
                 });
             });
         });
+        Route::get('glossary', 'GlossaryController@index')->name('glossary');
         Route::get('fun-facts',  'FunFactsController@index')->name('fun-facts');
         Route::get('fun-facts/{id}',  'FunFactsController@get');
         Route::get('contact-us',  'SettingController@contactUs')->name('contactUs');

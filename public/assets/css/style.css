@@ -208,9 +208,6 @@ color: #f7953a;
 .tut-div li{
   list-style: disc !important;
 }
-.tut-div ul{
-  margin-left: 22px !important;
-}
 a.disabled{
   background-color: grey !important;
   cursor: not-allowed !important;
@@ -354,7 +351,7 @@ a.disabled{
   color: #f7953a;
 }
 .commentBox{
-  /*right:-310px !important;*/
+  right:-310px !important;
 }
 .hide-button{
   display:none;
@@ -527,6 +524,58 @@ input[type=number] {
   background: #333b47 !important;
   display: inline-block;
   width:100%;
+}
+
+.modal-open .modal {
+  background: rgba(0,0,0,0.6);
+}
+
+#pointModal .modal-content{
+  background: rgba(0,0,0,.6);
+  border: #f7953a solid 1px;
+  border-radius: 5px;
+}
+
+#pointModal .modal-header{
+  background: #f7943a;
+  color: #fff;
+  border-bottom: none;
+}
+
+#pointModal .modal-title{
+  font-weight: 600;
+}
+
+#pointModal .modal-footer{
+  border-top: 1px solid #f7943a;
+}
+
+#pointModal p{
+  color: #fff;
+}
+
+#pointModal .modal-header button{
+  color: #fff;
+  font-size: 28px;
+  opacity: 1;
+}
+
+.payment_method{
+  width: 100%;
+}
+
+.payment_method .card-img{
+  width: 290px;
+  margin: 0 auto;
+  display: block;
+}
+
+.payment_fld{
+  display: none;
+}
+
+.card-img{
+  margin: 0 auto;
 }
 .text-white a{
   color: #fff !important;

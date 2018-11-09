@@ -5,9 +5,9 @@
                 {!! t('Reading Assistant')!!}
             </div>
             <ul class="menuListing">
-                <li><a href="#" class="menu4"><span>Context Finder</span></a></li>
+                <li class="{{ (Request::segment(2) == 'context-finder') ? 'active' : '' }}"><a href="{!! lang_route('context-finder') !!}" class="menu4" style="{{ (Request::segment(2) == 'context-finder') ? 'background-position: 0 -40px' : '' }}"><span>Context Finder</span></a></li>
                 <li><a href="#" class="menu4"><span>Text History</span></a></li>
-                <li class="">
+                <li class="{{ (Request::segment(2) == 'tutorials') ? 'active' : '' }}">
                     <a href="{!! lang_route('tutorials') !!}" class="menu4" style="{{ (Request::segment(2) == 'tutorials') ? 'background-position: 0 -40px' : '' }}">
                         <span>Tutorials</span>
                     </a>
@@ -46,7 +46,7 @@
                         <span>Spot the Intruder</span>
                     </a>
                 </li>
-                <li class="{{ (Request::segment(2) == 'hangman') ? 'active' : '' }}">
+                <li class="{{ (Request::segment(2) == 'hangman' || Request::segment(2) == 'start-hangman') ? 'active' : ''  }}">
                     <a href="{!! lang_route('start-hangman') !!}" class="menu3" style="{{ (Request::segment(2) == 'hangman') ? 'background-position: 0 -40px' : '' }}">
                         <span>Hangman</span>
                     </a>
