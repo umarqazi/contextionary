@@ -1,8 +1,5 @@
 @if(Auth::check())
     @if((count($feedback) == 0 || ($feedback[0]->user_id != Auth::user()->id)) )
-        {{--@php--}}
-        {{--dd($feedback[0]->user_id != Auth::user()->id);--}}
-        {{--@endphp--}}
         <div class="commentBox">
             <button class="icon comment-icon"></button>
             <div class="box">
