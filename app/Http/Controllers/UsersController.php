@@ -39,6 +39,7 @@ class UsersController extends Controller
     protected $contributorService;
     protected $transactions;
     protected $user_points;
+    protected $stripeController;
     /**
      * UsersController constructor.
      */
@@ -52,6 +53,7 @@ class UsersController extends Controller
         $this->contributorService   =   new ContributorService();
         $this->transactions         =   new TransactionService();
         $this->user_points          =   new UserPointRepo();
+        $this->stripeController          =   new StripeController();
     }
 
     /**
@@ -303,10 +305,9 @@ class UsersController extends Controller
     /**
      * @return mixed
      */
-    public function redeemPoints(Request $request){
-        $modal=$request->modal;
+    public function redeemPoints(){
         $prices=PointsPrice::all();
-        return view::make('user.contributor.transactions.redeem-points')->with(['modal'=> $modal, 'pointsPrices'=>$prices]);
+        return view::make('user.contributor.transactions.redeem-points')->with([ 'pointsPrices'=>$prices]);
     }
 
     /**
@@ -322,18 +323,19 @@ class UsersController extends Controller
             'points'     => 'numeric|min:10|max:'.$reamaining,
         ]);
         if ($validators->fails()) {
-            return redirect::to(lang_url('redeem-points'))
+            return redirect::back()
                 ->withErrors($validators)
                 ->withInput()->with('modal', '1');
         }
         $earning=0;
         $earning=$this->createPoint(strip_tags($request->points), $request->type);
+        $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$request->points, 'earning'=>$earning];
+        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
         $notification = array(
             'message' => trans('content.redeem_points'),
             'alert_type' => 'success'
         );
-        $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$request->points, 'earning'=>$earning];
-        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
+
         return Redirect::to(lang_url('redeem-points'))->with($notification);
     }
 
@@ -388,13 +390,13 @@ class UsersController extends Controller
                 $savePoint=$this->createPoint($remainingPoints, $user_point['type']);
             endif;
         }
+        $earning=$this->getEarning($total);
+        $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$total, 'earning'=>$earning];
+        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
         $notification = array(
             'message' => trans('content.redeem_points'),
             'alert_type' => 'success'
         );
-        $earning=$this->getEarning($total);
-        $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$total, 'earning'=>$earning];
-        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
         return Redirect::to(lang_url('redeem-points'))->with($notification);
     }
 
