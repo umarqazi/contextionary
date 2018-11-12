@@ -88,13 +88,22 @@ View::composer(['user.user_plan.glossary.*'], function($view)
  */
 View::composer(['user.profile', 'user.edit', 'user.roles'], function($view)
 {
-    $page=['edit-profile'=>'My Profile'];
+    $page=['profile'=>'My Profile'];
     if(Auth::check()):
         if(Auth::user()->hasRole(Config::get('constant.contributorRole'))):
             $page['edit-roles']='Roles & Context';
         endif;
     endif;
 
+    $view->with(['pageMenu'=>$page]);
+});
+
+/**
+ * Plan Menu
+ */
+View::composer(['user.user_plan.plan.*'], function($view)
+{
+    $page=['active-plan'=>'User Plan'];
     $view->with(['pageMenu'=>$page]);
 });
 
