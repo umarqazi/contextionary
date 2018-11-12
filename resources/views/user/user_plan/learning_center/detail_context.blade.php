@@ -137,7 +137,7 @@
             @endif
         </div>
 
-        <div class="col-lg-12 col-md-12 mt-5">
+        <div class="col-lg-12 col-md-12 mt-5 hidden">
             <h2>Lexical Sets</h2>
             <div class="phrase-body">
                 <div class="row">

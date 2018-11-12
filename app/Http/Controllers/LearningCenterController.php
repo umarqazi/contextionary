@@ -70,13 +70,6 @@ class LearningCenterController extends Controller
     }
 
     /**
-     * @return mixed
-     */
-    public function detailWord(){
-        return View::make('user.user_plan.learning_center.detail_word');
-    }
-
-    /**
      * @param $context_id
      * @return mixed
      */
