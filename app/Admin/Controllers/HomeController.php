@@ -79,11 +79,7 @@ class HomeController extends Controller
             $grid->actions(function (Grid\Displayers\Actions $actions) {
                 $actions->append('<a href="/"><i class="fa fa-eye"></i></a>');
             });
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
         });
     }
 

@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('user_roles')->nullable();
             $table->string('contributor_roles')->nullable();
             $table->string('timezone');
+            $table->string('paypal_email')->nullable();
             $table->integer('coins');
             $table->rememberToken();
             $table->timestamps();

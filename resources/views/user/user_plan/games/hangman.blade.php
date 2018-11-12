@@ -1,15 +1,20 @@
+@extends('layouts.secured_header')
+@section('title')
+    {!! t('Hangman') !!}
+@stop
+@section('content')
 <div class="container-fluid contributorMain funfact pictionaryQuiz hangman">
     @include('layouts.flc_header')
     <div class="row mt-4">
         <div class="col-md-12">
             <div class="gameTitle">
-                Context: Furniture
+                Context: {{$context}}
             </div>
         </div>
 
         <div class="col-md-12">
             <div class="gameWrapper">
-                <img id="hangman" src="images/0.png">
+                <img id="hangman" src="/storage/images/0.png">
                 <h3 class="category"></h3>
                 <div id="container">
                     <!-- Random word Divs appended here -->
@@ -59,7 +64,11 @@
 
         // Pick a category and secret word
         var categories = [
-            ["apple"]
+            [
+                @foreach($context_phrases as $context_phrase)
+                    '{{$context_phrase->phrases->phrase_text}}',
+                @endforeach
+            ]
         ];
         var randomCategoryArray = categories[Math.floor((Math.random() * categories.length))];
         var randomWord = (randomCategoryArray[Math.floor((Math.random() * randomCategoryArray.length))]).toUpperCase();
@@ -71,6 +80,7 @@
             $('#container').append('<div class="letter ' + i + '"></div>');
             $('#container').find(":nth-child(" + (i + 1) + ")").text(randomWordArray[i]);
             $(".letter").css("color", "#000");
+            $(".letter").css("background-color", "#000");
         }
 
         // Button click function
@@ -106,7 +116,7 @@
             // If no match, increase count and add appropriate image
             if (matchFound === false) {
                 wrongGuesses += 1;
-                $("#hangman").attr("src", "images/" + wrongGuesses + ".png");
+                $("#hangman").attr("src", "/storage/images/" + wrongGuesses + ".png");
             }
 
             // If wrong guesses gets to 7 exit the game
@@ -126,3 +136,4 @@
 
     }); // End document.ready
 </script>
+@endsection

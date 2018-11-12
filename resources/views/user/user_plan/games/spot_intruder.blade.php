@@ -93,8 +93,10 @@
 <script>
     $(".gameOptionDiv").click(function () {
         $('.cont-div a').removeClass('disabled');
-        $(this).siblings().children('.gameOption').removeClass('gameOptionActive');
-        $(this).children('.gameOption').addClass('gameOptionActive');
+        $(this).siblings().removeClass('gameOptionActive');
+        $(this).addClass('gameOptionActive');
+        // $(this).siblings().children('.gameOption').removeClass('gameOptionActive');
+        // $(this).children('.gameOption').addClass('gameOptionActive');
     });
     $('.cont-div a').click(function() {
         if(!$(this).hasClass('disabled')){

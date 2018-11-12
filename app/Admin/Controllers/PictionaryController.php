@@ -63,7 +63,9 @@ class PictionaryController extends Controller
             $grid->id('ID')->sortable();
             $grid->disableExport();
             $grid->question()->sortable();
-            $grid->answer()->sortable();
+            $grid->column('Answer')->display(function () {
+                return $this->{$this->answer};
+            })->sortable();
             $grid->actions(function (Grid\Displayers\Actions $actions) {
                 $action = "".$actions->getResource()."/".$actions->getKey()."";
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');

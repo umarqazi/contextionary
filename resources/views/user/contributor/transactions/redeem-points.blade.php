@@ -99,6 +99,14 @@
                                 </span>
                             @endif
                         </div>
+                        <div class="col-md-12">
+                            {!!  Form::email('Paypal Email', null, ['class'=>'form-control mt-4', 'id'=>'paypal-email', 'placeholder'=> 'Enter Paypal Email']); !!}
+                            @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -85,11 +85,7 @@ class FeedbackController extends Controller
                 $action = "".$actions->getResource()."/".$actions->getKey()."";
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
         });
     }
 

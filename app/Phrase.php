@@ -35,6 +35,6 @@ class Phrase extends Model
      * @return mixed
      */
     public function getLengthed($length){
-        return self::where('phrase_length', $length)->inRandomOrder()->get()->first();
+        return self::where('phrase_length', $length)->inRandomOrder()->first();
     }
 }

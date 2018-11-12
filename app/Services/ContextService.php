@@ -33,6 +33,13 @@ class ContextService extends BaseService implements IService
     }
 
     /**
+     * @return mixed
+     */
+    public function get(){
+        return $this->context_repo->get();
+    }
+
+    /**
      * @param $context
      * @return mixed
      */

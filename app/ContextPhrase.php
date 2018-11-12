@@ -29,8 +29,10 @@ class ContextPhrase extends Model
     /**
      * @return mixed
      */
-    public function getRand(){
-        return self::inRandomOrder()->get()->first();
+    public function getRand($context_id){
+        return self::where('context_id', $context_id)->whereHas('phrases', function ($query) {
+            $query->where('phrase_length', '=', 1)->whereRaw('LENGTH(phrase_text) > 5');
+        })->inRandomOrder()->with('phrases')->limit(10)->get();
     }
 
     /**

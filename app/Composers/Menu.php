@@ -41,11 +41,20 @@ View::composer('user.contributor.transactions.*', function($view)
 });
 
 /**
+ * Tutorials Menus
+ */
+View::composer('user.user_plan.reading_assistant.*', function($view)
+{
+    $page=['tutorials'=>'Tutorials'];
+    $view->with(['pageMenu'=>$page]);
+});
+
+/**
  * Games Menus
  */
 View::composer('user.user_plan.games.*', function($view)
 {
-    $page=['start-pictionary'=>'Pictionary', 'start-spot-the-intruder'=>'Spot The Intruder'];
+    $page=['start-pictionary'=>'Pictionary', 'start-spot-the-intruder'=>'Spot The Intruder', 'start-hangman'=>'Hangman'];
     $view->with(['pageMenu'=>$page]);
 });
 

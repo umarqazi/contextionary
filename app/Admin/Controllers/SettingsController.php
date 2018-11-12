@@ -37,8 +37,12 @@ class SettingsController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
-            $content->header(trans('Settings'));
-            $content->body($this->grid()->render());
+            $content->header('Settings');
+            $content->description('Settings of the Website');
+            $content->row('<h4>Contact Us Page Settings</h4>');
+            $content->body($this->grid1()->render());
+            $content->row('<h4>Contributor Settings</h4>');
+            $content->body($this->grid2()->render());
         });
     }
 
@@ -77,9 +81,10 @@ class SettingsController extends Controller
      *
      * @return Grid
      */
-    protected function grid()
+    protected function grid1()
     {
         return Admin::grid(Setting::class, function (Grid $grid) {
+            $grid->model()->where('type', 0);
             $grid->id('ID')->sortable();
             $grid->disableExport();
             $grid -> option('useWidth', true);
@@ -90,11 +95,28 @@ class SettingsController extends Controller
                 $filter->like('values');
             });
             $grid->disableActions();
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
+            $grid->disableRowSelector();
+        });
+    }
+
+    /**
+     * @return Grid
+     */
+    protected function grid2()
+    {
+        return Admin::grid(Setting::class, function (Grid $grid) {
+            $grid->model()->where('type', 1);
+            $grid->id('ID')->sortable();
+            $grid->disableExport();
+            $grid -> option('useWidth', true);
+            $grid->keys()->sortable();
+            $grid->values()->sortable()->editable();
+            $grid->filter(function ($filter){
+                $filter->like('keys');
+                $filter->like('values');
             });
+            $grid->disableActions();
+            $grid->disableRowSelector();
         });
     }
 
@@ -110,6 +132,7 @@ class SettingsController extends Controller
             $form->display('id', 'ID');
             $form->text('keys', trans('Key'))->rules('required')->placeholder('Enter Key...');
             $form->text('values', trans('Value'))->rules('required')->placeholder('Enter Value...');
+            $form->radio('type', trans('Type'))->options(['0'=>'Contact Us Settings', '1' => 'Contributor Settings'])->rules('required');
             $form->saved(function () use ($id) {
                 if($id){
                     admin_toastr(trans('Updated successfully!'));

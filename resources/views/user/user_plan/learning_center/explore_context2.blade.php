@@ -25,7 +25,7 @@
                 @foreach( $phrases as $phrase)
                     <div class="col-md-4">
                         <div class="phrase-body mb-0">
-                            <p class="text-white"><a href="{!! lang_url('explore-context', ['context'=> $context_id, 'phrase'=>$phrase->phrases->phrase_id ]) !!}">{{$phrase->phrases->phrase_text}}</a></p>
+                            <p class="text-white"><a href="{!! lang_url('explore-context', ['context'=> $context_id, 'phrase'=>$phrase->phrases->phrase_id ]) !!}">{{ucfirst($phrase->phrases->phrase_text)}}</a></p>
                         </div>
                     </div>
                 @endforeach

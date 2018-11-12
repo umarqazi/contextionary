@@ -81,11 +81,7 @@ class VoteExpiryController extends Controller
                 $filter->like('expiry_date');
             });
             $grid->disableActions();
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
         });
     }
 

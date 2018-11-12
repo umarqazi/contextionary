@@ -41,6 +41,13 @@ class ContextRepo
     /**
      * @return mixed
      */
+    public function get(){
+        return $this->context->inRandomOrder()->first();
+    }
+
+    /**
+     * @return mixed
+     */
     public function findById($context){
         return $this->context->findById($context);
     }

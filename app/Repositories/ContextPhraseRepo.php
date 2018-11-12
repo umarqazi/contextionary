@@ -102,9 +102,9 @@ class ContextPhraseRepo
     /**
      * @return mixed
      */
-    public function getRandContextPhrase()
+    public function getRandContextPhrase($context_id)
     {
-        return $this->contextPhrase->getRand();
+        return $this->contextPhrase->getRand($context_id);
     }
 
     /**
