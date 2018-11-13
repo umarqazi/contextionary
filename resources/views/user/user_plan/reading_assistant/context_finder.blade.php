@@ -25,12 +25,12 @@
                     <p id="error_upload" class="hidden bold red bc_none p10"></p>
                 </div>
                 {!! Form::textarea('context', null, ['id'=>'meaning-area','class'=>'enter-phrase', 'placeholder'=>'Enter phrase meaning']) !!}
-                <p class="text-right white-text"><span id="count">{!! t('Characters') !!} {!! strlen(Input::old('meaning')) !!}/2500</span></p>
+                <p class="text-right white-text"><span id="count-span">{!! t('Characters:') !!} <span id="count">{!! strlen(Input::old('meaning')) !!}/2500</span></span></p>
             </div>
 
             <div class="col-md-12 mt-4 text-center actionsBtn">
                 <button class="orangeBtn ml-3 waves-light">Submit</button>
-                <a href="{!! lang_route('context-finder') !!}" class="orangeBtn ml-3 waves-light">Reset</a>
+                <button class="orangeBtn ml-3 waves-light" type="reset" value="Reset" >Reset</button>
             </div>
         </div>
         {!! Form::close() !!}
@@ -165,12 +165,20 @@
                 var textArea = document.getElementById("meaning-area");
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    textArea.value = e.target.result;
+                    textArea.value = e.target.result.substring(0,2500);
                 };
                 reader.readAsText(file);
+                reader.onloadend = function (e) {
+                    if($("#meaning-area").val().length > 2500){
+                        $('#count').html('2500/2500');
+                    }else{
+                        $('#count').html($("#meaning-area").val().length+'/2500');
+                    }
+                };
             }else{
                 $('#error_upload').removeClass('hidden');
                 $('#error_upload').html('Only .txt type files can be uploaded!');
+                $('#count').html($("#meaning-area").val().length+'/2500');
             }
         }
     </script>
