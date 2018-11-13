@@ -77,7 +77,7 @@
                 if(res == 1){
                     toastr.success("Added to your collection!");
                     $(elem).addClass('favIcon2');
-                    $(elem).attr('onclick', 'unfav(event, this, book_id);');
+                    $(elem).attr('onclick', 'unfav(event, this, '+book_id+');');
                 }
             })
         }
@@ -92,7 +92,7 @@
                 if(res == 1){
                     toastr.success("Removed from your collection!");
                     $(elem).removeClass('favIcon2');
-                    $(elem).attr('onclick', 'fav(event, this, book_id);');
+                    $(elem).attr('onclick', 'fav(event, this, '+book_id+');');
                 }
             })
         }

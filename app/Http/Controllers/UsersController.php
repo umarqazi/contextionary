@@ -327,26 +327,55 @@ class UsersController extends Controller
     public function saveEarning(Request $request){
         $point      =   Auth::user()->userPoints->where('type', $request->type)->sum('point');
         $earning    =   Auth::user()->redeemPoints->where('type', $request->type)->sum('points');
-        $this->update(Auth::user()->id, ['paypal_email' => $request->Paypal_Email]);
         $reamaining =   $point-$earning;
-        $validators = Validator::make($request->all(), [
-            'type'       => 'required',
-            'points'     => 'numeric|min:10|max:'.$reamaining,
-        ]);
-        if ($validators->fails()) {
-            return redirect::to(lang_url('redeem-points'))
-                ->withErrors($validators)
-                ->withInput()->with('modal', '1');
-        }
         $earning=0;
+        if($request->redeem_all == 1){
+            $validators = Validator::make($request->all(), [
+                'Paypal_Email'  => 'required',
+            ]);
+            if ($validators->fails()) {
+                return redirect::to(lang_url('redeem-points'))
+                    ->withErrors($validators)
+                    ->withInput()->with('modal', '1');
+            }
+            $notification   = $this->redeemAllPoints($request);
+            return Redirect::to(lang_url('redeem-points'))->with($notification);
+        }else{
+            $validators = Validator::make($request->all(), [
+                'type'          => 'required',
+                'points'        => 'numeric|min:10|max:'.$reamaining,
+                'Paypal_Email'  => 'required',
+            ]);
+            if ($validators->fails()) {
+                return redirect::to(lang_url('redeem-points'))
+                    ->withErrors($validators)
+                    ->withInput()->with('modal', '1');
+            }
+            $notification   = $this->saveEarnings($request);
+            return Redirect::to(lang_url('redeem-points'))->with($notification);
+        }
+    }
+
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function saveEarnings(Request $request){
+        $this->update(Auth::user()->id, ['paypal_email' => $request->Paypal_Email]);
         $earning        =   $this->createPoint(strip_tags($request->points), $request->type);
         $notification   =   array(
             'message'       => trans('content.redeem_points'),
             'alert_type'    => 'success'
         );
-        $email_data     =   ['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$request->points, 'earning'=>$earning];
+        $email_data     =   [
+            'first_name'    =>  Auth::user()->first_name,
+            'last_name'     =>  Auth::user()->last_name,
+            'points'        =>  $request->points,
+            'earning'       =>  $earning
+        ];
         Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
-        return Redirect::to(lang_url('redeem-points'))->with($notification);
+        return $notification;
     }
 
     /**
@@ -385,11 +414,13 @@ class UsersController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return mixed
      */
-    public function redeemAllPoints(){
+    public function redeemAllPoints(Request $request){
         $user_data=['user_id'=>Auth::user()->id];
         $points=$this->user_points->points($user_data);
+        $this->update(Auth::user()->id, ['paypal_email' => $request->Paypal_Email]);
         $remainingPoints=0;
         $total=0;
         foreach($points as $user_point){
@@ -407,7 +438,7 @@ class UsersController extends Controller
         $earning=$this->getEarning($total);
         $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$total, 'earning'=>$earning];
         Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
-        return Redirect::to(lang_url('redeem-points'))->with($notification);
+        return $notification;
     }
 
     /**

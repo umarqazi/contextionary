@@ -17,9 +17,12 @@
                 <label class="customLabel pt-2 d-inline">Enter Your Text or Attach Document</label>
                 <div class="float-right">
                     <label>
-                        <input type="file" class="d-none">
+                        <input type="file" class="d-none" id='upload_file' onchange="onUpload()">
                         <span class="orangeBtn">upload document</span>
                     </label>
+                </div>
+                <div class="float-right">
+                    <p id="error_upload" class="hidden bold red bc_none p10"></p>
                 </div>
                 {!! Form::textarea('context', null, ['id'=>'meaning-area','class'=>'enter-phrase', 'placeholder'=>'Enter phrase meaning']) !!}
                 <p class="text-right white-text"><span id="count">{!! t('Characters') !!} {!! strlen(Input::old('meaning')) !!}/2500</span></p>
@@ -150,5 +153,26 @@
             </div>
         @endif
     </div>
+    <script type="text/javascript">
+        function onUpload() {
+            $("#meaning-area").val('');
+            var file = document.getElementById("upload_file").files[0];
+            var extension = file['name'].split('.').pop();
+            if(extension == 'txt'){
+                if(!$('#error_upload').hasClass('hidden')){
+                    $('#error_upload').addClass('hidden');
+                }
+                var textArea = document.getElementById("meaning-area");
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    textArea.value = e.target.result;
+                };
+                reader.readAsText(file);
+            }else{
+                $('#error_upload').removeClass('hidden');
+                $('#error_upload').html('Only .txt type files can be uploaded!');
+            }
+        }
+    </script>
     {!! HTML::script('assets/js/login.js') !!}
 @endsection

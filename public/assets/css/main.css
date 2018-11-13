@@ -3138,3 +3138,15 @@ aside .topLinks {
     width: 170px;
     height: 36px;
 }
+.bold{
+    font-weight: bold;
+}
+.red{
+    color: red;
+}
+.bc_none{
+    background: none !important;
+}
+.p10{
+    padding: 10px !important;
+}
