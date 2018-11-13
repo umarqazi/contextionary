@@ -72,8 +72,6 @@ class PackagesController extends Controller
             $grid->name()->sortable();
             $grid->price()->sortable();
             $grid->points()->pluck('name')->label();
-            $grid->column('created_at','Created at')->sortable();
-            $grid->column('updated_at','Last Updated at')->sortable();
             $grid->filter(function ($filter){
                 $filter->like('name');
             });
@@ -81,11 +79,7 @@ class PackagesController extends Controller
                 $action = "".$actions->getResource()."/".$actions->getKey()."";
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
         });
     }
 

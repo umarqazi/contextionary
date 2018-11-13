@@ -18,6 +18,8 @@ MultiLang::routeGroup(function($router) {
         })->name('homescreen');
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/test', 'CronController@subscriptionCheck');
+        Route::get('/test-redeem-success', 'UserdController@ts');
+        Route::get('/test-redeem-cancel', 'UserdController@tc');
         Route::get('verificationEmail', 'Auth\RegisterController@sendVerificationEmail');
         Route::get('resend-email/{id}', 'Auth\RegisterController@sendVerificationEmail');
         Route::get('/verifyEmail/{token}', 'Auth\RegisterController@verifyEmail');
@@ -105,6 +107,8 @@ MultiLang::routeGroup(function($router) {
                     Route::get('continue-spot-the-intruder', 'SpotIntruderController@continue')->name('continue-spot-the-intruder');
                     Route::get('reset-spot-the-intruder', 'SpotIntruderController@reset')->name('reset-spot-the-intruder');
                     Route::get('spot-the-intruder', 'SpotIntruderController@getQuestion')->name('spot-the-intruder');
+                    Route::get('start-hangman',  'HangmanController@index')->name('start-hangman');
+                    Route::get('hangman',  'HangmanController@getPhrase')->name('hangman');
                     Route::get('my-collection', 'GlossaryController@getListingForAuthUser')->name('my-collection');
                     Route::post('add-to-fav', 'GlossaryController@addToFav');
                     Route::post('remove-from-fav', 'GlossaryController@removeFromFav');
@@ -123,7 +127,6 @@ MultiLang::routeGroup(function($router) {
         Route::get('fun-facts/{id}',  'FunFactsController@get');
         Route::get('contact-us',  'SettingController@contactUs')->name('contactUs');
         Route::post('contact-us',  'SettingController@sendMessage');
-        Route::get('hangman',  'HangmanController@getPhrase');
     });
     Route::group(array('prefix' => 'cron'), function(){
         Route::get('meaning',  'CronController@meaningToVote')->name('meaning');

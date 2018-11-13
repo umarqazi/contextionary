@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use View;
 use Mail;
+use Srmklive\PayPal\Services\AdaptivePayments;
 
 class UsersController extends Controller
 {
@@ -39,7 +40,8 @@ class UsersController extends Controller
     protected $contributorService;
     protected $transactions;
     protected $user_points;
-    protected $stripeController;
+    protected $provider;
+
     /**
      * UsersController constructor.
      */
@@ -53,7 +55,7 @@ class UsersController extends Controller
         $this->contributorService   =   new ContributorService();
         $this->transactions         =   new TransactionService();
         $this->user_points          =   new UserPointRepo();
-        $this->stripeController          =   new StripeController();
+        $this->provider             =   new AdaptivePayments;
     }
 
     /**
@@ -310,33 +312,69 @@ class UsersController extends Controller
         return view::make('user.contributor.transactions.redeem-points')->with([ 'pointsPrices'=>$prices]);
     }
 
+    public function ts(){
+        dd('1');
+    }
+    public function tc(){
+        dd('2');
+    }
+
     /**
      * @param Request $request
      * @return mixed
      */
     public function saveEarning(Request $request){
-        $point=Auth::user()->userPoints->where('type', $request->type)->sum('point');
-        $earning=Auth::user()->redeemPoints->where('type', $request->type)->sum('points');
-        $reamaining=$point-$earning;
-        $validators = Validator::make($request->all(), [
-            'type'       => 'required',
-            'points'     => 'numeric|min:10|max:'.$reamaining,
-        ]);
-        if ($validators->fails()) {
-            return redirect::back()
-                ->withErrors($validators)
-                ->withInput()->with('modal', '1');
-        }
+        $point      =   Auth::user()->userPoints->where('type', $request->type)->sum('point');
+        $earning    =   Auth::user()->redeemPoints->where('type', $request->type)->sum('points');
+        $reamaining =   $point-$earning;
         $earning=0;
-        $earning=$this->createPoint(strip_tags($request->points), $request->type);
-        $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$request->points, 'earning'=>$earning];
-        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
-        $notification = array(
-            'message' => trans('content.redeem_points'),
-            'alert_type' => 'success'
-        );
+        if($request->redeem_all == 1){
+            $validators = Validator::make($request->all(), [
+                'Paypal_Email'  => 'required',
+            ]);
+            if ($validators->fails()) {
+                return redirect::to(lang_url('redeem-points'))
+                    ->withErrors($validators)
+                    ->withInput()->with('modal', '1');
+            }
+            $notification   = $this->redeemAllPoints($request);
+            return Redirect::to(lang_url('redeem-points'))->with($notification);
+        }else{
+            $validators = Validator::make($request->all(), [
+                'type'          => 'required',
+                'points'        => 'numeric|min:10|max:'.$reamaining,
+                'Paypal_Email'  => 'required',
+            ]);
+            if ($validators->fails()) {
+                return redirect::to(lang_url('redeem-points'))
+                    ->withErrors($validators)
+                    ->withInput()->with('modal', '1');
+            }
+            $notification   = $this->saveEarnings($request);
+            return Redirect::to(lang_url('redeem-points'))->with($notification);
+        }
+    }
 
-        return Redirect::to(lang_url('redeem-points'))->with($notification);
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function saveEarnings(Request $request){
+        $this->update(Auth::user()->id, ['paypal_email' => $request->Paypal_Email]);
+        $earning        =   $this->createPoint(strip_tags($request->points), $request->type);
+        $notification   =   array(
+            'message'       => trans('content.redeem_points'),
+            'alert_type'    => 'success'
+        );
+        $email_data     =   [
+            'first_name'    =>  Auth::user()->first_name,
+            'last_name'     =>  Auth::user()->last_name,
+            'points'        =>  $request->points,
+            'earning'       =>  $earning
+        ];
+        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
+        return $notification;
     }
 
     /**
@@ -375,11 +413,13 @@ class UsersController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return mixed
      */
-    public function redeemAllPoints(){
+    public function redeemAllPoints(Request $request){
         $user_data=['user_id'=>Auth::user()->id];
         $points=$this->user_points->points($user_data);
+        $this->update(Auth::user()->id, ['paypal_email' => $request->Paypal_Email]);
         $remainingPoints=0;
         $total=0;
         foreach($points as $user_point){
@@ -397,7 +437,6 @@ class UsersController extends Controller
             'message' => trans('content.redeem_points'),
             'alert_type' => 'success'
         );
-        return Redirect::to(lang_url('redeem-points'))->with($notification);
     }
 
     /**
@@ -428,5 +467,15 @@ class UsersController extends Controller
             endif;
         endforeach;
         return $earning;
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
+    public function update($id, $data)
+    {
+        return $this->userServices->updateRecord($id, $data);
     }
 }

@@ -41,11 +41,20 @@ View::composer('user.contributor.transactions.*', function($view)
 });
 
 /**
+ * Tutorials Menus
+ */
+View::composer('user.user_plan.reading_assistant.*', function($view)
+{
+    $page=['tutorials'=>'Tutorials'];
+    $view->with(['pageMenu'=>$page]);
+});
+
+/**
  * Games Menus
  */
 View::composer('user.user_plan.games.*', function($view)
 {
-    $page=['start-pictionary'=>'Pictionary', 'start-spot-the-intruder'=>'Spot The Intruder'];
+    $page=['start-pictionary'=>'Pictionary', 'start-spot-the-intruder'=>'Spot The Intruder', 'start-hangman'=>'Hangman'];
     $view->with(['pageMenu'=>$page]);
 });
 
@@ -79,13 +88,22 @@ View::composer(['user.user_plan.glossary.*'], function($view)
  */
 View::composer(['user.profile', 'user.edit', 'user.roles'], function($view)
 {
-    $page=['edit-profile'=>'My Profile'];
+    $page=['profile'=>'My Profile'];
     if(Auth::check()):
         if(Auth::user()->hasRole(Config::get('constant.contributorRole'))):
             $page['edit-roles']='Roles & Context';
         endif;
     endif;
 
+    $view->with(['pageMenu'=>$page]);
+});
+
+/**
+ * Plan Menu
+ */
+View::composer(['user.user_plan.plan.*'], function($view)
+{
+    $page=['active-plan'=>'User Plan'];
     $view->with(['pageMenu'=>$page]);
 });
 

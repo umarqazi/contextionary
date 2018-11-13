@@ -4,7 +4,7 @@
 @stop
 @section('content')
 <div class="container-fluid contributorMain userProfile">
-    @include('layouts.profile-menu')
+    @include('layouts.flc_header')
     <div class="row">
         <div class="col-md-12">
             @include('layouts.toaster')

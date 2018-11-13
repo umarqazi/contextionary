@@ -7,7 +7,7 @@
     @include('layouts.flc_header')
     <div class="row mt-4">
         <div class="col-sm-6">
-            <div class="exploreTitle">{{$context}}</div>
+            <div class="exploreTitle">{{ucfirst($context)}}</div>
         </div>
         <div class="col-sm-6 text-right">
             @php
@@ -26,114 +26,158 @@
                 </div>
             @endif
             @if(! $translations->isEmpty())
-            <div class="row">
+            <div class="row mb-1">
                 <div class="col-md-12">
                     <p class="text-white phraseTranslate"><strong class="mr-2">Language :</strong></p>
                     <div class="languageBar mb-1">
-                        <span class="active"><img src="images/english-flag.png"> English <i class="fa fa-chevron-down"></i></span>
+                        <span class="active"> Select Language <i class="fa fa-chevron-down"></i></span>
                         <ul class="list">
-                            <li><img src="images/english-flag.png"> English</li>
-                            <li><img src="images/french-flag.png"> French</li>
-                            <li><img src="images/spain-flag.png"> Spanish</li>
-                            <li><img src="images/hindi-flag.png"> Hindi</li>
+                            <li><img src="{{asset('assets/images/french-flag.png')}}"> French</li>
+                            <li><img src="{{asset('assets/images/spain-flag.png')}}"> Spanish</li>
+                            <li><img src="{{asset('assets/images/hindi-flag.png')}}"> Hindi</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row div-translate">
                 @foreach($translations as $translation)
-                    @if($translation->language == 'English')
-                        <div class="pmt-pt-english">
-                            <div class="col-md-12">
-                                <p class="text-white phraseTranslate mb-1 pmt-english"><strong class="mr-2">Phrase Meaning Translation :</strong> {{$translation->translation}}</p>
-                            </div>
-                            <div class="col-md-12">
-                                <p class="text-white phraseTranslate pt-english"><strong class="mr-2">Phrase Translation :</strong> {{$translation->phrase_translation}}</p>
-                            </div>
-                        </div>
-                    @elseif($translation->language == 'Spanish')
+                    @if($translation->language == 'Spanish')
                         <div class="pmt-pt-spanish hidden">
                             <div class="col-md-12">
-                                <p class="text-white phraseTranslate mb-1 pmt-spanish"><strong class="mr-2">Phrase Meaning Translation :</strong> {{$translation->translation}}</p>
+                                <p class="text-white phraseTranslate mb-1 pt-spanish">
+                                    @if($translation->phrase_translation != '')
+                                        <strong class="mr-2">Phrase Translation :</strong> {{$translation->phrase_translation}}
+                                    @else
+                                        <strong class="mr-2">Phrase Translation :</strong> No Translation Available
+                                    @endif
+                                </p>
                             </div>
                             <div class="col-md-12">
-                                <p class="text-white phraseTranslate pt-spanish"><strong class="mr-2">Phrase Translation :</strong> {{$translation->phrase_translation}}</p>
+                                <p class="text-white phraseTranslate pmt-spanish">
+                                    @if($translation->translation != '')
+                                        <strong class="mr-2">Phrase Meaning Translation :</strong> {{$translation->translation}}
+                                    @else
+                                        <strong class="mr-2">Phrase Meaning Translation :</strong> No Translation Available
+                                    @endif
+                                </p>
                             </div>
                         </div>
                     @elseif($translation->language == 'French')
                         <div class="pmt-pt-french hidden">
                             <div class="col-md-12">
-                                <p class="text-white phraseTranslate mb-1 pmt-french"><strong class="mr-2">Phrase Meaning Translation :</strong> {{$translation->translation}}</p>
+                                <p class="text-white phraseTranslate mb-1 pt-french">
+                                    @if($translation->phrase_translation != '')
+                                        <strong class="mr-2">Phrase Translation :</strong> {{$translation->phrase_translation}}
+                                    @else
+                                        <strong class="mr-2">Phrase Translation :</strong> No Translation Available
+                                    @endif
+                                </p>
                             </div>
                             <div class="col-md-12">
-                                <p class="text-white phraseTranslate pt-french"><strong class="mr-2">Phrase Translation :</strong> {{$translation->phrase_translation}}</p>
+                                <p class="text-white phraseTranslate pmt-french">
+                                    @if($translation->translation != '')
+                                        <strong class="mr-2">Phrase Meaning Translation :</strong> {{$translation->translation}}
+                                    @else
+                                        <strong class="mr-2">Phrase Meaning Translation :</strong> No Translation Available
+                                    @endif
+                                </p>
                             </div>
                         </div>
                     @elseif($translation->language == 'Hindi')
                         <div class="pmt-pt-hindi hidden">
                             <div class="col-md-12">
-                                <p class="text-white phraseTranslate mb-1 pmt-hindi"><strong class="mr-2">Phrase Meaning Translation :</strong> {{$translation->translation}}</p>
+                                <p class="text-white phraseTranslate mb-1 pt-hindi">
+                                    @if($translation->phrase_translation != '')
+                                        <strong class="mr-2">Phrase Translation :</strong> {{$translation->phrase_translation}}
+                                    @else
+                                        <strong class="mr-2">Phrase Translation :</strong> No Translation Available
+                                    @endif
+                                </p>
                             </div>
                             <div class="col-md-12">
-                                <p class="text-white phraseTranslate pt-hindi"><strong class="mr-2">Phrase Translation :</strong> {{$translation->phrase_translation}}</p>
+                                <p class="text-white phraseTranslate pmt-hindi">
+                                    @if($translation->translation != '')
+                                        <strong class="mr-2">Phrase Meaning Translation :</strong> {{$translation->translation}}
+                                    @else
+                                        <strong class="mr-2">Phrase Meaning Translation :</strong> No Translation Available
+                                    @endif
+                                </p>
                             </div>
                         </div>
                     @endif
                 @endforeach
+                    <div class="pmt-pt-na hidden">
+                        <div class="col-md-12">
+                            <p class="text-white phraseTranslate mb-1 pt-na">
+                                <strong class="mr-2">Phrase Translation :</strong> No Translation Available
+                            </p>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="text-white phraseTranslate pmt-na">
+                                <strong class="mr-2">Phrase Meaning Translation :</strong> No Translation Available
+                            </p>
+                        </div>
+                    </div>
             </div>
+            @else
+                <div class="row div-translate">
+                    <div class="pmt-pt-na">
+                        <div class="col-md-12">
+                            <p class="text-white phraseTranslate mb-1 pt-na">
+                                <strong class="mr-2">Phrase Translation :</strong> No Translation Available
+                            </p>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="text-white phraseTranslate pmt-na">
+                                <strong class="mr-2">Phrase Meaning Translation :</strong> No Translation Available
+                            </p>
+                        </div>
+                    </div>
+                </div>
             @endif
         </div>
 
-        <div class="col-lg-4 col-md-6 mt-5">
+        <div class="col-lg-12 col-md-12 mt-5 hidden">
             <h2>Lexical Sets</h2>
             <div class="phrase-body">
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <p class="text-white">Lorem ipsum dolor sit amet</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 mt-5">
-            <h2>Lexical Sets</h2>
+        <div class="col-lg-12 col-md-12 mt-5">
+            <h2>Phrase related to {{ucfirst($context)}}</h2>
             <div class="phrase-body">
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 mt-5">
-            <h2>Lexical Sets</h2>
-            <div class="phrase-body">
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
-                <p class="text-white">Lorem ipsum dolor sit amet</p>
+                <div class="row">
+                    @if( ! $related_phrases->isEmpty())
+                        @foreach($related_phrases as $related_phrase)
+                        <div class="col-lg-3 col-md-3">
+                            <p class="text-white"><a href="{!! lang_url('explore-context', ['context'=> $context_id, 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucfirst($related_phrase->relatedPhrases->phrase_text)}}</a></p>
+                        </div>
+                        @endforeach
+                    @else
+                        <div class="col-lg-12 col-md-12">
+                            <p class="text-white">No Related Phrases!</p>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 </div>
     <script type="text/javascript">
-        $(".languageBar").click(function () {
-            $(".list li").click(function () {
-                var get_value = $(this).html();
+        $(".languageBar .list li").click(function () {
+            var get_value = $(this).html();
+            if($('.pmt-pt-'+get_value.split(" ").pop().toLowerCase()).length){
                 $('.pmt-pt-'+get_value.split(" ").pop().toLowerCase()).removeClass('hidden');
                 $('.pmt-pt-'+get_value.split(" ").pop().toLowerCase()).siblings().addClass('hidden');
-            });
+            }else{
+                $('.pmt-pt-na').removeClass('hidden');
+                $('.pmt-pt-na').siblings().addClass('hidden');
+            }
         });
     </script>
 @endsection

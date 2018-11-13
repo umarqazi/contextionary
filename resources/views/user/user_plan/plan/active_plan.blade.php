@@ -5,20 +5,7 @@
 @section('content')
     <div class="container-fluid contributorMain userPlanBg">
         <div class="wrapperMask"></div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="tabsContainer">
-                    <ul class="customTabs tabsView">
-                        <li class="active"><a href="#">User plan</a></li>
-                    </ul>
-                    <div class="searchHolder light">
-                        <i class="fa fa-search"></i>
-                        <input type="search" class="fld" placeholder="Search">
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        @include('layouts.flc_header')
 
         <div class="row mt-4">
             <div class="col-md-12">

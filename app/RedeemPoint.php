@@ -17,4 +17,12 @@ class RedeemPoint extends Model
     public function users(){
         return $this->belongsTo('App\User', 'user_id');
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function findByID($id){
+        return self::find($id);
+    }
 }

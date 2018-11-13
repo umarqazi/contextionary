@@ -81,12 +81,8 @@ class AdminController extends Controller
                     $actions->disableDelete();
                 }
             });
-
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
+            $grid->disableExport();
         });
     }
 
