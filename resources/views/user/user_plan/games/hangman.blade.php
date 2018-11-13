@@ -13,6 +13,9 @@
         </div>
 
         <div class="col-md-12">
+            <a href="{!! lang_route('start-hangman') !!}" class="btn orangeBtn waves-effect waves-light p10 float-right">
+                <img src="{!! asset('storage/images/replay-symbol.png') !!}">
+            </a>
             <div class="gameWrapper">
                 <img id="hangman" src="/storage/images/0.png">
                 <h3 class="category"></h3>
