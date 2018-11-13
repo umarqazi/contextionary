@@ -172,11 +172,9 @@
         $(".languageBar .list li").click(function () {
             var get_value = $(this).html();
             if($('.pmt-pt-'+get_value.split(" ").pop().toLowerCase()).length){
-                console.log('yes');
                 $('.pmt-pt-'+get_value.split(" ").pop().toLowerCase()).removeClass('hidden');
                 $('.pmt-pt-'+get_value.split(" ").pop().toLowerCase()).siblings().addClass('hidden');
             }else{
-                console.log('no');
                 $('.pmt-pt-na').removeClass('hidden');
                 $('.pmt-pt-na').siblings().addClass('hidden');
             }
