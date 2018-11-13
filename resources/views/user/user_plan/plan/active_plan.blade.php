@@ -104,12 +104,56 @@
                 @else
                     @if($total_contribution >= 3)
                         <h3>{{t('You are given free access of the premium plan.')}}</h3>
+                        <div class="planBlock">
+                            <div class="img-holder">
+                                <img src="{!! asset('assets/images/plan').'2.png' !!}">
+                            </div>
+                            <div class="planInfo">
+                                <div class="activePlan"><i class="fa fa-certificate"></i> amount / month: ${!! Config::get('constant.plan_prices.2') !!}</div>
+                                <h2>Features</h2>
+                                <ul class="features">
+                                    <li>Reading assistant<br>
+                                        <span>Context,</span>
+                                        <span>Keywords,</span>
+                                        <span>Definition,</span>
+                                        <span>Illustration,</span>
+                                        <span>Related words</span>
+                                        <span>Export Results</span>
+                                        <span>File Upload</span>
+                                    </li>
+                                    <li>Glossary catalog</li>
+                                    <li>A game of context</li>
+                                    <li>Learning Center</li>
+                                </ul>
+                            </div>
+                            <div class="row card-div ">
+                                @if(!$cards->isEmpty())
+                                    <div class="col-md-12">
+                                        <h2>My payments</h2>
+                                    </div>
+                                    @foreach($cards as $card)
+                                        <div class="col-md-4">
+                                            <div class="cardBlock">
+                                                <img src="{!! asset('assets/images/').'/'.strtolower($card['brand']).'-card.png'!!}">
+                                                <a href="{!! lang_url('delete-card', ['id'=>$card['id']]) !!}" class="btn del-btn"><i class="fa fa-trash"></i></a>
+                                                <p>XXXXXXXXXXXX{!! $card['last4'] !!}<br>
+                                                    <span>{!! Auth::user()->first_name !!} <span class="float-right">{!! $card['exp_month'] !!}/{!! $card['exp_year'] !!}</span></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
                     @endif
                 @endif
                 <div class="planTitle">{!! t('other plans') !!}</div>
                 @php
-                    $packages = Config::get('constant.packages');
-                    array_pop($packages);
+                    $packages   = Config::get('constant.packages');
+                    if($total_contribution >= 3){
+                        unset($packages[2]);
+                    }
+                    unset($packages[7]);
                 @endphp
                 @foreach($packages as $key=>$package)
                     @if($activePlan)

@@ -105,7 +105,8 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            {!!  Form::email('Paypal Email', null, ['class'=>'form-control mt-4', 'id'=>'paypal-email', 'placeholder'=> 'Enter Paypal Email', 'required']); !!}
+                            <img src="{!! asset('/assets/images/2000px-PayPal.svg.png') !!}" class="height25 mt-4">
+                            {!!  Form::email('Paypal Email', null, ['class'=>'form-control mt-2', 'id'=>'paypal-email', 'placeholder'=> 'Enter Paypal Email', 'required']); !!}
                             @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
