@@ -72,19 +72,13 @@ class PermissionController extends Controller
             $grid->id('ID')->sortable();
             $grid->name()->sortable();
             $grid->disableExport();
-            $grid->column('created_at','Created at')->sortable();
-            $grid->column('updated_at','Last Modified at')->sortable();
             $grid->filter(function ($filter){
                 $filter->like('name');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
                 $actions->disableView();
             });
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
         });
     }
 

@@ -2805,6 +2805,10 @@ aside .topLinks {
     background: url(../images/pictionaryQuizLanding.jpg) no-repeat center center;
     background-size: cover;
 }
+.hangmanQuizLanding {
+    background: url(../images/hangmanQuizLanding.jpg) no-repeat center center;
+    background-size: cover;
+}
 .spotIntruderQuizLanding {
     background: url(../images/spotIntruderQuizLanding.jpg) no-repeat center center;
     background-size: cover;
@@ -3133,4 +3137,19 @@ aside .topLinks {
 .contextFinder .contextTable td .languageBar {
     width: 170px;
     height: 36px;
+}
+.bold{
+    font-weight: bold;
+}
+.red{
+    color: red;
+}
+.bc_none{
+    background: none !important;
+}
+.p10{
+    padding: 10px !important;
+}
+.height25{
+    height: 25px !important;
 }

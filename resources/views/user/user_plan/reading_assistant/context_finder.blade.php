@@ -17,17 +17,20 @@
                 <label class="customLabel pt-2 d-inline">Enter Your Text or Attach Document</label>
                 <div class="float-right">
                     <label>
-                        <input type="file" class="d-none">
+                        <input type="file" class="d-none" id='upload_file' onchange="onUpload()">
                         <span class="orangeBtn">upload document</span>
                     </label>
                 </div>
+                <div class="float-right">
+                    <p id="error_upload" class="hidden bold red bc_none p10"></p>
+                </div>
                 {!! Form::textarea('context', null, ['id'=>'meaning-area','class'=>'enter-phrase', 'placeholder'=>'Enter phrase meaning']) !!}
-                <p class="text-right white-text"><span id="count">{!! t('Characters') !!} {!! strlen(Input::old('meaning')) !!}/2500</span></p>
+                <p class="text-right white-text"><span id="count-span">{!! t('Characters:') !!} <span id="count">{!! strlen(Input::old('meaning')) !!}/2500</span></span></p>
             </div>
 
             <div class="col-md-12 mt-4 text-center actionsBtn">
                 <button class="orangeBtn ml-3 waves-light">Submit</button>
-                <a href="{!! lang_route('context-finder') !!}" class="orangeBtn ml-3 waves-light">Reset</a>
+                <button class="orangeBtn ml-3 waves-light" type="reset" value="Reset" >Reset</button>
             </div>
         </div>
         {!! Form::close() !!}
@@ -150,5 +153,34 @@
             </div>
         @endif
     </div>
+    <script type="text/javascript">
+        function onUpload() {
+            $("#meaning-area").val('');
+            var file = document.getElementById("upload_file").files[0];
+            var extension = file['name'].split('.').pop();
+            if(extension == 'txt'){
+                if(!$('#error_upload').hasClass('hidden')){
+                    $('#error_upload').addClass('hidden');
+                }
+                var textArea = document.getElementById("meaning-area");
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    textArea.value = e.target.result.substring(0,2500);
+                };
+                reader.readAsText(file);
+                reader.onloadend = function (e) {
+                    if($("#meaning-area").val().length > 2500){
+                        $('#count').html('2500/2500');
+                    }else{
+                        $('#count').html($("#meaning-area").val().length+'/2500');
+                    }
+                };
+            }else{
+                $('#error_upload').removeClass('hidden');
+                $('#error_upload').html('Only .txt type files can be uploaded!');
+                $('#count').html($("#meaning-area").val().length+'/2500');
+            }
+        }
+    </script>
     {!! HTML::script('assets/js/login.js') !!}
 @endsection

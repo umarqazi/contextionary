@@ -22,6 +22,7 @@ Route::group([
     $router->get('auth/spot-import', 'SpotIntruderController@import');
     $router->resource('auth/import', 'ImportController')->only( 'store', 'update');
     /* Add in Seeder*/
+    $router->get('auth/redeem-points/{id}', 'RedeemController@redeem');
     $router->resource('auth/point-price', 'PointPricesController');
     $router->resource('auth/glossary', 'GlossaryController');/*Admin Seeder Done*/
     $router->resource('auth/coins-deals', 'CoinsController');/*Admin Seeder Done*/
@@ -29,6 +30,7 @@ Route::group([
     $router->resource('auth/spot-the-intruder', 'SpotIntruderController');
     $router->resource('auth/packages', 'PackagesController');
     $router->resource('auth/points', 'PointsController');
+    $router->resource('auth/redeem', 'RedeemController');
     $router->resource('auth/vote-expiry', 'VoteExpiryController')->only('index', 'show', 'update');
     $router->resource('auth/bidding-expiry', 'BiddingExpiryController')->only('index', 'show', 'update');
 });

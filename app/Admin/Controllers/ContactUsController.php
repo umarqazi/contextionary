@@ -76,8 +76,6 @@ class ContactUsController extends Controller
                     return "<i class='fa fa-check-circle' style='color: green;'></i>";
                 }
             });
-            $grid->column('created_at','Created at')->sortable();
-            $grid->column('updated_at','Last Updated at')->sortable();
             $grid->filter(function ($filter){
                 $filter->like('first_name');
                 $filter->like('last_name');
@@ -89,11 +87,7 @@ class ContactUsController extends Controller
                 $action = "".$actions->getResource()."/".$actions->getKey()."";
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
         });
     }
 

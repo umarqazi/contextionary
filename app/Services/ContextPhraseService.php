@@ -12,6 +12,7 @@ namespace App\Services;
 
 
 use App\Repositories\ContextPhraseRepo;
+use App\Repositories\RelatedPhraseRepo;
 
 class ContextPhraseService extends BaseService implements IService
 {
@@ -20,20 +21,24 @@ class ContextPhraseService extends BaseService implements IService
      */
     protected $context_phrase_repo;
 
+    protected $related_phrase_repo;
+
     /**
      * PhraseService constructor.
      */
     public function __construct()
     {
         $context_phrase_repo        = new ContextPhraseRepo();
+        $related_phrase_repo        = new RelatedPhraseRepo();
         $this->context_phrase_repo  = $context_phrase_repo;
+        $this->related_phrase_repo  = $related_phrase_repo;
     }
 
     /**
      * @return mixed
      */
-    public function getRandContextPhrase(){
-        return $this->context_phrase_repo->getRandContextPhrase();
+    public function getRandContextPhrase($context_id){
+        return $this->context_phrase_repo->getRandContextPhrase($context_id);
     }
 
     /**
@@ -41,6 +46,13 @@ class ContextPhraseService extends BaseService implements IService
      */
     public function getContextPhrase($context){
         return $this->context_phrase_repo->getContextPhrase($context);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRelatedPhrase($context_id, $phrase_id){
+        return $this->related_phrase_repo->getRelated($context_id, $phrase_id);
     }
 
     /**

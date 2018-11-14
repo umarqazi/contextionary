@@ -1,5 +1,5 @@
 @if(Auth::check())
-    @if((count($feedback) == 0)  || ($feedback[0]->user_id != Auth::user()->id))
+    @if((count($feedback) == 0 || ($feedback[0]->user_id != Auth::user()->id)) )
         <div class="commentBox">
             <button class="icon comment-icon"></button>
             <div class="box">
@@ -36,17 +36,17 @@
         </script>
     @endif
 @endif
-{!! HTML::script('assets/js/popper.min.js') !!}
-{!! HTML::script('assets/js/bootstrap.min.js') !!}
-{!! HTML::script('assets/js/mdb.min.js') !!}
-{!! HTML::script('assets/js/shards.min.js') !!}
-{!! HTML::script('assets/js/custom.js') !!}
-{!! HTML::script('assets/js/jquery.mCustomScrollbar.concat.min.js') !!}
-<script>
-    var modal="<?php echo count($errors) ?>";
-    if(modal > 0){
-        $('#pointModal').modal('show');
-    }
-</script>
-</body>
+        {!! HTML::script('assets/js/popper.min.js') !!}
+        {!! HTML::script('assets/js/bootstrap.min.js') !!}
+        {!! HTML::script('assets/js/mdb.min.js') !!}
+        {!! HTML::script('assets/js/shards.min.js') !!}
+        {!! HTML::script('assets/js/custom.js') !!}
+        {!! HTML::script('assets/js/jquery.mCustomScrollbar.concat.min.js') !!}
+        <script>
+            var modal="<?php echo count($errors) ?>";
+            if(modal > 0){
+                $('#pointModal').modal('show');
+            }
+        </script>
+    </body>
 </html>

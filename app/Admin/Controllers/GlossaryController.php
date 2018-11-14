@@ -76,6 +76,7 @@ class GlossaryController extends Controller
                 return "<img class='img-thumbnail' src='{$thumbnail}' />";
             })->setAttributes(["style" => "width:10% !important;"]);
             $grid->name()->sortable();
+            $grid->context()->sortable();
             $grid->price()->sortable();
             $grid->url();
             $grid->column('status')->display(function ($status) {
@@ -94,11 +95,7 @@ class GlossaryController extends Controller
                 $action = "".$actions->getResource()."/".$actions->getKey()."";
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
             });
-            $grid->tools(function (Grid\Tools $tools) {
-                $tools->batch(function (Grid\Tools\BatchActions $actions) {
-                    $actions->disableDelete();
-                });
-            });
+            $grid->disableRowSelector();
         });
     }
 
@@ -116,6 +113,7 @@ class GlossaryController extends Controller
             $form->display('id', 'ID');
             $form->image('thumbnail')->move($dir1)->rules('required|dimensions:min_width=300,min_height=300')->help('Note: Please upload an image of minimum 300px*300px.');
             $form->text('name', trans('Name'))->rules('required')->placeholder('Enter Name...');
+            $form->text('context', trans('Context'))->rules('required')->placeholder('Enter Context...');
             $form->currency('price', trans('Price'))->rules('required');
             $form->file('file')->move($dir2)->rules('required');
             $form->text('url', trans('Url'))->rules('required')->placeholder('Enter URL...');
@@ -131,16 +129,16 @@ class GlossaryController extends Controller
                 $glossary->thumbnail = 'images/glossary/thumb/'.$thumb_name[3];
                 $glossary->file = 'images/glossary/files/'.$file_name[3];
                 $glossary->update();
-
-                $path = pathinfo(public_path('storage/'.$glossary->file));
-
-                $pdf = new PDFMerger();
-
-                $pdf->addPDF(public_path('storage/'.$glossary->file), '1, 2, 3, 4, 5');
-                $pathForTheMergedPdf = $path['dirname'].'/'.$path['filename'].'_short.pdf';
-                $pdf->merge('file', $pathForTheMergedPdf);
-                $glossary->file = 'images/glossary/files/'.$path['filename'].'_short.pdf';
-                $glossary->update();
+                if(count(file(public_path('storage/'.$glossary->file))) > 5){
+                    $path = pathinfo(public_path('storage/'.$glossary->file));
+                    $pdf = new PDFMerger();
+                    $pdf->addPDF(public_path('storage/'.$glossary->file), '1, 2, 3, 4, 5');
+                    $pathForTheMergedPdf = $path['dirname'].'/'.$path['filename'].'_short.pdf';
+                    $pdf->merge('file', $pathForTheMergedPdf);
+                    $glossary->file = 'images/glossary/files/'.$path['filename'].'_short.pdf';
+                    $glossary->context = count(file(public_path('storage/'.$glossary->file)));
+                    $glossary->update();
+                }
                 if($id){
                     admin_toastr(trans('Updated successfully!'));
                 }else{

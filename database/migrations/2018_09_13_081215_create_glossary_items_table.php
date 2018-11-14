@@ -18,6 +18,7 @@ class CreateGlossaryItemsTable extends Migration
             $table->string('name')->nullable();
             $table->integer('price');
             $table->text('description')->nullable();
+            $table->string('context');
             $table->string('thumbnail');
             $table->string('file');
             $table->string('url');

@@ -577,3 +577,12 @@ input[type=number] {
 .card-img{
   margin: 0 auto;
 }
+.text-white a{
+  color: #fff !important;
+}
+.text-white a:hover{
+  color: #f7941d !important;
+}
+img#hangman {
+  height: 300px !important;
+}
