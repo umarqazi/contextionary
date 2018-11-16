@@ -3,6 +3,11 @@
     {!! t('Plans') !!}
 @stop
 @section('content')
+    @php
+        $packages               = Config::get('constant.packages');
+        $active_package_name    = $packages[array_search(ucwords(Auth::user()->getRoleNames()->first()), $packages)];
+        $active_package_id      = array_search(ucwords(Auth::user()->getRoleNames()->first()), $packages);
+    @endphp
     <div class="container-fluid contributorMain userPlanBg">
         <div class="wrapperMask"></div>
         @include('layouts.flc_header')
@@ -103,13 +108,13 @@
                     </div>
                 @else
                     @if($total_contribution >= 3)
-                        <h3>{{t('You are given free access of the premium plan.')}}</h3>
+                        <h3>{{t('You are given free access of the ')}} {{$active_package_name}}.</h3>
                         <div class="planBlock">
                             <div class="img-holder">
-                                <img src="{!! asset('assets/images/plan').'2.png' !!}">
+                                <img src="{!! asset('assets/images/plan').$active_package_id.'.png' !!}">
                             </div>
                             <div class="planInfo">
-                                <div class="activePlan"><i class="fa fa-certificate"></i> amount / month: ${!! Config::get('constant.plan_prices.2') !!}</div>
+                                <div class="activePlan"><i class="fa fa-certificate"></i> amount / month: ${!! Config::get('constant.plan_prices.'.$active_package_id) !!}</div>
                                 <h2>Features</h2>
                                 <ul class="features">
                                     <li>Reading assistant<br>
@@ -118,12 +123,18 @@
                                         <span>Definition,</span>
                                         <span>Illustration,</span>
                                         <span>Related words</span>
-                                        <span>Export Results</span>
-                                        <span>File Upload</span>
+                                        @if($active_package_id!=1)
+                                            <span>Export Results</span>
+                                        @endif
+                                        @if($active_package_id==2)
+                                            <span>File Upload</span>
+                                        @endif
                                     </li>
                                     <li>Glossary catalog</li>
                                     <li>A game of context</li>
-                                    <li>Learning Center</li>
+                                    @if($active_package_id==2)
+                                        <li>Learning Center</li>
+                                    @endif
                                 </ul>
                             </div>
                             <div class="row card-div ">
@@ -151,7 +162,7 @@
                 @php
                     $packages   = Config::get('constant.packages');
                     if($total_contribution >= 3){
-                        unset($packages[2]);
+                        unset($active_package_id, $packages);
                     }
                     unset($packages[7]);
                 @endphp

@@ -111,11 +111,11 @@ class GlossaryController extends Controller
         $dir2 ='images/glossary/files';
         return Admin::form(Glossary::class, function (Form $form) use ($id, $dir1, $dir2) {
             $form->display('id', 'ID');
-            $form->image('thumbnail')->move($dir1)->rules('required|dimensions:min_width=300,min_height=300')->help('Note: Please upload an image of minimum 300px*300px.');
+            $form->image('thumbnail')->move($dir1)->rules('required|dimensions:min_width=300,min_height=300|mimes:jpeg,png')->help('Note: Please upload an image of minimum 300px*300px.');
             $form->text('name', trans('Name'))->rules('required')->placeholder('Enter Name...');
             $form->text('context', trans('Context'))->rules('required')->placeholder('Enter Context...');
             $form->currency('price', trans('Price'))->rules('required');
-            $form->file('file')->move($dir2)->rules('required');
+            $form->file('file')->move($dir2)->rules('required|mimes:pdf')->help('Note: Please upload .pdf file only.');
             $form->text('url', trans('Url'))->rules('required')->placeholder('Enter URL...');
             $states = [
                 'on'  => ['value' => 1, 'text' => 'Active', 'color' => 'success'],
