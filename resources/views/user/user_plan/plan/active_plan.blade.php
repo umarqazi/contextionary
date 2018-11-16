@@ -3,11 +3,6 @@
     {!! t('Plans') !!}
 @stop
 @section('content')
-    @php
-        $packages               = Config::get('constant.packages');
-        $active_package_name    = $packages[array_search(ucwords(Auth::user()->getRoleNames()->first()), $packages)];
-        $active_package_id      = array_search(ucwords(Auth::user()->getRoleNames()->first()), $packages);
-    @endphp
     <div class="container-fluid contributorMain userPlanBg">
         <div class="wrapperMask"></div>
         @include('layouts.flc_header')
@@ -29,10 +24,7 @@
                         </div>
                     @endif
                 @else
-                    {{--<div class="planTitle">--}}
-                    {{--{!! t('Current plan') !!} <span>({!! t('remaining time') !!}: {!! $days !!} {{ t(str_plural('day', $days)) }})</span>--}}
-                    {{--</div>--}}
-                    @if($total_contribution >= 3)
+                    @if(Auth::user()->user_roles == NULL)
                         <div class="planTitle">
                             {!! t('Current plan') !!} <span>({!! t('Free Unlimited Access') !!})</span>
                         </div>
@@ -74,14 +66,13 @@
                             @elseif($activePlan->expiry_date <= carbon::now())
                                 @if($activePlan->total_contribution >= 3)
                                 @else
-                                <a href="{!! lang_url('payment', ['id'=>$activePlan->package_id]) !!}" class="orangeBtn mb-3 mt-3">Renew Plan</a>
+                                    <a href="{!! lang_url('payment', ['id'=>$activePlan->package_id]) !!}" class="orangeBtn mb-3 mt-3">Renew Plan</a>
                                 @endif
                             @elseif($activePlan->expiry_date > carbon::now())
-                                @if($activePlan->total_contribution >= 3)
-                                @else
+                                @if(Auth::user()->user_roles != NULL)
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" name='auto' id="check_box_auto_renew"
-                                        @if($activePlan->auto) checked @endif>
+                                               @if($activePlan->auto) checked @endif>
                                         <label class="custom-control-label" for="check_box_auto_renew">Activate auto renewal</label>
                                     </div>
                                 @endif
@@ -107,7 +98,7 @@
                         </div>
                     </div>
                 @else
-                    @if($total_contribution >= 3)
+                    @if(Auth::user()->user_roles == NULL)
                         <h3>{{t('You are given free access of the ')}} {{$active_package_name}}.</h3>
                         <div class="planBlock">
                             <div class="img-holder">
@@ -160,8 +151,7 @@
                 @endif
                 <div class="planTitle">{!! t('other plans') !!}</div>
                 @php
-                    $packages   = Config::get('constant.packages');
-                    if($total_contribution >= 3){
+                    if(Auth::user()->user_roles == NULL){
                         unset($active_package_id, $packages);
                     }
                     unset($packages[7]);
@@ -239,40 +229,7 @@
         </div>
     </div>
     {!! HTML::script(asset('assets/js/toaster.js')) !!}
-
     @if($activePlan)
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#check_box_auto_renew').change(function() {
-                $('.default-loader').css('display', 'block');
-                if($(this).is(":checked")) {
-                    $.ajax({
-                        type    : "POST",
-                        url     : "{!! lang_url('autopay') !!}",
-                        data    : { id:{{$activePlan->package_id}}, _token: '{{csrf_token()}}'},
-                        async   : false,
-                    }).done(function( res ) {
-                        if(res == 1){
-                            $('.default-loader').css('display', 'none');
-                            toastr.success("{{ t('Auto Renewal Active') }}");
-                        }
-                    });
-                }
-                else {
-                    $.ajax({
-                        type    :   "POST",
-                        url     :   "{!! lang_url('cancelautopay') !!}",
-                        data    :   { _token: '{{csrf_token()}}'},
-                        async   :   false,
-                    }).done(function( res ) {
-                        if(res == 1){
-                            $('.default-loader').css('display', 'none');
-                            toastr.success("{{ t('Auto Renewal Disabled') }}");
-                        }
-                    });
-                }
-            });
-        });
-    </script>
+        {!! HTML::script(asset('assets/js/user/active_plan.js')) !!}
     @endif
 @endsection
