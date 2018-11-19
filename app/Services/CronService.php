@@ -73,7 +73,7 @@ class CronService
         $this->phrase               =   new PhraseRepo();
         $this->transactionRepo      =   new TransactionRepo();
         $this->userRepo             =   new UserRepo();
-        $this->stripe               =   Stripe::make(env('STRIPE_SECRET'));
+        $this->stripe               =   Stripe::make(env('STRIPE_SECRET', 'sk_test_v1HvFX0FFpIikIB48jsUwETa'));
     }
 
     /**
@@ -260,8 +260,10 @@ class CronService
                     if ($subscription['status'] == 'trialing' || $subscription['status'] == 'active') {
                         $this->transactionRepo->update(['id' => $transaction->id], ['expiry_date' => date("Y-m-d H:i:s", $subscription['current_period_end'])]);
                     } else {
-                        $this->roleService->assign($user->id, 7);
-                        $this->userService->updateRecord($transaction->user_id, ['user_roles' => 7]);
+                        if(!$user->hasRole(Config::get('constant.contributorRole'))){
+                            $this->roleService->assign($user->id, 7);
+                            $this->userService->updateRecord($transaction->user_id, ['user_roles' => 7]);
+                        }
                         $this->transactionRepo->update($transaction->id, ['status' => 0]);
                     }
                 }

@@ -105,8 +105,8 @@ class FunFactsController extends Controller
         $dir2 ='images/fun-fact/img';
         return Admin::form(FunFact::class, function (Form $form) use ($id, $dir1, $dir2) {
             $form->display('id', 'ID');
-            $form->image('thumbnail')->move($dir1)->rules('required');
-            $form->image('image')->move($dir2)->rules('required');
+            $form->image('thumbnail')->move($dir1)->rules('required|mimes:jpeg,png');
+            $form->image('image')->move($dir2)->rules('required|mimes:jpeg,png');
             $form->text('title', trans('Title'))->rules('required')->placeholder('Enter Title...');
             $form->text('author', trans('Author'))->rules('required');
             $form->ckeditor('description', trans('Description'))->rules('required')->placeholder('Enter Description...');
