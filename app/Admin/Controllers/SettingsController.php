@@ -87,7 +87,7 @@ class SettingsController extends Controller
             $grid->model()->where('type', 0);
             $grid->id('ID')->sortable();
             $grid->disableExport();
-            $grid -> option('useWidth', true);
+            $grid->option('useWidth', true);
             $grid->keys()->sortable();
             $grid->values()->sortable()->editable();
             $grid->filter(function ($filter){
@@ -108,7 +108,7 @@ class SettingsController extends Controller
             $grid->model()->where('type', 1);
             $grid->id('ID')->sortable();
             $grid->disableExport();
-            $grid -> option('useWidth', true);
+            $grid->option('useWidth', true);
             $grid->keys()->sortable();
             $grid->values()->sortable()->editable();
             $grid->filter(function ($filter){
@@ -161,11 +161,8 @@ class SettingsController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param int $id
-     *
-     * @return Form
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function update($id)
     {

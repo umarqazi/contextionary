@@ -26,7 +26,6 @@ MultiLang::routeGroup(function($router) {
         Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
         Route::group(['middleware' => ['auth']], function () {
             Route::get('/dashboard', 'UsersController@index')->name('dashboard');
-            Route::get('/active-plan', 'UsersController@activeUserPlan')->name('activeUserPlan');
             Route::group(['prefix' => 'profile'], function () {
                 Route::get('/', 'UsersController@profile')->name('profile');
                 Route::get('edit-profile', 'UsersController@edit')->name('edit-profile');
@@ -91,6 +90,7 @@ MultiLang::routeGroup(function($router) {
                 Route::post('user-history/search',  'ContributorController@search')->name('search');
             });
             Route::group(['middleware' => 'checkUser'], function () {
+                Route::get('/active-plan', 'UsersController@activeUserPlan')->name('activeUserPlan');
                 Route::group(['middleware' => ['checkGuestUser']], function () {
                     Route::get('learning-center', 'LearningCenterController@index')->name('l-center');
                     Route::get('explore-context', 'LearningCenterController@exploreContext')->name('explore-context');

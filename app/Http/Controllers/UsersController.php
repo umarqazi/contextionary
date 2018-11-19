@@ -386,6 +386,9 @@ class UsersController extends Controller
         $duration=0;
         $plans='';
         $cards='';
+        $packages               = Config::get('constant.packages');
+        $active_package_name    = $packages[array_search(ucwords(Auth::user()->getRoleNames()->first()), $packages)];
+        $active_package_id      = array_search(ucwords(Auth::user()->getRoleNames()->first()), $packages);
         if(Auth::check()):
             $plans=Auth::user()->transaction->where('status','1')->first();
             $total_contribution = $this->contributorService->countContributions();
@@ -395,7 +398,7 @@ class UsersController extends Controller
             endif;
             $cards=Auth::user()->userCards;
         endif;
-        return view::make('user.user_plan.plan.active_plan')->with(['days'=>$duration, 'activePlan'=>$plans, 'cards'=>$cards, 'total_contribution' => $total_contribution]);
+        return view::make('user.user_plan.plan.active_plan')->with(['days'=>$duration, 'activePlan'=>$plans, 'cards'=>$cards, 'total_contribution' => $total_contribution, 'packages' => $packages, 'active_package_name' => $active_package_name, 'active_package_id' => $active_package_id]);
     }
 
     /**
