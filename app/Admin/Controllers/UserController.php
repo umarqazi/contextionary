@@ -139,7 +139,9 @@ class UserController extends Controller
                 ->default(function ($form) {
                     return $form->model()->password;
                 })->placeholder('Confirm Password...');
-            $form->radio('role', trans('Roles'))->options($roles)->default($current_role)->rules('required');
+            $form->multipleSelect('roles', trans('Roles'))->options(function () {
+                return Role::all()->pluck('name', 'id');
+            })->rules('required')->placeholder('Select Role...');
             $form->text('profile.pseudonyme', 'Pseudonyme')->rules('required');
             $form->radio('profile.gender', trans('Gender'))->options(['Male'=>'Male','Female'=>'Female'])->rules('required');
             $form->date('profile.date_birth', 'Date of Birth')->rules('required');
@@ -218,11 +220,8 @@ class UserController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param int $id
-     *
-     * @return Form
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function update($id)
     {
@@ -254,9 +253,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store()
     {

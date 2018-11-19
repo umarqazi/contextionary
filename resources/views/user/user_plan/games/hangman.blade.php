@@ -17,7 +17,7 @@
                 <img src="{!! asset('storage/images/replay-symbol.png') !!}">
             </a>
             <div class="gameWrapper">
-                <img id="hangman" src="/storage/images/0.png">
+                <img id="hangman" src="{!! asset('assets/images/0.png') !!}">
                 <h3 class="category"></h3>
                 <div id="container">
                     <!-- Random word Divs appended here -->
@@ -111,7 +111,7 @@
                         //$("#container").hide();
                         $("button").prop("disabled", "true");
                         $(".category").text("Great job you guessed the secret word!");
-                        $(".category").append("<br><button enabled class='play-again'>Play again?</button>");
+                        // $(".category").append("<br><button enabled class='play-again'>Play again?</button>");
                     }
                 }
             });
@@ -119,7 +119,7 @@
             // If no match, increase count and add appropriate image
             if (matchFound === false) {
                 wrongGuesses += 1;
-                $("#hangman").attr("src", "/storage/images/" + wrongGuesses + ".png");
+                $("#hangman").attr("src", "/assets/images/" + wrongGuesses + ".png");
             }
 
             // If wrong guesses gets to 7 exit the game
@@ -127,7 +127,7 @@
                 //$("#container").hide();
                 $("button").prop("disabled", "true");
                 $(".category").text("Sorry you lost! The secret word was " + randomWord);
-                $(".category").append("<br><button enabled class='play-again'>Play again?</button>");
+                // $(".category").append("<br><button enabled class='play-again'>Play again?</button>");
             }
 
             // Play again button

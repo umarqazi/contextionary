@@ -76,7 +76,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  6,
             'parent_id'     =>  8,
-            'order'         =>  22,
+            'order'         =>  26,
             'title'         =>  'Menu',
             'icon'          =>  'fa-bars',
             'uri'           =>  'auth/menu',
@@ -96,7 +96,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  8,
             'parent_id'     =>  0,
-            'order'         =>  21,
+            'order'         =>  25,
             'title'         =>  'Settings',
             'icon'          =>  'fa-gears',
             'uri'           =>  NULL,
@@ -146,7 +146,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  16,
             'parent_id'     =>  0,
-            'order'         =>  16,
+            'order'         =>  19,
             'title'         =>  'Languages',
             'icon'          =>  'fa-at',
             'uri'           =>  'auth/texts',
@@ -156,8 +156,8 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  17,
             'parent_id'     =>  0,
-            'order'         =>  12,
-            'title'         =>  'Fun Facts',
+            'order'         =>  15,
+            'title'         =>  'Fun Facts and Games',
             'icon'          =>  'fa-futbol-o',
             'uri'           =>  'auth/fun-facts',
             'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
@@ -166,7 +166,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  18,
             'parent_id'     =>  0,
-            'order'         =>  11,
+            'order'         =>  14,
             'title'         =>  'Tutorials',
             'icon'          =>  'fa-question-circle',
             'uri'           =>  'auth/tutorials/1',
@@ -176,7 +176,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  19,
             'parent_id'     =>  8,
-            'order'         =>  18,
+            'order'         =>  27,
             'title'         =>  'Settings',
             'icon'          =>  'fa-gear',
             'uri'           =>  'auth/settings',
@@ -186,7 +186,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  20,
             'parent_id'     =>  17,
-            'order'         =>  14,
+            'order'         =>  17,
             'title'         =>  'Pictionary',
             'icon'          =>  'fa-image',
             'uri'           =>  'auth/pictionary',
@@ -196,7 +196,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  21,
             'parent_id'     =>  17,
-            'order'         =>  13,
+            'order'         =>  16,
             'title'         =>  'Fun Facts',
             'icon'          =>  'fa-soccer-ball-o',
             'uri'           =>  'auth/fun-facts',
@@ -206,7 +206,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  22,
             'parent_id'     =>  17,
-            'order'         =>  15,
+            'order'         =>  18,
             'title'         =>  'Spot The Intruder',
             'icon'          =>  'fa-user-secret',
             'uri'           =>  'auth/spot-the-intruder',
@@ -216,7 +216,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  23,
             'parent_id'     =>  0,
-            'order'         =>  17,
+            'order'         =>  20,
             'title'         =>  'Coin Deals',
             'icon'          =>  'fa-copyright',
             'uri'           =>  'auth/coins-deals',
@@ -226,7 +226,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  24,
             'parent_id'     =>  0,
-            'order'         =>  19,
+            'order'         =>  22,
             'title'         =>  'Messages',
             'icon'          =>  'fa-comment-o',
             'uri'           =>  'auth/contact-us-msgs',
@@ -236,7 +236,7 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  25,
             'parent_id'     =>  0,
-            'order'         =>  20,
+            'order'         =>  23,
             'title'         =>  'Feedbacks',
             'icon'          =>  'fa-commenting-o',
             'uri'           =>  '/auth/feedback-msgs',
@@ -246,10 +246,60 @@ class AdminTablesSeeder extends Seeder
         DB::table('admin_menu')->insert([
             'id'            =>  26,
             'parent_id'     =>  0,
-            'order'         =>  18,
+            'order'         =>  21,
             'title'         =>  'Glossary',
             'icon'          =>  'fa-book',
             'uri'           =>  '/auth/glossary',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  28,
+            'parent_id'     =>  0,
+            'order'         =>  24,
+            'title'         =>  'Redeem Points',
+            'icon'          =>  'fa-money',
+            'uri'           =>  '/auth/redeem',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  29,
+            'parent_id'     =>  0,
+            'order'         =>  11,
+            'title'         =>  'Contributor',
+            'icon'          =>  'fa-user-md',
+            'uri'           =>  '',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  30,
+            'parent_id'     =>  29,
+            'order'         =>  12,
+            'title'         =>  'Vote',
+            'icon'          =>  'fa-ellipsis-v',
+            'uri'           =>  '/auth/vote-expiry',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  31,
+            'parent_id'     =>  29,
+            'order'         =>  13,
+            'title'         =>  'Bidding',
+            'icon'          =>  'fa-ellipsis-v',
+            'uri'           =>  '/auth/bidding-expiry',
+            'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('admin_menu')->insert([
+            'id'            =>  31,
+            'parent_id'     =>  29,
+            'order'         =>  14,
+            'title'         =>  'Winners and Runnerups',
+            'icon'          =>  'fa-ellipsis-v',
+            'uri'           =>  '/auth/contribution-winner',
             'created_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at'    =>  Carbon::now()->format('Y-m-d H:i:s'),
         ]);

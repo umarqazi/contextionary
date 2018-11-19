@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Edit Profile') !!}
+    {!! t('Edit Role') !!}
 @stop
 @section('content')
     <div class="container-fluid contributorMain userProfile">
