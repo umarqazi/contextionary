@@ -4,8 +4,8 @@ $(document).ready(function() {
         if($(this).is(":checked")) {
             $.ajax({
                 type    : "POST",
-                url     : "{!! lang_url('autopay') !!}",
-                data    : { id:{{$activePlan->package_id}}, _token: '{{csrf_token()}}'},
+                url     : autopay,
+                data    : { id:"{{$activePlan->package_id}}", _token: '{{csrf_token()}}'},
             async   : false,
         }).done(function( res ) {
                 if(res == 1){
@@ -17,7 +17,7 @@ $(document).ready(function() {
         else {
             $.ajax({
                 type    :   "POST",
-                url     :   "{!! lang_url('cancelautopay') !!}",
+                url     :   cancelautopay,
                 data    :   { _token: '{{csrf_token()}}'},
                 async   :   false,
             }).done(function( res ) {

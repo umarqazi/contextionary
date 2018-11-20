@@ -228,6 +228,10 @@
             </div>
         </div>
     </div>
+    <script type="application/javascript">
+        var autopay="<?php echo lang_url('autopay')?>";
+        var cancelautopay="<?php echo lang_url('cancelautopay')?>";
+    </script>
     {!! HTML::script(asset('assets/js/toaster.js')) !!}
     @if($activePlan)
         {!! HTML::script(asset('assets/js/user/active_plan.js')) !!}
