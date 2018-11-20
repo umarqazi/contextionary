@@ -231,7 +231,7 @@
     <script type="application/javascript">
         var autopay="<?php echo lang_url('autopay')?>";
         var cancelautopay="<?php echo lang_url('cancelautopay')?>";
-        var package_id="<?php  echo $activePlan->package_id?>";
+        var package_id="<?php  if($activePlan){ echo $activePlan->package_id; }?>";
         var token = "<?php echo csrf_token();?>";
         var cancel_message="<?php echo t('Auto Renewal Disabled')?>" ;
         var message="<?php echo t('Auto Renewal Active')?>" ;
