@@ -152,7 +152,7 @@
                 <div class="planTitle">{!! t('other plans') !!}</div>
                 @php
                     if(Auth::user()->user_roles == NULL){
-                        unset($active_package_id, $packages);
+                        unset($packages[$active_package_id]);
                     }
                     unset($packages[7]);
                 @endphp
