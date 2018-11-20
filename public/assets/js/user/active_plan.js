@@ -1,11 +1,16 @@
 $(document).ready(function() {
     $('#check_box_auto_renew').change(function() {
+
         $('.default-loader').css('display', 'block');
+
         if($(this).is(":checked")) {
             $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
                 type    : "POST",
                 url     : autopay,
-                data    : { id:"{{$activePlan->package_id}}", _token: '{{csrf_token()}}'},
+                data    : { id: +package_id},
             async   : false,
         }).done(function( res ) {
                 if(res == 1){
@@ -16,14 +21,16 @@ $(document).ready(function() {
         }
         else {
             $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
                 type    :   "POST",
                 url     :   cancelautopay,
-                data    :   { _token: '{{csrf_token()}}'},
                 async   :   false,
             }).done(function( res ) {
                 if(res == 1){
                     $('.default-loader').css('display', 'none');
-                    toastr.success("{{ t('Auto Renewal Disabled') }}");
+                    toastr.success(message);
                 }
             });
         }
