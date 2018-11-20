@@ -265,16 +265,12 @@ class UsersController extends Controller
                 $translation=Auth::user()->defineMeaning->whereIn('status', ['1','3'])->count();
                 $totalContributions=$writer+$illustrator+$translation;
                 if($totalContributions <= 0):
-                    die("adee");
                     return Redirect::to(lang_url('userPlan'));
                 elseif($totalContributions >= env('BASIC_MIN') && $totalContributions <= env('BASIC_MAX')):
-                    die("adee1");
                     $roles=Config::get('constant.userRole.basic plan');
                 elseif($totalContributions >= env('ADVANCE_MIN') && $totalContributions <= env('ADVANCE_MAX')):
-                    die("adee2");
                     $roles=Config::get('constant.userRole.advance plan');
                 elseif($totalContributions >= env('PREMIUM_MIN')):
-                    die("adee3");
                     $roles=Config::get('constant.userRole.premium plan');
                 endif;
             else:
