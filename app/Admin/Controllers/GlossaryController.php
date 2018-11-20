@@ -129,14 +129,14 @@ class GlossaryController extends Controller
                 $glossary->thumbnail = 'images/glossary/thumb/'.$thumb_name[3];
                 $glossary->file = 'images/glossary/files/'.$file_name[3];
                 $glossary->update();
-                if(count(file(public_path('storage/'.$glossary->file))) > 5){
+                $count= $this->getNumPagesPdf(public_path('storage/'.$glossary->file));
+                if($count > 5){
                     $path = pathinfo(public_path('storage/'.$glossary->file));
                     $pdf = new PDFMerger();
                     $pdf->addPDF(public_path('storage/'.$glossary->file), '1, 2, 3, 4, 5');
                     $pathForTheMergedPdf = $path['dirname'].'/'.$path['filename'].'_short.pdf';
                     $pdf->merge('file', $pathForTheMergedPdf);
                     $glossary->file = 'images/glossary/files/'.$path['filename'].'_short.pdf';
-                    $glossary->context = count(file(public_path('storage/'.$glossary->file)));
                     $glossary->update();
                 }
                 if($id){
@@ -210,5 +210,31 @@ class GlossaryController extends Controller
     public function store()
     {
         return $this->form()->store();
+    }
+
+    /**
+     * @param $filepath
+     * @return int|string
+     */
+    public function getNumPagesPdf($filepath) {
+        $fp = @fopen(preg_replace("/\[(.*?)\]/i", "", $filepath), "r");
+        $max = 0;
+        if (!$fp) {
+            return "Could not open file: $filepath";
+        } else {
+            while (!@feof($fp)) {
+                $line = @fgets($fp, 255);
+                if (preg_match('/\/Count [0-9]+/', $line, $matches)) {
+                    preg_match('/[0-9]+/', $matches[0], $matches2);
+                    if ($max < $matches2[0]) {
+                        $max = trim($matches2[0]);
+                        break;
+                    }
+                }
+            }
+            @fclose($fp);
+        }
+
+        return $max;
     }
 }
