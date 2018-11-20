@@ -268,7 +268,7 @@ class UsersController extends Controller
                     return Redirect::to(lang_url('userPlan'));
                 elseif($totalContributions >= env('BASIC_MIN') && $totalContributions <= env('BASIC_MAX')):
                     $roles=Config::get('constant.userRole.basic plan');
-                elseif($totalContributions >= env('ADVANCE_MIN') && $totalContributions <= env('BASIC_MAX')):
+                elseif($totalContributions >= env('ADVANCE_MIN') && $totalContributions <= env('ADVANCE_MAX')):
                     $roles=Config::get('constant.userRole.advance plan');
                 elseif($totalContributions >= env('PREMIUM_MIN')):
                     $roles=Config::get('constant.userRole.premium plan');
