@@ -2,10 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\User;
 use Closure;
-use Auth;
-class CheckGuestUser
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+
+class CheckUserRole
 {
     /**
      * Handle an incoming request.
@@ -16,8 +17,8 @@ class CheckGuestUser
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user()->hasRole('guest')) {
-            return redirect(lang_route('activeUserPlan'));
+        if (!Auth::user()->hasAnyRole(Role::all())) {
+            return redirect(lang_route('selectPlan'));
         }else{
             return $next($request);
         }

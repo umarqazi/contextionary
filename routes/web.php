@@ -25,7 +25,7 @@ MultiLang::routeGroup(function($router) {
         Route::get('/verifyEmail/{token}', 'Auth\RegisterController@verifyEmail');
         Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
         Route::group(['middleware' => ['auth']], function () {
-            Route::get('/dashboard', 'UsersController@index')->name('dashboard');
+            Route::get('/dashboard', 'UsersController@index')->name('dashboard')->middleware('checkUserRole');
             Route::group(['prefix' => 'profile'], function () {
                 Route::get('/', 'UsersController@profile')->name('profile');
                 Route::get('edit-profile', 'UsersController@edit')->name('edit-profile');

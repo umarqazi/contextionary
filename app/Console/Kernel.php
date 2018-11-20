@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('meaning:vote')->everyMinute();
         $schedule->command('illustrator:bids')->everyMinute();
         $schedule->command('translations:bids')->everyMinute();
-        $schedule->command('subscription:check')->daily();
+        $schedule->command('subscription:check')->everyMinute();
     }
 
     /**

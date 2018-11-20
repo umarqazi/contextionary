@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'checkContributor' => \App\Http\Middleware\Contributors::class,
         'checkUser' => \App\Http\Middleware\UsersPlan::class,
         'checkGuestUser' => \App\Http\Middleware\CheckGuestUser::class,
+        'checkUserRole' => \App\Http\Middleware\CheckUserRole::class,
     ];
 }

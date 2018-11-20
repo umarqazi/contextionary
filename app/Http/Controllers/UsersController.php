@@ -307,10 +307,9 @@ class UsersController extends Controller
     /**
      * @return mixed
      */
-    public function redeemPoints(Request $request){
-        $modal=$request->modal;
+    public function redeemPoints(){
         $prices=PointsPrice::all();
-        return view::make('user.contributor.transactions.redeem-points')->with(['modal'=> $modal, 'pointsPrices'=>$prices]);
+        return view::make('user.contributor.transactions.redeem-points')->with([ 'pointsPrices'=>$prices]);
     }
 
     public function ts(){
@@ -434,14 +433,13 @@ class UsersController extends Controller
                 $savePoint=$this->createPoint($remainingPoints, $user_point['type']);
             endif;
         }
+        $earning=$this->getEarning($total);
+        $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$total, 'earning'=>$earning];
+        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
         $notification = array(
             'message' => trans('content.redeem_points'),
             'alert_type' => 'success'
         );
-        $earning=$this->getEarning($total);
-        $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name, 'points'=>$total, 'earning'=>$earning];
-        Mail::to(Auth::user()->email)->send(new RedeemPoint($email_data));
-        return $notification;
     }
 
     /**

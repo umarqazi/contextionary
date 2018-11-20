@@ -228,6 +228,13 @@
             </div>
         </div>
     </div>
+    <script type="application/javascript">
+        var autopay="<?php echo lang_url('autopay')?>";
+        var cancelautopay="<?php echo lang_url('cancelautopay')?>";
+        var package_id="<?php  echo $activePlan->package_id?>";
+        var token = "<?php echo csrf_token();?>";
+        var message="<?php echo t('Auto Renewal Disabled')?>" ;
+    </script>
     {!! HTML::script(asset('assets/js/toaster.js')) !!}
     @if($activePlan)
         {!! HTML::script(asset('assets/js/user/active_plan.js')) !!}
