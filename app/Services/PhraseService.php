@@ -54,4 +54,12 @@ class PhraseService extends BaseService implements IService
         return $this->phrase_repo->getPhraseName($phrase_id);
    }
 
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function findAllLike($key){
+        return $this->phrase_repo->findAllLike($key);
+    }
+
 }

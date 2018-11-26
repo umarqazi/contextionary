@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Explore Word') !!}
+    {!! t('List of Phrases') !!}
 @stop
 @section('content')
 <div class="container-fluid contributorMain userExploreWord userExploreContext2">
@@ -20,12 +20,20 @@
         <div class="col-lg-12 col-md-6 mt-5">
             <div class="row">
                 <div class="col-md-12 mt-4">
-                    <h2>{{$context}}</h2>
+                    @if($type == 'context_forwarded')
+                        <h2>{{$context}}</h2>
+                    @else
+                        <h2>List of Matches of "{{$phrases_searched}}"</h2>
+                    @endif
                 </div>
                 @foreach( $phrases as $phrase)
                     <div class="col-md-4">
                         <div class="phrase-body mb-0">
-                            <p class="text-white"><a href="{!! lang_url('explore-context', ['context'=> $context_id, 'phrase'=>$phrase->phrases->phrase_id ]) !!}">{{ucfirst($phrase->phrases->phrase_text)}}</a></p>
+                            @if($type == 'context_forwarded')
+                                <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$phrase->phrases->phrase_id ]) !!}">{{ucfirst($phrase->phrases->phrase_text)}}</a></p>
+                            @else
+                                <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$phrase->phrase_id ]) !!}">{{ucfirst($phrase->phrase_text)}}</a></p>
+                            @endif
                         </div>
                     </div>
                 @endforeach
@@ -33,7 +41,9 @@
                     <div class="row">
                         <div class="col-md-4"></div>
                         <div class="col-md-4">
-                            {{$phrases->links()}}
+                            @if($type == 'context_forwarded')
+                                {{$phrases->links()}}
+                            @endif
                         </div>
                         <div class="col-md-4"></div>
                     </div>

@@ -1,23 +1,35 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Explore Word') !!}
+    {!! t('Details of Phrases') !!}
 @stop
 @section('content')
 <div class="container-fluid contributorMain userExploreWord userExploreContext">
     @include('layouts.flc_header')
     <div class="row mt-4">
         <div class="col-sm-6">
-            <div class="exploreTitle">{{ucfirst($context)}}</div>
+            @if($type == 'context_forwarded')
+                <div class="exploreTitle">{{ucfirst($context)}}</div>
+            @else
+                <div class="exploreTitle">{{ucfirst($selected_phrase_text)}}</div>
+            @endif
         </div>
         <div class="col-sm-6 text-right">
             @php
                 $url = explode('/', Request::url());
                 array_pop($url);
             @endphp
-            <a href="{!! implode('/', $url) !!}" class="orangeBtn">Back</a>
+            @if($type == 'context_forwarded')
+                {{--<a href="{!! implode('/', $url) !!}" class="orangeBtn">Back</a>--}}
+                <a href="{{ url()->previous() }}" class="orangeBtn">Back</a>
+            @else
+                <a href="{!! lang_url('learning-center/explore-word') !!}" class="orangeBtn">Back</a>
+                <a href="{{ url()->previous() }}" class="orangeBtn">Back</a>
+            @endif
         </div>
         <div class="col-md-12 mt-3">
-            <h2>{{$phrase}}</h2>
+            @if($type == 'context_forwarded')
+                <h2>{{$phrase}}</h2>
+            @endif
             @if(! $meaning->isEmpty())
                 <div class="row">
                     <div class="col-md-12">
@@ -149,19 +161,26 @@
         </div>
 
         <div class="col-lg-12 col-md-12 mt-5">
-            <h2>Phrase related to {{ucfirst($context)}}</h2>
+            @if($type == 'context_forwarded')
+                <h2>Phrase related to {{ucfirst($context)}}</h2>
+            @else
+                <h2>Phrase related to {{ucfirst($selected_phrase_text)}}</h2>
+            @endif
             <div class="phrase-body">
                 <div class="row">
-                    @if( ! $related_phrases->isEmpty())
-                        @foreach($related_phrases as $related_phrase)
-                        <div class="col-lg-3 col-md-3">
-                            <p class="text-white"><a href="{!! lang_url('explore-context', ['context'=> $context_id, 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucfirst($related_phrase->relatedPhrases->phrase_text)}}</a></p>
-                        </div>
-                        @endforeach
+                    @if($type == 'context_forwarded')
+                        @if( ! $related_phrases->isEmpty())
+                            @foreach($related_phrases as $related_phrase)
+                            <div class="col-lg-3 col-md-3">
+                                <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucfirst($related_phrase->relatedPhrases->phrase_text)}}</a></p>
+                            </div>
+                            @endforeach
+                        @else
+                            <div class="col-lg-12 col-md-12">
+                                <p class="text-white">No Related Phrases!</p>
+                            </div>
+                        @endif
                     @else
-                        <div class="col-lg-12 col-md-12">
-                            <p class="text-white">No Related Phrases!</p>
-                        </div>
                     @endif
                 </div>
             </div>

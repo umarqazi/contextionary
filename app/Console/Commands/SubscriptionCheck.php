@@ -40,6 +40,6 @@ class SubscriptionCheck extends Command
      */
     public function handle()
     {
-        $this->cron_controller->autoRenewal();
+        $this->cron_controller->subscriptionCheck();
     }
 }

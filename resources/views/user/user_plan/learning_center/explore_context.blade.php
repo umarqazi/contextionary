@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Explore Word') !!}
+    {!! t('Explore Context') !!}
 @stop
 @section('content')
 <div class="container-fluid contributorMain userExploreWord userExploreContext2">
@@ -34,7 +34,7 @@
                         @endphp
                         <div class="col-md-4">
                             <div class="phrase-body mb-0">
-                                <p class="text-white"><a href="{!! lang_url('explore-context', ['context'=>$context->context_id]) !!}">{{ucfirst($context->context_name)}}</a></p>
+                                <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=>$context->context_id]) !!}">{{ucfirst($context->context_name)}}</a></p>
                             </div>
                         </div>
                     @endforeach
