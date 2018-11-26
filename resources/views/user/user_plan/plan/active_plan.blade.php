@@ -152,7 +152,7 @@
                 <div class="planTitle">{!! t('other plans') !!}</div>
                 @php
                     if(Auth::user()->user_roles == NULL){
-                        unset($active_package_id, $packages);
+                        unset($packages[$active_package_id]);
                     }
                     unset($packages[7]);
                 @endphp
@@ -231,9 +231,10 @@
     <script type="application/javascript">
         var autopay="<?php echo lang_url('autopay')?>";
         var cancelautopay="<?php echo lang_url('cancelautopay')?>";
-        var package_id="<?php  echo $activePlan->package_id?>";
+        var package_id="<?php  if($activePlan){ echo $activePlan->package_id; }?>";
         var token = "<?php echo csrf_token();?>";
-        var message="<?php echo t('Auto Renewal Disabled')?>" ;
+        var cancel_message="<?php echo t('Auto Renewal Disabled')?>" ;
+        var message="<?php echo t('Auto Renewal Active')?>" ;
     </script>
     {!! HTML::script(asset('assets/js/toaster.js')) !!}
     @if($activePlan)

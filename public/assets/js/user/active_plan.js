@@ -15,7 +15,7 @@ $(document).ready(function() {
         }).done(function( res ) {
                 if(res == 1){
                     $('.default-loader').css('display', 'none');
-                    toastr.success("{{ t('Auto Renewal Active') }}");
+                    toastr.success(message);
                 }
             });
         }
@@ -30,7 +30,7 @@ $(document).ready(function() {
             }).done(function( res ) {
                 if(res == 1){
                     $('.default-loader').css('display', 'none');
-                    toastr.success(message);
+                    toastr.success(cancel_message);
                 }
             });
         }

@@ -28,7 +28,7 @@ class ContextRepo
      * @return mixed
      */
     public function lists(){
-        return $this->context->where('context_children_id', '!=','0')->get();
+        return $this->context->where('context_children_id', '!=','0')->orderBy('context_id', 'asc')->get();
     }
 
     /**

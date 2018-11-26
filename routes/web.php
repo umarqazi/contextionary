@@ -137,6 +137,7 @@ MultiLang::routeGroup(function($router) {
         Route::get('illustrator-vote',  'CronController@checkIllustratorVotes')->name('illustratorVote');
         Route::get('translate-Cron',  'CronController@translateBidtoVote')->name('TranslateCron');
         Route::get('translate-vote',  'CronController@translateVote')->name('TranslateVote');
+        Route::get('check-subscription',  'CronController@subscriptionCheck')->name('subscriptionCheck');
     });
     Route::get('locale/{locale}',  'LocaleController@locale')->name('locale');
     Route::get('switchLanguage/{locale}',  'LocaleController@switchLanguage')->name('switchLanguage');
