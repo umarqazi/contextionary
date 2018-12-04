@@ -22,10 +22,10 @@ View::composer('user.contributor.votes.*', function($view)
             $page['phrase-list']='Vote Meaning';
         endif;
         if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrate'))):
-            $page['illustrator-vote-list']='Vote Illustration';
+            $page['illustrator-vote-list']='Vote Illustrator';
         endif;
         if(Auth::user()->hasRole(Config::get('constant.contributorRole.translate'))):
-            $page['translate-vote-list']='Vote Translation';
+            $page['translate-vote-list']='Vote Translator';
         endif;
     endif;
     $view->with(['pageMenu'=>$page]);
