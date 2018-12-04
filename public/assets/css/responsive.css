@@ -59,6 +59,62 @@
         padding: 0px 10px;
     }
 
+    .landingPage{
+        background: url('../images/landing-page-mobile-bg.jpg') no-repeat;
+        padding: 0px 15px;
+    }
+
+    .landingPage .content{
+        position: inherit;
+        left:0;
+        transform: inherit;
+        min-height: inherit;
+        width: 100%;
+        text-align: center;
+    }
+
+    .landingPage .logo{
+        position: inherit;
+        transform: inherit;
+        display: block;
+        margin: 0 auto;
+        max-width: 100px;
+        padding: 25px 0px;
+    }
+
+    .landingPage .exploreSection{
+        position: inherit;
+        text-align: center;
+        width: 100%;
+        padding: 30px 0px;
+    }
+
+    .landingPage .content .companyName{
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 15px;
+    }
+
+    .landingPage .content .companyMission{
+        display: inline-block;
+        width: calc(100% / 3 - 4px);
+        vertical-align: top;
+    }
+
+    .landingPage .content .companyMission .text{
+        width: 100%;
+    }
+
+    .landingPage .content .companyMission .title{
+        width: 100%;
+        text-align: center;
+        font-size: 26px;
+        margin-bottom: 12px;
+        color: #f7953a;
+        padding: 0px;
+        margin-right: 0;
+    }
+
 }
 
 @media (max-width: 1200px) {
@@ -167,6 +223,18 @@
 
     .definePage .selectPhrase .form-control {
         width: calc(100% - 122px);
+    }
+
+    .userHeader .row > .col-md-7{
+        -ms-flex: 0 0 37.333333%;
+        flex: 0 0 37.333333%;
+        max-width: 37.333333%;
+    }
+
+    .userHeader .row > .col-md-5{
+        -ms-flex: 0 0 62.666667%;
+        flex: 0 0 62.666667%;
+        max-width: 62.666667%;
     }
 }
 
@@ -284,6 +352,91 @@
         transform: translateY(0);
     }
 
+    .userHeader{
+        text-align: center;
+    }
+
+    .userHeader .text-right{
+        text-align: center !important;
+    }
+
+    .dashBoard-container .userHeader .rightMenu .menu{
+        width: 140px;
+    }
+
+    .userHeader .row > .col-md-7{
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .userHeader .row > .col-md-5{
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .dropDown .dropDown-block{
+        right: 0 !important;
+        margin: 0 auto !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+
+    .dropDown .dropDown-block:before{
+        left:0 !important;
+        right: 0 !important;
+        margin: 0 auto !important;
+    }
+
+    .switch-account{
+        display: block;
+        width: 100%;
+    }
+
+    .dashBoard-container .userHeader .rightMenu{
+        width: 100%;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .dashBoard-container .userHeader .rightMenu .rightDropdown{
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        width: 320px;
+        top: 50px;
+    }
+
+    .dashBoard-container .userHeader .rightMenu .rightDropdown:before{
+        left:0;
+        right: 0;
+        margin: 0 auto;
+    }
+
+    .dashBoard-container .dropDown-block{
+        top:45px;
+    }
+
+    .userAvtar .dropDown-block{
+        top:60px;
+    }
+
+    .landingPage .content .companyMission{
+        width: 100%;
+        display: block;
+    }
+
+    .landingPage .exploreSection ul li a{
+        font-size: 16px;
+    }
+
+    .landingPage .exploreSection .orangeBtn{
+        font-size: 14px;
+        padding: 8px 40px;
+    }
+
 }
 
 @media (max-width: 576px) {
@@ -308,19 +461,11 @@
         margin-top: 15px;
     }
 
-    .dashBoard-container .dropDown-block {
-        top: 55px;
-        right: -35px;
-    }
 
     .dashBoard-container .dropDown-block:before {
         left: 0;
         right: 0;
         margin: 0 auto;
-    }
-
-    .dashBoard-container .userHeader .rightMenu .rightDropdown {
-        width: 280px;
     }
 
     .tabsContainer .customTabs li {

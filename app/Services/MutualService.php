@@ -115,6 +115,6 @@ class MutualService
                 $date->setTimezone(new \DateTimeZone(Auth::user()->timezone));
             }
         }
-        return $formatted_date = $date->format('d M Y h:i A');
+        return $formatted_date = "Card expires on: <br>".$date->format('d M Y h:i A');
     }
 }
