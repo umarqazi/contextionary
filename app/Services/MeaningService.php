@@ -42,6 +42,14 @@ class MeaningService extends BaseService implements IService
      * @param $data
      * @return mixed
      */
+    public function meaningData($data){
+        return $this->meaning_repo->getAllContributedMeaning($data);
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function meaning_data($data){
         return $this->meaning_repo->getAllContributedMeaning($data);
     }
