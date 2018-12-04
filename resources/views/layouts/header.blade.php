@@ -3,7 +3,7 @@
     <div class="col-md-2">
       <a href="@if(Auth::check()) {!! lang_url('dashboard') !!} @else {!! lang_url('home') !!} @endif"><img src="{!! asset('assets/images/logo2.png') !!}" class="logo wow bounceInLeft" data-wow-delay="0.2s"></a>
     </div>
-    <div class="col-md-10 text-right wow fadeIn" data-wow-delay="0.4s">
+    <div class="col-md-10 text-right">
       <button id="menu"><i class="fa fa-bars"></i></button>
       <ul class="mainMenu">
         <i class="fa fa-times closeMenu"></i>
