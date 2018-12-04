@@ -322,6 +322,7 @@ a.disabled{
 }
 .days-left{
   font-weight: bold;
+  font-size:14px !important;
 }
 .statistics-heading{
   width:50%;
@@ -585,4 +586,7 @@ input[type=number] {
 }
 img#hangman {
   height: 300px !important;
+}
+.confirmation-message{
+  color:white;
 }
