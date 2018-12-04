@@ -3083,6 +3083,11 @@ aside .topLinks {
     font-weight: 600;
     margin-right: 10px;
 }
+.contextFinder .contextTable td p{
+     color: #fff;
+     font-weight: 600;
+     vertical-align: middle;
+ }
 .contextFinder .exportRow .selectOption {
     width: 170px;
     height: 37px;

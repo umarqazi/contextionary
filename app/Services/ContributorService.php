@@ -307,6 +307,14 @@ class ContributorService implements IService
     }
 
     /**
+     * @param $data
+     * @return mixed
+     */
+    public function getIllustrations($data){
+        return $this->illustrate->fetchRecord($data);
+    }
+
+    /**
      * @return array
      * get phrase for translator
      */

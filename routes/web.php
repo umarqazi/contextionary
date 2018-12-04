@@ -109,13 +109,13 @@ MultiLang::routeGroup(function($router) {
                     Route::get('continue-spot-the-intruder', 'SpotIntruderController@continue')->name('continue-spot-the-intruder');
                     Route::get('reset-spot-the-intruder', 'SpotIntruderController@reset')->name('reset-spot-the-intruder');
                     Route::get('spot-the-intruder', 'SpotIntruderController@getQuestion')->name('spot-the-intruder');
+                    Route::post('verify-spot-the-intruder', 'SpotIntruderController@verifyAnswer');
+                    Route::get('intruder', 'SpotIntruderController@getQuestion')->name('intruder');
                     Route::get('start-hangman',  'HangmanController@index')->name('start-hangman');
                     Route::get('hangman',  'HangmanController@getPhrase')->name('hangman');
                     Route::get('my-collection', 'GlossaryController@getListingForAuthUser')->name('my-collection');
                     Route::post('add-to-fav', 'GlossaryController@addToFav');
                     Route::post('remove-from-fav', 'GlossaryController@removeFromFav');
-                    Route::get('intruder', 'SpotIntruderController@getQuestion')->name('intruder');
-                    Route::post('verify-spot-the-intruder', 'SpotIntruderController@verifyAnswer');
                     Route::get('tutorials', 'TutorialsController@index')->name('tutorials');
                     Route::get('/switchToContributor', 'UsersController@switchToContributor')->name('switchToContributor');
                     Route::get('/delete-card/{card}', 'UsersController@deleteCard')->name('deleteCard');

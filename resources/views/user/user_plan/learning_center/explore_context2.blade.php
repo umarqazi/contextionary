@@ -10,13 +10,12 @@
             <div class="exploreTitle">Explore a context</div>
         </div>
         <div class="col-sm-6 text-right">
-            <a href="{!! lang_route('l-center') !!}" class="orangeBtn">Back</a>
+            @if(explode('/',Request::server('HTTP_REFERER'))[5] == 'explore-word')
+                <a href="{!! lang_route('explore-word') !!}" class="orangeBtn">Back</a>
+            @else
+                <a href="{!! lang_route('explore-context') !!}" class="orangeBtn">Back</a>
+            @endif
         </div>
-
-        {{--<div class="col-sm-12 mt-3">--}}
-            {{--@include('user.user_plan.reading_assistant.context_search')--}}
-        {{--</div>--}}
-
         <div class="col-lg-12 col-md-6 mt-5">
             <div class="row">
                 <div class="col-md-12 mt-4">
