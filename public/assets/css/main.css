@@ -1215,6 +1215,14 @@ aside .topLinks {
     background: url(../images/menu-icon17.png) no-repeat 0 -60px;
     background-size: 26px;
 }
+aside .menuCate .menuListing li a.menu18 {
+    background: url(../images/fun-fact-icon.png) no-repeat 0 3px;
+    background-size: 17px;
+}
+aside .menuCate .menuListing li a.menu18:hover {
+    background: url(../images/fun-fact-icon.png) no-repeat 0 -39px;
+    background-size: 17px;
+}
 .compressMenu .menuCate .menuListing {
     margin-left: 19px;
 }

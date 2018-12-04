@@ -16,7 +16,7 @@ return [
         ['Hindi'=>'Hindi', 'French'=>'French', 'Spanish'=>'Spanish', 'English'=>'English', 'Chinese'=>'Chinese', 'Other'=>'Other'],
     'ContextImages'=>'context_images',
     'PhraseType'=>
-        [''=>'Select Phrase Type','1'=>'Proper noun', '2'=>'Common noun', '3'=>'Verb', '4'=>'Adjective', '5'=>'Adverb', '6'=>'Other'],
+        [''=>'Select Phrase Type','1'=>'Proper noun', '2'=>'Common noun', '3'=>'Verb', '4'=>'Adjective', '5'=>'Adverb', '6'=>'Abbreviation', '7'=>'Other'],
     'Storage'=>'local',
     'status'=>
         ['0'=>'Pending', '1'=>'Accepted', '2'=>'Rejected', '3'=>'Completed'],
