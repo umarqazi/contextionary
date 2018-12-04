@@ -64,4 +64,14 @@ class PhraseRepo extends BaseRepo implements IRepo
     public function getPhraseName($phrase_id){
         return $this->phrase->where('phrase_id', $phrase_id)->first();
     }
+
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function findAllLike($key){
+        return $this->phrase->where( function ( $q2 ) use ( $key ) {
+            $q2->whereRaw( 'LOWER("phrase_text") like ?',  '%'.strtolower($key).'%' );
+        })->get();
+    }
 }

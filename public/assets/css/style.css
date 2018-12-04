@@ -200,7 +200,7 @@ color: #f7953a;
   right: 10px;
   top: 10px;
   background: #fff;
-  color: #f7952d;
+  color: grey;
   font-size: 18px;
   border-radius: 50px;
   padding: 2px 5px;
@@ -219,7 +219,7 @@ a.disabled{
   cursor: not-allowed !important;
 }
 .favIcon2{
-   color: red !important;
+   color: #f7952d !important;
 }
 
 .glossarybg .glossary-block:hover .img-holder .favIcon{

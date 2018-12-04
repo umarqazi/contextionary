@@ -46,6 +46,7 @@ class ContextRepo
     }
 
     /**
+     * @param $context
      * @return mixed
      */
     public function findById($context){
@@ -54,10 +55,13 @@ class ContextRepo
 
 
     /**
+     * @param $key
      * @return mixed
      */
     public function findAllLike($key){
-        return $this->context->findAllLike($key);
+        return $this->context->where( function ( $q2 ) use ( $key ) {
+            $q2->whereRaw( 'LOWER("context_name") like ?',  '%'.strtolower($key).'%' );
+        })->get();
     }
 
     /**
