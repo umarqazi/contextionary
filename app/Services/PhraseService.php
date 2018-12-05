@@ -62,4 +62,11 @@ class PhraseService extends BaseService implements IService
         return $this->phrase_repo->findAllLike($key);
     }
 
+    /**
+     * @return PhraseRepo
+     */
+    public function getLexicalSets($phrase_id){
+        return $this->phrase_repo->getLexicalSets($phrase_id);
+    }
+
 }

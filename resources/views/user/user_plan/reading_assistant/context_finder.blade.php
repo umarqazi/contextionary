@@ -103,9 +103,20 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @php
+                                                        $related_phrase_count = 0;
+                                                    @endphp
                                                     @foreach($phrase['related_phrase'] as $related_phrase)
-                                                        <a href="#">{{$related_phrase->relatedPhrases->phrase_text}}</a>{{ $loop->last ? '' : ', ' }}
+                                                        @if( $related_phrase->relatedPhrases != null)
+                                                            @php
+                                                                $related_phrase_count = $related_phrase_count + 1;
+                                                            @endphp
+                                                            <a href="#">{{$related_phrase->relatedPhrases->phrase_text}}</a>{{ $loop->last ? '' : ', ' }}
+                                                        @endif
                                                     @endforeach
+                                                    @if( ! $related_phrase_count > 0)
+                                                        <p>{{t('No Related Phrase in Records')}}</p>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     @if(count($phrase['translation']) > 0)
@@ -155,38 +166,29 @@
                                 <div class="table-responsive">
                                     <table class="table contextTable">
                                         <tbody>
-                                        <tr>
-                                            <td>{{t('Jargon')}}</td>
-                                            <td>{{t('Meaning')}}</td>
-                                            <td>{{t('Illustration')}}</td>
-                                            <td>{{t('Related items')}} </td>
-                                            <td>{{t('Translation')}}</td>
-                                            <td class="text-right lastChild">
-                                                <select class="languageBar">
-                                                    <option>French</option>
-                                                    <option>French</option>
-                                                    <option>French</option>
-                                                    <option>French</option>
-                                                    <option>French</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Wellhead assembly</td>
-                                            <td>Component at the surface of an <a href="#">oil gas</a> as well that provides the interface</td>
-                                            <td><img src="images/context-finder-img.jpg" class="tableImg"></td>
-                                            <td><a href="#">Blowout preventer, Christmas tre, Pipe ram, shear ram, Blind shear ram</a></td>
-                                            <td>Assemblage de tete de puits</td>
-                                            <td class="lastChild">Element a <a href="#">la surface</a> d’un puits de petrole ou de gas qui assure <a href="#">I’interface et la.</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Wellhead assembly</td>
-                                            <td>Component at the surface of an <a href="#">oil gas</a> as well that provides the interface</td>
-                                            <td><img src="images/context-finder-img.jpg" class="tableImg"></td>
-                                            <td><a href="#">Blowout preventer, Christmas tre, Pipe ram, shear ram, Blind shear ram</a></td>
-                                            <td>Assemblage de tete de puits</td>
-                                            <td class="lastChild">Element a <a href="#">la surface</a> d’un puits de petrole ou de gas qui assure <a href="#">I’interface et la.</a></td>
-                                        </tr>
+                                            <tr>
+                                                <td>{{t('Jargon')}}</td>
+                                                <td>{{t('Meaning')}}</td>
+                                                <td>{{t('Illustration')}}</td>
+                                                <td>{{t('Related items')}} </td>
+                                                <td>{{t('Translation')}}</td>
+                                                <td class="text-right lastChild">
+                                                    <select class="languageBar" onchange="languageChange(this)">
+                                                        <option value="en">{{t('English')}}</option>
+                                                        <option value="sp">{{t('Spanish')}}</option>
+                                                        <option value="hi">{{t('Hindi')}}</option>
+                                                        <option value="fr">{{t('French')}}</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Wellhead assembly</td>
+                                                <td>Component at the surface of an <a href="#">oil gas</a> as well that provides the interface</td>
+                                                <td><img src="images/context-finder-img.jpg" class="tableImg"></td>
+                                                <td><a href="#">Blowout preventer, Christmas tre, Pipe ram, shear ram, Blind shear ram</a></td>
+                                                <td>Assemblage de tete de puits</td>
+                                                <td class="lastChild">Element a <a href="#">la surface</a> d’un puits de petrole ou de gas qui assure <a href="#">I’interface et la.</a></td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

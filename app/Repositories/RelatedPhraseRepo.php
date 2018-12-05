@@ -37,6 +37,18 @@ class RelatedPhraseRepo extends BaseRepo  implements IRepo
      * @return mixed
      */
     public function getRelated($context_id, $phrase_id){
-        return $this->related_phrase->where(['context_id' => $context_id, 'context_phrase_id' =>  $phrase_id])->with('relatedPhrases')->get();
+        return $this->related_phrase->where(['context_id' => $context_id, 'context_phrase_id' =>  $phrase_id])->with(['relatedPhrases' => function($query) {
+            $query->where('red_flag', 0);
+        }])->get();
+    }
+
+    /**
+     * @param $phrase_id
+     * @return mixed
+     */
+    public function getRelatedById($phrase_id){
+        return $this->related_phrase->where(['context_phrase_id' =>  $phrase_id])->with(['relatedPhrases' => function($query) {
+            $query->where('red_flag', 0);
+        }])->get();
     }
 }
