@@ -87,12 +87,12 @@ class LearningCenterController extends Controller
     public function phraseDetail($context_id, $phrase_id){
         $context            = $this->context_service->findById($context_id);
         $phrase             = $this->phrase_service->findById($phrase_id);
-        $meaning            = $this->meaning_service->meaning($context->context_id,$phrase->phrase_id);
         $data = [
             'context_id'    => $context->context_id,
             'phrase_id'     => $phrase->phrase_id,
-            'position'      => 1
+            'position'      => 1,
         ];
+        $meaning            = $this->meaning_service->meaningData($data);
         $related_phrases    = $this->context_phrase_service->getRelatedPhrase($context_id, $phrase_id);
         $translations       = $this->contributor_service->getTranslations($data);
         return View::make('user.user_plan.learning_center.detail_context')->with(['context'=>$context->context_name, 'context_id'=>$context->context_id, 'phrase'=>$phrase->phrase_text, 'meaning'=> $meaning, 'translations' => $translations, 'related_phrases' => $related_phrases, 'type' => 'context_forwarded']);
