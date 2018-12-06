@@ -56,6 +56,13 @@ class ContextPhraseService extends BaseService implements IService
     }
 
     /**
+     * @return mixed
+     */
+    public function getRelatedPhraseByPhraseId($phrase_id){
+        return $this->related_phrase_repo->getRelatedById($phrase_id);
+    }
+
+    /**
      * @param $id
      * @return mixed
      */

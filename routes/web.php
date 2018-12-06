@@ -93,11 +93,13 @@ MultiLang::routeGroup(function($router) {
                 Route::get('/active-plan', 'UsersController@activeUserPlan')->name('activeUserPlan');
                 Route::group(['middleware' => ['checkGuestUser']], function () {
                     Route::get('learning-center', 'LearningCenterController@index')->name('l-center');
-                    Route::get('explore-context', 'LearningCenterController@exploreContext')->name('explore-context');
-                    Route::get('explore-context/{context}', 'LearningCenterController@exploreContextPhrase');
-                    Route::get('explore-context/{context}/{phrase}', 'LearningCenterController@phraseDetail');
-                    Route::get('explore-word', 'LearningCenterController@exploreWord')->name('explore-word');
-                    Route::post('explore-word-search', 'LearningCenterController@search_context')->name('explore-word-search');
+                    Route::get('learning-center/explore-context', 'LearningCenterController@exploreContext')->name('explore-context');
+                    Route::get('learning-center/explore-context/{context}', 'LearningCenterController@exploreContextPhrase');
+                    Route::get('learning-center/explore-context/{context}/{phrase}', 'LearningCenterController@phraseDetail');
+                    Route::get('learning-center/explore-context-phrase/{phrase}', 'LearningCenterController@phraseDetail2');
+                    Route::get('learning-center/explore-word', 'LearningCenterController@exploreWord')->name('explore-word');
+                    Route::post('learning-center/explore-word-search', 'LearningCenterController@search_word')->name('explore-word-search');
+                    Route::post('learning-center/explore-context-search', 'LearningCenterController@search_context')->name('explore-context-search');
                     Route::get('start-pictionary', 'PictionaryController@index')->name('start-pictionary');
                     Route::get('continue-pictionary', 'PictionaryController@continue')->name('continue-pictionary');
                     Route::get('reset-pictionary', 'PictionaryController@reset')->name('reset-pictionary');
@@ -107,13 +109,13 @@ MultiLang::routeGroup(function($router) {
                     Route::get('continue-spot-the-intruder', 'SpotIntruderController@continue')->name('continue-spot-the-intruder');
                     Route::get('reset-spot-the-intruder', 'SpotIntruderController@reset')->name('reset-spot-the-intruder');
                     Route::get('spot-the-intruder', 'SpotIntruderController@getQuestion')->name('spot-the-intruder');
+                    Route::post('verify-spot-the-intruder', 'SpotIntruderController@verifyAnswer');
+                    Route::get('intruder', 'SpotIntruderController@getQuestion')->name('intruder');
                     Route::get('start-hangman',  'HangmanController@index')->name('start-hangman');
                     Route::get('hangman',  'HangmanController@getPhrase')->name('hangman');
                     Route::get('my-collection', 'GlossaryController@getListingForAuthUser')->name('my-collection');
                     Route::post('add-to-fav', 'GlossaryController@addToFav');
                     Route::post('remove-from-fav', 'GlossaryController@removeFromFav');
-                    Route::get('intruder', 'SpotIntruderController@getQuestion')->name('intruder');
-                    Route::post('verify-spot-the-intruder', 'SpotIntruderController@verifyAnswer');
                     Route::get('tutorials', 'TutorialsController@index')->name('tutorials');
                     Route::get('/switchToContributor', 'UsersController@switchToContributor')->name('switchToContributor');
                     Route::get('/delete-card/{card}', 'UsersController@deleteCard')->name('deleteCard');

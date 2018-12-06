@@ -33,12 +33,4 @@ class Context extends Model
     public function findById($context){
         return self::where('context_id', $context)->first();
     }
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function findAllLike($key){
-        return self::where('context_name','like', '%' . $key . '%')->get();
-    }
 }

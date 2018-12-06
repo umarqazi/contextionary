@@ -37,6 +37,11 @@
                             @endforeach
                         @endif
                     </ul>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <p class="whiteText"><strong>{!! t('Phrase Type') !!}:</strong> {!! Config::get('constant.PhraseType.'.$phraseMeaning['phrase_type']) !!}</p>
+                        </div>
+                    </div>
                     <div class="tab-content contextContent ">
                         @if($phraseMeaning)
                             @foreach($phraseMeaning['allMeaning'] as $key=>$meaning)
@@ -45,13 +50,11 @@
                                 </div>
                             @endforeach
                         @endif
-
                     </div>
-
                     <div class="text-center">
                         <a href="{!! URL::previous() !!}" class="orangeBtn waves-light mb-3 mr-3">{!! t('Return') !!}</a>
                         <button type="submit" class="orangeBtn waves-light mb-3 mr-3 @if(old('meaning')==NULL) grey @endif" @if(old('meaning')==NULL) disabled @endif id="submit-button">{!! t('Submit') !!}</button>
-                        <a href="{!! lang_route('poor-quality', ['context_id'=>$phraseMeaning['context_id'],'phrase_id'=>$phraseMeaning['phrase_id'],'type'=>env('MEANING')]) !!}" class="orangeBtn waves-light mb-3">{!! t('Poor Quality') !!}</a>
+                        <a class="orangeBtn waves-light mb-3" data-toggle="modal" data-target="#pointModal">{!! t('Poor Quality') !!}</a>
                     </div>
                 </div>
 
@@ -101,10 +104,12 @@
             {!! Form::hidden('phrase_id', $phraseMeaning['phrase_id']) !!}
             {!! Form::close() !!}
         @else:
-            <div class="text-center">
-                <strong class="record-message">{!! t('No Meaning available for Vote') !!}</strong>
-            </div>
+        <div class="text-center">
+            <strong class="record-message">{!! t('No Meaning available for Vote') !!}</strong>
+        </div>
         @endif
     </div>
+    <?php $context_id=$phraseMeaning['context_id']; $phrase_id=$phraseMeaning['phrase_id']; $type=env('MEANING')?>
+    @include('user.contributor.confirmation')
     {!! HTML::script('assets/js/user/vote.js') !!}
 @endsection

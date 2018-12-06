@@ -142,6 +142,15 @@ class IllustratorRepo
     /**
      * @param $data
      * @return mixed
+     * check Meaning against context or phrase
+     */
+    public function fetchRecord($data){
+        return $this->illustrator->where($data)->first();
+    }
+
+    /**
+     * @param $data
+     * @return mixed
      */
     public function selectedIllustrates($data){
         return $this->illustrator->where($data)->with('users')->get();

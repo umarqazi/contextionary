@@ -11,6 +11,7 @@ namespace App\Repositories;
 
 use App\Phrase;
 use App\BiddingExpiry;
+use App\SharedWord;
 
 class PhraseRepo extends BaseRepo implements IRepo
 {
@@ -26,14 +27,20 @@ class PhraseRepo extends BaseRepo implements IRepo
     protected $phrase;
 
     /**
+     * @var SharedWord
+     */
+    protected $shared_word;
+
+    /**
      * PhraseRepo constructor.
      */
     public function __construct()
     {
         $bidding_expiry = new BiddingExpiry();
         $this->bidding_expiry = $bidding_expiry;
-        $phrase = new Phrase();
-        $this->phrase= $phrase;
+        $phrase         = new Phrase();
+        $this->phrase   = $phrase;
+        $this->shared_word    = new SharedWord();
     }
 
     /**
@@ -63,5 +70,19 @@ class PhraseRepo extends BaseRepo implements IRepo
      */
     public function getPhraseName($phrase_id){
         return $this->phrase->where('phrase_id', $phrase_id)->first();
+    }
+
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function findAllLike($key){
+        return $this->phrase->where( function ( $query ) use ( $key ) {
+            $query->whereRaw( 'LOWER("phrase_text") like ?',  '%'.strtolower($key).'%' );
+        })->get();
+    }
+
+    public function getLexicalSets($phrase_id){
+       return $this->shared_word->where('long_phrase_id', $phrase_id)->get();
     }
 }

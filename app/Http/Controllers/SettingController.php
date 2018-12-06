@@ -60,7 +60,13 @@ class SettingController extends Controller
     public function sendMessage(ContactUs $request){
         $request->validate();
         $contactUs=$this->contactUs->saveMessage($request);
-        Mail::to($this->admin_service->getListing()->pluck('email'))->send(new ContactUsMail($request));
+        $emails_array = $this->admin_service->getListing()->where('email','!=', "")->pluck('email');
+        $default_email = env('ADMIN_EMAIL');
+        if($emails_array->count() <= 0){
+            Mail::to($default_email->send(new ContactUsMail($request)));
+        }else{
+            Mail::to($emails_array->send(new ContactUsMail($request)));
+        }
         $notification = array(
             'message' => 'Your Message has been sent to the admin. Our Respresentative will contact you soon',
             'alert_type' => 'success'

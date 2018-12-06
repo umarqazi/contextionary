@@ -76,7 +76,8 @@ class LearningCenterController extends Controller
     public function exploreContextPhrase($context_id){
         $context            = $this->context_service->findById($context_id);
         $phrases            = $this->context_phrase_service->getContextPhrase($context_id);
-        return View::make('user.user_plan.learning_center.explore_context2')->with(['phrases'=> $phrases, 'context' => $context->context_name, 'context_id' => $context->context_id ]);
+//        dd($phrases);
+        return View::make('user.user_plan.learning_center.explore_context2')->with(['phrases'=> $phrases, 'context' => $context->context_name, 'context_id' => $context->context_id, 'type' => 'context_forwarded' ]);
     }
 
     /**
@@ -87,15 +88,53 @@ class LearningCenterController extends Controller
     public function phraseDetail($context_id, $phrase_id){
         $context            = $this->context_service->findById($context_id);
         $phrase             = $this->phrase_service->findById($phrase_id);
-        $meaning            = $this->meaning_service->meaning($context->context_id,$phrase->phrase_id);
         $data = [
             'context_id'    => $context->context_id,
             'phrase_id'     => $phrase->phrase_id,
+            'position'      => 1,
+        ];
+        $meaning            = $this->meaning_service->meaningData($data);
+        $related_phrases    = $this->context_phrase_service->getRelatedPhrase($context_id, $phrase_id);
+        $lexical_sets       = $this->phrase_service->getLexicalSets($phrase_id);
+        $translations       = $this->contributor_service->getTranslations($data);
+        return View::make('user.user_plan.learning_center.detail_context')->with([
+            'context'           => $context->context_name,
+            'context_id'        => $context->context_id,
+            'phrase'            => $phrase->phrase_text,
+            'meaning'           => $meaning,
+            'translations'      => $translations,
+            'related_phrases'   => $related_phrases,
+            'lexical_sets'      => $lexical_sets,
+            'type'              => 'context_forwarded'
+        ]);
+    }
+
+    /**
+     * @param $phrase_id
+     * @return mixed
+     */
+    public function phraseDetail2($phrase_id){
+        $phrase             = $this->phrase_service->findById($phrase_id);
+        $data = [
+            'phrase_id' => $phrase_id,
+        ];
+        $meaning            = $this->meaning_service->meaning_data($data);
+        $data = [
+            'phrase_id'     => $phrase->phrase_id,
             'position'      => 1
         ];
-        $related_phrases    = $this->context_phrase_service->getRelatedPhrase($context_id, $phrase_id);
         $translations       = $this->contributor_service->getTranslations($data);
-        return View::make('user.user_plan.learning_center.detail_context')->with(['context'=>$context->context_name, 'context_id'=>$context->context_id, 'phrase'=>$phrase->phrase_text, 'meaning'=> $meaning, 'translations' => $translations, 'related_phrases' => $related_phrases]);
+        $related_phrases    = $this->context_phrase_service->getRelatedPhraseByPhraseId($phrase_id);
+        $lexical_sets       = $this->phrase_service->getLexicalSets($phrase_id);
+        return View::make('user.user_plan.learning_center.detail_context')->with([
+            'phrase'                => $phrase->phrase_text,
+            'meaning'               => $meaning,
+            'translations'          => $translations,
+            'type'                  => 'phrase_forwarded',
+            'selected_phrase_text'  => $phrase->phrase_text,
+            'lexical_sets'          => $lexical_sets,
+            'related_phrases'       => $related_phrases
+        ]);
     }
 
     /**
@@ -105,5 +144,14 @@ class LearningCenterController extends Controller
     public function search_context(Request $request){
         $contexts = $this->context_service->findAllLike($request->search);
         return View::make('user.user_plan.learning_center.explore_context')->with('contexts', $contexts);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function search_word(Request $request){
+        $phrases = $this->phrase_service->findAllLike($request->search);
+        return View::make('user.user_plan.learning_center.explore_context2')->with(['phrases' => $phrases, 'phrases_searched' => $request->search, 'type' => 'phrase_forwarded' ]);
     }
 }

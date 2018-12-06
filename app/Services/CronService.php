@@ -259,7 +259,8 @@ class CronService
                     $subscription = $this->stripe->subscriptions()->find($user->cus_id, $transaction->transaction_id);
                     if ($subscription['status'] == 'trialing' || $subscription['status'] == 'active') {
                         $this->transactionRepo->update(['id' => $transaction->id], ['expiry_date' => date("Y-m-d H:i:s", $subscription['current_period_end'])]);
-                    } else {
+                    }
+                    else {
                         if(!$user->hasRole(Config::get('constant.contributorRole'))){
                             $this->roleService->assign($user->id, 7);
                             $this->userService->updateRecord($transaction->user_id, ['user_roles' => 7]);
