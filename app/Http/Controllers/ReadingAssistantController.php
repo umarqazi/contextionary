@@ -52,6 +52,11 @@ class ReadingAssistantController extends Controller
     protected $context_service;
 
     /**
+     * @var PhraseService
+     */
+    protected $phrase_service;
+
+    /**
      * ReadingAssistantController constructor.
      */
     public function __construct()
@@ -60,7 +65,8 @@ class ReadingAssistantController extends Controller
         $this->meaning_service          = new MeaningService();
         $this->contributor_service      = new ContributorService();
         $this->context_phrase_service   = new ContextPhraseService();
-        $this->context_service   = new ContextService();
+        $this->context_service          = new ContextService();
+        $this->phrase_service           = new PhraseService();
     }
 
     /**
@@ -100,24 +106,7 @@ class ReadingAssistantController extends Controller
                                 $final_string_array[$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
                             }
                         }
-                        $data = [
-                            'context_id'    => $context_id,
-                            'phrase_id'     => $phrase->keyword_phrase_id,
-                            'position'      => 1,
-                        ];
-                        $meaning        = $this->getMeaning($data);
-                        $translation    = $this->getTranslation($data);
-                        $illustration   = $this->getIllustration($data);
-                        $related_phrase = $this->context_phrase_service->getRelatedPhrase($context_id, $phrase->keyword_phrase_id);
-                        $data = [
-                            'phrase'        => ucfirst($phrase->keyword_text),
-                            'phrase_id'     => $phrase->keyword_phrase_id,
-                            'meaning'       => $meaning,
-                            'translation'   => $translation,
-                            'illustration'   => $illustration,
-                            'related_phrase'=> $related_phrase,
-                        ];
-                        $context_obj['phrases'][$phrase_key] = $data;
+                        $context_obj['phrases'][$phrase_key] = $this->getRelatedPhraseDetails($context_id, $phrase);
                     }
                     array_push($context_list, $context_obj);
                 }
@@ -126,6 +115,50 @@ class ReadingAssistantController extends Controller
 
             return view::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list, 'phrase_list' => $phrase_list]);
         }
+    }
+
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return array
+     */
+    public function contextGlossary($context_id, $phrase_id){
+        $phrase = $this->getPhrase($phrase_id);
+        return $this->getRelatedPhraseDetails($context_id, $phrase);
+    }
+
+    /**
+     * @param $phrase_id
+     * @return mixed
+     */
+    public function getPhrase($phrase_id){
+         return $this->phrase_service->findById($phrase_id);
+    }
+
+    /**
+     * @param $context_id
+     * @param $phrase
+     * @return array
+     */
+    public function getRelatedPhraseDetails($context_id, $phrase){
+        $data = [
+            'context_id'    => $context_id,
+            'phrase_id'     => $phrase->keyword_phrase_id,
+            'position'      => 1,
+        ];
+        $meaning        = $this->getMeaning($data);
+        $translation    = $this->getTranslation($data);
+        $illustration   = $this->getIllustration($data);
+        $related_phrase = $this->context_phrase_service->getRelatedPhrase($context_id, $phrase->keyword_phrase_id);
+        $phrase_data = [
+            'phrase'        => ucfirst($phrase->keyword_text),
+            'phrase_id'     => $phrase->keyword_phrase_id,
+            'meaning'       => $meaning,
+            'translation'   => $translation,
+            'illustration'  => $illustration,
+            'related_phrase'=> $related_phrase,
+        ];
+        return $phrase_data;
     }
 
     /**

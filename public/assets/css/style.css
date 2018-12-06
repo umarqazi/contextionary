@@ -590,3 +590,9 @@ img#hangman {
 .confirmation-message{
   color:white;
 }
+.contextFinder .nav-pills{
+  background: none !important;
+}
+.related-phrase-body{
+  margin-bottom: 60px !important;
+}

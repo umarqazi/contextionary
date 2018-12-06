@@ -23,7 +23,7 @@ class ContextPhrase extends Model
         return $this->belongsTo('App\Context', 'context_id');
     }
     public function phrases(){
-        return $this->belongsTo('App\Phrase', 'phrase_id');
+        return $this->belongsTo('App\Phrase', 'phrase_id', 'phrase_id');
     }
 
     /**
@@ -36,9 +36,12 @@ class ContextPhrase extends Model
     }
 
     /**
+     * @param $context
      * @return mixed
      */
     public function getContextPhrase($context){
-        return self::where('context_id', $context)->with('phrases')->paginate(100);
+         return self::where('context_id', $context)->with(['phrases' => function($query) {
+            $query->where('red_flag', 0);
+        }])->paginate(100);
     }
 }
