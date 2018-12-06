@@ -30,9 +30,9 @@
                     <div class="col-md-4">
                         <div class="phrase-body mb-0">
                             @if($type == 'context_forwarded')
-                                <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$phrase->phrases->phrase_id ]) !!}">{{ucfirst($phrase->phrases->phrase_text)}}</a></p>
+                                <p class="text-white text-capitalize"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$phrase->phrases->phrase_id ]) !!}">{{ucfirst($phrase->phrases->phrase_text)}}</a></p>
                             @elseif($type == 'phrase_forwarded')
-                                <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$phrase->phrase_id ]) !!}">{{ucfirst($phrase->phrase_text)}}</a></p>
+                                <p class="text-white text-capitalize"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$phrase->phrase_id ]) !!}">{{ucfirst($phrase->phrase_text)}}</a></p>
                             @endif
                         </div>
                     </div>
