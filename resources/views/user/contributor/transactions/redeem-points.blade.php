@@ -80,33 +80,29 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                {!! Form::open(['id'=>'redeem_form', 'url'=>lang_route("saveEarning"), 'enctype'=>'multipart/form-data', 'method'=>'post']) !!}
+                {!! Form::open(['id'=>'form-submission', 'url'=>lang_route("saveEarning"), 'enctype'=>'multipart/form-data', 'method'=>'post']) !!}
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            {!! Form::select('type', [''=>'Select Type',env('MEANING')=>'Writer', env('ILLUSTRATE')=>'Illustrator', env('TRANSLATE')=>'Translator'], null,['id'=>'role-dropdown','class'=>'form-control role', 'onchange'=>'getCoins()', 'required']) !!}
-                            @if ($errors->has('type'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('type') }}</strong>
+                    @foreach($contributions['points'] as $key=>$points)
+                        <div class="row mt-4">
+                            <div class="col-md-3">
+                                <p class="text-capitalize"><strong>{!! Config::get('constant.contributorNames.'.$key) !!}</strong></p>
+                            </div>
+                            <div class="col-md-9">
+                                {!! Form::number($key, $points,[($points <= 0)?'readonly':'','class'=>'form-control', 'id'=>'role_points', 'onkeyup'=>'checkPoint()', 'required']) !!}
+                                @if ($errors->has($key))
+                                    <span class="help-block">
+                                    <strong>{{ $errors->first($key) }}</strong>
                                 </span>
-                            @endif
-                        </div>
-                        <div class="col-md-6">
-                            {!! Form::number('points', null,['class'=>'form-control', 'id'=>'role_points', 'onkeyup'=>'checkPoint()', 'required']) !!}
-                            @if ($errors->has('points'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('points') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-                        <div class="col-md-12 mt-4">
-                            <div class="custom-control custom-checkbox">
-                                {!! Form::checkbox('redeem_all', '1', false, ['class'=>'custom-control-input', 'id'=>'checkbox1', 'onChange'=>'redeemAllCheck(this)']); !!} <label class="custom-control-label" for="checkbox1">{!! t('Redeem All Points') !!}</label>
+                                @endif
                             </div>
                         </div>
+                    @endforeach
+
+
+                    <div class="row">
                         <div class="col-md-12">
                             <img src="{!! asset('/assets/images/2000px-PayPal.svg.png') !!}" class="height25 mt-4">
-                            {!!  Form::email('Paypal Email', null, ['class'=>'form-control mt-2', 'id'=>'paypal-email', 'placeholder'=> 'Enter Paypal Email', 'required']); !!}
+                            {!!  Form::email('Paypal Email', Auth::user()->paypal_email, ['class'=>'form-control mt-2', 'id'=>'paypal-email', 'placeholder'=> 'Enter Paypal Email', 'required']); !!}
                             @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
@@ -116,26 +112,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="orangeBtn waves-light align-center" form="redeem_form" id="request-redee">{!! t('Send Request') !!}</button>
+                    <button type="submit" class="orangeBtn waves-light align-center">{!! t('Send Request') !!}</button>
                 </div>
                 {!! Form::close() !!}
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        function redeemAllCheck(elem) {
-            if($(elem).is(':checked')){
-                $('#role-dropdown').hide();
-                $('#role-dropdown').attr('disabled',true);
-                $('#role_points').hide();
-                $('#role_points').attr('disabled',true);
-            }else{
-                $('#role-dropdown').show();
-                $('#role-dropdown').attr('disabled',false);
-                $('#role_points').show();
-                $('#role_points').attr('disabled',false);
-            }
-        }
-    </script>
     {!! HTML::script('assets/js/user/purchase_coins.js') !!}
 @endsection
