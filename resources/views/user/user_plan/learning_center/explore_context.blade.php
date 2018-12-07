@@ -34,14 +34,14 @@
                         @endphp
                         <div class="col-md-4">
                             <div class="phrase-body mb-0">
-                                <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=>$context->context_id]) !!}">{{ucfirst($context->context_name)}}</a></p>
+                                <p class="text-white text-capitalize"><a href="{!! lang_url('learning-center/explore-context', ['context'=>$context->context_id]) !!}">{{ucfirst($context->context_name)}}</a></p>
                             </div>
                         </div>
                     @endforeach
                 @else
                     <div class="col-md-12">
                         <div class="text-center">
-                            <strong class="record-message">No such Word in Record!</strong>
+                            <strong class="record-message">{!! t('No such Word in Record!') !!}</strong>
                         </div>
                     </div>
                 @endif

@@ -31,7 +31,6 @@
                 </div>
                 @if(!$phrases->isEmpty())
                     @foreach( $phrases as $phrase)
-
                         @if($phrase->phrases != null && $type == 'context_forwarded')
                             <div class="col-md-4">
                                 <div class="phrase-body mb-0">

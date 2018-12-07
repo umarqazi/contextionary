@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Pictionary') !!}
+    {!! t('Hangman') !!}
 @stop
 @section('content')
 <div class="container-fluid contributorMain funfact hangmanQuizLanding">

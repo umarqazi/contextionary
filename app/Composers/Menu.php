@@ -78,7 +78,11 @@ View::composer(['guest_pages.*', 'user.user_plan.learning_center.*'], function($
  */
 View::composer(['user.user_plan.glossary.*'], function($view)
 {
-    $page=['glossary'=>'Glossary', 'my-collection'=>'My Collection'];
+    $page=['glossary'=>'Glossary'];
+    if(Auth::check()):
+        $page['my-collection']='My Collection';
+    endif;
+
     $view->with(['pageMenu'=>$page]);
 });
 
