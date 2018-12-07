@@ -9,7 +9,7 @@
         <div class="col-sm-6">
             @if($type == 'context_forwarded')
                 <div class="exploreTitle">{{ucfirst($context)}}</div>
-            @else
+            @elseif($type == 'phrase_forwarded')
                 <div class="exploreTitle">{{ucfirst($selected_phrase_text)}}</div>
             @endif
         </div>
@@ -21,7 +21,7 @@
             @if($type == 'context_forwarded')
                 {{--<a href="{!! implode('/', $url) !!}" class="orangeBtn">Back</a>--}}
                 <a href="{{ url()->previous() }}" class="orangeBtn">Back</a>
-            @else
+            @elseif($type == 'phrase_forwarded')
                 {{--<a href="{!! lang_url('learning-center/explore-word') !!}" class="orangeBtn">Back</a>--}}
                 <a href="{{ url()->previous() }}" class="orangeBtn">Back</a>
             @endif
@@ -150,56 +150,55 @@
                 </div>
             @endif
         </div>
-
-        <div class="col-lg-12 col-md-12 mt-5">
-            <h2>Lexical Sets</h2>
-            <div class="phrase-body">
-                <div class="row">
-                    @if($type == 'context_forwarded')
-                        @if( ! $lexical_sets->isEmpty())
-                            @foreach($lexical_sets as $lexical_set)
-                                @if( $lexical_set->shared_word != null)
-                                    <div class="col-lg-3 col-md-3">
-                                        <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$lexical_set->sibling_id ]) !!}">{{ucfirst($lexical_set->shared_word)}}</a></p>
-                                    </div>
+        @if( count($shared_words_arry) > 0)
+            @foreach($shared_words_arry as $shared_words_key => $shared_words)
+                <div class="col-lg-12 col-md-12 mt-5">
+                    <h2>Shared Words for “{{$phrase_words[$shared_words_key]}}”</h2>
+                    <div class="phrase-body">
+                        <div class="row">
+                            @if($type == 'context_forwarded')
+                                @if( !$shared_words->isEmpty())
+                                    @foreach($shared_words as $shared_word)
+                                        @if( $shared_word->shared_word == $phrase_words[$shared_words_key])
+                                            <div class="col-lg-3 col-md-3">
+                                                <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$shared_word->sibling_id ]) !!}">{{ucfirst($shared_word->sibling_name)}}</a></p>
+                                            </div>
+                                        @endif
+                                    @endforeach
                                 @else
                                     <div class="col-lg-12 col-md-12">
-                                        <p class="text-white">{{t('No Lexical Sets in  Records')}}</p>
+                                        <p class="text-white">{{t('No Shared Words in  Records')}}</p>
                                     </div>
                                 @endif
-                            @endforeach
-                        @else
-                            <div class="col-lg-12 col-md-12">
-                                <p class="text-white">{{t('No Lexical Sets in  Records')}}</p>
-                            </div>
-                        @endif
-                    @else
-                        @if( ! $lexical_sets->isEmpty())
-                            @foreach($lexical_sets as $lexical_set)
-                                @if( $lexical_set->shared_word != null)
-                                    <div class="col-lg-3 col-md-3">
-                                        <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$lexical_set->sibling_id ]) !!}">{{ucfirst($lexical_set->shared_word)}}</a></p>
-                                    </div>
+                            @elseif($type == 'phrase_forwarded')
+                                @if( !$shared_words->isEmpty())
+                                    @foreach($shared_words as $shared_word)
+                                        @if( $shared_word->shared_word == $phrase_words[$shared_words_key])
+                                            <div class="col-lg-3 col-md-3">
+                                                <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$shared_word->sibling_id ]) !!}">{{ucfirst($shared_word->sibling_name)}}</a></p>
+                                            </div>
+                                        @endif
+                                    @endforeach
                                 @else
                                     <div class="col-lg-12 col-md-12">
-                                        <p class="text-white">{{t('No Lexical Sets in  Records')}}</p>
+                                        <p class="text-white">{{t('No Shared Words in  Records')}}</p>
                                     </div>
                                 @endif
-                            @endforeach
-                        @else
-                            <div class="col-lg-12 col-md-12">
-                                <p class="text-white">{{t('No Lexical Sets in  Records')}}</p>
-                            </div>
-                        @endif
-                    @endif
+                            @endif
+                        </div>
+                    </div>
                 </div>
+            @endforeach
+        @else
+            <div class="col-lg-12 col-md-12 mt-5">
+                <h2>Shared Words</h2>
+                <p class="text-white">{{t('No Shared Words in  Records')}}</p>
             </div>
-        </div>
-
+        @endif
         <div class="col-lg-12 col-md-12 mt-5">
             @if($type == 'context_forwarded')
                 <h2>Phrase related to {{ucfirst($context)}}</h2>
-            @else
+            @elseif($type == 'phrase_forwarded')
                 <h2>Phrase related to {{ucfirst($selected_phrase_text)}}</h2>
             @endif
             <div class="phrase-body related-phrase-body">
@@ -211,10 +210,6 @@
                                     <div class="col-lg-3 col-md-3">
                                         <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucfirst($related_phrase->relatedPhrases->phrase_text)}}</a></p>
                                     </div>
-                                @else
-                                    <div class="col-lg-12 col-md-12">
-                                        <p class="text-white">{{t('No Related Phrases in Records')}}</p>
-                                    </div>
                                 @endif
                             @endforeach
                         @else
@@ -222,16 +217,12 @@
                                 <p class="text-white">{{t('No Related Phrases in Records')}}</p>
                             </div>
                         @endif
-                    @else
+                    @elseif($type == 'phrase_forwarded')
                         @if( ! $related_phrases->isEmpty())
                             @foreach($related_phrases as $related_phrase)
                                 @if( $related_phrase->relatedPhrases != null)
                                     <div class="col-lg-3 col-md-3">
-                                        <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucfirst($related_phrase->relatedPhrases->phrase_text)}}</a></p>
-                                    </div>
-                                @else
-                                    <div class="col-lg-12 col-md-12">
-                                        <p class="text-white">{{t('No Related Phrases in Records')}}</p>
+                                        <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', [ 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucfirst($related_phrase->relatedPhrases->phrase_text)}}</a></p>
                                     </div>
                                 @endif
                             @endforeach
