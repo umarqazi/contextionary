@@ -65,8 +65,8 @@ class PhraseService extends BaseService implements IService
     /**
      * @return PhraseRepo
      */
-    public function getLexicalSets($phrase_id){
-        return $this->phrase_repo->getLexicalSets($phrase_id);
+    public function getSharedWords($data){
+        return $this->phrase_repo->getSharedWords($data);
     }
 
 }
