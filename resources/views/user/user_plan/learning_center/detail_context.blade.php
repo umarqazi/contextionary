@@ -150,10 +150,6 @@
                 </div>
             @endif
         </div>
-        @php
-            //dd($shared_words_arry);
-        @endphp
-
         @if( count($shared_words_arry) > 0)
             @foreach($shared_words_arry as $shared_words_key => $shared_words)
                 <div class="col-lg-12 col-md-12 mt-5">

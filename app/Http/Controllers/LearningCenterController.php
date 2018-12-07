@@ -77,7 +77,6 @@ class LearningCenterController extends Controller
         $context    = $this->context_service->findById($context_id);
         $phrases    = $this->context_phrase_service->getContextPhrase($context_id);
         return View::make('user.user_plan.learning_center.explore_context2')->with(['phrases'=> $phrases, 'context' => $context->context_name, 'context_id' => $context->context_id, 'type' => 'context_forwarded']);
-        return View::make('user.user_plan.learning_center.explore_context2')->with(['phrases'=> $phrases, 'context' => $context->context_name, 'context_id' => $context->context_id, 'type' => 'context_forwarded']);
     }
 
     /**
