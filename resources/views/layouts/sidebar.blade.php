@@ -34,6 +34,20 @@
                 </ul>
             </div>
         @endif
+        @if(!Auth::check())
+            <div class="menuCate">
+                <div class="title">
+                    {!! t('Glossary Catalog')!!}
+                </div>
+                <ul class="menuListing">
+                    <li class="{{ (Request::segment(2) == 'glossary') ? 'active' : '' }}">
+                        <a href="{!! lang_route('glossary') !!}" class="menu5" style="{{ (Request::segment(2) == 'glossary') ? 'background-position: 0 -40px' : '' }}">
+                            <span>{!! t('Glossary Catalog') !!}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        @endif
         <div class="menuCate">
             <div class="title">
                 {!! t('Miscellaneous')!!}
