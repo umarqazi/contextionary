@@ -44,4 +44,14 @@ class ContextPhrase extends Model
             $query->where('red_flag', 0);
         }])->paginate(100);
     }
+
+    /**
+     * @param $key
+     * @return mixed
+     */
+    public function searchContextPhrase($key){
+         return self::where('context_id', $context)->with(['phrases' => function($query) {
+            $query->where('red_flag', 0);
+        }])->paginate(100);
+    }
 }

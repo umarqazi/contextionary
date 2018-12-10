@@ -87,7 +87,8 @@
                                             </td>
                                         </tr>
                                         @foreach( $context_list as $context_key => $context)
-                                            @foreach( $context['phrases'] as $phrase)
+                                            @if (array_key_exists('phrases', $context))
+                                                @foreach( $context['phrases'] as $phrase)
                                                 @if($context_key != 0)
                                                     <tr class="tr-context tr-context-{{$context['context_id']}} hidden">
                                                 @else
@@ -156,6 +157,7 @@
                                                 </td>
                                             </tr>
                                             @endforeach
+                                            @endif
                                         @endforeach
 
                                         </tbody>
@@ -181,14 +183,89 @@
                                                     </select>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>Wellhead assembly</td>
-                                                <td>Component at the surface of an <a href="#">oil gas</a> as well that provides the interface</td>
-                                                <td><img src="images/context-finder-img.jpg" class="tableImg"></td>
-                                                <td><a href="#">Blowout preventer, Christmas tre, Pipe ram, shear ram, Blind shear ram</a></td>
-                                                <td>Assemblage de tete de puits</td>
-                                                <td class="lastChild">Element a <a href="#">la surface</a> d’un puits de petrole ou de gas qui assure <a href="#">I’interface et la.</a></td>
-                                            </tr>
+                                            @foreach( $context_list as $context_key => $context)
+                                                @if (array_key_exists('phrases', $context))
+                                                    @foreach( $context['phrases'] as $phrase)
+                                                        @foreach($phrase['related_phrase'] as $related_phrase)
+                                                            @if($related_phrase['details']['phrase'] != '')
+                                                            @if($context_key != 0)
+                                                            <tr class="tr-context tr-context-{{$context['context_id']}} hidden">
+                                                            @else
+                                                            <tr class="tr-context tr-context-{{$context['context_id']}}">
+                                                            @endif
+                                                                <td>
+                                                                    {!! $related_phrase['details']['phrase'] !!}
+                                                                </td>
+                                                                <td>
+                                                                    {!! $related_phrase['details']['meaning'] !!}
+                                                                </td>
+                                                                <td>
+                                                                    @if($related_phrase['details']['illustration'] != '')
+                                                                        <img src="{!! asset('storage/'.$related_phrase['details']['illustration']) !!}" class="tableImg">
+                                                                    @else
+                                                                        <p>{{t('No Illustration in Records')}}</p>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                @if( count($related_phrase['details']['related_phrase']) > 0)
+                                                                    @php
+                                                                            $related_phrase_count1 = 0;
+                                                                    @endphp
+                                                                    @foreach($related_phrase['details']['related_phrase'] as $rel_phrase)
+                                                                        @if( $rel_phrase->relatedPhrases != null)
+                                                                            @php
+                                                                                $related_phrase_count1 = $related_phrase_count1 + 1;
+                                                                            @endphp
+                                                                            <a href="#">{{$rel_phrase->relatedPhrases->phrase_text}}</a>{{ $loop->last ? '' : ', ' }}
+                                                                        @endif
+                                                                    @endforeach
+                                                                    @if( ! $related_phrase_count1 > 0)
+                                                                        <p>{{t('No Related Phrase in Records')}}</p>
+                                                                    @endif
+                                                                @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if(count($related_phrase['details']['translation']) > 0)
+                                                                        @foreach($related_phrase['details']['translation'] as $translation)
+                                                                            @if($translation['language'] == 'English')
+                                                                                <p class="phrase trans_en">{{ $translation['phrase_translation'] }}</p>
+                                                                            @elseif($translation['language'] == 'Spanish')
+                                                                                <p class="hidden phrase trans_sp">{{ $translation['phrase_translation'] }}</p>
+                                                                            @elseif($translation['language'] == 'Hindi')
+                                                                                <p class="hidden phrase trans_hi">{{ $translation['phrase_translation'] }}</p>
+                                                                            @elseif($translation['language'] == 'French')
+                                                                                <p class="hidden phrase trans_fr">{{ $translation['phrase_translation'] }}</p>
+                                                                            @endif
+                                                                        @endforeach
+                                                                        <p class="hidden phrase trans_none">{{t('No Translation in Records')}}</p>
+                                                                    @else
+                                                                        <p class="phrase trans_none">{{t('No Translation in Records')}}</p>
+                                                                    @endif
+                                                                </td>
+                                                                <td class="lastChild">
+                                                                    @if(count($related_phrase['details']['translation']) > 0)
+                                                                        @foreach($related_phrase['details']['translation'] as $translation)
+                                                                            @if($translation['language'] == 'English')
+                                                                                <p class="phrase_meaning trans_en">{{ $translation['translation'] }}</p>
+                                                                            @elseif($translation['language'] == 'Spanish')
+                                                                                <p class="hidden phrase_meaning trans_sp">{{ $translation['translation'] }}</p>
+                                                                            @elseif($translation['language'] == 'Hindi')
+                                                                                <p class="hidden phrase_meaning trans_hi">{{ $translation['translation'] }}</p>
+                                                                            @elseif($translation['language'] == 'French')
+                                                                                <p class="hidden phrase_meaning trans_fr">{{ $translation['translation'] }}</p>
+                                                                            @endif
+                                                                        @endforeach
+                                                                        <p class="hidden phrase_meaning trans_none">{{t('No Translation in Records')}}</p>
+                                                                    @else
+                                                                        <p class="phrase_meaning trans_none">{{t('No Translation in Records')}}</p>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

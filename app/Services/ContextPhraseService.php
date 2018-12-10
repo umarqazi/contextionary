@@ -49,6 +49,16 @@ class ContextPhraseService extends BaseService implements IService
     }
 
     /**
+     * @param $key
+     * @return mixed
+     */
+    public function searchContextPhrase($key){
+        return $this->context_phrase_repo->searchContextPhrase($key);
+    }
+
+    /**
+     * @param $context_id
+     * @param $phrase_id
      * @return mixed
      */
     public function getRelatedPhrase($context_id, $phrase_id){
@@ -76,6 +86,14 @@ class ContextPhraseService extends BaseService implements IService
      */
     public function getLengthedPhrase($length){
         return $this->context_phrase_repo->getLengthed($length);
+    }
+
+    /**
+     * @param null $search
+     * @return mixed
+     */
+    public function listing($search = null){
+        return $this->context_phrase_repo->listing($search);
     }
 
 }

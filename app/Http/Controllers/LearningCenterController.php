@@ -14,6 +14,7 @@ use App\Services\ContextPhraseService;
 use App\Services\ContextService;
 use App\Services\ContributorService;
 use App\Services\MeaningService;
+use App\Services\MutualService;
 use App\Services\PhraseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -25,6 +26,7 @@ class LearningCenterController extends Controller
     protected $context_phrase_service;
     protected $meaning_service;
     protected $contributor_service;
+    protected $mutualService;
 
     public function __construct()
     {
@@ -38,6 +40,7 @@ class LearningCenterController extends Controller
         $this->context_phrase_service   =   $context_phrase_service;
         $this->meaning_service          =   $meaning_service;
         $this->contributor_service      =   $contributor_service;
+        $this->mutualService            =  new MutualService();
     }
 
     /**
@@ -48,10 +51,18 @@ class LearningCenterController extends Controller
     }
 
     /**
+     * @param null $search
      * @return mixed
      */
-    public function exploreContext(){
-        $contexts = $this->context_service->listing();
+    public function exploreContext($search = null){
+        $context_array=[];
+        $contexts = $this->context_phrase_service->listing($search);
+        foreach($contexts as $key=>$context) {
+            $context_array[$context['contexts']['context_name']]['context_id'] = $context['context_id'];
+            $context_array[$context['contexts']['context_name']]['context_name'] = $context['contexts']['context_name'];
+        }
+        ksort($context_array);
+        $contexts=$this->mutualService->paginatedRecord($context_array, 'explore-context', 100);
         return View::make('user.user_plan.learning_center.explore_context')->with('contexts', $contexts);
     }
 
@@ -145,8 +156,9 @@ class LearningCenterController extends Controller
      * @return mixed
      */
     public function search_context(Request $request){
-        $contexts = $this->context_service->findAllLike($request->search);
-        return View::make('user.user_plan.learning_center.explore_context')->with('contexts', $contexts);
+        return $this->exploreContext($request->search);
+//        $contexts = $this->context_phrase_service->listing($request->search);
+//        return View::make('user.user_plan.learning_center.explore_context')->with('contexts', $contexts);
     }
 
     /**

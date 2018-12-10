@@ -79,10 +79,10 @@ class PhraseRepo extends BaseRepo implements IRepo
     public function findAllLike($key){
         return $this->phrase->where( function ( $query ) use ( $key ) {
             $query->whereRaw( 'LOWER("phrase_text") like ?',  '%'.strtolower($key).'%' );
-        })->get();
+        })->paginate(100);
     }
 
-    public function getLexicalSets($phrase_id){
-       return $this->shared_word->where('long_phrase_id', $phrase_id)->get();
+    public function getSharedWords($data){
+       return $this->shared_word->where($data)->get();
     }
 }

@@ -116,6 +116,14 @@ class ContextPhraseRepo
     }
 
     /**
+     * @param $key
+     * @return mixed
+     */
+    public function searchContextPhrase($key){
+        return $this->contextPhrase->searchContextPhrase($key);
+    }
+
+    /**
      * @param $id
      * @return mixed
      */
@@ -138,5 +146,20 @@ class ContextPhraseRepo
      */
     public function updateStatus($check, $data){
         return $this->contextPhrase->where($check)->update($data);
+    }
+
+    /**
+     * @param null $search
+     * @return mixed
+     */
+    public function listing($search = null){
+        if($search == null){
+            return $this->contextPhrase->select('context_id')->distinct()->with('contexts')->get();
+        }
+        else{
+            return $this->contextPhrase->select('context_id')->distinct()->with(['contexts'=>function($query) use ($search){
+                $query->whereRaw( 'LOWER("context_name") like ?',  '%'.strtolower($search).'%' );
+            }])->get();
+        }
     }
 }

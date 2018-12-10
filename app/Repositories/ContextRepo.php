@@ -35,7 +35,7 @@ class ContextRepo
      * @return mixed
      */
     public function listing(){
-        return $this->context->orderBy('context_name', 'asc')->get();
+        return $this->context->orderBy('context_name', 'asc')->paginate(100);
     }
 
     /**
@@ -61,7 +61,7 @@ class ContextRepo
     public function findAllLike($key){
         return $this->context->where( function ( $q2 ) use ( $key ) {
             $q2->whereRaw( 'LOWER("context_name") like ?',  '%'.strtolower($key).'%' );
-        })->get();
+        })->paginate(100);
     }
 
     /**
