@@ -26,7 +26,7 @@
                     @endphp
                     @foreach( $contexts as $context)
                         @php
-                            $firstLetter = substr($context->context_name, 0, 1);
+                            $firstLetter = substr($context['context_name'], 0, 1);
                             if($previous != $firstLetter){
                                 echo '<div class="col-md-12 mt-4"><h2>'.$firstLetter.'</h2></div>';
                             }
@@ -34,7 +34,7 @@
                         @endphp
                         <div class="col-md-4">
                             <div class="phrase-body mb-0">
-                                <p class="text-white text-capitalize"><a href="{!! lang_url('learning-center/explore-context', ['context'=>$context->context_id]) !!}">{{ucfirst($context->context_name)}}</a></p>
+                                <p class="text-white text-capitalize"><a href="{!! lang_url('learning-center/explore-context', ['context'=>$context['context_id']]) !!}">{{ucfirst($context['context_name'])}}</a></p>
                             </div>
                         </div>
                     @endforeach
@@ -45,6 +45,15 @@
                         </div>
                     </div>
                 @endif
+            </div>
+        </div>
+        <div class="col-md-12 mt-4 text-center">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    {{$contexts->links()}}
+                </div>
+                <div class="col-md-4"></div>
             </div>
         </div>
     </div>

@@ -96,7 +96,6 @@ class ReadingAssistantController extends Controller
             $body = json_decode($res->getBody());
             $final_string_array     = explode("_",$final_string);
             $context_list           = [];
-            $phrase_list            = [];
             foreach ($body as $context_div) {
                 foreach ($context_div as $context_id => $context) {
                     $context_obj = $this->context_service->findById(intval($context_id))->toArray();
@@ -106,14 +105,13 @@ class ReadingAssistantController extends Controller
                                 $final_string_array[$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
                             }
                         }
-                        $context_obj['phrases'][$phrase_key] = $this->getRelatedPhraseDetails($context_id, $phrase);
+                        $context_obj['phrases'][$phrase_key] = $this->getPhraseDetails($context_id, $phrase);
                     }
                     array_push($context_list, $context_obj);
                 }
             }
             $string = implode(" ",$final_string_array);
-
-            return view::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list, 'phrase_list' => $phrase_list]);
+            return view::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list]);
         }
     }
 
@@ -124,7 +122,7 @@ class ReadingAssistantController extends Controller
      */
     public function contextGlossary($context_id, $phrase_id){
         $phrase = $this->getPhrase($phrase_id);
-        return $this->getRelatedPhraseDetails($context_id, $phrase);
+        return $this->getPhraseDetails($context_id, $phrase);
     }
 
     /**
@@ -140,7 +138,7 @@ class ReadingAssistantController extends Controller
      * @param $phrase
      * @return array
      */
-    public function getRelatedPhraseDetails($context_id, $phrase){
+    public function getPhraseDetails($context_id, $phrase){
         $data = [
             'context_id'    => $context_id,
             'phrase_id'     => $phrase->keyword_phrase_id,
@@ -149,14 +147,49 @@ class ReadingAssistantController extends Controller
         $meaning        = $this->getMeaning($data);
         $translation    = $this->getTranslation($data);
         $illustration   = $this->getIllustration($data);
-        $related_phrase = $this->context_phrase_service->getRelatedPhrase($context_id, $phrase->keyword_phrase_id);
+        $related_phrases= $this->context_phrase_service->getRelatedPhrase($context_id, $phrase->keyword_phrase_id);
+        foreach($related_phrases as $key => $related_phrase){
+            if($related_phrase->relatedPhrases != null){
+                if($context_id == $related_phrase->context_id){
+                    $related_phrase_phrase          = $this->getPhrase($related_phrase->related_phrase_id);
+                    $related_phrase_phrase_details  = $this->getRelatedPhraseDetails($related_phrase->context_id, $related_phrase_phrase);
+                    $related_phrases[$key]->details = $related_phrase_phrase_details;
+                }
+            }
+        }
         $phrase_data = [
-            'phrase'        => ucfirst($phrase->keyword_text),
-            'phrase_id'     => $phrase->keyword_phrase_id,
+            'phrase'                    => ucfirst($phrase->keyword_text),
+            'phrase_id'                 => $phrase->keyword_phrase_id,
+            'meaning'                   => $meaning,
+            'translation'               => $translation,
+            'illustration'              => $illustration,
+            'related_phrase'            => $related_phrases,
+        ];
+        return $phrase_data;
+    }
+
+    /**
+     * @param $context_id
+     * @param $phrase
+     * @return array
+     */
+    public function getRelatedPhraseDetails($context_id, $phrase){
+        $data = [
+            'context_id'    => $context_id,
+            'phrase_id'     => $phrase->phrase_id,
+            'position'      => 1,
+        ];
+        $meaning        = $this->getMeaning($data);
+        $translation    = $this->getTranslation($data);
+        $illustration   = $this->getIllustration($data);
+        $related_phrases= $this->context_phrase_service->getRelatedPhrase($context_id, $phrase->phrase_id);
+        $phrase_data = [
+            'phrase'        => ucfirst($phrase->phrase_text),
+            'phrase_id'     => $phrase->phrase_id,
             'meaning'       => $meaning,
             'translation'   => $translation,
             'illustration'  => $illustration,
-            'related_phrase'=> $related_phrase,
+            'related_phrase'=> $related_phrases,
         ];
         return $phrase_data;
     }

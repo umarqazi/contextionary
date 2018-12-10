@@ -82,7 +82,7 @@ class MutualService
      * @return LengthAwarePaginator
      * convert array to pagination
      */
-    public function paginatedRecord($totalContext, $url){
+    public function paginatedRecord($totalContext, $url, $pagination=9){
         //Get current page form url e.g. &page=6
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
@@ -90,7 +90,7 @@ class MutualService
         $collection = new Collection($totalContext);
 
         //Define how many items we want to be visible in each page
-        $per_page = 9;
+        $per_page = $pagination;
 
         //Slice the collection to get the items to display in current page
         $currentPageResults = $collection->slice(($currentPage-1) * $per_page, $per_page)->all();
