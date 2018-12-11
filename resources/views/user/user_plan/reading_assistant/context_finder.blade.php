@@ -30,7 +30,7 @@
 
             <div class="col-md-12 mt-4 text-center actionsBtn">
                 <button class="orangeBtn ml-3 waves-light">Submit</button>
-                <button class="orangeBtn ml-3 waves-light" type="reset" value="Reset" >Reset</button>
+                <a class="orangeBtn ml-3 waves-light" onclick="reset(event);">Reset</a>
             </div>
         </div>
         {!! Form::close() !!}
@@ -52,9 +52,11 @@
                 </div>
 
                 <div class="col-md-12">
-                    <div class="exportBlock">
-                        {!! $string !!}
+                    @foreach( $context_list as $context_key => $context)
+                    <div class="exportBlock exportBlock_{{$context['context_id']}} @if($context_key != 0 ) hidden @endif">
+                            {!! $string[$context['context_id']] !!}
                     </div>
+                    @endforeach
 
                     <div class="contextTabs">
                         <ul class="nav nav-pills" role="tablist">
@@ -71,19 +73,29 @@
                                 <div class="table-responsive">
                                     <table class="table contextTable">
                                         <tbody>
-                                        <tr class="tr-head">
-                                            <td>{{t('Jargon')}}</td>
-                                            <td>{{t('Meaning')}}</td>
-                                            <td>{{t('Illustration')}}</td>
-                                            <td>{{t('Related items')}}</td>
-                                            <td>{{t('Translation')}}</td>
-                                            <td class="text-right lastChild">
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-right">
                                                 <select class="languageBar" onchange="languageChange(this)">
+                                                    <option value="fr">{{t('French')}}</option>
                                                     <option value="en">{{t('English')}}</option>
                                                     <option value="sp">{{t('Spanish')}}</option>
                                                     <option value="hi">{{t('Hindi')}}</option>
-                                                    <option value="fr">{{t('French')}}</option>
                                                 </select>
+                                            </td>
+                                        </tr>
+                                        <tr class="tr-head">
+                                            <td class="text-center">{{t('Jargon')}}</td>
+                                            <td class="text-center">{{t('Meaning')}}</td>
+                                            <td class="text-center">{{t('Illustration')}}</td>
+                                            <td class="text-center">{{t('Related items')}}</td>
+                                            <td class="text-center">{{t('Phrase translation')}}</td>
+                                            <td class="text-right lastChild">
+                                                {{t('Meaning translation')}}
                                             </td>
                                         </tr>
                                         @foreach( $context_list as $context_key => $context)
@@ -94,16 +106,16 @@
                                                 @else
                                                     <tr class="tr-context tr-context-{{$context['context_id']}}">
                                                 @endif
-                                                <td>{{$phrase['phrase']}}</td>
-                                                <td>{{$phrase['meaning']}}</td>
-                                                <td>
+                                                <td class="text-center">{{$phrase['phrase']}}</td>
+                                                <td class="text-center">{{$phrase['meaning']}}</td>
+                                                <td class="text-center">
                                                     @if($phrase['illustration'] != '')
                                                         <img src="{!! asset('storage/'.$phrase['illustration']) !!}" class="tableImg">
                                                     @else
-                                                        <p>{{t('No Illustration in Records')}}</p>
+                                                        <p>{{t('-')}}</p>
                                                     @endif
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     @php
                                                         $related_phrase_count = 0;
                                                     @endphp
@@ -112,14 +124,16 @@
                                                             @php
                                                                 $related_phrase_count = $related_phrase_count + 1;
                                                             @endphp
-                                                            <a href="#">{{$related_phrase->relatedPhrases->phrase_text}}</a>{{ $loop->last ? '' : ', ' }}
+                                                            <a href="#" onclick="openRelatedPhrase(event, {{$related_phrase->relatedPhrases->phrase_id}})">
+                                                                {{$related_phrase->relatedPhrases->phrase_text}}
+                                                            </a>{{ $loop->last ? '' : ', ' }}
                                                         @endif
                                                     @endforeach
                                                     @if( ! $related_phrase_count > 0)
-                                                        <p>{{t('No Related Phrase in Records')}}</p>
+                                                        <p>{{t('-')}}</p>
                                                     @endif
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     @if(count($phrase['translation']) > 0)
                                                         @foreach($phrase['translation'] as $translation)
                                                             @if($translation['language'] == 'English')
@@ -132,12 +146,12 @@
                                                                 <p class="hidden phrase trans_fr">{{ $translation['phrase_translation'] }}</p>
                                                             @endif
                                                         @endforeach
-                                                        <p class="hidden phrase trans_none">{{t('No Translation in Records')}}</p>
+                                                        <p class="hidden phrase trans_none">{{t('-')}}</p>
                                                     @else
-                                                        <p class="phrase trans_none">{{t('No Translation in Records')}}</p>
+                                                        <p class="phrase trans_none">{{t('-')}}</p>
                                                     @endif
                                                 </td>
-                                                <td class="lastChild">
+                                                <td class="lastChild text-center">
                                                     @if(count($phrase['translation']) > 0)
                                                         @foreach($phrase['translation'] as $translation)
                                                             @if($translation['language'] == 'English')
@@ -150,9 +164,9 @@
                                                                 <p class="hidden phrase_meaning trans_fr">{{ $translation['translation'] }}</p>
                                                             @endif
                                                         @endforeach
-                                                            <p class="hidden phrase_meaning trans_none">{{t('No Translation in Records')}}</p>
+                                                            <p class="hidden phrase_meaning trans_none">{{t('-')}}</p>
                                                     @else
-                                                        <p class="phrase_meaning trans_none">{{t('No Translation in Records')}}</p>
+                                                        <p class="phrase_meaning trans_none">{{t('-')}}</p>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -169,18 +183,28 @@
                                     <table class="table contextTable">
                                         <tbody>
                                             <tr>
-                                                <td>{{t('Jargon')}}</td>
-                                                <td>{{t('Meaning')}}</td>
-                                                <td>{{t('Illustration')}}</td>
-                                                <td>{{t('Related items')}} </td>
-                                                <td>{{t('Translation')}}</td>
-                                                <td class="text-right lastChild">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-right">
                                                     <select class="languageBar" onchange="languageChange(this)">
+                                                        <option value="fr">{{t('French')}}</option>
                                                         <option value="en">{{t('English')}}</option>
                                                         <option value="sp">{{t('Spanish')}}</option>
                                                         <option value="hi">{{t('Hindi')}}</option>
-                                                        <option value="fr">{{t('French')}}</option>
                                                     </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">{{t('Jargon')}}</td>
+                                                <td class="text-center">{{t('Meaning')}}</td>
+                                                <td class="text-center">{{t('Illustration')}}</td>
+                                                <td class="text-center">{{t('Related items')}} </td>
+                                                <td class="text-center">{{t('Phrase Translation')}}</td>
+                                                <td class="text-right lastChild">
+                                                    {{t('Meaning Translation')}}
                                                 </td>
                                             </tr>
                                             @foreach( $context_list as $context_key => $context)
@@ -193,20 +217,20 @@
                                                             @else
                                                             <tr class="tr-context tr-context-{{$context['context_id']}}">
                                                             @endif
-                                                                <td>
+                                                                <td class="text-center">
                                                                     {!! $related_phrase['details']['phrase'] !!}
                                                                 </td>
-                                                                <td>
+                                                                <td class="text-center">
                                                                     {!! $related_phrase['details']['meaning'] !!}
                                                                 </td>
-                                                                <td>
+                                                                <td class="text-center">
                                                                     @if($related_phrase['details']['illustration'] != '')
                                                                         <img src="{!! asset('storage/'.$related_phrase['details']['illustration']) !!}" class="tableImg">
                                                                     @else
-                                                                        <p>{{t('No Illustration in Records')}}</p>
+                                                                        <p>{{t('-')}}</p>
                                                                     @endif
                                                                 </td>
-                                                                <td>
+                                                                <td  class="text-center" id="related_phrase_td_{{$related_phrase['related_phrase_id']}}">
                                                                 @if( count($related_phrase['details']['related_phrase']) > 0)
                                                                     @php
                                                                             $related_phrase_count1 = 0;
@@ -220,44 +244,44 @@
                                                                         @endif
                                                                     @endforeach
                                                                     @if( ! $related_phrase_count1 > 0)
-                                                                        <p>{{t('No Related Phrase in Records')}}</p>
+                                                                        <p>{{t('-')}}</p>
                                                                     @endif
                                                                 @endif
                                                                 </td>
-                                                                <td>
+                                                                <td class="text-center">
                                                                     @if(count($related_phrase['details']['translation']) > 0)
                                                                         @foreach($related_phrase['details']['translation'] as $translation)
                                                                             @if($translation['language'] == 'English')
-                                                                                <p class="phrase trans_en">{{ $translation['phrase_translation'] }}</p>
+                                                                                <p class="hidden phrase trans_en">{{ $translation['phrase_translation'] }}</p>
                                                                             @elseif($translation['language'] == 'Spanish')
                                                                                 <p class="hidden phrase trans_sp">{{ $translation['phrase_translation'] }}</p>
                                                                             @elseif($translation['language'] == 'Hindi')
                                                                                 <p class="hidden phrase trans_hi">{{ $translation['phrase_translation'] }}</p>
                                                                             @elseif($translation['language'] == 'French')
-                                                                                <p class="hidden phrase trans_fr">{{ $translation['phrase_translation'] }}</p>
+                                                                                <p class="phrase trans_fr">{{ $translation['phrase_translation'] }}</p>
                                                                             @endif
                                                                         @endforeach
-                                                                        <p class="hidden phrase trans_none">{{t('No Translation in Records')}}</p>
+                                                                        <p class="hidden phrase trans_none">{{t('-')}}</p>
                                                                     @else
-                                                                        <p class="phrase trans_none">{{t('No Translation in Records')}}</p>
+                                                                        <p class="phrase trans_none">{{t('-')}}</p>
                                                                     @endif
                                                                 </td>
-                                                                <td class="lastChild">
+                                                                <td class="lastChild text-center">
                                                                     @if(count($related_phrase['details']['translation']) > 0)
                                                                         @foreach($related_phrase['details']['translation'] as $translation)
                                                                             @if($translation['language'] == 'English')
-                                                                                <p class="phrase_meaning trans_en">{{ $translation['translation'] }}</p>
+                                                                                <p class="hidden phrase_meaning trans_en">{{ $translation['translation'] }}</p>
                                                                             @elseif($translation['language'] == 'Spanish')
                                                                                 <p class="hidden phrase_meaning trans_sp">{{ $translation['translation'] }}</p>
                                                                             @elseif($translation['language'] == 'Hindi')
                                                                                 <p class="hidden phrase_meaning trans_hi">{{ $translation['translation'] }}</p>
                                                                             @elseif($translation['language'] == 'French')
-                                                                                <p class="hidden phrase_meaning trans_fr">{{ $translation['translation'] }}</p>
+                                                                                <p class="phrase_meaning trans_fr">{{ $translation['translation'] }}</p>
                                                                             @endif
                                                                         @endforeach
-                                                                        <p class="hidden phrase_meaning trans_none">{{t('No Translation in Records')}}</p>
+                                                                        <p class="hidden phrase_meaning trans_none">{{t('-')}}</p>
                                                                     @else
-                                                                        <p class="phrase_meaning trans_none">{{t('No Translation in Records')}}</p>
+                                                                        <p class="phrase_meaning trans_none">{{t('-')}}</p>
                                                                     @endif
                                                                 </td>
                                                             </tr>
@@ -298,6 +322,22 @@
                         $('#count').html($("#meaning-area").val().length+'/2500');
                     }
                 };
+            }else if(extension == 'docx'){
+                var doc = new ActiveXObject("Word.Application"); // creates the word object
+
+                doc.Visible=false; // doesn't display Word window
+                doc.Documents.Open(file); // specify path to document
+                //copy the content from my word document and throw it into my variable
+                var txt;
+                txt = doc.Documents(file).Content;
+                var textArea = document.getElementById("meaning-area");
+                textArea.value = txt.substring(0,2500);
+                doc.quit(0); // quit word (very important or you'll quickly chew up memory!)
+                if($("#meaning-area").val().length > 2500){
+                    $('#count').html('2500/2500');
+                }else{
+                    $('#count').html($("#meaning-area").val().length+'/2500');
+                }
             }else{
                 $('#error_upload').removeClass('hidden');
                 $('#error_upload').html('Only .txt type files can be uploaded!');
@@ -309,6 +349,8 @@
                 console.log(elem.value);
                 $('.tr-context-'+elem.value).siblings('.tr-context').addClass('hidden');
                 $('.tr-context-'+elem.value).removeClass('hidden');
+                $('.exportBlock_'+elem.value).siblings('.exportBlock').addClass('hidden');
+                $('.exportBlock_'+elem.value).removeClass('hidden');
         }
 
         /**
@@ -330,6 +372,19 @@
                 $('.phrase.trans_none').removeClass('hidden');
                 $('.phrase.trans_none').siblings().addClass('hidden');
             }
+        }
+
+        function openRelatedPhrase(e, related_phrase_id) {
+            e.preventDefault();
+            $('.nav.nav-pills a[href="#tab2"]').tab('show');
+            $('html, body').animate({
+                scrollTop: $("#related_phrase_td_"+related_phrase_id).offset().top
+            }, 2000);
+        }
+
+        function reset(e) {
+            e.preventDefault();
+            $('.enter-phrase').val('');
         }
     </script>
     {!! HTML::script('assets/js/login.js') !!}

@@ -99,6 +99,7 @@ MultiLang::routeGroup(function($router) {
                     Route::get('learning-center/explore-context-phrase/{phrase}', 'LearningCenterController@phraseDetail2');
                     Route::get('learning-center/explore-word', 'LearningCenterController@exploreWord')->name('explore-word');
                     Route::post('learning-center/explore-word-search', 'LearningCenterController@search_word')->name('explore-word-search');
+                    Route::get('learning-center/explore-word-search', 'LearningCenterController@exploreWord');
                     Route::post('learning-center/explore-context-search', 'LearningCenterController@search_context')->name('explore-context-search');
                     Route::get('my-collection', 'GlossaryController@getListingForAuthUser')->name('my-collection');
                     Route::post('add-to-fav', 'GlossaryController@addToFav');

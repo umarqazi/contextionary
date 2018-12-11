@@ -94,23 +94,24 @@ class ReadingAssistantController extends Controller
         $response       =   $res->getStatusCode(); // 200
         if( $response   ==  '200') {
             $body = json_decode($res->getBody());
-            $final_string_array     = explode("_",$final_string);
             $context_list           = [];
+            $string                 = [];
             foreach ($body as $context_div) {
                 foreach ($context_div as $context_id => $context) {
                     $context_obj = $this->context_service->findById(intval($context_id))->toArray();
+                    $final_string_array[$context_id]     = explode("_",$final_string);
                     foreach ($context as $phrase_key => $phrase) {
-                        foreach ($final_string_array as $key => $word){
+                        foreach ($final_string_array[$context_id] as $key => $word){
                             if ((strtolower($word) == strtolower($phrase->keyword_text))) {
-                                $final_string_array[$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
+                                $final_string_array[$context_id][$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
                             }
                         }
                         $context_obj['phrases'][$phrase_key] = $this->getPhraseDetails($context_id, $phrase);
                     }
                     array_push($context_list, $context_obj);
+                    $string[$context_id] = implode(" ",$final_string_array[$context_id]);
                 }
             }
-            $string = implode(" ",$final_string_array);
             return view::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list]);
         }
     }
@@ -203,7 +204,7 @@ class ReadingAssistantController extends Controller
         if(count($meaning_data) > 0){
             $meaning = $meaning_data[0]->meaning;
         }else{
-            $meaning = 'No Meaning in Records';
+            $meaning = '-';
         }
         return $meaning;
     }

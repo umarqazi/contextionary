@@ -596,3 +596,10 @@ img#hangman {
 .related-phrase-body{
   margin-bottom: 60px !important;
 }
+.contextFinder .exportBlock a {
+  font-size: 16px;
+  text-transform: uppercase;
+}
+.sentence_case{
+  text-transform: capitalize;
+}
