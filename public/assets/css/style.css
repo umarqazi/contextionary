@@ -448,6 +448,8 @@ input[type=number] {
 }
 .languageBar .list a{
   color:#f7941d;
+  width:100%;
+  display: inline-block;
 }
 .fancybox-lock .fancybox-overlay{
   z-index: 100000;
