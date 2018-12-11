@@ -19,7 +19,7 @@
                     <p class="whiteText"><strong>{!! t('Phrase') !!}:</strong> {!! $phraseMeaning['phrase_text'] !!}</p>
                 </div>
             </div>
-            {!! Form::open(['url'=>lang_route('postTranslationVote'), 'method'=>'post']) !!}
+            {!! Form::open(['url'=>lang_route('postTranslationVote'), 'method'=>'post', 'id'=>'form-submission']) !!}
             <div class="row mt-4">
                 <div class="col-md-8">
                     @if ($errors->has('meaning'))

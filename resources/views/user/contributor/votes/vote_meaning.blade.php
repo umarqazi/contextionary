@@ -20,7 +20,7 @@
                 </div>
 
             </div>
-            {!! Form::open(['url'=>lang_route('vote'), 'method'=>'post']) !!}
+            {!! Form::open(['url'=>lang_route('vote'), 'method'=>'post', 'id'=>'form-submission']) !!}
             <div class="row mt-4">
                 <div class="col-md-8">
                     @if ($errors->has('meaning'))
