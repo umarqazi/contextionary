@@ -102,6 +102,7 @@
             </div>
             {!! Form::hidden('context_id', $phraseMeaning['context_id']) !!}
             {!! Form::hidden('phrase_id', $phraseMeaning['phrase_id']) !!}
+            {!! Form::hidden('return_url', url()->previous()) !!}
             {!! Form::close() !!}
         @else:
         <div class="text-center">

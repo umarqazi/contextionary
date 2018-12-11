@@ -82,6 +82,7 @@
             </div>
             {!! Form::hidden('context_id', $illustrators['context_id']) !!}
             {!! Form::hidden('phrase_id', $illustrators['phrase_id']) !!}
+            {!! Form::hidden('return_url', url()->previous()) !!}
             {!! Form::close() !!}
         @else:
         <div class="text-center">
