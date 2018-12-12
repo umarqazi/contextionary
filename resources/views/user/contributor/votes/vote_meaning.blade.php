@@ -63,7 +63,7 @@
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
                             {!! Form::checkbox('grammer', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox1']) !!}
-                            <label class="custom-control-label" for="checkBox1">{!! t('No Grammer Error') !!}</label>
+                            <label class="custom-control-label" for="checkBox1">{!! t('No Grammar Error') !!}</label>
                         </div>
                         @if ($errors->has('grammer'))
                             <div class="help-block"><strong>{{ t($errors->first('grammer')) }}</strong></div>
