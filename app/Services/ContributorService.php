@@ -432,7 +432,7 @@ class ContributorService implements IService
         $familiar_contexts     =   $this->mutualService->getFamiliarContext($user_id);
         if($define):
             foreach($define as $writer):
-                $user_point='N/A';
+                $user_point='-';
                 $context_name=$this->contextRepo->getContextName($writer['context_id']);
                 $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
                 $checkPoint=['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id'], 'user_id'=>$writer['user_id'], 'type'=>env('MEANING')];
@@ -453,7 +453,7 @@ class ContributorService implements IService
         endif;
         if($illustrate):
             foreach($illustrate as $writer):
-                $user_point='N/A';
+                $user_point='-';
                 $context_name=$this->contextRepo->getContextName($writer['context_id']);
                 $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
                 $checkPoint=['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id'], 'user_id'=>$writer['user_id'], 'type'=>env('ILLUSTRATE')];
@@ -474,7 +474,7 @@ class ContributorService implements IService
         endif;
         if($translator):
             foreach($translator as $writer):
-                $user_point='N/A';
+                $user_point='-';
                 $context_name=$this->contextRepo->getContextName($writer['context_id']);
                 $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
                 $checkPoint=['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id'], 'user_id'=>$writer['user_id'], 'type'=>env('TRANSLATE')];

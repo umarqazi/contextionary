@@ -60,7 +60,7 @@
                                             <td><span class="text-capitalize">{!! $userHistory['type'] !!}</span></td>
                                             <td class="text-capitalize">{!! $userHistory['context_name'] !!}</td>
                                             <td class="text-capitalize">{!! $userHistory['phrase_name'] !!}</td>
-                                            <td>{!! ($userHistory['position'])? Config::get('constant.position.'.$userHistory['position']):'N/A' !!}</td>
+                                            <td>{!! ($userHistory['position'])? Config::get('constant.position.'.$userHistory['position']):'-' !!}</td>
                                             <td>{!! ($userHistory['point']) !!}</td>
                                             <td>{!! $userHistory['coins'] !!}</td>
                                             <td><strong class="{!! $class !!}">{!! Config::get('constant.status.'.$userHistory['status']) !!}</strong></td>
@@ -72,7 +72,7 @@
                                         <td colspan="9">
                                             <div class="col-md-12">
                                                 <div class="text-center">
-                                                    <strong class="record-message">{!! t('No Contribution Yet') !!}</strong>
+                                                    <strong class="record-message">{!! t('No Record') !!}</strong>
                                                 </div>
                                             </div>
                                         </td>
