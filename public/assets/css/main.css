@@ -2534,9 +2534,9 @@ aside .menuCate .menuListing li a.menu18:hover {
 }
 .pictionaryQuiz .score {
     color: #fff;
-    font-size: 25px;
+    font-size: 20px;
     text-align: right;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 .pictionaryQuiz .gameTitle {
     text-align: center;
@@ -2546,13 +2546,13 @@ aside .menuCate .menuListing li a.menu18:hover {
     margin-bottom: 30px;
     border-bottom: #f7941d solid 2px;
     background: rgba(255, 255, 255, 0.1);
-    padding: 30px 15px;
+    padding: 20px 15px;
 }
 .pictionaryQuiz .questionBlock-img {
     width: 100%;
     position: relative;
     overflow: hidden;
-    height: 300px;
+    height: 250px;
     border: solid #fff 4px;
     border-radius: 30px;
     margin-bottom: 30px;
@@ -2567,7 +2567,7 @@ aside .menuCate .menuListing li a.menu18:hover {
 }
 .pictionaryQuiz .gameOption {
     background: rgba(255, 255, 255, 0.1);
-    padding: 30px 15px;
+    padding: 20px 15px;
     text-align: center;
     color: #fff;
     font-size: 18px;
@@ -2745,8 +2745,8 @@ aside .menuCate .menuListing li a.menu18:hover {
 }
 .hangman #container > div {
     color: #EFEFEF;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     font-size: 18px;
     font-weight: 600;
     text-transform: uppercase;
@@ -2774,8 +2774,8 @@ aside .menuCate .menuListing li a.menu18:hover {
     /*orange*/
     background: #f7941d;
     /*orange*/
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     font-size: 14px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
@@ -2936,7 +2936,7 @@ aside .menuCate .menuListing li a.menu18:hover {
     padding: 10px;
 }
 .score .orangeBtn{
-    padding: 10px;
+    padding: 5px;
 }
 .gameOptionActive .gameOption {
     background-color: orange !important;

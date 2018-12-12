@@ -34,13 +34,13 @@
                         @if($phrase->phrases != null && $type == 'context_forwarded')
                             <div class="col-md-4">
                                 <div class="phrase-body mb-0">
-                                    <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$phrase->phrases->phrase_id ]) !!}">{{ucfirst($phrase->phrases->phrase_text)}}</a></p>
+                                    <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$phrase->phrases->phrase_id ]) !!}">{{ucwords($phrase->phrases->phrase_text)}}</a></p>
                                 </div>
                             </div>
                         @elseif( $phrase->phrase_text != null && $type == 'phrase_forwarded')
                             <div class="col-md-4">
                                 <div class="phrase-body mb-0">
-                                    <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$phrase->phrase_id ]) !!}">{{ucfirst($phrase->phrase_text)}}</a></p>
+                                    <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$phrase->phrase_id ]) !!}">{{ucwords($phrase->phrase_text)}}</a></p>
                                 </div>
                             </div>
                         @endif

@@ -492,14 +492,22 @@ input[type=number] {
 }
 .userExploreContext2 ul.pagination li {
   padding: 7px;
-}
-.userExploreContext2 ul.pagination li{
   font-weight: 600;
 }
 .userExploreContext2 ul.pagination li.active{
   color: #fff;
 }
 .userExploreContext2 ul.pagination li.disabled {
+  color: #fff;
+}
+.textFinder ul.pagination li {
+  padding: 7px;
+  font-weight: 600;
+}
+.textFinder ul.pagination li.active{
+  color: #fff;
+}
+.textFinder ul.pagination li.disabled {
   color: #fff;
 }
 .menuListing li.active a span{
@@ -585,7 +593,7 @@ input[type=number] {
   color: #f7941d !important;
 }
 img#hangman {
-  height: 300px !important;
+  height: 230px !important;
 }
 .confirmation-message{
   color:white;
@@ -598,8 +606,14 @@ img#hangman {
 }
 .contextFinder .exportBlock a {
   font-size: 16px;
-  text-transform: uppercase;
 }
 .sentence_case{
   text-transform: capitalize;
+}
+.correct_char{
+  border: green !important;
+  background: green !important;
+}
+.detailExplore h2{
+  text-transform: none !important;
 }
