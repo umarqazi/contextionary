@@ -95,8 +95,11 @@
 
             // Check if clicked letter is in secret word
             var userGuess = $(this).text();
+            var elem = this;
+            console.log($(elem).text());
             for (var i = 0; i < randomWord.length; i++) {
                 if (userGuess === randomWord.charAt(i)) {
+                    $(elem).addClass("correct_char");
                     $('#container').find(":nth-child(" + (i + 1) + ")").css("color", "#EFEFEF").addClass("winner");
                     matchFound = true;
                 }

@@ -3,7 +3,7 @@
     {!! t('Details of Phrases') !!}
 @stop
 @section('content')
-<div class="container-fluid contributorMain userExploreWord userExploreContext">
+<div class="container-fluid contributorMain userExploreWord userExploreContext detailExplore">
     @include('layouts.flc_header')
     <div class="row mt-4">
         <div class="col-sm-6">
@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-12 mt-3">
             @if($type == 'context_forwarded')
-                <h2>PHRASE: “<span class="sentence_case">{{ucwords($phrase)}}</span>”</h2>
+                <h2>{{t('PHRASE: ')}}“<span class="sentence_case">{{ucwords($phrase)}}</span>”</h2>
             @endif
             <div class="row">
                 <div class="col-md-12">
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="col-lg-12 col-md-12 mt-5">
-            <h2>RELATED PHRASE</h2>
+            <h2>{{t('RELATED PHRASE')}}</h2>
             <div class="phrase-body">
                 <div class="row">
                     @if($type == 'context_forwarded')
@@ -67,7 +67,7 @@
                 @if($type == 'context_forwarded')
                     @if( !$shared_words->isEmpty())
                     <div class="col-lg-12 col-md-12 mt-5">
-                        <h2>PHRASE WITH “{{$phrase_words[$shared_words_key]}}”</h2>
+                        <h2>{{t('PHRASES SHARING THE WORD')}} “{{ucfirst($phrase_words[$shared_words_key])}}”</h2>
                         <div class="phrase-body related-phrase-body">
                             <div class="row">
                                 @foreach($shared_words as $shared_word)
@@ -84,7 +84,7 @@
                 @elseif($type == 'phrase_forwarded')
                     @if( !$shared_words->isEmpty())
                     <div class="col-lg-12 col-md-12 mt-5">
-                        <h2>PHRASE WITH “{{$phrase_words[$shared_words_key]}}”</h2>
+                        <h2>{{t('PHRASES SHARING THE WORD')}} “{{ucfirst($phrase_words[$shared_words_key])}}”</h2>
                         <div class="phrase-body related-phrase-body">
                             <div class="row">
                                 @foreach($shared_words as $shared_word)

@@ -11,7 +11,7 @@ namespace App\Repositories;
 
 use App\TextHistory;
 
-class TextHistoryRepo
+class TextHistoryRepo extends BaseRepo implements IRepo
 {
 
     protected $text_history;
@@ -27,5 +27,9 @@ class TextHistoryRepo
 
     public function findById($id){
         return $this->text_history->where($id)->first();
+    }
+
+    public function listingForUser($user_id){
+        return $this->text_history->where(['user_id' => $user_id])->orderBy('created_at', 'desc')->paginate(50);
     }
 }

@@ -109,6 +109,8 @@ MultiLang::routeGroup(function($router) {
                     Route::get('/delete-card/{card}', 'UsersController@deleteCard')->name('deleteCard');
                     Route::get('context-finder', 'ReadingAssistantController@contextFinder')->name('context-finder');
                     Route::post('context-finder', 'ReadingAssistantController@pContextFinder')->name('pContext-finder');
+                    Route::get('text-history', 'ReadingAssistantController@textHistory')->name('text-history');
+                    Route::get('text-test', 'ReadingAssistantController@Export')->name('text-test');
                 });
             });
             Route::get('start-pictionary', 'PictionaryController@index')->name('start-pictionary');

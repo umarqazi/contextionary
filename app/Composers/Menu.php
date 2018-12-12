@@ -45,7 +45,7 @@ View::composer('user.contributor.transactions.*', function($view)
  */
 View::composer('user.user_plan.reading_assistant.*', function($view)
 {
-    $page=['tutorials'=>'Tutorials'];
+    $page=['tutorials'=>'Tutorials', 'text-histroy'=>'Text History'];
     $view->with(['pageMenu'=>$page]);
 });
 
@@ -54,7 +54,7 @@ View::composer('user.user_plan.reading_assistant.*', function($view)
  */
 View::composer('user.user_plan.games.*', function($view)
 {
-    $page=['pictionary'=>'Pictionary', 'intruder'=>'Spot The Intruder', 'hangman'=>'Hangman'];
+    $page=['start-pictionary'=>'Pictionary', 'start-spot-the-intruder'=>'Spot The Intruder', 'start-hangman'=>'Hangman'];
     $view->with(['pageMenu'=>$page]);
 });
 
@@ -116,6 +116,6 @@ View::composer(['user.user_plan.plan.*'], function($view)
  */
 View::composer(['user.user_plan.reading_assistant.*'], function($view)
 {
-    $page=['context-finder'=>'Context Finder','tutorials'=>'Tutorials'];
+    $page=['context-finder'=>'Context Finder', 'text-history'=>'Text History', 'tutorials'=>'Tutorials'];
     $view->with(['pageMenu'=>$page]);
 });

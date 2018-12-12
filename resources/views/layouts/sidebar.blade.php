@@ -22,7 +22,7 @@
                         </a>
                     </li>
                     <li class="{{ (Request::segment(2) == 'intruder') ? 'active' : '' }}">
-                        <a href="{!! lang_route('intruder') !!}" class="menu2" style="{{ (Request::segment(2) == 'intruder') ? 'background-position: 0 -40px' : '' }}">
+                        <a href="{!! lang_route('start-spot-the-intruder') !!}" class="menu2" style="{{ (Request::segment(2) == 'intruder') ? 'background-position: 0 -40px' : '' }}">
                             <span>Spot the Intruder</span>
                         </a>
                     </li>

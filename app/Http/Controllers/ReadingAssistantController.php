@@ -16,7 +16,9 @@ use App\Services\ContributorService;
 use App\Services\MeaningService;
 use App\Services\PhraseService;
 use App\Services\ReadingAssistantService;
+use App\Services\TextHistoryService;
 use App\Services\TransactionService;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
@@ -57,6 +59,11 @@ class ReadingAssistantController extends Controller
     protected $phrase_service;
 
     /**
+     * @var PhraseService
+     */
+    protected $text_history_service;
+
+    /**
      * ReadingAssistantController constructor.
      */
     public function __construct()
@@ -67,6 +74,7 @@ class ReadingAssistantController extends Controller
         $this->context_phrase_service   = new ContextPhraseService();
         $this->context_service          = new ContextService();
         $this->phrase_service           = new PhraseService();
+        $this->text_history_service     = new TextHistoryService();
     }
 
     /**
@@ -235,6 +243,53 @@ class ReadingAssistantController extends Controller
             $translation = [];
         }
         return $translation;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function textHistory(){
+        $user_id = Auth::user()->id;
+        $text_histories = $this->text_history_service->listingForUser($user_id);
+        return view::make('user.user_plan.reading_assistant.text_history')->with(['text_histories' => $text_histories]);
+    }
+
+    /**
+     *
+     */
+    public function Export(){
+        $data = array(
+            array("firstname" => "Mary", "lastname" => "Johnson", "age" => 25),
+            array("firstname" => "Amanda", "lastname" => "Miller", "age" => 18),
+            array("firstname" => "James", "lastname" => "Brown", "age" => 31),
+            array("firstname" => "Patricia", "lastname" => "Williams", "age" => 7),
+            array("firstname" => "Michael", "lastname" => "Davis", "age" => 43),
+            array("firstname" => "Sarah", "lastname" => "Miller", "age" => 24),
+            array("firstname" => "Patrick", "lastname" => "Miller", "age" => 27)
+        );
+        $headers = [
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
+            ,   'Content-type'        => 'text/csv'
+            ,   'Content-Disposition' => 'attachment; filename=galleries.csv'
+            ,   'Expires'             => '0'
+            ,   'Pragma'              => 'public'
+        ];
+
+        $list = $data;
+
+        # add headers for each column in the CSV download
+        array_unshift($list, array_keys($list[0]));
+
+        $callback = function() use ($list)
+        {
+            $FH = fopen('php://output', 'w');
+            foreach ($list as $row) {
+                fputcsv($FH, $row);
+            }
+            fclose($FH);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 
 }

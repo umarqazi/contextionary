@@ -25,12 +25,12 @@
                     <p id="error_upload" class="hidden bold red bc_none p10"></p>
                 </div>
                 {!! Form::textarea('context', null, ['id'=>'meaning-area','class'=>'enter-phrase', 'placeholder'=>'Enter phrase meaning']) !!}
-                <p class="text-right white-text"><span id="count-span">{!! t('Characters:') !!} <span id="count">{!! strlen(Input::old('meaning')) !!}/2500</span></span></p>
+                <p class="text-right white-text"><span id="count">{!! t('Characters:') !!} {!! strlen(Input::old('meaning')) !!}/2500</span></p>
             </div>
 
             <div class="col-md-12 mt-4 text-center actionsBtn">
                 <button class="orangeBtn ml-3 waves-light">Submit</button>
-                <a class="orangeBtn ml-3 waves-light" onclick="reset(event);">Reset</a>
+                <a class="orangeBtn ml-3 waves-light" href="{{lang_url('context-finder')}}">Reset</a>
             </div>
         </div>
         {!! Form::close() !!}
@@ -125,7 +125,7 @@
                                                                 $related_phrase_count = $related_phrase_count + 1;
                                                             @endphp
                                                             <a href="#" onclick="openRelatedPhrase(event, {{$related_phrase->relatedPhrases->phrase_id}})">
-                                                                {{$related_phrase->relatedPhrases->phrase_text}}
+                                                                {{ucwords($related_phrase->relatedPhrases->phrase_text)}}
                                                             </a>{{ $loop->last ? '' : ', ' }}
                                                         @endif
                                                     @endforeach
@@ -218,7 +218,7 @@
                                                             <tr class="tr-context tr-context-{{$context['context_id']}}">
                                                             @endif
                                                                 <td class="text-center">
-                                                                    {!! $related_phrase['details']['phrase'] !!}
+                                                                    {!!ucwords($related_phrase['details']['phrase'])!!}
                                                                 </td>
                                                                 <td class="text-center">
                                                                     {!! $related_phrase['details']['meaning'] !!}
@@ -235,12 +235,16 @@
                                                                     @php
                                                                             $related_phrase_count1 = 0;
                                                                     @endphp
-                                                                    @foreach($related_phrase['details']['related_phrase'] as $rel_phrase)
+                                                                    @foreach($related_phrase['details']['related_phrase'] as $rel_phrase_key => $rel_phrase)
                                                                         @if( $rel_phrase->relatedPhrases != null)
-                                                                            @php
-                                                                                $related_phrase_count1 = $related_phrase_count1 + 1;
-                                                                            @endphp
-                                                                            <a href="#">{{$rel_phrase->relatedPhrases->phrase_text}}</a>{{ $loop->last ? '' : ', ' }}
+                                                                            @if( $rel_phrase->relatedPhrases->phrase_text != '')
+                                                                                @php
+                                                                                    print_r($rel_phrase_key. $rel_phrase->relatedPhrases->phrase_text);
+                                                                                    echo '<br>';
+                                                                                    $related_phrase_count1 = $related_phrase_count1 + 1;
+                                                                                @endphp
+                                                                                {{ucwords($rel_phrase->relatedPhrases->phrase_text)}}{{$loop->last ? '' : ', '}}
+                                                                            @endif
                                                                         @endif
                                                                     @endforeach
                                                                     @if( ! $related_phrase_count1 > 0)
@@ -317,36 +321,19 @@
                 reader.readAsText(file);
                 reader.onloadend = function (e) {
                     if($("#meaning-area").val().length > 2500){
-                        $('#count').html('2500/2500');
+                        $('#count').html('Characters: 2500 / 2500');
                     }else{
-                        $('#count').html($("#meaning-area").val().length+'/2500');
+                        $('#count').html('Characters: '+$("#meaning-area").val().length+' / 2500');
                     }
                 };
-            }else if(extension == 'docx'){
-                var doc = new ActiveXObject("Word.Application"); // creates the word object
-
-                doc.Visible=false; // doesn't display Word window
-                doc.Documents.Open(file); // specify path to document
-                //copy the content from my word document and throw it into my variable
-                var txt;
-                txt = doc.Documents(file).Content;
-                var textArea = document.getElementById("meaning-area");
-                textArea.value = txt.substring(0,2500);
-                doc.quit(0); // quit word (very important or you'll quickly chew up memory!)
-                if($("#meaning-area").val().length > 2500){
-                    $('#count').html('2500/2500');
-                }else{
-                    $('#count').html($("#meaning-area").val().length+'/2500');
-                }
             }else{
                 $('#error_upload').removeClass('hidden');
                 $('#error_upload').html('Only .txt type files can be uploaded!');
-                $('#count').html($("#meaning-area").val().length+'/2500');
+                $('#count').html('Characters: '+$("#meaning-area").val().length+' / 2500');
             }
         }
 
         function contextChange(elem) {
-                console.log(elem.value);
                 $('.tr-context-'+elem.value).siblings('.tr-context').addClass('hidden');
                 $('.tr-context-'+elem.value).removeClass('hidden');
                 $('.exportBlock_'+elem.value).siblings('.exportBlock').addClass('hidden');
@@ -380,11 +367,6 @@
             $('html, body').animate({
                 scrollTop: $("#related_phrase_td_"+related_phrase_id).offset().top
             }, 2000);
-        }
-
-        function reset(e) {
-            e.preventDefault();
-            $('.enter-phrase').val('');
         }
     </script>
     {!! HTML::script('assets/js/login.js') !!}
