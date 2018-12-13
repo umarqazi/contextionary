@@ -104,6 +104,9 @@
     </div>
 </div>
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('.userExploreContext').css('background', 'url({!! asset('storage/'.$illustration) !!}) no-repeat center center');
+        });
         $(".languageBar .list li").click(function () {
             var get_value = $(this).html();
             if($('.pmt-pt-'+get_value.split(" ").pop().toLowerCase()).length){

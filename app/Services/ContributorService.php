@@ -502,4 +502,12 @@ class ContributorService implements IService
     public function countContributions(){
         return $this->defineMeaning->getUserContributions(Auth::user()->id) + $this->illustrate->getUserContributions(Auth::user()->id) + $this->translationRepo->getUserContributions(Auth::user()->id);
     }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function getIllustration($data){
+        return $this->illustrate->fetchRecord($data);
+    }
 }

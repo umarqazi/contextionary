@@ -19,6 +19,7 @@ use App\Services\ReadingAssistantService;
 use App\Services\TextHistoryService;
 use App\Services\TransactionService;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
@@ -120,6 +121,8 @@ class ReadingAssistantController extends Controller
                     $string[$context_id] = implode(" ",$final_string_array[$context_id]);
                 }
             }
+            $export_data = $this->exportDataGenerator($context_list);
+            Session::put('export_data' , $export_data);
             return view::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list]);
         }
     }
@@ -258,21 +261,13 @@ class ReadingAssistantController extends Controller
      *
      */
     public function Export(){
-        $data = array(
-            array("firstname" => "Mary", "lastname" => "Johnson", "age" => 25),
-            array("firstname" => "Amanda", "lastname" => "Miller", "age" => 18),
-            array("firstname" => "James", "lastname" => "Brown", "age" => 31),
-            array("firstname" => "Patricia", "lastname" => "Williams", "age" => 7),
-            array("firstname" => "Michael", "lastname" => "Davis", "age" => 43),
-            array("firstname" => "Sarah", "lastname" => "Miller", "age" => 24),
-            array("firstname" => "Patrick", "lastname" => "Miller", "age" => 27)
-        );
+        $data=Session::get('export_data');
         $headers = [
-            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
-            ,   'Content-type'        => 'text/csv'
-            ,   'Content-Disposition' => 'attachment; filename=galleries.csv'
-            ,   'Expires'             => '0'
-            ,   'Pragma'              => 'public'
+            'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=context_finder.csv',
+            'Expires'             => '0',
+            'Pragma'              => 'public'
         ];
 
         $list = $data;
@@ -290,6 +285,33 @@ class ReadingAssistantController extends Controller
         };
 
         return Response::stream($callback, 200, $headers);
+    }
+
+    function exportDataGenerator($context_list){
+        $data           = [];
+        $data_array     = [];
+        foreach($context_list as $context){
+            if(isset($context['phrases'])){
+                if($context['phrases'] != null){
+                    foreach($context['phrases'] as $phrases) {
+                        $data['context_name']   = $context['context_name'];
+                        $data['jargon']         = $phrases['phrase'];
+                        $data['meaning']        = $phrases['meaning'];
+                        $related_phrase_array   = [];
+                        foreach($phrases['related_phrase'] as $related_phrase) {
+                            if(isset($related_phrase->details)){
+                                if($related_phrase->details['phrase'] != ''){
+                                    array_push($related_phrase_array, $related_phrase->details['phrase']);
+                                }
+                            }
+                        }
+                        $data['related_phrase']        = implode (", ", $related_phrase_array);
+                        array_push($data_array,$data);
+                    }
+                }
+            }
+        }
+        return $data_array;
     }
 
 }

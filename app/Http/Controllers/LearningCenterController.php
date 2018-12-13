@@ -87,7 +87,15 @@ class LearningCenterController extends Controller
     public function exploreContextPhrase($context_id){
         $context    = $this->context_service->findById($context_id);
         $phrases    = $this->context_phrase_service->getContextPhrase($context_id);
-        return View::make('user.user_plan.learning_center.explore_context2')->with(['phrases'=> $phrases, 'context' => $context->context_name, 'context_id' => $context->context_id, 'type' => 'context_forwarded']);
+        foreach($phrases as $key=>$phrase) {
+            if($phrase['phrases']!=NULL){
+                $context_array[$phrase['phrases']['phrase_text']]['phrase_id'] = $phrase['phrases']['phrase_id'];
+                $context_array[$phrase['phrases']['phrase_text']]['phrase_text'] = $phrase['phrases']['phrase_text'];
+            }
+        }
+        ksort($context_array);
+        $phrases=$this->mutualService->paginatedRecord($context_array, 'learning-center/explore-context/'.$context_id, 100);
+        return View::make('user.user_plan.learning_center.explore_context2')->with(['phrases'=> $phrases, 'context' =>                  $context->context_name, 'context_id' => $context->context_id, 'type' => 'context_forwarded']);
     }
 
     /**
@@ -106,6 +114,10 @@ class LearningCenterController extends Controller
         $meaning            = $this->meaning_service->meaningData($data);
         $related_phrases    = $this->context_phrase_service->getRelatedPhrase($context_id, $phrase_id);
         $translations       = $this->contributor_service->getTranslations($data);
+        $illustration       = $this->contributor_service->getIllustration($data);
+        if($illustration != null){
+            $illustration = $illustration->illustrator;
+        }
         $phrase_words       = explode(' ', $phrase->phrase_text);
         $shared_word_details= $this->sharedWords($phrase, $phrase_words);
         return View::make('user.user_plan.learning_center.detail_context')->with([
@@ -114,6 +126,7 @@ class LearningCenterController extends Controller
             'phrase'            => $phrase->phrase_text,
             'meaning'           => $meaning,
             'translations'      => $translations,
+            'illustration'      => $illustration,
             'related_phrases'   => $related_phrases,
             'phrase_words'      => $phrase_words,
             'shared_words_arry' => $shared_word_details,
@@ -128,14 +141,15 @@ class LearningCenterController extends Controller
     public function phraseDetail2($phrase_id){
         $phrase             = $this->phrase_service->findById($phrase_id);
         $data = [
-            'phrase_id' => $phrase_id,
-        ];
-        $meaning            = $this->meaning_service->meaning_data($data);
-        $data = [
             'phrase_id'     => $phrase->phrase_id,
             'position'      => 1
         ];
+        $meaning            = $this->meaning_service->meaning_data($data);
         $translations       = $this->contributor_service->getTranslations($data);
+        $illustration       = $this->contributor_service->getIllustration($data);
+        if($illustration != null){
+            $illustration = $illustration->illustrator;
+        }
         $related_phrases    = $this->context_phrase_service->getRelatedPhraseByPhraseId($phrase_id);
         $phrase_words       = explode(' ', $phrase->phrase_text);
         $shared_word_details= $this->sharedWords($phrase, $phrase_words);
@@ -143,6 +157,7 @@ class LearningCenterController extends Controller
             'phrase'                => $phrase->phrase_text,
             'meaning'               => $meaning,
             'translations'          => $translations,
+            'illustration'          => $illustration,
             'type'                  => 'phrase_forwarded',
             'selected_phrase_text'  => $phrase->phrase_text,
             'phrase_words'          => $phrase_words,
@@ -157,8 +172,6 @@ class LearningCenterController extends Controller
      */
     public function search_context(Request $request){
         return $this->exploreContext($request->search);
-//        $contexts = $this->context_phrase_service->listing($request->search);
-//        return View::make('user.user_plan.learning_center.explore_context')->with('contexts', $contexts);
     }
 
     /**
