@@ -20,6 +20,7 @@ use App\Services\TextHistoryService;
 use App\Services\TransactionService;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
@@ -91,6 +92,15 @@ class ReadingAssistantController extends Controller
      * @return mixed
      */
     public function pContextFinder(Request $request){
+        $validator = Validator::make($request->all(), [
+            'context' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return redirect('context-finder')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         $data           =   [
                                 'text'=>$request->context,
                                 'user_id'=>Auth::user()->id,
