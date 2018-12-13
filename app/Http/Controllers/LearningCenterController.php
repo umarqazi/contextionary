@@ -84,19 +84,30 @@ class LearningCenterController extends Controller
      * @param $context_id
      * @return mixed
      */
-    public function exploreContextPhrase($context_id){
-        $context_array=[];
-        $context    = $this->context_service->findById($context_id);
-        $phrases    = $this->context_phrase_service->getContextPhrase($context_id);
-        foreach($phrases as $key=>$phrase) {
-            if($phrase['phrases']!=NULL){
-                $context_array[$phrase['phrases']['phrase_text']]['phrase_id'] = $phrase['phrases']['phrase_id'];
-                $context_array[$phrase['phrases']['phrase_text']]['phrase_text'] = $phrase['phrases']['phrase_text'];
+    public function exploreContextPhrase($context_id)
+    {
+        $context_array = [];
+        $context = $this->context_service->findById($context_id);
+        if ($context != null){
+            $phrases = $this->context_phrase_service->getContextPhrase($context_id);
+            foreach ($phrases as $key => $phrase) {
+                if ($phrase['phrases'] != NULL) {
+                    $context_array[$phrase['phrases']['phrase_text']]['phrase_id'] = $phrase['phrases']['phrase_id'];
+                    $context_array[$phrase['phrases']['phrase_text']]['phrase_text'] = $phrase['phrases']['phrase_text'];
+                }
             }
+            ksort($context_array);
+            $phrases = $this->mutualService->paginatedRecord($context_array, 'learning-center/explore-context/' . $context_id, 100);
+            return View::make('user.user_plan.learning_center.explore_context2')->with(
+            [
+                'phrases' => $phrases,
+                'context' => $context->context_name,
+                'context_id' => $context->context_id,
+                'type' => 'context_forwarded'
+            ]);
+        }else{
+            return View::make('404');
         }
-        ksort($context_array);
-        $phrases=$this->mutualService->paginatedRecord($context_array, 'learning-center/explore-context/'.$context_id, 100);
-        return View::make('user.user_plan.learning_center.explore_context2')->with(['phrases'=> $phrases, 'context' =>                  $context->context_name, 'context_id' => $context->context_id, 'type' => 'context_forwarded']);
     }
 
     /**
