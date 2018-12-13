@@ -3,7 +3,8 @@
     {!! t('Details of Phrases') !!}
 @stop
 @section('content')
-<div class="container-fluid contributorMain userExploreWord userExploreContext detailExplore">
+<div class="container-fluid contributorMain userExploreWord userExploreContext detailExplore" style="background: url({!! asset('storage/'.$illustration) !!}); background-size:cover">
+    <div class="wrapperMask"></div>
     @include('layouts.flc_header')
     <div class="row mt-4">
         <div class="col-sm-6">
@@ -104,9 +105,6 @@
     </div>
 </div>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('.userExploreContext').css('background', 'url({!! asset('storage/'.$illustration) !!}) no-repeat center center');
-        });
         $(".languageBar .list li").click(function () {
             var get_value = $(this).html();
             if($('.pmt-pt-'+get_value.split(" ").pop().toLowerCase()).length){
