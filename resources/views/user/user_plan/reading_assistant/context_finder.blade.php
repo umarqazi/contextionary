@@ -48,9 +48,11 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-6 text-right">
-                        <a href="{{ lang_route('text-test') }}" class="orangeBtn">Export report</a>
-                    </div>
+                    @if(!empty(Session::get('export_data')))
+                        <div class="col-md-6 text-right">
+                            <a href="{{ lang_route('text-test') }}" class="orangeBtn">Export report</a>
+                        </div>
+                    @endif
 
                 </div>
 
