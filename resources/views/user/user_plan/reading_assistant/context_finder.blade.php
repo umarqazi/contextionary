@@ -24,7 +24,7 @@
                 <div class="float-right">
                     <p id="error_upload" class="hidden bold red bc_none p10"></p>
                 </div>
-                {!! Form::textarea('context', null, ['id'=>'meaning-area','class'=>'enter-phrase', 'placeholder'=>'Enter phrase meaning']) !!}
+                {!! Form::textarea('context', null, ['id'=>'meaning-area','class'=>'enter-phrase', 'placeholder'=>'Enter phrase meaning', 'required' => true]) !!}
                 <p class="text-right white-text"><span id="count">{!! t('Characters:') !!} {!! strlen(Input::old('meaning')) !!}/2500</span></p>
             </div>
 
