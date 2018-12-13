@@ -85,6 +85,7 @@ class LearningCenterController extends Controller
      * @return mixed
      */
     public function exploreContextPhrase($context_id){
+        $context_array=[];
         $context    = $this->context_service->findById($context_id);
         $phrases    = $this->context_phrase_service->getContextPhrase($context_id);
         foreach($phrases as $key=>$phrase) {
