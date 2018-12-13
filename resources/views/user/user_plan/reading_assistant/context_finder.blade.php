@@ -117,7 +117,8 @@
                                                 </td>
                                                 <td class="text-center">
                                                     @php
-                                                        $related_phrase_count = 0;
+                                                        $testing                = [];
+                                                        $related_phrase_count   = 0;
                                                     @endphp
                                                     @foreach($phrase['related_phrase'] as $key=>$related_phrase)
                                                         @if( $related_phrase->relatedPhrases != null)
@@ -236,7 +237,8 @@
                                                                 <td  class="text-center" id="related_phrase_td_{{$related_phrase['related_phrase_id']}}">
                                                                 @if( count($related_phrase['details']['related_phrase']) > 0)
                                                                     @php
-                                                                            $related_phrase_count1 = 0;
+                                                                        $testing1              = [];
+                                                                        $related_phrase_count1 = 0;
                                                                     @endphp
                                                                     @foreach($related_phrase['details']['related_phrase'] as $rel_phrase_key => $rel_phrase)
                                                                         @if( $rel_phrase->relatedPhrases != null)
@@ -248,7 +250,7 @@
                                                                             @endif
                                                                         @endif
                                                                     @endforeach
-                                                                    {!! implode(',', $testing) !!}
+                                                                    {!! implode(',', $testing1) !!}
                                                                     @if( ! $related_phrase_count1 > 0)
                                                                         <p>{{t('-')}}</p>
                                                                     @endif
