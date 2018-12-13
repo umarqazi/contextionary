@@ -213,7 +213,7 @@ class ContributorService implements IService
                 $contextPhrase[$key]['phrase_text'] = $phraseRecord->phrase_text;
                 $contextPhrase[$key]['red_flag'] = $phraseRecord->red_flag;
             endforeach;
-            $listOfPhrase=$this->bidPhraseList($contextPhrase, env('ILLUSTRATE'), 'illustrate', 'illustrator');
+            $listOfPhrase=$this->bidPhraseList($contextPhrase, env('ILLUSTRATE'), 'illustrate', 'illustrate');
         endif;
 
         return $listOfPhrase;
