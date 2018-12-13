@@ -25,6 +25,9 @@
                     <p id="error_upload" class="hidden bold red bc_none p10"></p>
                 </div>
                 {!! Form::textarea('context', null, ['id'=>'meaning-area','class'=>'enter-phrase', 'placeholder'=>'Enter phrase meaning', 'required' => true]) !!}
+                @if ($errors->has('context'))
+                    <div class="record-message text-center bold">{{ $errors->first('context') }}</div>
+                @endif
                 <p class="text-right white-text"><span id="count">{!! t('Characters:') !!} {!! strlen(Input::old('meaning')) !!}/2500</span></p>
             </div>
 
