@@ -62,10 +62,8 @@ class IllustratorRepo
     }
 
     /**
-     * @param $context_id
-     * @param $phrase_id
+     * @param $updateVoteStatus
      * @return mixed
-     * update voting status
      */
     public function updateVoteStatus($updateVoteStatus){
         return $this->illustrator->where($updateVoteStatus)->update(['status'=>3]);
@@ -95,10 +93,8 @@ class IllustratorRepo
     }
 
     /**
-     * @param $context_id
-     * @param $phrase_id
+     * @param $data
      * @return bool
-     * update status except first 9
      */
     public function updateMeaningStatus($data){
         $this->selected_bids=$this->setting->getKeyValue(env('SELECTED_BIDS'))->values;

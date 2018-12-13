@@ -31,7 +31,7 @@ class ContextPhrase extends Model
      */
     public function getRand($context_id){
         return self::where('context_id', $context_id)->whereHas('phrases', function ($query) {
-            $query->where('phrase_length', '=', 1)->whereRaw('LENGTH(phrase_text) > 5');
+            $query->whereRaw('LENGTH(phrase_text) > 5');
         })->inRandomOrder()->with('phrases')->limit(10)->get();
     }
 
@@ -42,7 +42,7 @@ class ContextPhrase extends Model
     public function getContextPhrase($context){
          return self::where('context_id', $context)->with(['phrases' => function($query) {
             $query->where('red_flag', 0);
-        }])->paginate(100);
+        }])->get();
     }
 
     /**
@@ -50,7 +50,7 @@ class ContextPhrase extends Model
      * @return mixed
      */
     public function searchContextPhrase($key){
-         return self::where('context_id', $context)->with(['phrases' => function($query) {
+         return self::where('context_id', $key)->with(['phrases' => function($query) {
             $query->where('red_flag', 0);
         }])->paginate(100);
     }

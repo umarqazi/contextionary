@@ -14,10 +14,10 @@
             @endif
         </div>
         <div class="col-sm-6 text-right">
-            @if(explode('/',Request::server('HTTP_REFERER'))[5] == 'explore-word')
-                <a href="{!! lang_route('explore-word') !!}" class="orangeBtn">Back</a>
-            @else
+            @if(Request::segment(3) == 'explore-context')
                 <a href="{!! lang_route('explore-context') !!}" class="orangeBtn">Back</a>
+            @else
+                <a href="{!! lang_route('explore-word') !!}" class="orangeBtn">Back</a>
             @endif
         </div>
         <div class="col-lg-12 col-md-6 mt-5">
@@ -31,10 +31,10 @@
                 </div>
                 @if(!$phrases->isEmpty())
                     @foreach( $phrases as $phrase)
-                        @if($phrase->phrases != null && $type == 'context_forwarded')
+                        @if($type == 'context_forwarded')
                             <div class="col-md-4">
                                 <div class="phrase-body mb-0">
-                                    <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$phrase->phrases->phrase_id ]) !!}">{{ucwords($phrase->phrases->phrase_text)}}</a></p>
+                                    <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$phrase['phrase_id'] ]) !!}">{{ucwords($phrase['phrase_text'])}}</a></p>
                                 </div>
                             </div>
                         @elseif( $phrase->phrase_text != null && $type == 'phrase_forwarded')

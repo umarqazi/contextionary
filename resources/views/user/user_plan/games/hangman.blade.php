@@ -77,13 +77,18 @@
         var randomWord = (randomCategoryArray[Math.floor((Math.random() * randomCategoryArray.length))]).toUpperCase();
         var randomWordArray = randomWord.split("");
 
-
+        var spaces = 0;
         // Draw squares for secret word & hide letters
         for (var i = 0; i < randomWord.length; i++) {
-            $('#container').append('<div class="letter ' + i + '"></div>');
-            $('#container').find(":nth-child(" + (i + 1) + ")").text(randomWordArray[i]);
-            $(".letter").css("color", "#000");
-            $(".letter").css("background-color", "#000");
+            if(randomWordArray[i] == ' '){
+                $('#container').append('<br>');
+                spaces = spaces + 1;
+            }else {
+                $('#container').append('<div class="letter ' + i + '"></div>');
+                $('#container').find(":nth-child(" + (i + 1) + ")").text(randomWordArray[i]);
+                $(".letter").css("color", "#000");
+                $(".letter").css("background-color", "#000");
+            }
         }
 
         // Button click function
@@ -96,7 +101,6 @@
             // Check if clicked letter is in secret word
             var userGuess = $(this).text();
             var elem = this;
-            console.log($(elem).text());
             for (var i = 0; i < randomWord.length; i++) {
                 if (userGuess === randomWord.charAt(i)) {
                     $(elem).addClass("correct_char");
@@ -107,10 +111,11 @@
 
             //Check for winner
             var goodGuesses = [];
+            var randomWordArrayCount =  randomWordArray.length - spaces;
             $(".letter").each(function (index) {
                 if ($(this).hasClass("winner")) {
                     goodGuesses.push(index);
-                    if (goodGuesses.length === randomWordArray.length) {
+                    if (goodGuesses.length === randomWordArrayCount) {
                         //$("#container").hide();
                         $("button").prop("disabled", "true");
                         $(".category").text("Great job you guessed the secret word!");

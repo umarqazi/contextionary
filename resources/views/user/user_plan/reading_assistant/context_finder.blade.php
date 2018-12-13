@@ -46,7 +46,7 @@
                         </select>
                     </div>
                     <div class="col-md-6 text-right">
-                        <button type="button" class="orangeBtn">Export report</button>
+                        <a href="{{ lang_route('text-test') }}" class="orangeBtn">Export report</a>
                     </div>
 
                 </div>
@@ -119,16 +119,19 @@
                                                     @php
                                                         $related_phrase_count = 0;
                                                     @endphp
-                                                    @foreach($phrase['related_phrase'] as $related_phrase)
+                                                    @foreach($phrase['related_phrase'] as $key=>$related_phrase)
                                                         @if( $related_phrase->relatedPhrases != null)
-                                                            @php
-                                                                $related_phrase_count = $related_phrase_count + 1;
-                                                            @endphp
-                                                            <a href="#" onclick="openRelatedPhrase(event, {{$related_phrase->relatedPhrases->phrase_id}})">
-                                                                {{ucwords($related_phrase->relatedPhrases->phrase_text)}}
-                                                            </a>{{ $loop->last ? '' : ', ' }}
+                                                            @if(!empty($related_phrase->relatedPhrases->phrase_text))
+                                                                @php
+                                                                    $related_phrase_count = $related_phrase_count + 1;
+                                                                    $testing[$key]='<a href="#" onclick="openRelatedPhrase(event, '.$related_phrase->relatedPhrases->phrase_id.')">
+                                                                    '.ucwords($related_phrase->relatedPhrases->phrase_text).'
+                                                                </a>';
+                                                                @endphp
+                                                            @endif
                                                         @endif
                                                     @endforeach
+                                                    {!! implode(',', $testing) !!}
                                                     @if( ! $related_phrase_count > 0)
                                                         <p>{{t('-')}}</p>
                                                     @endif
@@ -137,13 +140,13 @@
                                                     @if(count($phrase['translation']) > 0)
                                                         @foreach($phrase['translation'] as $translation)
                                                             @if($translation['language'] == 'English')
-                                                                <p class="phrase trans_en">{{ $translation['phrase_translation'] }}</p>
+                                                                <p class="hidden phrase trans_en">{{ $translation['phrase_translation'] }}</p>
                                                             @elseif($translation['language'] == 'Spanish')
                                                                 <p class="hidden phrase trans_sp">{{ $translation['phrase_translation'] }}</p>
                                                             @elseif($translation['language'] == 'Hindi')
                                                                 <p class="hidden phrase trans_hi">{{ $translation['phrase_translation'] }}</p>
                                                             @elseif($translation['language'] == 'French')
-                                                                <p class="hidden phrase trans_fr">{{ $translation['phrase_translation'] }}</p>
+                                                                <p class="phrase trans_fr">{{ $translation['phrase_translation'] }}</p>
                                                             @endif
                                                         @endforeach
                                                         <p class="hidden phrase trans_none">{{t('-')}}</p>
@@ -155,13 +158,13 @@
                                                     @if(count($phrase['translation']) > 0)
                                                         @foreach($phrase['translation'] as $translation)
                                                             @if($translation['language'] == 'English')
-                                                                <p class="phrase_meaning trans_en">{{ $translation['translation'] }}</p>
+                                                                <p class="hidden phrase_meaning trans_en">{{ $translation['translation'] }}</p>
                                                             @elseif($translation['language'] == 'Spanish')
                                                                 <p class="hidden phrase_meaning trans_sp">{{ $translation['translation'] }}</p>
                                                             @elseif($translation['language'] == 'Hindi')
                                                                 <p class="hidden phrase_meaning trans_hi">{{ $translation['translation'] }}</p>
                                                             @elseif($translation['language'] == 'French')
-                                                                <p class="hidden phrase_meaning trans_fr">{{ $translation['translation'] }}</p>
+                                                                <p class="phrase_meaning trans_fr">{{ $translation['translation'] }}</p>
                                                             @endif
                                                         @endforeach
                                                             <p class="hidden phrase_meaning trans_none">{{t('-')}}</p>
@@ -239,14 +242,13 @@
                                                                         @if( $rel_phrase->relatedPhrases != null)
                                                                             @if( $rel_phrase->relatedPhrases->phrase_text != '')
                                                                                 @php
-                                                                                    print_r($rel_phrase_key. $rel_phrase->relatedPhrases->phrase_text);
-                                                                                    echo '<br>';
                                                                                     $related_phrase_count1 = $related_phrase_count1 + 1;
+                                                                                    $testing1[$key]=ucwords($rel_phrase->relatedPhrases->phrase_text);
                                                                                 @endphp
-                                                                                {{ucwords($rel_phrase->relatedPhrases->phrase_text)}}{{$loop->last ? '' : ', '}}
                                                                             @endif
                                                                         @endif
                                                                     @endforeach
+                                                                    {!! implode(',', $testing) !!}
                                                                     @if( ! $related_phrase_count1 > 0)
                                                                         <p>{{t('-')}}</p>
                                                                     @endif
