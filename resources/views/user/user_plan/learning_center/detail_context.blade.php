@@ -14,7 +14,7 @@
         </div>
         <div class="col-sm-6 text-right">
             @if($type == 'context_forwarded')
-                <a href="{{ lang_route('explore-context').'/'.Request::segment(4) }}" class="orangeBtn">Bak</a>
+                <a href="{{ lang_route('explore-context').'/'.Request::segment(4) }}" class="orangeBtn">Back</a>
             @elseif($type == 'phrase_forwarded')
                 <a href="{{ lang_route('explore-word') }}" class="orangeBtn">Back</a>
             @endif
