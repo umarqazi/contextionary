@@ -1426,7 +1426,7 @@ aside .menuCate .menuListing li a.menu18:hover {
 .tabsContainer {
     float: left;
     width: 100%;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 .tabsContainer .customTabs {
     display: inline-block;
@@ -1440,7 +1440,7 @@ aside .menuCate .menuListing li a.menu18:hover {
     text-transform: uppercase;
     cursor: pointer;
     color: #737373;
-    margin-right: 18px;
+    margin-right: 10px;
     position: relative;
     padding: 5px;
 }
@@ -1478,7 +1478,7 @@ aside .menuCate .menuListing li a.menu18:hover {
 }
 .tabsContainer .customTabs.tabsView li a {
     color: #fff;
-    font-size: 18px;
+    font-size: 16px;
     padding: 0px 5px;
 }
 .tabsContainer .customTabs.tabsView li:hover a {
@@ -2543,7 +2543,7 @@ aside .menuCate .menuListing li a.menu18:hover {
     color: #f7941d;
     font-size: 20px;
     font-weight: 600;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     border-bottom: #f7941d solid 2px;
     background: rgba(255, 255, 255, 0.1);
     padding: 20px 15px;
@@ -2552,10 +2552,10 @@ aside .menuCate .menuListing li a.menu18:hover {
     width: 100%;
     position: relative;
     overflow: hidden;
-    height: 250px;
+    height: 180px;
     border: solid #fff 4px;
     border-radius: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 .pictionaryQuiz .questionBlock-img img {
     min-width: 100%;
@@ -2567,7 +2567,7 @@ aside .menuCate .menuListing li a.menu18:hover {
 }
 .pictionaryQuiz .gameOption {
     background: rgba(255, 255, 255, 0.1);
-    padding: 20px 15px;
+    padding: 12px 15px;
     text-align: center;
     color: #fff;
     font-size: 18px;
@@ -2736,7 +2736,7 @@ aside .menuCate .menuListing li a.menu18:hover {
     max-width: 100%;
     margin: 0 auto;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 .hangman .used {
     border: #ff0000;
@@ -2749,10 +2749,10 @@ aside .menuCate .menuListing li a.menu18:hover {
 }
 .hangman #container > div {
     color: #EFEFEF;
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 900;
     text-transform: uppercase;
     margin-right: 5px;
     display: inline-block;

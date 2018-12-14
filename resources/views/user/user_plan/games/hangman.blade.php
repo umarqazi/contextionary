@@ -5,10 +5,10 @@
 @section('content')
 <div class="container-fluid contributorMain funfact pictionaryQuiz hangman">
     @include('layouts.flc_header')
-    <div class="row mt-4">
+    <div class="row">
         <div class="col-md-12">
             <div class="gameTitle">
-                Context: {{$context}}
+                Context: {{ucwords($context)}}
             </div>
         </div>
 

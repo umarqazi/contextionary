@@ -377,15 +377,14 @@ a.disabled{
   cursor: pointer;
 }
 .cont-div{
-  margin-bottom: 20px;
-  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .cont-div a{
-  padding: 30px;
+  padding: 20px;
   background-color: #f7952d;
   border-radius: 30px;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  padding-bottom: 7px;
+  padding-top: 7px;
   color: #fff !important;
   font-weight: bold;
   float: right;
@@ -595,7 +594,7 @@ input[type=number] {
   color: #f7941d !important;
 }
 img#hangman {
-  height: 230px !important;
+  height: 200px !important;
 }
 .confirmation-message{
   color:white;
