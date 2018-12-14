@@ -250,12 +250,12 @@
                                                                             @if( $rel_phrase->relatedPhrases->phrase_text != '')
                                                                                 @php
                                                                                     $related_phrase_count1 = $related_phrase_count1 + 1;
-                                                                                    $testing1[$key]=ucwords($rel_phrase->relatedPhrases->phrase_text);
+                                                                                    $testing1[$rel_phrase_key]=ucwords($rel_phrase->relatedPhrases->phrase_text);
                                                                                 @endphp
                                                                             @endif
                                                                         @endif
                                                                     @endforeach
-                                                                    {!! implode(',', $testing1) !!}
+                                                                    {!! implode(', ', $testing1) !!}
                                                                     @if( ! $related_phrase_count1 > 0)
                                                                         <p>{{t('-')}}</p>
                                                                     @endif
