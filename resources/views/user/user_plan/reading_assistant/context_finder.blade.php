@@ -130,14 +130,12 @@
                                                             @if(!empty($related_phrase->relatedPhrases->phrase_text))
                                                                 @php
                                                                     $related_phrase_count = $related_phrase_count + 1;
-                                                                    $testing[$key]='<a href="#" onclick="openRelatedPhrase(event, '.$related_phrase->relatedPhrases->phrase_id.')">
-                                                                    '.ucwords($related_phrase->relatedPhrases->phrase_text).'
-                                                                </a>';
+                                                                    $testing[$key]='<a href="#" onclick="openRelatedPhrase(event, '.$related_phrase->relatedPhrases->phrase_id.')">'.ucwords($related_phrase->relatedPhrases->phrase_text).'</a>';
                                                                 @endphp
                                                             @endif
                                                         @endif
                                                     @endforeach
-                                                    {!! implode(',', $testing) !!}
+                                                    {!! implode(', ', $testing) !!}
                                                     @if( ! $related_phrase_count > 0)
                                                         <p>{{t('-')}}</p>
                                                     @endif

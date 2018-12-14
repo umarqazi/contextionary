@@ -9,9 +9,9 @@
     <div class="row mt-4">
         <div class="col-sm-6">
             @if($type == 'context_forwarded')
-                <div class="exploreTitle">{{ucfirst($context)}}</div>
+                <div class="exploreTitle">{{ucwords($context)}}</div>
             @elseif($type == 'phrase_forwarded')
-                <div class="exploreTitle">{{ucfirst($selected_phrase_text)}}</div>
+                <div class="exploreTitle">{{ucwords($selected_phrase_text)}}</div>
             @endif
         </div>
         <div class="col-sm-6 text-right">
@@ -44,7 +44,7 @@
                             @foreach($related_phrases as $related_phrase)
                                 @if( $related_phrase->relatedPhrases != null)
                                     <div class="col-lg-3 col-md-3">
-                                        <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucfirst($related_phrase->relatedPhrases->phrase_text)}}</a></p>
+                                        <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucwords($related_phrase->relatedPhrases->phrase_text)}}</a></p>
                                     </div>
                                 @endif
                             @endforeach
@@ -54,7 +54,7 @@
                             @foreach($related_phrases as $related_phrase)
                                 @if( $related_phrase->relatedPhrases != null)
                                     <div class="col-lg-3 col-md-3">
-                                        <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', [ 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucfirst($related_phrase->relatedPhrases->phrase_text)}}</a></p>
+                                        <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', [ 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucwords($related_phrase->relatedPhrases->phrase_text)}}</a></p>
                                     </div>
                                 @endif
                             @endforeach
@@ -63,18 +63,19 @@
                 </div>
             </div>
         </div>
+        <div class="mb-4">
         @if( count($shared_words_arry) > 0)
             @foreach($shared_words_arry as $shared_words_key => $shared_words)
                 @if($type == 'context_forwarded')
                     @if( !$shared_words->isEmpty())
                     <div class="col-lg-12 col-md-12 mt-5">
-                        <h2>{{t('PHRASES SHARING THE WORD')}} “{{ucfirst($phrase_words[$shared_words_key])}}”</h2>
+                        <h2>{{t('PHRASES SHARING THE WORD')}} “{{ucwords($phrase_words[$shared_words_key])}}”</h2>
                         <div class="phrase-body related-phrase-body">
                             <div class="row">
                                 @foreach($shared_words as $shared_word)
                                     @if( $shared_word->shared_word == $phrase_words[$shared_words_key])
                                         <div class="col-lg-3 col-md-3">
-                                            <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$shared_word->sibling_id ]) !!}">{{ucfirst($shared_word->sibling_name)}}</a></p>
+                                            <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$shared_word->sibling_id ]) !!}">{{ucwords($shared_word->sibling_name)}}</a></p>
                                         </div>
                                     @endif
                                 @endforeach
@@ -85,13 +86,13 @@
                 @elseif($type == 'phrase_forwarded')
                     @if( !$shared_words->isEmpty())
                     <div class="col-lg-12 col-md-12 mt-5">
-                        <h2>{{t('PHRASES SHARING THE WORD')}} “{{ucfirst($phrase_words[$shared_words_key])}}”</h2>
+                        <h2>{{t('PHRASES SHARING THE WORD')}} “{{ucwords($phrase_words[$shared_words_key])}}”</h2>
                         <div class="phrase-body related-phrase-body">
                             <div class="row">
                                 @foreach($shared_words as $shared_word)
                                     @if( $shared_word->shared_word == $phrase_words[$shared_words_key])
                                         <div class="col-lg-3 col-md-3">
-                                            <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$shared_word->sibling_id ]) !!}">{{ucfirst($shared_word->sibling_name)}}</a></p>
+                                            <p class="text-white"><a href="{!! lang_url('learning-center/explore-context-phrase', ['phrase'=>$shared_word->sibling_id ]) !!}">{{ucwords($shared_word->sibling_name)}}</a></p>
                                         </div>
                                     @endif
                                 @endforeach
@@ -102,6 +103,7 @@
                 @endif
             @endforeach
         @endif
+        </div>
     </div>
 </div>
     <script type="text/javascript">
