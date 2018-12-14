@@ -27,7 +27,7 @@
                                     <tr>
                                         <td>{!! $transaction['created_at'] !!}</td>
                                         <td>{!! Config::get('constant.purchase_type.'.$transaction['purchase_type']) !!}</td>
-                                        <td class="text-capitalize">{!! ($transaction['role'])? Config::get('constant.contributorNames.'.$transaction['role']):'N/A' !!}</td>
+                                        <td class="text-capitalize">{!! ($transaction['role'])? Config::get('constant.contributorNames.'.$transaction['role']):'-' !!}</td>
                                         <td>{!! $transaction['coins'] !!}</td>
                                         <td>${!! $transaction['amount'] !!}</td>
                                     </tr>

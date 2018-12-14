@@ -3,7 +3,7 @@
     {!! t('Details of Phrases') !!}
 @stop
 @section('content')
-<div class="container-fluid contributorMain userExploreWord userExploreContext detailExplore" style="background: url({!! asset('storage/'.$illustration) !!}); background-size:cover">
+<div class="container-fluid contributorMain userExploreWord userExploreContext detailExplore" style="background: url({!! asset('storage/'.$illustration) !!}); background-size:cover; position: center center;">
     <div class="wrapperMask"></div>
     @include('layouts.flc_header')
     <div class="row mt-4">
@@ -13,11 +13,11 @@
             @endif
         </div>
         <div class="col-sm-6 text-right">
-            @php
-                $url = explode('/', Request::url());
-                array_pop($url);
-            @endphp
-            <a href="{{ url()->previous() }}" class="orangeBtn">Back</a>
+            @if($type == 'context_forwarded')
+                <a href="{{ lang_route('explore-context').'/'.Request::segment(4) }}" class="orangeBtn">Bak</a>
+            @elseif($type == 'phrase_forwarded')
+                <a href="{{ lang_route('explore-word') }}" class="orangeBtn">Back</a>
+            @endif
         </div>
         <div class="col-md-12 mt-3">
             @if($type == 'context_forwarded')

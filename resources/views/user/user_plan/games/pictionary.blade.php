@@ -5,7 +5,7 @@
 @section('content')
 <div class="container-fluid contributorMain funfact pictionaryQuiz">
     @include('layouts.flc_header')
-    <div class="row mt-4">
+    <div class="row">
         <div class="col-md-12">
             <div class="score">
                 <a href="{!! lang_route('reset-pictionary') !!}" class="btn orangeBtn waves-effect waves-light">

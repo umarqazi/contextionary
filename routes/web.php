@@ -121,7 +121,7 @@ MultiLang::routeGroup(function($router) {
             Route::get('start-spot-the-intruder', 'SpotIntruderController@index')->name('start-spot-the-intruder');
             Route::get('continue-spot-the-intruder', 'SpotIntruderController@continue')->name('continue-spot-the-intruder');
             Route::get('reset-spot-the-intruder', 'SpotIntruderController@reset')->name('reset-spot-the-intruder');
-            Route::get('spot-the-intruder', 'SpotIntruderController@getQuestion')->name('spot-the-intruder');
+            Route::get('intruder', 'SpotIntruderController@getQuestion')->name('spot-the-intruder');
             Route::post('verify-spot-the-intruder', 'SpotIntruderController@verifyAnswer');
             Route::get('intruder', 'SpotIntruderController@getQuestion')->name('intruder');
             Route::get('start-hangman',  'HangmanController@index')->name('start-hangman');
