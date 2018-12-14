@@ -601,9 +601,6 @@ img#hangman {
 .contextFinder .nav-pills{
   background: none !important;
 }
-.related-phrase-body{
-  margin-bottom: 60px !important;
-}
 .contextFinder .exportBlock a {
   font-size: 16px;
 }
