@@ -2658,6 +2658,10 @@ aside .menuCate .menuListing li a.menu18:hover {
     background: url(../images/user-learning-explore-context-bg.jpg) no-repeat center center;
     background-size: cover;
 }
+.page_404{
+    background: url(../images/404.png) no-repeat center center;
+    background-size: cover;
+}
 .userExploreContext .phraseTranslate {
     display: inline-block;
     vertical-align: middle;
