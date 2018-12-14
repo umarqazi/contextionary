@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="col-lg-12 col-md-12 mt-5">
-            <h2>{{t('RELATED PHRASE')}}</h2>
+            <h2>{{t('RELATED PHRASES')}}</h2>
             <div class="phrase-body">
                 <div class="row">
                     @if($type == 'context_forwarded')
