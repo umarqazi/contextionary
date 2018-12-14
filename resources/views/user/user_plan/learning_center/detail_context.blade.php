@@ -10,8 +10,6 @@
         <div class="col-sm-6">
             @if($type == 'context_forwarded')
                 <div class="exploreTitle">{{ucwords($context)}}</div>
-            @elseif($type == 'phrase_forwarded')
-                <div class="exploreTitle">{{ucwords($selected_phrase_text)}}</div>
             @endif
         </div>
         <div class="col-sm-6 text-right">
@@ -24,6 +22,8 @@
         <div class="col-md-12 mt-3">
             @if($type == 'context_forwarded')
                 <h2>{{t('PHRASE: ')}}“<span class="sentence_case">{{ucwords($phrase)}}</span>”</h2>
+            @elseif($type == 'phrase_forwarded')
+                <h2>{{t('PHRASE: ')}}“<span class="sentence_case">{{ucwords($selected_phrase_text)}}</span>”</h2>
             @endif
             <div class="row">
                 <div class="col-md-12">
