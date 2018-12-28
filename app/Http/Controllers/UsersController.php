@@ -408,7 +408,15 @@ class UsersController extends Controller
             endif;
             $cards=Auth::user()->userCards;
         endif;
-        return view::make('user.user_plan.plan.active_plan')->with(['days'=>$duration, 'activePlan'=>$plans, 'cards'=>$cards, 'total_contribution' => $total_contribution, 'packages' => $packages, 'active_package_name' => $active_package_name, 'active_package_id' => $active_package_id]);
+        $package_plan=['Reading assistant'=>['Context', 'Keywords', 'Definition', 'Illustration', 'Related words'], 'Glossary catalog'=>[], 'A game of context'=>[]];
+        if($plans->package_id!=1){
+            array_push($package_plan['Reading assistant'], 'Export Results');
+        }
+        if($plans->package_id==2){
+            array_push($package_plan['Reading assistant'], 'File Upload');
+            $package_plan['Learning Center']=[];
+        }
+        return view::make('user.user_plan.plan.active_plan')->with(['days'=>$duration, 'activePlan'=>$plans, 'cards'=>$cards, 'total_contribution' => $total_contribution, 'packages' => $packages, 'active_package_name' => $active_package_name, 'active_package_id' => $active_package_id, 'package_plan'=>$package_plan]);
     }
 
     /**

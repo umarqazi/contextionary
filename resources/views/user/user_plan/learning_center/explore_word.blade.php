@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Explore Word') !!}
+    {!! t('Explore a Phrase') !!}
 @stop
 @section('content')
     <div class="container-fluid contributorMain userExploreWord userExploreContext2 resultPage">

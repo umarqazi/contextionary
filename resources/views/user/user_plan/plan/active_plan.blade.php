@@ -43,24 +43,13 @@
                             <div class="activePlan"><i class="fa fa-certificate"></i> amount / month: ${!! Config::get('constant.plan_prices.'.$activePlan->package_id) !!}</div>
                             <h2>Features</h2>
                             <ul class="features">
-                                <li>Reading assistant<br>
-                                    <span>Context,</span>
-                                    <span>Keywords,</span>
-                                    <span>Definition,</span>
-                                    <span>Illustration,</span>
-                                    <span>Related words</span>
-                                    @if($activePlan->package_id!=1)
-                                        <span>Export Results</span>
-                                    @endif
-                                    @if($activePlan->package_id==2)
-                                        <span>File Upload</span>
-                                    @endif
-                                </li>
-                                <li>Glossary catalog</li>
-                                <li>A game of context</li>
-                                @if($activePlan->package_id==2)
-                                    <li>Learning Center</li>
-                                @endif
+                                @foreach($package_plan as $key=>$plans)
+                                    <li>{!! $key !!}
+                                        @if(is_array($plans))
+                                            <br><span><?php echo implode(', ', $plans)?></span>
+                                        @endif
+                                    </li>
+                                @endforeach
                             </ul>
                             @if($activePlan->expiry_date == '')
                             @elseif($activePlan->expiry_date <= carbon::now())
@@ -108,24 +97,13 @@
                                 <div class="activePlan"><i class="fa fa-certificate"></i> amount / month: ${!! Config::get('constant.plan_prices.'.$active_package_id) !!}</div>
                                 <h2>Features</h2>
                                 <ul class="features">
-                                    <li>Reading assistant<br>
-                                        <span>Context,</span>
-                                        <span>Keywords,</span>
-                                        <span>Definition,</span>
-                                        <span>Illustration,</span>
-                                        <span>Related words</span>
-                                        @if($active_package_id!=1)
-                                            <span>Export Results</span>
-                                        @endif
-                                        @if($active_package_id==2)
-                                            <span>File Upload</span>
-                                        @endif
-                                    </li>
-                                    <li>Glossary catalog</li>
-                                    <li>A game of context</li>
-                                    @if($active_package_id==2)
-                                        <li>Learning Center</li>
-                                    @endif
+                                    @foreach($package_plan as $key=>$plans)
+                                        <li>{!! $key !!}
+                                            @if(is_array($plans))
+                                                <br><span><?php echo implode(', ', $plans)?></span>
+                                            @endif
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                             <div class="row card-div ">
