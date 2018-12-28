@@ -10,7 +10,7 @@
             @if($type == 'context_forwarded')
                 <div class="exploreTitle">Explore a context</div>
             @else
-                <div class="exploreTitle">Explore a word</div>
+                <div class="exploreTitle">Explore a Phrase</div>
             @endif
         </div>
         <div class="col-sm-6 text-right">
@@ -26,7 +26,7 @@
                     @if($type == 'context_forwarded')
                         <h2>{{$context}}</h2>
                     @else
-                        <h2>List of Matches of "{{$phrases_searched}}"</h2>
+                        <h2>List of Matches for "{{$phrases_searched}}"</h2>
                     @endif
                 </div>
                 @if(!$phrases->isEmpty())

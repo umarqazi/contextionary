@@ -20,7 +20,7 @@
                 </div>
 
             </div>
-            {!! Form::open(['url'=>lang_route('vote'), 'method'=>'post']) !!}
+            {!! Form::open(['url'=>lang_route('vote'), 'method'=>'post', 'id'=>'form-submission']) !!}
             <div class="row mt-4">
                 <div class="col-md-8">
                     @if ($errors->has('meaning'))
@@ -63,7 +63,7 @@
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
                             {!! Form::checkbox('grammer', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox1']) !!}
-                            <label class="custom-control-label" for="checkBox1">{!! t('No Grammer Error') !!}</label>
+                            <label class="custom-control-label" for="checkBox1">{!! t('No Grammar Error') !!}</label>
                         </div>
                         @if ($errors->has('grammer'))
                             <div class="help-block"><strong>{{ t($errors->first('grammer')) }}</strong></div>
@@ -102,6 +102,7 @@
             </div>
             {!! Form::hidden('context_id', $phraseMeaning['context_id']) !!}
             {!! Form::hidden('phrase_id', $phraseMeaning['phrase_id']) !!}
+            {!! Form::hidden('return_url', url()->previous()) !!}
             {!! Form::close() !!}
         @else:
         <div class="text-center">

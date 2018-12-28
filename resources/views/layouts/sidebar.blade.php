@@ -34,26 +34,13 @@
                 </ul>
             </div>
         @endif
-        @if(!Auth::check())
-            <div class="menuCate">
-                <div class="title">
-                    {!! t('Glossary Catalog')!!}
-                </div>
-                <ul class="menuListing">
-                    <li class="{{ (Request::segment(2) == 'glossary') ? 'active' : '' }}">
-                        <a href="{!! lang_route('glossary') !!}" class="menu5" style="{{ (Request::segment(2) == 'glossary') ? 'background-position: 0 -40px' : '' }}">
-                            <span>{!! t('Glossary Catalog') !!}</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        @endif
+
         <div class="menuCate">
             <div class="title">
                 {!! t('Miscellaneous')!!}
             </div>
             <ul class="menuListing">
-                <li class="{{ (Request::segment(2) == 'fun-facts') ? 'active' : '' }}"><a href="{!! lang_route('fun-facts') !!}" class="menu18" style="{{ (Request::segment(2) == 'fun-facts') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Fun Facts') !!}</span></a></li>
+                <li class="{{ (Request::segment(2) == 'fun-facts') ? 'active' : '' }}"><a href="{!! lang_route('fun-facts') !!}" class="menu18" style="{{ (Request::segment(2) == 'fun-facts') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Word Facts') !!}</span></a></li>
                 @if(Auth::check())
                     @if(Auth::user()->hasRole(Config::get('constant.userRole.premium plan')))
                         <li class="{{ (Request::segment(2) == 'learning-center') ? 'active' : '' }}" ><a href="{!! lang_route('l-center') !!}" class="menu11" style="{{ (Request::segment(2) == 'learning-center') ? 'background-position: 0 -32px' : '' }}"><span>{!! t('Learning Center') !!}</span></a></li>

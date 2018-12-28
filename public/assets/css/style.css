@@ -447,6 +447,8 @@ input[type=number] {
 }
 .languageBar .list a{
   color:#f7941d;
+  width:100%;
+  display: inline-block;
 }
 .fancybox-lock .fancybox-overlay{
   z-index: 100000;
@@ -612,4 +614,7 @@ img#hangman {
 }
 .detailExplore h2{
   text-transform: none !important;
+}
+.padding-class{
+  padding: 7px 10px;
 }

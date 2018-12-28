@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Define a Meaning') !!}
+    {!! t('Enter a Meaning') !!}
 @stop
 @section('content')
     <div class="container-fluid contributorMain definePage" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $data['context_picture'] !!}); background-size:cover">

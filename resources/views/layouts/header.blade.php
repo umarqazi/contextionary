@@ -7,19 +7,18 @@
       <button id="menu"><i class="fa fa-bars"></i></button>
       <ul class="mainMenu">
         <i class="fa fa-times closeMenu"></i>
-        <li><a href="{!! lang_route('context-finder') !!}">{!! t('Reading Assistant') !!}</a></li>
-        <li><a href="{!! lang_route('glossary') !!}">{!! t('Glossary Catalog') !!}</a></li>
+        <li><a href="{!! lang_route('context-finder') !!}">{!! t('About Us') !!}</a></li>
         <li><a href="{!! lang_route('fun-facts') !!}">{!! t('Fun Facts') !!}</a></li>
         <li><a href="{!! lang_route('contactUs') !!}">{!! t('Contact Us') !!}</a></li>
       </ul>
-      <div class="searchWrapper">
-        <form>
-          <div class="search">
-            <i class="fa fa-search"></i>
-            <input type="search" class="fld" placeholder="{!! t('Search')!!}">
-          </div>
-        </form>
-      </div>
+      {{--<div class="searchWrapper">--}}
+        {{--<form>--}}
+          {{--<div class="search">--}}
+            {{--<i class="fa fa-search"></i>--}}
+            {{--<input type="search" class="fld" placeholder="{!! t('Search')!!}">--}}
+          {{--</div>--}}
+        {{--</form>--}}
+      {{--</div>--}}
 
     </div>
   </div>

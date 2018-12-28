@@ -6,7 +6,7 @@
 </script>
 <div class="menuCate">
   <div class="title">
-    {!! t('Contributions') !!}
+    {!! t('Contribute') !!}
   </div>
   <ul class="menuListing">
     @if(Auth::check())
@@ -28,20 +28,20 @@
   </div>
   <ul class="menuListing">
     @if(Auth::user()->hasRole(Config::get('constant.contributorRole.define')))
-      <li class="{{ (Request::segment(2) == 'phrase-list') ? 'active' : '' }}"><a href="{!! lang_route('plist') !!}" class="menu1" style="{{ (Request::segment(2) == 'phrase-list') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Vote Meanings') !!}</span></a></li>
+      <li class="{{ (Request::segment(2) == 'phrase-list') ? 'active' : '' }}"><a href="{!! lang_route('plist') !!}" class="menu1" style="{{ (Request::segment(2) == 'phrase-list') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Vote Meaning') !!}</span></a></li>
     @endif
     @if(Auth::user()->hasRole(Config::get('constant.contributorRole.illustrate')))
-      <li class="{{ (Request::segment(2) == 'illustrator-vote-list') ? 'active' : '' }}"><a href="{!! lang_route('vIllustratorList') !!}" class="menu2" style="{{ (Request::segment(2) == 'illustrator-vote-list') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Vote Illustrations') !!}</span></a></li>
+      <li class="{{ (Request::segment(2) == 'illustrator-vote-list') ? 'active' : '' }}"><a href="{!! lang_route('vIllustratorList') !!}" class="menu2" style="{{ (Request::segment(2) == 'illustrator-vote-list') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Vote Illustration') !!}</span></a></li>
     @endif
     @if(Auth::user()->hasRole(Config::get('constant.contributorRole.translate')))
-      <li class="{{ (Request::segment(2) == 'translate-vote-list') ? 'active' : '' }}"><a href="{!! lang_route('vTranslatorList') !!}" class="menu3" style="{{ (Request::segment(2) == 'translate-vote-list') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Vote Translations')!!}</span></a></li>
+      <li class="{{ (Request::segment(2) == 'translate-vote-list') ? 'active' : '' }}"><a href="{!! lang_route('vTranslatorList') !!}" class="menu3" style="{{ (Request::segment(2) == 'translate-vote-list') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Vote Translation')!!}</span></a></li>
     @endif
   </ul>
 </div>
 
 <div class="menuCate">
   <div class="title">
-    {!! t('Transactions') !!}
+    {!! t('Transact') !!}
   </div>
   <ul class="menuListing">
     <li class="{{ (Request::segment(2) == 'coins-list') ? 'active' : '' }}"><a href="{!! lang_url('coins-list') !!}" class="menu5" style="{{ (Request::segment(2) == 'coins-list') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Purchase Coins') !!}</span></a></li>

@@ -31,15 +31,15 @@
                         </div>
                     </div>
                 </div>
-                <label class="customLabel mt-1">{!! t('Author: ') !!}{!! $data['writer'] !!}</label>
+                <label class="customLabel mt-1">{!! t('Author: ') !!}<span class="text-capitalize">{!! $data['writer'] !!}</span></label>
             </div>
             <div class="col-md-4 text-center">
-                <label class="customLabel">{!! t('Illustrator') !!}</label>
+                <label class="customLabel">{!! t('Phrase Illustration') !!}</label>
 
                 <div class="uploadImgHolder mr-2">
                     <img src="{!! asset('storage') !!}/{!! $data['illustrator']['illustrator'] !!}" id="profile-img-tag" />
                 </div>
-                <label class="customLabel mt-5">{!! $data['illustrator']['illustrator_writer'] !!}</label>
+                <label class="customLabel mt-5">{!! t('Author: ') !!}<span class="text-capitalize">{!! $data['illustrator']['illustrator_writer'] !!}</span></label>
             </div>
             @if(empty($data['translation']))
                 <div class="col-md-12">

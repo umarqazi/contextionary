@@ -13,8 +13,8 @@
         </div>
 
         <div class="col-md-12">
-            <a href="{!! lang_route('start-hangman') !!}" class="btn orangeBtn waves-effect waves-light p10 float-right">
-                <img src="{!! asset('storage/images/replay-symbol.png') !!}">
+            <a href="{!! lang_route('start-hangman') !!}" class="btn orangeBtn waves-effect waves-light padding-class float-right">
+                <img src="{!! asset('storage/images/next.png') !!}">
             </a>
             <div class="gameWrapper">
                 <img id="hangman" src="{!! asset('assets/images/0.png') !!}">

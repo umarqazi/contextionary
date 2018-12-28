@@ -72,7 +72,11 @@ class VoteController extends Controller
                 'message' => trans('content.vote_successfully_done'),
                 'alert_type' => 'success',
             );
-            $redirect=lang_url('phrase-list');
+            if($voteMeaning->has('return_url')){
+                $redirect=$voteMeaning->return_url;
+            }else{
+                $redirect=lang_url('phrase-list');
+            }
         }
         return Redirect::to($redirect)->with($notification);
     }
@@ -156,7 +160,12 @@ class VoteController extends Controller
             'message' => trans('content.vote_successfully_done'),
             'alert_type' => 'success',
         );
-        $redirect=lang_url('illustrator-vote-list');
+        if($request->has('return_url')){
+            $redirect=$request->return_url;
+        }else{
+            $redirect=lang_url('illustrator-vote-list');
+        }
+
         return Redirect::to($redirect)->with($notification);
     }
 
@@ -195,7 +204,11 @@ class VoteController extends Controller
                 'message' => trans('content.vote_successfully_done'),
                 'alert_type' => 'success',
             );
-            $redirect=lang_url('translate-vote-list');
+            if($voteMeaning->has('return_url')){
+                $redirect=$voteMeaning->return_url;
+            }else{
+                $redirect=lang_url('translate-vote-list');
+            }
         }
         return Redirect::to($redirect)->with($notification);
     }
