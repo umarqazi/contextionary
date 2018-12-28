@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use PhpOffice\PhpWord\IOFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
 use Auth;
@@ -324,4 +325,22 @@ class ReadingAssistantController extends Controller
         return $data_array;
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     * @throws \PhpOffice\PhpWord\Exception\Exception
+     */
+    public function docxToText(Request $request)
+    {
+        $phpWord = IOFactory::createReader('Word2007')->load($request->file('file')->path());
+        $string = '';
+        foreach($phpWord->getSections() as $section) {
+            foreach($section->getElements() as $element) {
+                if(method_exists($element,'getText')) {
+                    $string = $string.$element->getText();
+                }
+            }
+        }
+        return $string;
+    }
 }

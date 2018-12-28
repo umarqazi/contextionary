@@ -11,7 +11,7 @@
             </div>
 
         </div>
-        {!! Form::open(['url'=>lang_route('context-finder'), 'method'=>'post', 'id'=>'form-submission']) !!}
+        {!! Form::open(['url'=>lang_route('context-finder'), 'method'=>'post', 'id'=>'form-submission', 'enctype'=>'multipart/form-data']) !!}
         <div class="row mt-4">
             <div class="col-md-12">
                 <label class="customLabel pt-2 d-inline">Enter Your Text or Attach Document</label>
@@ -332,11 +332,11 @@
             $("#meaning-area").val('');
             var file = document.getElementById("upload_file").files[0];
             var extension = file['name'].split('.').pop();
+            var textArea = document.getElementById("meaning-area");
             if(extension == 'txt'){
                 if(!$('#error_upload').hasClass('hidden')){
                     $('#error_upload').addClass('hidden');
                 }
-                var textArea = document.getElementById("meaning-area");
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     textArea.value = e.target.result.substring(0,2500);
@@ -349,7 +349,31 @@
                         $('#count').html('Characters: '+$("#meaning-area").val().length+' / 2500');
                     }
                 };
-            }else{
+            }else if(extension == 'docx'){
+                var form_data = new FormData();
+                form_data.append('_method', 'POST');
+                form_data.append('_token', '{{ csrf_token()}}');
+                form_data.append('file', file);
+                $.ajax({
+                    url: 'test2',
+                    data: form_data,
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        textArea.value = data.substring(0,2500);
+                        if($("#meaning-area").val().length > 2500){
+                            $('#count').html('Characters: 2500 / 2500');
+                        }else{
+                            $('#count').html('Characters: '+$("#meaning-area").val().length+' / 2500');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            }
+            else{
                 $('#error_upload').removeClass('hidden');
                 $('#error_upload').html('Only .txt type files can be uploaded!');
                 $('#count').html('Characters: '+$("#meaning-area").val().length+' / 2500');
@@ -357,7 +381,6 @@
         }
 
         function contextChange(elem) {
-            console.log(elem.value);
             if($('.tr-context').hasClass('tr-context-'+elem.value)) {
                 $('.tr-context-' + elem.value).siblings('.tr-context').addClass('hidden');
                 $('.tr-context-' + elem.value).removeClass('hidden');
