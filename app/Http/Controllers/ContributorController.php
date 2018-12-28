@@ -109,7 +109,7 @@ class ContributorController
     public function define(){
         $bucketURL = Storage::disk('local')->url(Config::get('constant.ContextImages'));
         $contextList=$this->contributor->getAllContextPhrase();
-        $data=['route'=>'defineMeaning', 'title'=>'Phrase for Meaning'];
+        $data=['route'=>'defineMeaning', 'title'=>'Phrase for Writer'];
         return view::make('user.contributor.meaning.define')->with(['data'=>$data,'contextList'=>$contextList, 'bucketUrl'=>$bucketURL]);
     }
 
@@ -286,7 +286,7 @@ class ContributorController
      */
     public function translateList(){
         $contextList=$this->contributor->getTranslateList();
-        $data=['route'=>'addTranslate', 'title'=>'Phrase for Illustrator'];
+        $data=['route'=>'addTranslate', 'title'=>'Phrase for Translator'];
         return view::make('user.contributor.meaning.define')->with(['contextList'=>$contextList, 'data'=>$data]);
     }
 

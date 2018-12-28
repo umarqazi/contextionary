@@ -168,7 +168,7 @@
         <button type="submit" class="orangeBtn waves-effect waves-light">{!! t('Sign Up') !!}</button>
       </div>
       <div class="font14 mt-4">
-        <span class="whiteText">{!! t('Already have an account') !!}</span><a href="{!! lang_route('login')!!}"> {!! t('Login') !!}</a>
+        <span class="whiteText">{!! t('Already Have An Account?') !!}</span><a href="{!! lang_route('login')!!}"> {!! t('Login') !!}</a>
       </div>
       {!! Form::close() !!}
     </div>

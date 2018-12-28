@@ -217,13 +217,13 @@ class CronService
                         $this->$model->updateVoteStatus($updateVoteStatus);
                         foreach($getHighestVotes as $key=>$hightesVotes):
                             if($key+1==1):
-                                $position='1st';
+                                $position='1'.'<sup>st</sup>';
                                 $points=$first_position;
                             elseif($key+1==2):
-                                $position='2nd';
+                                $position='2'.'<sup>nd</sup>';
                                 $points=$second_position;
                             else:
-                                $position='3rd';
+                                $position='3'.'<sup>rd</sup>';
                                 $points=$third_position;
                             endif;
                             $data=['type'=>$type,'point'=>$points,'context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'user_id'=>$hightesVotes[$type]['user_id'], 'position'=>$key+1];

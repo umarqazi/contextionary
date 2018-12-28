@@ -42,7 +42,7 @@ class StripeController extends Controller
         $payment=$this->stripe->paymentProcess($cardInfo);
         if($payment['status']==true){
             if($stripe->type=='purchase_coins'){
-                return Redirect::to(lang_route('coins'))->with(['alert_type'=>'success', 'message'=>'Coins has been added in your profile']);
+                return Redirect::to(lang_route('coins'))->with(['alert_type'=>'success', 'message'=>'Coins have been added to your account']);
             }else{
                 if($payment['user']){
                     return Redirect::to('/dashboard');

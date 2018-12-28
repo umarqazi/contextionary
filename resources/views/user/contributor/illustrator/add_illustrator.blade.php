@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Add a Illustrator') !!}
+    {!! t('Add an Illustration') !!}
 @stop
 @section('content')
     <div class="container-fluid contributorMain definePage" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $data['context_picture'] !!}); background-size:cover">
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                 </div>
-                <label class="customLabel float-right">{!! t('Written By: ') !!}{!! $data['writer'] !!}</label>
+                <label class="customLabel float-right">{!! t('Author: ') !!}<span class="text-capitalize">{!! $data['writer'] !!}</span></label>
             </div>
         </div>
         @if(empty($data['illustrator']))

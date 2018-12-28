@@ -27,7 +27,7 @@
     <div class="row mt-4">
         <div class="col-md-12 mt-4 text-center actionsBtn bid-div">
             <div class="coinsWrapper">
-                <p class="customLabel ">{!! t('You have 0 coins in your wallet') !!}</p>
+                <p class="customLabel ">{!! t('You have 0 coin in your wallet') !!}</p>
                 <a href="{!! lang_url('coins-list') !!}" class="orangeBtn ml-3 waves-light bidBtn">{!! t('Click Here') !!}</a>
             </div>
         </div>

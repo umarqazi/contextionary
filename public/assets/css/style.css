@@ -615,3 +615,6 @@ img#hangman {
 .detailExplore h2{
   text-transform: none !important;
 }
+.padding-class{
+  padding: 7px 10px;
+}
