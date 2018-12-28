@@ -13,7 +13,7 @@
                     <div class="actions-btn mt-5">
                         <a href="{!! lang_route('explore-context') !!}" class="btn orangeBtn">Explore a context</a>
                         <br>
-                        <a href="{!! lang_route('explore-word') !!}" class="btn orangeBtn blue-btn mt-2">Explore a Word</a>
+                        <a href="{!! lang_route('explore-word') !!}" class="btn orangeBtn blue-btn mt-2">Explore a Phrase</a>
                     </div>
                 </div>
             </div>

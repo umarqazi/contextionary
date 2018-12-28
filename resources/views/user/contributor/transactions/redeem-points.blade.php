@@ -19,7 +19,7 @@
                                         <tr>
                                             <th></th>
                                             <th class="text-center">{!! t('Points') !!}</th>
-                                            <th class="text-right">{!! t('Earnings') !!}</th>
+                                            <th class="text-right">{!! t('Value') !!}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
