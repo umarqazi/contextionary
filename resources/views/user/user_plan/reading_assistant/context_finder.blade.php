@@ -375,7 +375,7 @@
             }
             else{
                 $('#error_upload').removeClass('hidden');
-                $('#error_upload').html('Only .txt type files can be uploaded!');
+                $('#error_upload').html('Only .txt and .docx type files can be uploaded!');
                 $('#count').html('Characters: '+$("#meaning-area").val().length+' / 2500');
             }
         }
