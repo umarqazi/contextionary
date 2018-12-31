@@ -15,20 +15,20 @@ class VoteExpiry extends Model
      * @return mixed
      */
     public function countPharseInDefinePhase(){
-        return self::where('bid_type', env('MEANING'))->where('status',0)->count();
+        return self::where('vote_type', env('MEANING'))->where('status',0)->count();
     }
 
     /**
      * @return mixed
      */
     public function countPharseInIllustrationPhase(){
-        return self::where('bid_type', env('ILLUSTRATE'))->where('status',0)->count();
+        return self::where('vote_type', env('ILLUSTRATE'))->where('status',0)->count();
     }
 
     /**
      * @return mixed
      */
     public function countPharseInTranslationPhase(){
-        return self::where('bid_type', env('TRANSLATE'))->where('status',0)->count();
+        return self::where('vote_type', env('TRANSLATE'))->where('status',0)->count();
     }
 }
