@@ -34,7 +34,7 @@
                                             <input type="radio" class="illustrator-checkbox" name="illustrator" @if(old('illustrator')==$illustrator['id']) checked @endif value="{!! $illustrator['id'] !!}">
                                         <img src="{!! asset('storage') !!}/{!! $illustrator['illustrator'] !!}" class="main-img">
                                         <div class="mask"></div>
-                                        <a class="fancybox" href="{!! asset('storage') !!}/{!! $illustrator['illustrator'] !!}"><i class="fa fa-search"></i></a></label>
+                                        <a class="fancybox-abc" href="{!! asset('storage') !!}/{!! $illustrator['illustrator'] !!}"><i class="fa fa-search"></i></a></label>
                                     </div>
                                 </div>
                             @endforeach
