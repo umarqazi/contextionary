@@ -18,17 +18,11 @@ $(".illustrator-div .illustrators-active").click(function () {
     $('#submit-button').addClass('grey');
     $('#submit-button').attr("disabled", true);
 });
-$(".illustrator-div .fancybox").click(function () {
-    $('.illustrator-checkbox').attr('checked', false);
-    $(this).parent().next('.illustrator-checkbox').attr('checked', true);
-});
 $('.make-unchecked').click(function () {
 
     var check=$('#rules').find('input[type=checkbox]:checked').length;
     var radioCheck=$('#radio-check').find('input[type=radio]:checked').length;
     var illustrator=$('#illustrator-rules').find('input[type=checkbox]:checked').length;
-    alert(radioCheck);
-    alert(illustrator);
     if(radioCheck >= 1){
         if(check >= 4){
             $('#submit-button').removeClass('grey');
