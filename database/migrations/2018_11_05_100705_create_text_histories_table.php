@@ -17,8 +17,8 @@ class CreateTextHistoriesTable extends Migration
             $table->increments('id');
             $table->text('text');
             $table->string('date');
-            $table->text('result');
-            $table->integer('status');
+            $table->text('result')->nullable();
+            $table->integer('status')->nullable();
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

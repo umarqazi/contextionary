@@ -45,7 +45,7 @@ View::composer('user.contributor.transactions.*', function($view)
  */
 View::composer('user.user_plan.reading_assistant.*', function($view)
 {
-    $page=['tutorials'=>'Tutorials', 'text-histroy'=>'Text History'];
+    $page=['tutorials-user'=>'Tutorials', 'text-histroy'=>'Text History'];
     $view->with(['pageMenu'=>$page]);
 });
 
@@ -70,6 +70,7 @@ View::composer(['guest_pages.*', 'user.user_plan.learning_center.*'], function($
         endif;
     endif;
     $page['contact-us']='Contact Us';
+    $page['about-us']='About Us';
     $view->with(['pageMenu'=>$page]);
 });
 

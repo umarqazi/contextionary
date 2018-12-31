@@ -128,8 +128,9 @@ SCRIPT;
     {
         return Admin::form(Feedback::class, function (Form $form) {
             $form->display('id', 'ID');
-            $form->text('email', trans('Email'))->rules('required');
-            $form->textarea('message', trans('Message'))->rules('required');
+            $form->display('email', trans('Email'))->rules('required');
+            $form->textarea('message', trans('Message'))->rules('required')->attribute(['disabled' => 'true']);
+            $form->disableReset();
         });
     }
 

@@ -133,12 +133,12 @@ class PictionaryController extends Controller
     {
         $dir ='images/pictionary';
         return Admin::form(Pictionary::class, function (Form $form) use ($id, $dir) {
-            $form->textarea('question', trans('question'))->rules('required')->placeholder('Enter Question...');
+            $form->textarea('question', trans('Question'))->rules('required')->placeholder('Enter Question...');
             $form->display('id', 'ID');
-            $form->image('pic1')->move($dir)->rules('required|mimes:jpeg,png');
-            $form->image('pic2')->move($dir)->rules('required|mimes:jpeg,png');
-            $form->image('pic3')->move($dir)->rules('required|mimes:jpeg,png');
-            $form->image('pic4')->move($dir)->rules('required|mimes:jpeg,png');
+            $form->image('pic1', trans('Picture 1'))->move($dir)->rules('required|mimes:jpeg,png');
+            $form->image('pic2', trans('Picture 2'))->move($dir)->rules('required|mimes:jpeg,png');
+            $form->image('pic3', trans('Picture 3'))->move($dir)->rules('required|mimes:jpeg,png');
+            $form->image('pic4', trans('Picture 4'))->move($dir)->rules('required|mimes:jpeg,png');
             $form->text('option1', trans('Option 1'))->rules('required');
             $form->text('option2', trans('Option 2'))->rules('required');
             $form->text('option3', trans('Option 3'))->rules('required');

@@ -8,19 +8,21 @@
     @include('layouts.flc_header')
     <div class="row mt-4">
         <div class="col-sm-6">
-            @if($type == 'context_forwarded')
+            @if($type == 'context_forwarded' || $type == 'context_phrase_forwarded')
                 <div class="exploreTitle">{{ucwords($context)}}</div>
             @endif
         </div>
         <div class="col-sm-6 text-right">
             @if($type == 'context_forwarded')
-                <a href="{{ lang_route('explore-context').'/'.Request::segment(4) }}" class="orangeBtn">Back</a>
+                <a href="{{ lang_url('learning-center/explore-context').'/'.Request::segment(4) }}" class="orangeBtn">Back</a>
+            @elseif($type == 'context_phrase_forwarded')
+                <a href="{{ lang_url('learning-center/explore-context-phrase').'/'.Request::segment(5) }}" class="orangeBtn">Back</a>
             @elseif($type == 'phrase_forwarded')
-                <a href="{{ lang_route('explore-word') }}" class="orangeBtn">Back</a>
+                <a href="{{ lang_url('learning-center/explore-word') }}" class="orangeBtn">Back</a>
             @endif
         </div>
         <div class="col-md-12 mt-3">
-            @if($type == 'context_forwarded')
+            @if($type == 'context_forwarded' || $type == 'context_phrase_forwarded')
                 <h2>{{t('PHRASE: ')}}“<span class="sentence_case">{{ucwords($phrase)}}</span>”</h2>
             @elseif($type == 'phrase_forwarded')
                 <h2>{{t('PHRASE: ')}}“<span class="sentence_case">{{ucwords($selected_phrase_text)}}</span>”</h2>
@@ -40,6 +42,16 @@
             <div class="phrase-body">
                 <div class="row">
                     @if($type == 'context_forwarded')
+                        @if( ! $related_phrases->isEmpty())
+                            @foreach($related_phrases as $related_phrase)
+                                @if( $related_phrase->relatedPhrases != null)
+                                    <div class="col-lg-3 col-md-3">
+                                        <p class="text-white"><a href="{!! lang_url('learning-center/explore-context', ['context'=> $context_id, 'phrase'=>$related_phrase->relatedPhrases->phrase_id ]) !!}">{{ucwords($related_phrase->relatedPhrases->phrase_text)}}</a></p>
+                                    </div>
+                                @endif
+                            @endforeach
+                        @endif
+                    @elseif($type == 'context_phrase_forwarded')
                         @if( ! $related_phrases->isEmpty())
                             @foreach($related_phrases as $related_phrase)
                                 @if( $related_phrase->relatedPhrases != null)

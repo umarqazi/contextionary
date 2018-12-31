@@ -11,7 +11,7 @@ class Context extends Model
     protected $primaryKey = 'context_id';
 
     /**
-     * @return $this
+     * @return mixed
      */
     public function phrases(){
         return $this->belongsToMany('App\Phrase', 'context_phrase' , 'context_id', 'phrase_id')->withPivot('work_order');
@@ -22,15 +22,6 @@ class Context extends Model
      */
     public function getPhrases()
     {
-        return $this->phrases()
-            ->wherePivot('work_order','!=', NULL);
-    }
-
-    /**
-     * @param $context
-     * @return mixed
-     */
-    public function findById($context){
-        return self::where('context_id', $context)->first();
+        return $this->phrases()->wherePivot('work_order','!=', NULL);
     }
 }

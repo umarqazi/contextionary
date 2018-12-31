@@ -60,269 +60,263 @@
 
                     @foreach( $context_list as $context_key => $context)
                     <div class="exportBlock exportBlock_{{$context['context_id']}} @if($context_key != 0 ) hidden @endif">
-                            @php
-                                // echo '<pre>';
-                                // print_r($string);
-                                // print_r($context['context_id']);
-                                // die();
-                            @endphp
                             {!! $string[$context['context_id']] !!}
                     </div>
                     @endforeach
 
-                    <div class="contextTabs">
-                        <ul class="nav nav-pills" role="tablist">
-                            <li>
-                                <a class="active" data-toggle="pill" href="#tab1">Text Key Words</a>
-                            </li>
-                            <li>
-                                <a class="" data-toggle="pill" href="#tab2">Context Glossary</a>
-                            </li>
-                        </ul>
+                    {{--<div class="contextTabs">--}}
+                        {{--<ul class="nav nav-pills" role="tablist">--}}
+                            {{--<li>--}}
+                                {{--<a class="active" data-toggle="pill" href="#tab1">Text Key Words</a>--}}
+                            {{--</li>--}}
+                            {{--<li>--}}
+                                {{--<a class="" data-toggle="pill" href="#tab2">Context Glossary</a>--}}
+                            {{--</li>--}}
+                        {{--</ul>--}}
 
-                        <div class="tab-content">
-                            <div id="tab1" class="tab-pane active">
-                                <div class="table-responsive">
-                                    <table class="table contextTable">
-                                        <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-right">
-                                                <select class="languageBar" onchange="languageChange(this)">
-                                                    <option value="fr">{{t('French')}}</option>
-                                                    <option value="sp">{{t('Spanish')}}</option>
-                                                    <option value="hi">{{t('Hindi')}}</option>
-                                                    <option value="ch">{{t('Chinese')}}</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr class="tr-head">
-                                            <td class="text-center">{{t('Jargon')}}</td>
-                                            <td class="text-center">{{t('Meaning')}}</td>
-                                            <td class="text-center">{{t('Illustration')}}</td>
-                                            <td class="text-center">{{t('Related items')}}</td>
-                                            <td class="text-center">{{t('Phrase translation')}}</td>
-                                            <td class="text-right lastChild">
-                                                {{t('Meaning translation')}}
-                                            </td>
-                                        </tr class="tr-head">
-                                        @foreach( $context_list as $context_key => $context)
-                                            @if (array_key_exists('phrases', $context))
-                                                @foreach( $context['phrases'] as $phrase)
-                                                @if($context_key != 0)
-                                                    <tr class="tr-context tr-context-{{$context['context_id']}} hidden">
-                                                @else
-                                                    <tr class="tr-context tr-context-{{$context['context_id']}}">
-                                                @endif
-                                                <td class="text-center">{{ucwords($phrase['phrase'])}}</td>
-                                                <td class="text-center">{{$phrase['meaning']}}</td>
-                                                <td class="text-center">
-                                                    @if($phrase['illustration'] != '')
-                                                        <img src="{!! asset('storage/'.$phrase['illustration']) !!}" class="tableImg">
-                                                    @else
-                                                        <p>{{t('-')}}</p>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center">
-                                                    @php
-                                                        $testing                = [];
-                                                        $related_phrase_count   = 0;
-                                                    @endphp
-                                                    @foreach($phrase['related_phrase'] as $key=>$related_phrase)
-                                                        @if( $related_phrase->relatedPhrases != null)
-                                                            @if(!empty($related_phrase->relatedPhrases->phrase_text))
-                                                                @php
-                                                                    $related_phrase_count = $related_phrase_count + 1;
-                                                                    $testing[$key]='<a href="#" onclick="openRelatedPhrase(event, '.$related_phrase->relatedPhrases->phrase_id.')">'.ucwords($related_phrase->relatedPhrases->phrase_text).'</a>';
-                                                                @endphp
-                                                            @endif
-                                                        @endif
-                                                    @endforeach
-                                                    {!! implode(', ', $testing) !!}
-                                                    @if( ! $related_phrase_count > 0)
-                                                        <p>{{t('-')}}</p>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center">
-                                                    @if(count($phrase['translation']) > 0)
-                                                        @foreach($phrase['translation'] as $translation)
-                                                            @if($translation['language'] == 'Spanish')
-                                                                <p class="hidden phrase trans_sp">{{ $translation['phrase_translation'] }}</p>
-                                                            @elseif($translation['language'] == 'Hindi')
-                                                                <p class="hidden phrase trans_hi">{{ $translation['phrase_translation'] }}</p>
-                                                            @elseif($translation['language'] == 'Chinese')
-                                                                <p class="hidden phrase trans_ch">{{ $translation['phrase_translation'] }}</p>
-                                                            @elseif($translation['language'] == 'French')
-                                                                <p class="phrase trans_fr">{{ $translation['phrase_translation'] }}</p>
-                                                            @endif
-                                                        @endforeach
-                                                        <p class="hidden phrase trans_none">{{t('-')}}</p>
-                                                    @else
-                                                        <p class="phrase trans_none">{{t('-')}}</p>
-                                                    @endif
-                                                </td>
-                                                <td class="lastChild text-center">
-                                                    @if(count($phrase['translation']) > 0)
-                                                        @foreach($phrase['translation'] as $translation)
-                                                            @if($translation['language'] == 'Spanish')
-                                                                <p class="hidden phrase_meaning trans_sp">{{ $translation['translation'] }}</p>
-                                                            @elseif($translation['language'] == 'Hindi')
-                                                                <p class="hidden phrase_meaning trans_hi">{{ $translation['translation'] }}</p>
-                                                            @elseif($translation['language'] == 'Chinese')
-                                                                <p class="hidden phrase_meaning trans_ch">{{ $translation['translation'] }}</p>
-                                                            @elseif($translation['language'] == 'French')
-                                                                <p class="phrase_meaning trans_fr">{{ $translation['translation'] }}</p>
-                                                            @endif
-                                                        @endforeach
-                                                            <p class="hidden phrase_meaning trans_none">{{t('-')}}</p>
-                                                    @else
-                                                        <p class="phrase_meaning trans_none">{{t('-')}}</p>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                            @endif
-                                        @endforeach
-                                            <tr class="tr-context tr-context-none hidden">
-                                                <td colspan="6">
-                                                    <p class="record-message">{{t('No Phrases for this Context!')}}</p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div id="tab2" class="tab-pane fade">
-                                <div class="table-responsive">
-                                    <table class="table contextTable">
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="text-right">
-                                                    <select class="languageBar" onchange="languageChange(this)">
-                                                        <option value="fr">{{t('French')}}</option>
-                                                        <option value="sp">{{t('Spanish')}}</option>
-                                                        <option value="hi">{{t('Hindi')}}</option>
-                                                        <option value="ch">{{t('Chinese')}}</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr class="tr-head">
-                                                <td class="text-center">{{t('Jargon')}}</td>
-                                                <td class="text-center">{{t('Meaning')}}</td>
-                                                <td class="text-center">{{t('Illustration')}}</td>
-                                                <td class="text-center">{{t('Related items')}} </td>
-                                                <td class="text-center">{{t('Phrase Translation')}}</td>
-                                                <td class="text-right lastChild">
-                                                    {{t('Meaning Translation')}}
-                                                </td>
-                                            </tr>
-                                            @foreach( $context_list as $context_key => $context)
-                                                @if (array_key_exists('phrases', $context))
-                                                    @foreach( $context['phrases'] as $phrase)
-                                                        @foreach($phrase['related_phrase'] as $related_phrase)
-                                                            @if($related_phrase['details']['phrase'] != '')
-                                                            @if($context_key != 0)
-                                                            <tr class="tr-context tr-context-{{$context['context_id']}} hidden">
-                                                            @else
-                                                            <tr class="tr-context tr-context-{{$context['context_id']}}">
-                                                            @endif
-                                                                <td class="text-center">
-                                                                    {!!ucwords($related_phrase['details']['phrase'])!!}
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    {!! $related_phrase['details']['meaning'] !!}
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    @if($related_phrase['details']['illustration'] != '')
-                                                                        <img src="{!! asset('storage/'.$related_phrase['details']['illustration']) !!}" class="tableImg">
-                                                                    @else
-                                                                        <p>{{t('-')}}</p>
-                                                                    @endif
-                                                                </td>
-                                                                <td  class="text-center" id="related_phrase_td_{{$related_phrase['related_phrase_id']}}">
-                                                                @if( count($related_phrase['details']['related_phrase']) > 0)
-                                                                    @php
-                                                                        $testing1              = [];
-                                                                        $related_phrase_count1 = 0;
-                                                                    @endphp
-                                                                    @foreach($related_phrase['details']['related_phrase'] as $rel_phrase_key => $rel_phrase)
-                                                                        @if( $rel_phrase->relatedPhrases != null)
-                                                                            @if( $rel_phrase->relatedPhrases->phrase_text != '')
-                                                                                @php
-                                                                                    $related_phrase_count1 = $related_phrase_count1 + 1;
-                                                                                    $testing1[$rel_phrase_key]=ucwords($rel_phrase->relatedPhrases->phrase_text);
-                                                                                @endphp
-                                                                            @endif
-                                                                        @endif
-                                                                    @endforeach
-                                                                    {!! implode(', ', $testing1) !!}
-                                                                    @if( ! $related_phrase_count1 > 0)
-                                                                        <p>{{t('-')}}</p>
-                                                                    @endif
-                                                                @endif
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    @if(count($related_phrase['details']['translation']) > 0)
-                                                                        @foreach($related_phrase['details']['translation'] as $translation)
-                                                                            @if($translation['language'] == 'Spanish')
-                                                                                <p class="hidden phrase trans_sp">{{ $translation['phrase_translation'] }}</p>
-                                                                            @elseif($translation['language'] == 'Hindi')
-                                                                                <p class="hidden phrase trans_hi">{{ $translation['phrase_translation'] }}</p>
-                                                                            @elseif($translation['language'] == 'Chinese')
-                                                                                <p class="hidden phrase trans_ch">{{ $translation['phrase_translation'] }}</p>
-                                                                            @elseif($translation['language'] == 'French')
-                                                                                <p class="phrase trans_fr">{{ $translation['phrase_translation'] }}</p>
-                                                                            @endif
-                                                                        @endforeach
-                                                                        <p class="hidden phrase trans_none">{{t('-')}}</p>
-                                                                    @else
-                                                                        <p class="phrase trans_none">{{t('-')}}</p>
-                                                                    @endif
-                                                                </td>
-                                                                <td class="lastChild text-center">
-                                                                    @if(count($related_phrase['details']['translation']) > 0)
-                                                                        @foreach($related_phrase['details']['translation'] as $translation)
-                                                                            @if($translation['language'] == 'Spanish')
-                                                                                <p class="hidden phrase_meaning trans_sp">{{ $translation['translation'] }}</p>
-                                                                            @elseif($translation['language'] == 'Hindi')
-                                                                                <p class="hidden phrase_meaning trans_hi">{{ $translation['translation'] }}</p>
-                                                                            @elseif($translation['language'] == 'Chinese')
-                                                                                <p class="hidden phrase_meaning trans_ch">{{ $translation['translation'] }}</p>
-                                                                            @elseif($translation['language'] == 'French')
-                                                                                <p class="phrase_meaning trans_fr">{{ $translation['translation'] }}</p>
-                                                                            @endif
-                                                                        @endforeach
-                                                                        <p class="hidden phrase_meaning trans_none">{{t('-')}}</p>
-                                                                    @else
-                                                                        <p class="phrase_meaning trans_none">{{t('-')}}</p>
-                                                                    @endif
-                                                                </td>
-                                                            </tr>
-                                                            @endif
-                                                        @endforeach
-                                                    @endforeach
-                                                @endif
-                                            @endforeach
-                                            <tr class="tr-context tr-context-none hidden">
-                                                <td colspan="6">
-                                                    <p class="record-message">{{t('No Phrases for this Context!')}}</p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        {{--<div class="tab-content">--}}
+                            {{--<div id="tab1" class="tab-pane active">--}}
+                                {{--<div class="table-responsive">--}}
+                                    {{--<table class="table contextTable">--}}
+                                        {{--<tbody>--}}
+                                        {{--<tr>--}}
+                                            {{--<td></td>--}}
+                                            {{--<td></td>--}}
+                                            {{--<td></td>--}}
+                                            {{--<td></td>--}}
+                                            {{--<td></td>--}}
+                                            {{--<td class="text-right">--}}
+                                                {{--<select class="languageBar" onchange="languageChange(this)">--}}
+                                                    {{--<option value="fr">{{t('French')}}</option>--}}
+                                                    {{--<option value="sp">{{t('Spanish')}}</option>--}}
+                                                    {{--<option value="hi">{{t('Hindi')}}</option>--}}
+                                                    {{--<option value="ch">{{t('Chinese')}}</option>--}}
+                                                {{--</select>--}}
+                                            {{--</td>--}}
+                                        {{--</tr>--}}
+                                        {{--<tr class="tr-head">--}}
+                                            {{--<td class="text-center">{{t('Jargon')}}</td>--}}
+                                            {{--<td class="text-center">{{t('Meaning')}}</td>--}}
+                                            {{--<td class="text-center">{{t('Illustration')}}</td>--}}
+                                            {{--<td class="text-center">{{t('Related items')}}</td>--}}
+                                            {{--<td class="text-center">{{t('Phrase translation')}}</td>--}}
+                                            {{--<td class="text-right lastChild">--}}
+                                                {{--{{t('Meaning translation')}}--}}
+                                            {{--</td>--}}
+                                        {{--</tr class="tr-head">--}}
+                                        {{--@foreach( $context_list as $context_key => $context)--}}
+                                            {{--@if (array_key_exists('phrases', $context))--}}
+                                                {{--@foreach( $context['phrases'] as $phrase)--}}
+                                                {{--@if($context_key != 0)--}}
+                                                    {{--<tr class="tr-context tr-context-{{$context['context_id']}} hidden">--}}
+                                                {{--@else--}}
+                                                    {{--<tr class="tr-context tr-context-{{$context['context_id']}}">--}}
+                                                {{--@endif--}}
+                                                {{--<td class="text-center">{{ucwords($phrase['phrase'])}}</td>--}}
+                                                {{--<td class="text-center">{{$phrase['meaning']}}</td>--}}
+                                                {{--<td class="text-center">--}}
+                                                    {{--@if($phrase['illustration'] != '')--}}
+                                                        {{--<img src="{!! asset('storage/'.$phrase['illustration']) !!}" class="tableImg">--}}
+                                                    {{--@else--}}
+                                                        {{--<p>{{t('-')}}</p>--}}
+                                                    {{--@endif--}}
+                                                {{--</td>--}}
+                                                {{--<td class="text-center">--}}
+                                                    {{--@php--}}
+                                                        {{--$testing                = [];--}}
+                                                        {{--$related_phrase_count   = 0;--}}
+                                                    {{--@endphp--}}
+                                                    {{--@foreach($phrase['related_phrase'] as $key=>$related_phrase)--}}
+                                                        {{--@if( $related_phrase->relatedPhrases != null)--}}
+                                                            {{--@if(!empty($related_phrase->relatedPhrases->phrase_text))--}}
+                                                                {{--@php--}}
+                                                                    {{--$related_phrase_count = $related_phrase_count + 1;--}}
+                                                                    {{--$testing[$key]='<a href="#" onclick="openRelatedPhrase(event, '.$related_phrase->relatedPhrases->phrase_id.')">'.ucwords($related_phrase->relatedPhrases->phrase_text).'</a>';--}}
+                                                                {{--@endphp--}}
+                                                            {{--@endif--}}
+                                                        {{--@endif--}}
+                                                    {{--@endforeach--}}
+                                                    {{--{!! implode(', ', $testing) !!}--}}
+                                                    {{--@if( ! $related_phrase_count > 0)--}}
+                                                        {{--<p>{{t('-')}}</p>--}}
+                                                    {{--@endif--}}
+                                                {{--</td>--}}
+                                                {{--<td class="text-center">--}}
+                                                    {{--@if(count($phrase['translation']) > 0)--}}
+                                                        {{--@foreach($phrase['translation'] as $translation)--}}
+                                                            {{--@if($translation['language'] == 'Spanish')--}}
+                                                                {{--<p class="hidden phrase trans_sp">{{ $translation['phrase_translation'] }}</p>--}}
+                                                            {{--@elseif($translation['language'] == 'Hindi')--}}
+                                                                {{--<p class="hidden phrase trans_hi">{{ $translation['phrase_translation'] }}</p>--}}
+                                                            {{--@elseif($translation['language'] == 'Chinese')--}}
+                                                                {{--<p class="hidden phrase trans_ch">{{ $translation['phrase_translation'] }}</p>--}}
+                                                            {{--@elseif($translation['language'] == 'French')--}}
+                                                                {{--<p class="phrase trans_fr">{{ $translation['phrase_translation'] }}</p>--}}
+                                                            {{--@endif--}}
+                                                        {{--@endforeach--}}
+                                                        {{--<p class="hidden phrase trans_none">{{t('-')}}</p>--}}
+                                                    {{--@else--}}
+                                                        {{--<p class="phrase trans_none">{{t('-')}}</p>--}}
+                                                    {{--@endif--}}
+                                                {{--</td>--}}
+                                                {{--<td class="lastChild text-center">--}}
+                                                    {{--@if(count($phrase['translation']) > 0)--}}
+                                                        {{--@foreach($phrase['translation'] as $translation)--}}
+                                                            {{--@if($translation['language'] == 'Spanish')--}}
+                                                                {{--<p class="hidden phrase_meaning trans_sp">{{ $translation['translation'] }}</p>--}}
+                                                            {{--@elseif($translation['language'] == 'Hindi')--}}
+                                                                {{--<p class="hidden phrase_meaning trans_hi">{{ $translation['translation'] }}</p>--}}
+                                                            {{--@elseif($translation['language'] == 'Chinese')--}}
+                                                                {{--<p class="hidden phrase_meaning trans_ch">{{ $translation['translation'] }}</p>--}}
+                                                            {{--@elseif($translation['language'] == 'French')--}}
+                                                                {{--<p class="phrase_meaning trans_fr">{{ $translation['translation'] }}</p>--}}
+                                                            {{--@endif--}}
+                                                        {{--@endforeach--}}
+                                                            {{--<p class="hidden phrase_meaning trans_none">{{t('-')}}</p>--}}
+                                                    {{--@else--}}
+                                                        {{--<p class="phrase_meaning trans_none">{{t('-')}}</p>--}}
+                                                    {{--@endif--}}
+                                                {{--</td>--}}
+                                            {{--</tr>--}}
+                                            {{--@endforeach--}}
+                                            {{--@endif--}}
+                                        {{--@endforeach--}}
+                                            {{--<tr class="tr-context tr-context-none hidden">--}}
+                                                {{--<td colspan="6">--}}
+                                                    {{--<p class="record-message">{{t('No Phrases for this Context!')}}</p>--}}
+                                                {{--</td>--}}
+                                            {{--</tr>--}}
+                                        {{--</tbody>--}}
+                                    {{--</table>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                            {{--<div id="tab2" class="tab-pane fade">--}}
+                                {{--<div class="table-responsive">--}}
+                                    {{--<table class="table contextTable">--}}
+                                        {{--<tbody>--}}
+                                            {{--<tr>--}}
+                                                {{--<td></td>--}}
+                                                {{--<td></td>--}}
+                                                {{--<td></td>--}}
+                                                {{--<td></td>--}}
+                                                {{--<td></td>--}}
+                                                {{--<td class="text-right">--}}
+                                                    {{--<select class="languageBar" onchange="languageChange(this)">--}}
+                                                        {{--<option value="fr">{{t('French')}}</option>--}}
+                                                        {{--<option value="sp">{{t('Spanish')}}</option>--}}
+                                                        {{--<option value="hi">{{t('Hindi')}}</option>--}}
+                                                        {{--<option value="ch">{{t('Chinese')}}</option>--}}
+                                                    {{--</select>--}}
+                                                {{--</td>--}}
+                                            {{--</tr>--}}
+                                            {{--<tr class="tr-head">--}}
+                                                {{--<td class="text-center">{{t('Jargon')}}</td>--}}
+                                                {{--<td class="text-center">{{t('Meaning')}}</td>--}}
+                                                {{--<td class="text-center">{{t('Illustration')}}</td>--}}
+                                                {{--<td class="text-center">{{t('Related items')}} </td>--}}
+                                                {{--<td class="text-center">{{t('Phrase Translation')}}</td>--}}
+                                                {{--<td class="text-right lastChild">--}}
+                                                    {{--{{t('Meaning Translation')}}--}}
+                                                {{--</td>--}}
+                                            {{--</tr>--}}
+                                            {{--@foreach( $context_list as $context_key => $context)--}}
+                                                {{--@if (array_key_exists('phrases', $context))--}}
+                                                    {{--@foreach( $context['phrases'] as $phrase)--}}
+                                                        {{--@foreach($phrase['related_phrase'] as $related_phrase)--}}
+                                                            {{--@if($related_phrase['details']['phrase'] != '')--}}
+                                                            {{--@if($context_key != 0)--}}
+                                                            {{--<tr class="tr-context tr-context-{{$context['context_id']}} hidden">--}}
+                                                            {{--@else--}}
+                                                            {{--<tr class="tr-context tr-context-{{$context['context_id']}}">--}}
+                                                            {{--@endif--}}
+                                                                {{--<td class="text-center">--}}
+                                                                    {{--{!!ucwords($related_phrase['details']['phrase'])!!}--}}
+                                                                {{--</td>--}}
+                                                                {{--<td class="text-center">--}}
+                                                                    {{--{!! $related_phrase['details']['meaning'] !!}--}}
+                                                                {{--</td>--}}
+                                                                {{--<td class="text-center">--}}
+                                                                    {{--@if($related_phrase['details']['illustration'] != '')--}}
+                                                                        {{--<img src="{!! asset('storage/'.$related_phrase['details']['illustration']) !!}" class="tableImg">--}}
+                                                                    {{--@else--}}
+                                                                        {{--<p>{{t('-')}}</p>--}}
+                                                                    {{--@endif--}}
+                                                                {{--</td>--}}
+                                                                {{--<td  class="text-center" id="related_phrase_td_{{$related_phrase['related_phrase_id']}}">--}}
+                                                                {{--@if( count($related_phrase['details']['related_phrase']) > 0)--}}
+                                                                    {{--@php--}}
+                                                                        {{--$testing1              = [];--}}
+                                                                        {{--$related_phrase_count1 = 0;--}}
+                                                                    {{--@endphp--}}
+                                                                    {{--@foreach($related_phrase['details']['related_phrase'] as $rel_phrase_key => $rel_phrase)--}}
+                                                                        {{--@if( $rel_phrase->relatedPhrases != null)--}}
+                                                                            {{--@if( $rel_phrase->relatedPhrases->phrase_text != '')--}}
+                                                                                {{--@php--}}
+                                                                                    {{--$related_phrase_count1 = $related_phrase_count1 + 1;--}}
+                                                                                    {{--$testing1[$rel_phrase_key]=ucwords($rel_phrase->relatedPhrases->phrase_text);--}}
+                                                                                {{--@endphp--}}
+                                                                            {{--@endif--}}
+                                                                        {{--@endif--}}
+                                                                    {{--@endforeach--}}
+                                                                    {{--{!! implode(', ', $testing1) !!}--}}
+                                                                    {{--@if( ! $related_phrase_count1 > 0)--}}
+                                                                        {{--<p>{{t('-')}}</p>--}}
+                                                                    {{--@endif--}}
+                                                                {{--@endif--}}
+                                                                {{--</td>--}}
+                                                                {{--<td class="text-center">--}}
+                                                                    {{--@if(count($related_phrase['details']['translation']) > 0)--}}
+                                                                        {{--@foreach($related_phrase['details']['translation'] as $translation)--}}
+                                                                            {{--@if($translation['language'] == 'Spanish')--}}
+                                                                                {{--<p class="hidden phrase trans_sp">{{ $translation['phrase_translation'] }}</p>--}}
+                                                                            {{--@elseif($translation['language'] == 'Hindi')--}}
+                                                                                {{--<p class="hidden phrase trans_hi">{{ $translation['phrase_translation'] }}</p>--}}
+                                                                            {{--@elseif($translation['language'] == 'Chinese')--}}
+                                                                                {{--<p class="hidden phrase trans_ch">{{ $translation['phrase_translation'] }}</p>--}}
+                                                                            {{--@elseif($translation['language'] == 'French')--}}
+                                                                                {{--<p class="phrase trans_fr">{{ $translation['phrase_translation'] }}</p>--}}
+                                                                            {{--@endif--}}
+                                                                        {{--@endforeach--}}
+                                                                        {{--<p class="hidden phrase trans_none">{{t('-')}}</p>--}}
+                                                                    {{--@else--}}
+                                                                        {{--<p class="phrase trans_none">{{t('-')}}</p>--}}
+                                                                    {{--@endif--}}
+                                                                {{--</td>--}}
+                                                                {{--<td class="lastChild text-center">--}}
+                                                                    {{--@if(count($related_phrase['details']['translation']) > 0)--}}
+                                                                        {{--@foreach($related_phrase['details']['translation'] as $translation)--}}
+                                                                            {{--@if($translation['language'] == 'Spanish')--}}
+                                                                                {{--<p class="hidden phrase_meaning trans_sp">{{ $translation['translation'] }}</p>--}}
+                                                                            {{--@elseif($translation['language'] == 'Hindi')--}}
+                                                                                {{--<p class="hidden phrase_meaning trans_hi">{{ $translation['translation'] }}</p>--}}
+                                                                            {{--@elseif($translation['language'] == 'Chinese')--}}
+                                                                                {{--<p class="hidden phrase_meaning trans_ch">{{ $translation['translation'] }}</p>--}}
+                                                                            {{--@elseif($translation['language'] == 'French')--}}
+                                                                                {{--<p class="phrase_meaning trans_fr">{{ $translation['translation'] }}</p>--}}
+                                                                            {{--@endif--}}
+                                                                        {{--@endforeach--}}
+                                                                        {{--<p class="hidden phrase_meaning trans_none">{{t('-')}}</p>--}}
+                                                                    {{--@else--}}
+                                                                        {{--<p class="phrase_meaning trans_none">{{t('-')}}</p>--}}
+                                                                    {{--@endif--}}
+                                                                {{--</td>--}}
+                                                            {{--</tr>--}}
+                                                            {{--@endif--}}
+                                                        {{--@endforeach--}}
+                                                    {{--@endforeach--}}
+                                                {{--@endif--}}
+                                            {{--@endforeach--}}
+                                            {{--<tr class="tr-context tr-context-none hidden">--}}
+                                                {{--<td colspan="6">--}}
+                                                    {{--<p class="record-message">{{t('No Phrases for this Context!')}}</p>--}}
+                                                {{--</td>--}}
+                                            {{--</tr>--}}
+                                        {{--</tbody>--}}
+                                    {{--</table>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
                 </div>
             </div>
         @endif
@@ -375,7 +369,7 @@
             }
             else{
                 $('#error_upload').removeClass('hidden');
-                $('#error_upload').html('Only .txt type files can be uploaded!');
+                $('#error_upload').html('Only .txt and .docx type files can be uploaded!');
                 $('#count').html('Characters: '+$("#meaning-area").val().length+' / 2500');
             }
         }

@@ -55,3 +55,12 @@
     padding: 0 !important;
     margin-bottom: 15px !important;
 }
+.sidebar-mini.sidebar-collapse .sidebar-menu>li:hover>a>span:not(.pull-right), .sidebar-mini.sidebar-collapse .sidebar-menu>li:hover>.treeview-menu{
+    width: 200px !important;
+}
+.skin-blue-light ul.sidebar-menu li.treeview:last-child{
+    margin-bottom: 70px !important;
+}
+img.logo-admin-mini {
+    height: 30px;
+}

@@ -47,6 +47,7 @@
                     @endif
                 @endif
                 <li class="{{ (Request::segment(2) == 'contact-us') ? 'active' : '' }}"><a href="{!! lang_route('contactUs') !!}" class="menu13" style="{{ (Request::segment(2) == 'contact-us') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Contact Us') !!}</span></a></li>
+                <li class="{{ (Request::segment(2) == 'about-us') ? 'active' : '' }}"><a href="{!! lang_route('aboutUs') !!}" class="menu13" style="{{ (Request::segment(2) == 'about-us') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('About Us') !!}</span></a></li>
             </ul>
         </div>
     </div>
