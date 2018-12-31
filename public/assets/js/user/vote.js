@@ -17,6 +17,17 @@ $(".illustrator-div .illustrators-active").click(function () {
     $(this).addClass('active-illustrator');
     $('#submit-button').addClass('grey');
     $('#submit-button').attr("disabled", true);
+
+});
+
+$(".illustrator-div .fancybox ").click(function () {
+    $('.make-unchecked').prop( "checked", false );
+    var check=$('#rules').find('input[type=checkbox]:checked').length;
+    $(this).siblings().removeClass('active-illustrator');
+    $(this).addClass('active-illustrator');
+    $('#submit-button').addClass('grey');
+    $('#submit-button').attr("disabled", true);
+
 });
 $('.make-unchecked').click(function () {
 
