@@ -41,6 +41,6 @@ $('.make-unchecked').click(function () {
 
 $(".illustrator-div .fancybox").click(function () {
     $(this).parent().next()attr('checked', true);
-    console.log($(this).parent().next()attr('checked', true));
+    console.log($(this).parent().next().attr('checked', true));
     var check=$('#rules').find('input[type=checkbox]:checked').length;
 });
