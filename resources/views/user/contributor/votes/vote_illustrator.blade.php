@@ -30,10 +30,10 @@
                             @foreach($illustrators['illustrators'] as $illustrator)
                                 <div class="col-sm-6 col-md-4 illustrators-active @if(old('illustrator')==$illustrator['id']) active-illustrator @endif">
                                     <div class="illustrations-block">
-                                        <label class="coin illustrator"><input type="radio" name="illustrator" @if(old('illustrator')==$illustrator['id']) checked @endif value="{!! $illustrator['id'] !!}"> </label>
+                                        <label class="coin illustrator"><input type="radio" class="illustrator-checkbox" name="illustrator" @if(old('illustrator')==$illustrator['id']) checked @endif value="{!! $illustrator['id'] !!}">
                                         <img src="{!! asset('storage') !!}/{!! $illustrator['illustrator'] !!}" class="main-img">
                                         <div class="mask"></div>
-                                        <a class="fancybox" href="{!! asset('storage') !!}/{!! $illustrator['illustrator'] !!}" data-fancybox-group="gallery"><i class="fa fa-search"></i></a>
+                                        <a class="fancybox" href="{!! asset('storage') !!}/{!! $illustrator['illustrator'] !!}" data-fancybox-group="gallery"><i class="fa fa-search"></i></a></label>
                                     </div>
                                 </div>
                             @endforeach
