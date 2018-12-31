@@ -38,3 +38,7 @@ $('.make-unchecked').click(function () {
     }
 
 });
+$(".illustrator-div .fancybox .fa-search").click(function () {
+    $('.illustrator-checkbox').attr('checked',true);
+    $(this).parent().parent().find('.illustrator-checkbox').attr('checked',true);
+});
