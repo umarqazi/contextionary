@@ -18,6 +18,10 @@ $(".illustrator-div .illustrators-active").click(function () {
     $('#submit-button').addClass('grey');
     $('#submit-button').attr("disabled", true);
 });
+$(".illustrator-div .fancybox").click(function () {
+    $('.illustrator-checkbox').prop('checked', false);
+    $(this).parent().next('.illustrator-checkbox').prop('checked', true);
+});
 $('.make-unchecked').click(function () {
 
     var check=$('#rules').find('input[type=checkbox]:checked').length;
@@ -39,10 +43,4 @@ $('.make-unchecked').click(function () {
         }
     }
 
-});
-
-$(".illustrator-div .fancybox").click(function () {
-    $(this).parent().next().attr('checked', true);
-    console.log($(this).parent().next().attr('checked', true));
-    var check=$('#rules').find('input[type=checkbox]:checked').length;
 });
