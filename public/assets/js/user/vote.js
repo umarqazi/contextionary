@@ -19,8 +19,8 @@ $(".illustrator-div .illustrators-active").click(function () {
     $('#submit-button').attr("disabled", true);
 });
 $(".illustrator-div .fancybox").click(function () {
-    $('.illustrator-checkbox').prop('checked', false);
-    $(this).parent().next('.illustrator-checkbox').prop('checked', true);
+    $('.illustrator-checkbox').attr('checked', false);
+    $(this).parent().next('.illustrator-checkbox').attr('checked', true);
 });
 $('.make-unchecked').click(function () {
 
