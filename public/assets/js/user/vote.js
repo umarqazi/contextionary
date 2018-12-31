@@ -21,12 +21,22 @@ $(".illustrator-div .illustrators-active").click(function () {
 });
 
 $(".illustrator-div .fancybox ").click(function () {
-    $('.make-unchecked').prop( "checked", false );
     var check=$('#rules').find('input[type=checkbox]:checked').length;
-    $(this).siblings().removeClass('active-illustrator');
-    $(this).addClass('active-illustrator');
-    $('#submit-button').addClass('grey');
-    $('#submit-button').attr("disabled", true);
+    var radioCheck=$('#radio-check').find('input[type=radio]:checked').length;
+    var illustrator=$('#illustrator-rules').find('input[type=checkbox]:checked').length;
+    if(radioCheck >= 1){
+        if(check >= 4){
+            $('#submit-button').removeClass('grey');
+            $('#submit-button').removeAttr("disabled");
+        }else if(illustrator >= 3){
+            $('#submit-button').removeClass('grey');
+            $('#submit-button').removeAttr("disabled", true);
+        }
+        else{
+            $('#submit-button').addClass('grey');
+            $('#submit-button').attr("disabled", true);
+        }
+    }
 
 });
 $('.make-unchecked').click(function () {
