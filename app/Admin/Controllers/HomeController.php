@@ -46,7 +46,10 @@ class HomeController extends Controller
                 $user_controller->userCount().
                 $bidding_expiry_controller->phraseCountInDefine().
                 $bidding_expiry_controller->phrasecountInIllustration().
-                $bidding_expiry_controller->phraseCountInTranslation()
+                $bidding_expiry_controller->phraseCountInTranslation().
+                $bidding_expiry_controller->phraseCountInVoteDefine().
+                $bidding_expiry_controller->phrasecountInVoteIllustration().
+                $bidding_expiry_controller->phraseCountInVoteTranslation()
             );
         });
     }
