@@ -23,6 +23,8 @@ $('.make-unchecked').click(function () {
     var check=$('#rules').find('input[type=checkbox]:checked').length;
     var radioCheck=$('#radio-check').find('input[type=radio]:checked').length;
     var illustrator=$('#illustrator-rules').find('input[type=checkbox]:checked').length;
+    alert(radioCheck);
+    alert(illustrator);
     if(radioCheck >= 1){
         if(check >= 4){
             $('#submit-button').removeClass('grey');
