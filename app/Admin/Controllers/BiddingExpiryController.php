@@ -141,10 +141,10 @@ class BiddingExpiryController extends Controller
         return view('admin::dashboard.phrase_block',
             [
                 'color'     => 'red',
-                'label'     => 'Phrase in Define Bidding Phase',
+                'label'     => 'Writer Bidding Phase',
                 'value'     => $phrase_count,
                 'url'       => '/admin/auth/bidding-expiry',
-                'urlLabel'  => 'All Phrases in Define Bidding Phase'
+                'urlLabel'  => 'All Writer Bidding Phase'
             ]
         );
     }
@@ -157,10 +157,10 @@ class BiddingExpiryController extends Controller
         return view('admin::dashboard.phrase_block',
             [
                 'color'     => 'yellow',
-                'label'     => 'Phrase in Illustrator Bidding Phase',
+                'label'     => 'Illustrator Bidding Phase',
                 'value'     => $phrase_count,
                 'url'       => '/admin/auth/bidding-expiry',
-                'urlLabel'  => 'All Phrases in Illustrator Bidding Phase'
+                'urlLabel'  => 'All Illustrator Bidding Phase'
             ]
         );
     }
@@ -173,10 +173,10 @@ class BiddingExpiryController extends Controller
         return view('admin::dashboard.phrase_block',
             [
                 'color'     => 'green',
-                'label'     => 'Phrase in Translator Bidding Phase',
+                'label'     => 'Translator Bidding Phase',
                 'value'     => $phrase_count,
                 'url'       => '/admin/auth/bidding-expiry',
-                'urlLabel'  => 'All Phrases in Translator Bidding Phase'
+                'urlLabel'  => 'All Translator Bidding Phase'
             ]
         );
     }
@@ -188,10 +188,10 @@ class BiddingExpiryController extends Controller
         return view('admin::dashboard.phrase_block',
             [
                 'color'     => 'red',
-                'label'     => 'Phrase in Define Voting Phase',
+                'label'     => 'Writer Voting Phase',
                 'value'     => $phrase_count,
                 'url'       => '/admin/auth/vote-expiry',
-                'urlLabel'  => 'All Phrases in Define Voting Phase'
+                'urlLabel'  => 'All Writer Voting Phase'
             ]
         );
     }
@@ -204,10 +204,10 @@ class BiddingExpiryController extends Controller
         return view('admin::dashboard.phrase_block',
             [
                 'color'     => 'yellow',
-                'label'     => 'Phrase in Illustrator Voting Phase',
+                'label'     => 'Illustrator Voting Phase',
                 'value'     => $phrase_count,
                 'url'       => '/admin/auth/vote-expiry',
-                'urlLabel'  => 'All Phrases in Illustrator Voting Phase'
+                'urlLabel'  => 'All Illustrator Voting Phase'
             ]
         );
     }
@@ -220,10 +220,10 @@ class BiddingExpiryController extends Controller
         return view('admin::dashboard.phrase_block',
             [
                 'color'     => 'green',
-                'label'     => 'Phrase in Translator Voting Phase',
+                'label'     => 'Translator Voting Phase',
                 'value'     => $phrase_count,
                 'url'       => '/admin/auth/vote-expiry',
-                'urlLabel'  => 'All Phrases in Translator Voting Phase'
+                'urlLabel'  => 'All Translator Voting Phase'
             ]
         );
     }
