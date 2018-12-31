@@ -50,7 +50,7 @@ class ContextRepo
      * @return mixed
      */
     public function findById($context){
-        return $this->context->findById($context);
+        return $this->context->where('context_id', $context)->first();
     }
 
 

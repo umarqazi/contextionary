@@ -14,6 +14,7 @@ Route::group([
     $router->resource('auth/simple-users-permissions', 'PermissionController');
     $router->resource('auth/texts', 'MultiLangController')->only('store', 'index', 'update','destroy','create');
     $router->resource('auth/tutorials', 'TutorialsController')->only('edit', 'update','show');
+    $router->resource('auth/about-us', 'AboutUsController')->only('edit', 'update','show');
     $router->resource('auth/fun-facts', 'FunFactsController');
     $router->resource('auth/settings', 'SettingsController');
     $router->resource('auth/contact-us-msgs', 'ContactUsController')->only('index', 'show');

@@ -32,7 +32,14 @@ class TutorialsRepo extends BaseRepo implements IRepo
     /**
      * @return mixed
      */
-    public function first(){
-        return $this->tutorials->first();
+    public function firstUser(){
+        return $this->tutorials->where('type', 'user')->first();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function firstContributor(){
+        return $this->tutorials->where('type', 'contributor')->first();
     }
 }

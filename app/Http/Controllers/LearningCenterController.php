@@ -28,19 +28,17 @@ class LearningCenterController extends Controller
     protected $contributor_service;
     protected $mutualService;
 
+    /**
+     * LearningCenterController constructor.
+     */
     public function __construct()
     {
-        $context_service                =   new ContextService();
-        $phrase_service                 =   new PhraseService();
-        $context_phrase_service         =   new ContextPhraseService();
-        $meaning_service                =   new MeaningService();
-        $contributor_service            =   new ContributorService();
-        $this->context_service          =   $context_service;
-        $this->phrase_service           =   $phrase_service;
-        $this->context_phrase_service   =   $context_phrase_service;
-        $this->meaning_service          =   $meaning_service;
-        $this->contributor_service      =   $contributor_service;
-        $this->mutualService            =  new MutualService();
+        $this->context_service          =   new ContextService();
+        $this->phrase_service           =   new PhraseService();
+        $this->context_phrase_service   =   new ContextPhraseService();
+        $this->meaning_service          =   new MeaningService();
+        $this->contributor_service      =   new ContributorService();
+        $this->mutualService            =   new MutualService();
     }
 
     /**
@@ -62,7 +60,7 @@ class LearningCenterController extends Controller
             $context_array[$context['contexts']['context_name']]['context_name'] = $context['contexts']['context_name'];
         }
         ksort($context_array);
-        $contexts=$this->mutualService->paginatedRecord($context_array, 'explore-context', 100);
+        $contexts=$this->mutualService->paginatedRecord($context_array, 'learning-center/explore-context', 100);
         return View::make('user.user_plan.learning_center.explore_context')->with('contexts', $contexts);
     }
 
@@ -144,6 +142,59 @@ class LearningCenterController extends Controller
             'shared_words_arry' => $shared_word_details,
             'type'              => 'context_forwarded'
         ]);
+    }
+
+    /**
+     * @param $context_id
+     * @param $phrase_id
+     * @return mixed
+     */
+    public function phraseDetail3($context_id, $phrase_id){
+        $context            = $this->context_service->findById($context_id);
+        $phrase             = $this->phrase_service->findById($phrase_id);
+        $data = [
+            'context_id'    => $context->context_id,
+            'phrase_id'     => $phrase->phrase_id,
+            'position'      => 1,
+        ];
+        $meaning            = $this->meaning_service->meaningData($data);
+        $related_phrases    = $this->context_phrase_service->getRelatedPhrase($context_id, $phrase_id);
+        $translations       = $this->contributor_service->getTranslations($data);
+        $illustration       = $this->contributor_service->getIllustration($data);
+        if($illustration != null){
+            $illustration = $illustration->illustrator;
+        }
+        $phrase_words       = explode(' ', $phrase->phrase_text);
+        $shared_word_details= $this->sharedWords($phrase, $phrase_words);
+        return View::make('user.user_plan.learning_center.detail_context')->with([
+            'context'           => $context->context_name,
+            'context_id'        => $context->context_id,
+            'phrase'            => $phrase->phrase_text,
+            'meaning'           => $meaning,
+            'translations'      => $translations,
+            'illustration'      => $illustration,
+            'related_phrases'   => $related_phrases,
+            'phrase_words'      => $phrase_words,
+            'shared_words_arry' => $shared_word_details,
+            'type'              => 'context_phrase_forwarded'
+        ]);
+    }
+
+    /**
+     * @param $phrase_id
+     * @return mixed
+     */
+    public function phraseContext($phrase_id){
+        $phrase             =   $this->phrase_service->findById($phrase_id);
+        $contexts           =   $this->context_phrase_service->getPhraseContext($phrase_id);
+        $context_array=[];
+        foreach($contexts as $key=>$context) {
+            $context_array[$context['contexts']['context_name']]['context_id'] = $context['context_id'];
+            $context_array[$context['contexts']['context_name']]['context_name'] = $context['contexts']['context_name'];
+        }
+        ksort($context_array);
+        $contexts=$this->mutualService->paginatedRecord($context_array, 'learning-center/explore-context-phrase/'.$phrase_id, 100);
+        return View::make('user.user_plan.learning_center.explore_context')->with(['phrase'=> $phrase,'contexts'=> $contexts, 'type' => 'phares_context']);
     }
 
     /**

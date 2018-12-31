@@ -6,16 +6,23 @@
 <div class="container-fluid contributorMain userExploreWord userExploreContext2">
     @include('layouts.flc_header')
     <div class="row mt-4">
-        <div class="col-sm-6">
-            <div class="exploreTitle">Explore a context</div>
-        </div>
+        @if(!isset($type))
+            <div class="col-sm-6">
+                <div class="exploreTitle">{{t('Explore a context')}}</div>
+            </div>
+        @else
+            <div class="col-sm-6">
+                <div class="exploreTitle">{{t('Contexts for')}} {{$phrase->phrase_text}}</div>
+            </div>
+        @endif
         <div class="col-sm-6 text-right">
             <a href="{!! lang_route('l-center') !!}" class="orangeBtn">Back</a>
         </div>
-
-        <div class="col-sm-12 mt-3">
-            @include('user.user_plan.learning_center.context_search')
-        </div>
+        @if(!isset($type))
+            <div class="col-sm-12 mt-3">
+                @include('user.user_plan.learning_center.context_search')
+            </div>
+        @endif
 
         <div class="col-lg-12 col-md-6 mt-5">
             <div class="row">
@@ -34,7 +41,15 @@
                         @endphp
                         <div class="col-md-4">
                             <div class="phrase-body mb-0">
-                                <p class="text-white text-capitalize"><a href="{!! lang_url('learning-center/explore-context', ['context'=>$context['context_id']]) !!}">{{ucfirst($context['context_name'])}}</a></p>
+                                @if(isset($type))
+                                    @if($type == 'phares_context')
+                                        <p class="text-white text-capitalize"><a href="{!! lang_url('learning-center/explore-context-phrase', ['context'=> $context['context_id'], 'phrase'=>$phrase->phrase_id ]) !!}">{{ucfirst($context['context_name'])}}</a></p>
+                                    @else
+                                        <p class="text-white text-capitalize"><a href="{!! lang_url('learning-center/explore-context', ['context'=>$context['context_id']]) !!}">{{ucfirst($context['context_name'])}}</a></p>
+                                    @endif
+                                @else
+                                    <p class="text-white text-capitalize"><a href="{!! lang_url('learning-center/explore-context', ['context'=>$context['context_id']]) !!}">{{ucfirst($context['context_name'])}}</a></p>
+                                @endif
                             </div>
                         </div>
                     @endforeach

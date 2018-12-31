@@ -33,7 +33,14 @@ class TutorialsService extends BaseService implements IService
     /**
      * @return mixed
      */
-    public function first(){
-        return $this->tutorials_repo->first();
+    public function firstUser(){
+        return $this->tutorials_repo->firstUser();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function firstContributor(){
+        return $this->tutorials_repo->firstContributor();
     }
 }

@@ -1,21 +1,18 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Tutorials') !!}
+    {!! t('About Us') !!}
 @stop
 @section('content')
 <div class="container-fluid contributorMain userTutorial">
-    <div class="wrapperMask"></div>
-    @if(Auth::user()->hasRole(Config::get('constant.userRole')))
-        @include('layouts.flc_header')
-    @endif
+    @include('layouts.flc_header')
     <div class="row mt-4">
         <div class="col-md-12 tut-div">
-            @if($tutorial != null)
-                {!! html_entity_decode($tutorial) !!}
+            @if($about_us != null)
+                {!! html_entity_decode($about_us) !!}
             @else
                 <div class="col-md-12">
                     <div class="text-center">
-                        <strong class="record-message">{!! t('No Tutorials available') !!}</strong>
+                        <strong class="record-message">{!! t('About Us') !!}</strong>
                     </div>
                 </div>
             @endif
