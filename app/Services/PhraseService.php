@@ -50,21 +50,21 @@ class PhraseService extends BaseService implements IService
      * @return mixed
      */
    public function countInDefineVotePhase(){
-        return $this->phrase_repo->countInDefinePhase();
+        return $this->phrase_repo->countInDefineVotePhase();
    }
 
     /**
      * @return mixed
      */
    public function countInIllustrationVotePhase(){
-        return $this->phrase_repo->countInIllustrationPhase();
+        return $this->phrase_repo->countInIllustrationVotePhase();
    }
 
     /**
      * @return mixed
      */
    public function countInTranslationVotePhase(){
-        return $this->phrase_repo->countInTranslationPhase();
+        return $this->phrase_repo->countInTranslationVotePhase();
    }
 
     /**
