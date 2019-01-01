@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/uploads
+/public/
 /storage/*.key
 /vendor
 /.idea
@@ -15,3 +17,4 @@ config/database.php
 public/assets/images/*
 /storage/*
 /storage/app/*
+/.gitignore

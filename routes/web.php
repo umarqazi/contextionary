@@ -17,7 +17,9 @@ MultiLang::routeGroup(function($router) {
             return view('landing');
         })->name('homescreen');
         Route::get('/home', 'HomeController@index')->name('home');
+        Route::get('/about-us', 'AboutUsController@index')->name('aboutUs');
         Route::get('/test', 'CronController@subscriptionCheck');
+        Route::post('/test2', 'ReadingAssistantController@docxToText');
         Route::get('/test-redeem-success', 'UserdController@ts');
         Route::get('/test-redeem-cancel', 'UserdController@tc');
         Route::get('verificationEmail', 'Auth\RegisterController@sendVerificationEmail');
@@ -43,6 +45,7 @@ MultiLang::routeGroup(function($router) {
             Route::post('saveContributor', 'ContributorController@saveContributor')->name('saveContributor');
 
             Route::group(['middleware' => 'checkContributor'], function () {
+                Route::get('tutorials-contributor', 'TutorialsController@index_contributor')->name('tutorials-con');
                 Route::get('edit-roles', 'UsersController@editRoles')->name('edit-roles');
                 Route::group(array('prefix' => 'define', 'middleware' => 'define'), function () {
                     Route::get('/', 'ContributorController@define')->name('define');
@@ -97,7 +100,11 @@ MultiLang::routeGroup(function($router) {
                     Route::get('learning-center/explore-context', 'LearningCenterController@exploreContext')->name('explore-context');
                     Route::get('learning-center/explore-context/{context}', 'LearningCenterController@exploreContextPhrase');
                     Route::get('learning-center/explore-context/{context}/{phrase}', 'LearningCenterController@phraseDetail');
-                    Route::get('learning-center/explore-context-phrase/{phrase}', 'LearningCenterController@phraseDetail2');
+                    Route::group(array('prefix' => 'learning-center/explore-context-phrase'), function() {
+                        Route::get('/{phrase}', 'LearningCenterController@phraseContext');
+                        Route::get('/{context}/{phrase}', 'LearningCenterController@phraseDetail3');
+                    });
+
                     Route::get('learning-center/explore-word', 'LearningCenterController@exploreWord')->name('explore-word');
                     Route::post('learning-center/explore-word-search', 'LearningCenterController@search_word')->name('explore-word-search');
                     Route::get('learning-center/explore-word-search', 'LearningCenterController@exploreWord');
@@ -105,7 +112,7 @@ MultiLang::routeGroup(function($router) {
                     Route::get('my-collection', 'GlossaryController@getListingForAuthUser')->name('my-collection');
                     Route::post('add-to-fav', 'GlossaryController@addToFav');
                     Route::post('remove-from-fav', 'GlossaryController@removeFromFav');
-                    Route::get('tutorials', 'TutorialsController@index')->name('tutorials');
+                    Route::get('tutorials-user', 'TutorialsController@index_user')->name('tutorials-user');
                     Route::get('/switchToContributor', 'UsersController@switchToContributor')->name('switchToContributor');
                     Route::get('/delete-card/{card}', 'UsersController@deleteCard')->name('deleteCard');
                     Route::get('context-finder', 'ReadingAssistantController@contextFinder')->name('context-finder');

@@ -12,6 +12,7 @@ namespace App\Repositories;
 use App\Phrase;
 use App\BiddingExpiry;
 use App\SharedWord;
+use App\VoteExpiry;
 
 class PhraseRepo extends BaseRepo implements IRepo
 {
@@ -20,6 +21,11 @@ class PhraseRepo extends BaseRepo implements IRepo
      * @var BiddingExpiry
      */
     private $bidding_expiry;
+
+    /**
+     * @var VoteExpiry
+     */
+    private $vote_expiry;
 
     /**
      * @var Phrase
@@ -36,11 +42,13 @@ class PhraseRepo extends BaseRepo implements IRepo
      */
     public function __construct()
     {
-        $bidding_expiry = new BiddingExpiry();
-        $this->bidding_expiry = $bidding_expiry;
-        $phrase         = new Phrase();
-        $this->phrase   = $phrase;
-        $this->shared_word    = new SharedWord();
+        $bidding_expiry         = new BiddingExpiry();
+        $this->bidding_expiry   = $bidding_expiry;
+        $vote_expiry            = new VoteExpiry();
+        $this->vote_expiry      = $vote_expiry;
+        $phrase                 = new Phrase();
+        $this->phrase           = $phrase;
+        $this->shared_word      = new SharedWord();
     }
 
     /**
@@ -62,6 +70,26 @@ class PhraseRepo extends BaseRepo implements IRepo
      */
     public function countInTranslationPhase(){
         return $this->bidding_expiry->countPharseInTranslationPhase();
+    }
+    /**
+     * @return mixed
+     */
+    public function countInDefineVotePhase(){
+        return $this->vote_expiry->countPharseInDefinePhase();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function countInIllustrationVotePhase(){
+        return $this->vote_expiry->countPharseInIllustrationPhase();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function countInTranslationVotePhase(){
+        return $this->vote_expiry->countPharseInTranslationPhase();
     }
 
     /**

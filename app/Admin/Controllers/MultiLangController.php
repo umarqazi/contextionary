@@ -45,7 +45,7 @@ class MultiLangController extends Controller
             $grid->column('value', 'Text')->sortable()->editable();
             $grid->filter(function ($filter){
                 $filter->like('key');
-                $filter->like('lang');
+                $filter->like('lang', 'Language');
                 $filter->like('value');
             });
             $grid->disableActions();

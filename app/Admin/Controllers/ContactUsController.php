@@ -66,7 +66,7 @@ class ContactUsController extends Controller
             $grid->first_name()->sortable();
             $grid->last_name()->sortable();
             $grid->email()->sortable();
-            $grid->message();
+//            $grid->message();
             $grid->disableCreateButton();
             $grid->disableExport();
             $grid->column('status')->display(function ($status) {
@@ -130,10 +130,11 @@ SCRIPT;
     {
         return Admin::form(ContactUs::class, function (Form $form) {
             $form->display('id', 'ID');
-            $form->text('first_name', trans('First Name'))->rules('required')->placeholder('Enter First Name...');
-            $form->text('last_name', trans('Last Name'))->rules('required')->placeholder('Enter Last Name...');
-            $form->text('email', trans('Email'))->rules('required')->placeholder('Enter Email...');
-            $form->textarea('message', trans('Message'))->rules('required')->placeholder('Enter Message...');
+            $form->display('first_name', trans('First Name'));
+            $form->display('last_name', trans('Last Name'));
+            $form->display('email', trans('Email'));
+            $form->textarea('message', trans('Message'))->attribute(['disabled' => 'true']);
+            $form->disableReset();
         });
     }
 

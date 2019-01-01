@@ -30,8 +30,22 @@ class TutorialsController extends Controller
     /**
      * @return mixed
      */
-    public function index(){
-        $tutorial = $this->tutorials_service->first();
+    public function index_user()
+    {
+        $tutorial = $this->tutorials_service->firstUser();
+        if (!empty($tutorial)) {
+            $tutorial = $tutorial->content;
+            return View::make('user.user_plan.reading_assistant.tutorials')->with('tutorial', $tutorial);
+        } else {
+            return View::make('user.user_plan.reading_assistant.tutorials')->with('tutorial', null);
+        }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function index_contributor(){
+        $tutorial = $this->tutorials_service->firstContributor();
         if(!empty($tutorial)){
             $tutorial = $tutorial->content;
             return View::make('user.user_plan.reading_assistant.tutorials')->with('tutorial', $tutorial);

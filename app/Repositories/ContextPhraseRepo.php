@@ -68,7 +68,6 @@ class ContextPhraseRepo
     }
 
     /**
-     * @param $contexts
      * @return array
      * get paginated records
      */
@@ -78,8 +77,7 @@ class ContextPhraseRepo
     }
 
     /**
-     * @param $context_id
-     * @param $phrase_id
+     * @param $data
      * @return mixed
      * get Context and meaning
      */
@@ -161,5 +159,13 @@ class ContextPhraseRepo
                 $query->whereRaw( 'LOWER("context_name") like ?',  '%'.strtolower($search).'%' );
             }])->get();
         }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getPhraseContext($id){
+        return $this->contextPhrase->where('phrase_id', $id)->with('contexts')->get();
     }
 }

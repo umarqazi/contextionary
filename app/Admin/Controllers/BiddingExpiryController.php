@@ -141,10 +141,10 @@ class BiddingExpiryController extends Controller
         return view('admin::dashboard.phrase_block',
             [
                 'color'     => 'red',
-                'label'     => 'Phrase in Define Phase',
+                'label'     => 'Writer Bidding Phase',
                 'value'     => $phrase_count,
-                'url'       => '/admin/auth/simple-users',
-                'urlLabel'  => 'All Phrases in Define Phase'
+                'url'       => '/admin/auth/bidding-expiry',
+                'urlLabel'  => 'All Writer Bidding Phase'
             ]
         );
     }
@@ -157,10 +157,10 @@ class BiddingExpiryController extends Controller
         return view('admin::dashboard.phrase_block',
             [
                 'color'     => 'yellow',
-                'label'     => 'Phrase in Illustrator Phase',
+                'label'     => 'Illustrator Bidding Phase',
                 'value'     => $phrase_count,
-                'url'       => '/admin/auth/simple-users',
-                'urlLabel'  => 'All Phrases in Illustrator Phase'
+                'url'       => '/admin/auth/bidding-expiry',
+                'urlLabel'  => 'All Illustrator Bidding Phase'
             ]
         );
     }
@@ -173,10 +173,57 @@ class BiddingExpiryController extends Controller
         return view('admin::dashboard.phrase_block',
             [
                 'color'     => 'green',
-                'label'     => 'Phrase in Translator Phase',
+                'label'     => 'Translator Bidding Phase',
                 'value'     => $phrase_count,
-                'url'       => '/admin/auth/simple-users',
-                'urlLabel'  => 'All Phrases in Translator Phase'
+                'url'       => '/admin/auth/bidding-expiry',
+                'urlLabel'  => 'All Translator Bidding Phase'
+            ]
+        );
+    }
+    /**
+     * @return mixed
+     */
+    public function phraseCountInVoteDefine(){
+        $phrase_count  = $this->phrase_service->countInDefineVotePhase();
+        return view('admin::dashboard.phrase_block',
+            [
+                'color'     => 'red',
+                'label'     => 'Writer Voting Phase',
+                'value'     => $phrase_count,
+                'url'       => '/admin/auth/vote-expiry',
+                'urlLabel'  => 'All Writer Voting Phase'
+            ]
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function phraseCountInVoteIllustration(){
+        $phrase_count  = $this->phrase_service->countInIllustrationVotePhase();
+        return view('admin::dashboard.phrase_block',
+            [
+                'color'     => 'yellow',
+                'label'     => 'Illustrator Voting Phase',
+                'value'     => $phrase_count,
+                'url'       => '/admin/auth/vote-expiry',
+                'urlLabel'  => 'All Illustrator Voting Phase'
+            ]
+        );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function phraseCountInVoteTranslation(){
+        $phrase_count  = $this->phrase_service->countInTranslationVotePhase();
+        return view('admin::dashboard.phrase_block',
+            [
+                'color'     => 'green',
+                'label'     => 'Translator Voting Phase',
+                'value'     => $phrase_count,
+                'url'       => '/admin/auth/vote-expiry',
+                'urlLabel'  => 'All Translator Voting Phase'
             ]
         );
     }

@@ -91,6 +91,7 @@ class RedeemController extends Controller
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-money"></i></a>');
             });
             $grid->disableRowSelector();
+            $grid->disableCreateButton();
         });
     }
 
@@ -118,6 +119,7 @@ class RedeemController extends Controller
             $grid->column('updated_at','Last Updated at')->sortable();
             $grid->disableRowSelector();
             $grid->disableActions();
+            $grid->disableCreateButton();
         });
     }
 

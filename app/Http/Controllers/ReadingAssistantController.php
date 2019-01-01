@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use PhpOffice\PhpWord\IOFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Carbon\Carbon;
 use Auth;
@@ -102,11 +103,11 @@ class ReadingAssistantController extends Controller
         }
 
         $data           =   [
-                                'text'=>$request->context,
-                                'user_id'=>Auth::user()->id,
-                                'date'=>Carbon::now()
+                                'text'      =>  $request->context,
+                                'user_id'   =>  Auth::user()->id,
+                                'date'      =>  Carbon::now()
                             ];
-        $history        =   $this->read_assistant_service->saveHistory($data);
+        $this->read_assistant_service->saveHistory($data);
         $final_string   =   str_replace(' ', '_', $request->context);
         $client         =   new Client();
         $res            =   $client->get('http://54.189.114.107:5400/'.$final_string);
@@ -117,6 +118,7 @@ class ReadingAssistantController extends Controller
             $string                 = [];
             foreach ($body as $context_div) {
                 foreach ($context_div as $context_id => $context) {
+
                     $context_obj = $this->context_service->findById(intval($context_id))->toArray();
                     $final_string_array[$context_id]     = explode("_",$final_string);
                     foreach ($context as $phrase_key => $phrase) {
@@ -125,14 +127,14 @@ class ReadingAssistantController extends Controller
                                 $final_string_array[$context_id][$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
                             }
                         }
-                        $context_obj['phrases'][$phrase_key] = $this->getPhraseDetails($context_id, $phrase);
+//                        $context_obj['phrases'][$phrase_key] = $this->getPhraseDetails($context_id, $phrase);
                     }
                     array_push($context_list, $context_obj);
                     $string[$context_id] = implode(" ",$final_string_array[$context_id]);
                 }
             }
-            $export_data = $this->exportDataGenerator($context_list);
-            Session::put('export_data' , $export_data);
+//            $export_data = $this->exportDataGenerator($context_list);
+//            Session::put('export_data' , $export_data);
             return view::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list]);
         }
     }
@@ -315,6 +317,31 @@ class ReadingAssistantController extends Controller
                                 }
                             }
                         }
+                        $data['French_translation']  = '';
+                        $data['Hindi_translation']  = '';
+                        $data['Spanish_translation']  = '';
+                        foreach($phrases['translation'] as $translation) {
+                            if( isset($translation['translation']) && isset($translation['language']) ){
+                                if($translation['language'] == 'French'){
+                                    $data['French_translation']  = $translation['translation'];
+                                }
+                                elseif($translation['language'] == 'Hindi'){
+                                    $data['Hindi_translation']  = $translation['translation'];
+                                }
+                                elseif($translation['language'] == 'Spanish'){
+                                    $data['Spanish_translation']  = $translation['translation'];
+                                }
+                            }
+                        }
+                        if($data['French_translation']  == '' ){
+                            $data['French_translation'] = '-';
+                        }
+                        if($data['Hindi_translation']  == '' ){
+                            $data['Hindi_translation'] = '-';
+                        }
+                        if($data['Spanish_translation']  == '' ){
+                            $data['Spanish_translation'] = '-';
+                        }
                         $data['related_phrase']        = implode (", ", $related_phrase_array);
                         array_push($data_array,$data);
                     }
@@ -324,4 +351,22 @@ class ReadingAssistantController extends Controller
         return $data_array;
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     * @throws \PhpOffice\PhpWord\Exception\Exception
+     */
+    public function docxToText(Request $request)
+    {
+        $phpWord = IOFactory::createReader('Word2007')->load($request->file('file')->path());
+        $string = '';
+        foreach($phpWord->getSections() as $section) {
+            foreach($section->getElements() as $element) {
+                if(method_exists($element,'getText')) {
+                    $string = $string.$element->getText();
+                }
+            }
+        }
+        return $string;
+    }
 }
