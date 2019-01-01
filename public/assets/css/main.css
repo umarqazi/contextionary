@@ -1820,10 +1820,12 @@ aside .menuCate .menuListing li a.menu18:hover {
     font-size: 58px;
     line-height: normal;
     padding-bottom: 0;
-    margin-bottom: 0px;
     font-weight: bold;
     color: #000;
     text-align: left;
+    border-left: #f7953a solid 4px;
+    padding-left: 10px;
+    margin-bottom: 20px;
 }
 .landingPage .content .companyName:after {
     display: none;
