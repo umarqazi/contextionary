@@ -6,7 +6,7 @@
 </script>
 <div class="menuCate">
   <div class="title">
-    {!! t('Contribute') !!}
+    Contribute
   </div>
   <ul class="menuListing">
     @if(Auth::check())
