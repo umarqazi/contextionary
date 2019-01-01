@@ -34,6 +34,7 @@ MultiLang::routeGroup(function($router) {
             });
             Route::get('validateRole', 'UsersController@validateRole')->name('validate');
             Route::get('selectPlan', 'UsersController@selectPlan')->name('selectPlan');
+            Route::get('basicPlan', 'UsersController@basicPlan')->name('basicPlan');
             Route::get('userPlan', 'UsersController@userPlan')->name('userPlan');
             Route::get('payment/{plan}', 'UsersController@showPaymentInfo')->name('payment');
             Route::post('addmoney/stripe', array('as' => 'addmoney.stripe', 'uses' => 'StripeController@postPaymentWithStripe'));

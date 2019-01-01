@@ -23,7 +23,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'first_name', 'last_name','status', 'token', 'email_token','timezone','cus_id',
+        'name', 'email', 'password', 'first_name', 'last_name','status', 'token', 'email_token','timezone','cus_id','coins'
     ];
 
     /**
@@ -102,5 +102,9 @@ class User extends Authenticatable
      */
     public function userCards(){
         return $this->hasMany(UserCard::class);
+    }
+
+    public function voteMeaning(){
+        return $this->hasMany(VoteMeaning::class);
     }
 }

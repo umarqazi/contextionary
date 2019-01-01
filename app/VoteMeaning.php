@@ -22,4 +22,8 @@ class VoteMeaning extends Model
     public function translate(){
         return $this->belongsto('App\Translation', 'translation_id');
     }
+
+    public function user(){
+        return $this->belongsto('App\User', 'user_id');
+    }
 }

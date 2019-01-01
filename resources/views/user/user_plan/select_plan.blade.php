@@ -13,7 +13,7 @@
         <div class="planBlock">
           <h3 class="orange">{!! t('User Plan') !!}</h3>
           <p>{!! t('User Plan Description') !!}</p>
-          <a href="{!! lang_route('userPlan')!!}" class="orangeBtn mt-4 waves-light">{!! t('continue') !!}</a>
+          <a href="{!! lang_route('basicPlan')!!}" class="orangeBtn mt-4 waves-light">{!! t('continue') !!}</a>
         </div>
       </div>
       <div class="col-md-6">

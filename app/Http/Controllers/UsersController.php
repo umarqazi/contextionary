@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Mail\RedeemPoint;
+use App\Mail\UserPlanMail;
 use App\Profile;
 use App\Repositories\UserPointRepo;
 use App\Services\AuthService;
@@ -265,7 +266,7 @@ class UsersController extends Controller
                 $translation=Auth::user()->defineMeaning->whereIn('status', ['1','3'])->count();
                 $totalContributions=$writer+$illustrator+$translation;
                 if($totalContributions <= 0):
-                    return Redirect::to(lang_url('userPlan'));
+                    $roles=Config::get('constant.userRole.basic plan');
                 elseif($totalContributions >= env('BASIC_MIN') && $totalContributions <= env('BASIC_MAX')):
                     $roles=Config::get('constant.userRole.basic plan');
                 elseif($totalContributions >= env('ADVANCE_MIN') && $totalContributions <= env('ADVANCE_MAX')):
@@ -471,5 +472,18 @@ class UsersController extends Controller
     public function update($id, $data)
     {
         return $this->userServices->updateRecord($id, $data);
+    }
+
+    /**
+     *
+     */
+    public function basicPlan(){
+        if(Auth::check()){
+            $assignRoleToUser   =   $this->userRoles->assign(Auth::user()->id, 1);
+            $email_data=['first_name'=>Auth::user()->first_name,'last_name'=>Auth::user()->last_name];
+            Mail::to(Auth::user()->email)->send(new UserPlanMail($email_data));
+            return Redirect::to(lang_url('dashboard'));
+        }
+        return Redirect::back();
     }
 }

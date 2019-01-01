@@ -90,6 +90,7 @@ class RegisterController extends Controller
             'token' => md5(microtime()),
             'email_token' => base64_encode($data['email']),
             'timezone' => strip_tags($data['timezone']),
+            'coins' => '100',
         ]);
         /**
          * Update User Profile

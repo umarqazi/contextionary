@@ -8,7 +8,7 @@
     <img src="{!! asset('assets/images/landing-logo.png')!!}" class="logo">
     <div class="content">
       <h1 class="companyName">{!! t('Contextionary') !!}</h1>
-      <p class="tagLine mb-3">{!! t('Borderless knowledge') !!}</p>
+      <p class="tagLine mb-3">{!! t('Your illustrated reading comprehension assistant') !!}</p>
     </div>
     <div class="exploreSection">
       <a href="{{lang_route('switchLanguage', ['lang'=>'en'])}}" class="orangeBtn waves-light">Explore</a>
