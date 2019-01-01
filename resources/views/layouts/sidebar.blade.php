@@ -17,17 +17,17 @@
                 </div>
                 <ul class="menuListing">
                     <li class="{{ (Request::segment(2) == 'pictionary') ? 'active' : '' }}">
-                        <a href="{!! lang_route('start-pictionary') !!}" style="{{ (Request::segment(2) == 'pictionary') ? 'background-position: 0 -40px' : '' }}">
+                        <a href="{!! lang_route('start-pictionary') !!}" class="menu20" style="{{ (Request::segment(2) == 'pictionary') ? 'background-position: 0 -40px' : '' }}">
                             <span>Pictionary</span>
                         </a>
                     </li>
                     <li class="{{ (Request::segment(2) == 'intruder') ? 'active' : '' }}">
-                        <a href="{!! lang_route('start-spot-the-intruder') !!}" class="menu2" style="{{ (Request::segment(2) == 'intruder') ? 'background-position: 0 -40px' : '' }}">
+                        <a href="{!! lang_route('start-spot-the-intruder') !!}" class="menu20" style="{{ (Request::segment(2) == 'intruder') ? 'background-position: 0 -40px' : '' }}">
                             <span>Spot the Intruder</span>
                         </a>
                     </li>
                     <li class="{{ (Request::segment(2) == 'hangman' || Request::segment(2) == 'start-hangman') ? 'active' : ''  }}">
-                        <a href="{!! lang_route('start-hangman') !!}" class="menu3" style="{{ (Request::segment(2) == 'hangman') ? 'background-position: 0 -40px' : '' }}">
+                        <a href="{!! lang_route('start-hangman') !!}" class="menu20" style="{{ (Request::segment(2) == 'hangman') ? 'background-position: 0 -40px' : '' }}">
                             <span>Hangman</span>
                         </a>
                     </li>
@@ -47,7 +47,7 @@
                     @endif
                 @endif
                 <li class="{{ (Request::segment(2) == 'contact-us') ? 'active' : '' }}"><a href="{!! lang_route('contactUs') !!}" class="menu13" style="{{ (Request::segment(2) == 'contact-us') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('Contact Us') !!}</span></a></li>
-                <li class="{{ (Request::segment(2) == 'about-us') ? 'active' : '' }}"><a href="{!! lang_route('aboutUs') !!}" class="menu13" style="{{ (Request::segment(2) == 'about-us') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('About Us') !!}</span></a></li>
+                <li class="{{ (Request::segment(2) == 'about-us') ? 'active' : '' }}"><a href="{!! lang_route('aboutUs') !!}" class="menu21" style="{{ (Request::segment(2) == 'about-us') ? 'background-position: 0 -40px' : '' }}"><span>{!! t('About Us') !!}</span></a></li>
             </ul>
         </div>
     </div>
