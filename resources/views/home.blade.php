@@ -59,7 +59,7 @@
             </div>
             <div>
               <div class="sliderBlock">
-                <h2>{!! t('Contribute') !!}</h2>
+                <h2>{!! t('user slide 2 header') !!}</h2>
                 <p>{!! t('User  Dashboard Slide 2 Text')!!}</p>
               </div>
             </div>
