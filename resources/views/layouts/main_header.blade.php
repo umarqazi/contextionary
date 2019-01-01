@@ -25,13 +25,13 @@
               <span class="name">{!! Auth::user()->first_name !!} {!! Auth::user()->last_name !!}</span>
             </div>
             <ul class="userMenu">
-              @if(Auth::user()->hasRole(Config::get('constant.userRole')))
-                <li>
-                  <a href="{!! lang_route('activeUserPlan') !!}">
-                    <div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> {!! t('User Plan') !!}
-                  </a>
-                </li>
-              @endif
+              {{--@if(Auth::user()->hasRole(Config::get('constant.userRole')))--}}
+                {{--<li>--}}
+                  {{--<a href="{!! lang_route('activeUserPlan') !!}">--}}
+                    {{--<div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> {!! t('User Plan') !!}--}}
+                  {{--</a>--}}
+                {{--</li>--}}
+              {{--@endif--}}
               <li>
                 <a href="{!! lang_route('profile') !!}">
                   <div class="img-holder"><img src="{!! asset('assets/images/view-profile-icon.png') !!}"></div> {!! t('View Profile') !!}
@@ -67,7 +67,7 @@
             @if(!Auth::user()->hasRole(Config::get('constant.userRole.guest')))
             <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
             <div class="dropDown-block right-dropdown">
-              <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contibutor Account') !!}</a>
+              <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contributor Account') !!}</a>
             </div>
             @endif
           @endif
@@ -94,7 +94,7 @@
                   <td>{!! $contributions['points'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
-                  <td class="name">{!! t('My Earning') !!}</td>
+                  <td class="name">{!! t('My Value') !!}</td>
                   <td>${!! $contributions['earning'][env('MEANING')] !!}</td>
                   <td>${!! $contributions['earning'][env('ILLUSTRATE')] !!}</td>
                   <td>${!! $contributions['earning'][env('TRANSLATE')] !!}</td>
@@ -133,7 +133,7 @@
                   <td>{!! $contributions['otherContributors'][env('TRANSLATE')] !!}</td>
                 </tr>
                 <tr>
-                  <td class="name">{!! t('Highest Earning') !!}</td>
+                  <td class="name">{!! t('Highest Value') !!}</td>
                   <td>${!! $contributions['otherContributorsRedeem'][env('MEANING')] !!}</td>
                   <td>${!! $contributions['otherContributorsRedeem'][env('ILLUSTRATE')] !!}</td>
                   <td>${!! $contributions['otherContributorsRedeem'][env('TRANSLATE')] !!}</td>

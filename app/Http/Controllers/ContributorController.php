@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Requests\AddContextMeaning;
+use App\Mail\GiftMail;
 use App\Services\ContributorService;
 use App\Services\UserService;
 use Session;
@@ -22,6 +23,7 @@ use Config;
 use App\Coin;
 use Input;
 use Image;
+use Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ContributorController
@@ -89,6 +91,8 @@ class ContributorController
                 );
                 $url=lang_url('profile');
             else:
+                $email_data=['first_name'=>Auth::user()->first_name, 'last_name'=>Auth::user()->last_name];
+                Mail::to(Auth::user()->email)->send(new GiftMail($email_data));
                 $url=lang_url('dashboard');
             endif;
             return Redirect::to($url)->with($notification);

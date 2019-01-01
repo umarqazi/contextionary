@@ -8,7 +8,7 @@
       <ul class="mainMenu">
         <i class="fa fa-times closeMenu"></i>
         <li><a href="{!! lang_route('context-finder') !!}">{!! t('About Us') !!}</a></li>
-        <li><a href="{!! lang_route('fun-facts') !!}">{!! t('Fun Facts') !!}</a></li>
+        <li><a href="{!! lang_route('fun-facts') !!}">{!! t('Word Facts') !!}</a></li>
         <li><a href="{!! lang_route('contactUs') !!}">{!! t('Contact Us') !!}</a></li>
       </ul>
       {{--<div class="searchWrapper">--}}

@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use App\Http\Controllers\SettingController;
+use App\Mail\BonusCoinsMail;
 use App\Repositories\BiddingExpiryRepo;
 use App\Repositories\ContextPhraseRepo;
 use App\Repositories\ContextRepo;
@@ -239,6 +240,18 @@ class CronService
                                 $hightesVotes['phrase_name']=$getPhraseName->phrase_text;
                             endif;
                             $hightesVotes['type']=$type;
+                            /** bonus coins winner*/
+                            $winnerArray=[$columnKey=>$hightesVotes[$columnKey]];
+                            $getWinnerVote=$this->voteMeaningRepo->getWinnerVotes($winnerArray);
+                            if($getWinnerVote){
+                                foreach($getWinnerVote as $winnerVote){
+                                    $bonusMail=['first_name'=>$winnerVote['user']['first_name'],'last_name'=>$winnerVote['user']['last_name'],'type'=>$type, 'phrase_name'=>$getPhraseName->phrase_text];
+                                    Mail::to($winnerVote['user']['email'])->send(new BonusCoinsMail($bonusMail));
+                                    $coins=['coins'=>$winnerVote['user']['coins']+1];
+                                    $user = $this->userRepo->update($winnerVote['user']['id'], $coins);
+                                }
+                            }
+                            /** bonus coins winner*/
                             Mail::to($hightesVotes[$type]['users']['email'])->send(new Meanings($hightesVotes));
                             $this->$model->update(['position'=>$key+1], $hightesVotes[$type]['id']);
                         endforeach;
