@@ -45,14 +45,12 @@ class TutorialsController extends Controller
      * @return mixed
      */
     public function index_contributor(){
+        $tutorial=NULL;
         $tutorial = $this->tutorials_service->firstContributor();
         if(!empty($tutorial)){
             $tutorial = $tutorial->content;
-            return View::make('user.user_plan.reading_assistant.tutorials')->with('tutorial', $tutorial);
-        }else{
-            return View::make('user.user_plan.reading_assistant.tutorials')->with('tutorial', null);
         }
-
+        return View::make('user.contributor.tutorials')->with('tutorial', $tutorial);
     }
 
 }

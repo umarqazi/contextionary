@@ -7,7 +7,7 @@
       <button id="menu"><i class="fa fa-bars"></i></button>
       <ul class="mainMenu">
         <i class="fa fa-times closeMenu"></i>
-        <li><a href="{!! lang_route('context-finder') !!}">{!! t('About Us') !!}</a></li>
+        <li><a href="{!! lang_url('about-us') !!}">{!! t('About Us') !!}</a></li>
         <li><a href="{!! lang_route('fun-facts') !!}">{!! t('Word Facts') !!}</a></li>
         <li><a href="{!! lang_route('contactUs') !!}">{!! t('Contact Us') !!}</a></li>
       </ul>

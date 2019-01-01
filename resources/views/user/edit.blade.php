@@ -4,7 +4,7 @@
 @stop
 @section('content')
     <div class="container-fluid contributorMain userProfile">
-        @include('layouts.profile-menu')
+        @include('layouts.flc_header')
         @include('layouts.toaster')
         <form class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ lang_url('update-profile') }}" id='form-submission'>
             <div class="row">

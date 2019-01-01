@@ -91,15 +91,15 @@ View::composer(['user.user_plan.glossary.*'], function($view)
 /**
  * Guest Menus
  */
-View::composer(['user.profile', 'user.edit', 'user.roles'], function($view)
+View::composer(['user.profile', 'user.edit', 'user.roles', 'user.contributor.tutorials'], function($view)
 {
     $page=['profile'=>'My Profile'];
     if(Auth::check()):
         if(Auth::user()->hasRole(Config::get('constant.contributorRole'))):
             $page['edit-roles']='Roles & Context';
+            $page['tutorials-contributor']='Tutorials';
         endif;
     endif;
-
     $view->with(['pageMenu'=>$page]);
 });
 
@@ -117,6 +117,6 @@ View::composer(['user.user_plan.plan.*'], function($view)
  */
 View::composer(['user.user_plan.reading_assistant.*'], function($view)
 {
-    $page=['context-finder'=>'Context Finder', 'text-history'=>'Text History', 'tutorials'=>'Tutorials'];
+    $page=['context-finder'=>'Context Finder', 'text-history'=>'Text History', 'tutorials-user'=>'Tutorials'];
     $view->with(['pageMenu'=>$page]);
 });

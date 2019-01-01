@@ -13,7 +13,7 @@
         @if(Auth::check())
             <div class="menuCate">
                 <div class="title">
-                    {!! t('A Game of Context')!!}
+                    {!! t('A Game of Contexts')!!}
                 </div>
                 <ul class="menuListing">
                     <li class="{{ (Request::segment(2) == 'pictionary') ? 'active' : '' }}">
