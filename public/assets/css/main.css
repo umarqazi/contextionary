@@ -1833,19 +1833,20 @@ aside .menuCate .menuListing li a.menu18:hover {
     vertical-align: middle;
 }
 .contributorSlider .iconsListing li .circle {
-    width: 200px;
+    width: 150px;
     line-height: 200px;
     border-radius: 50%;
     background: #f7941d;
     text-align: center;
     display: inline-block;
-    height: 200px;
+    height: 150px;
 }
 .contributorSlider .iconsListing li .circle img {
     display: block;
     margin: 0 auto;
     position: relative;
     top: 50%;
+    width:50%;
     transform: translateY(-50%);
 }
 .contributorSlider .slick-arrow {
