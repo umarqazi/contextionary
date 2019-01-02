@@ -45,7 +45,7 @@ View::composer('user.contributor.transactions.*', function($view)
  */
 View::composer('user.user_plan.reading_assistant.*', function($view)
 {
-    $page=['tutorials-user'=>'Tutorials', 'text-histroy'=>'Text History'];
+    $page=['text-histroy'=>'Text History'];
     $view->with(['pageMenu'=>$page]);
 });
 
@@ -97,7 +97,7 @@ View::composer(['user.profile', 'user.edit', 'user.roles', 'user.contributor.tut
     if(Auth::check()):
         if(Auth::user()->hasRole(Config::get('constant.contributorRole'))):
             $page['edit-roles']='Roles & Context';
-            $page['tutorials-contributor']='Tutorials';
+            $page['tutorials-contributor']='Tutorial';
         endif;
     endif;
     $view->with(['pageMenu'=>$page]);
@@ -117,6 +117,6 @@ View::composer(['user.user_plan.plan.*'], function($view)
  */
 View::composer(['user.user_plan.reading_assistant.*'], function($view)
 {
-    $page=['context-finder'=>'Context Finder', 'text-history'=>'Text History', 'tutorials-user'=>'Tutorials'];
+    $page=['context-finder'=>'Context Finder', 'text-history'=>'Text History'];
     $view->with(['pageMenu'=>$page]);
 });

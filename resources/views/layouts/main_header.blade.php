@@ -40,7 +40,7 @@
               @if(!Auth::user()->hasRole(Config::get('constant.userRole')))
               <li>
                 <a href="{!! lang_route('tutorials-con') !!}">
-                  <div class="img-holder"><img src="{!! asset('assets/images/tutorial-icon.png') !!}"></div> {!! t('Tutorials') !!}
+                  <div class="img-holder"><img src="{!! asset('assets/images/tutorial-icon.png') !!}"></div> {!! t('Tutorial') !!}
                 </a>
               </li>
               @endif

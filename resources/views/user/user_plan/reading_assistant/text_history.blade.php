@@ -18,9 +18,8 @@
                         <thead>
                         <tr>
                             <th>Sr. No.</th>
-                            <th>Discription</th>
+                            <th>Description</th>
                             <th></th>
-                            {{--<th class="text-right">View</th>--}}
                         </tr>
                         </thead>
                         <tbody>

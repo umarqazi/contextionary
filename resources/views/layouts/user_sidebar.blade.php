@@ -11,11 +11,6 @@
                         <span>Text History</span>
                     </a>
                 </li>
-                <li class="{{ (Request::segment(2) == 'tutorials-user') ? 'active' : '' }}">
-                    <a href="{!! lang_route('tutorials-user') !!}" class="menu4" style="{{ (Request::segment(2) == 'tutorials-user') ? 'background-position: 0 -40px' : '' }}">
-                        <span>Tutorials</span>
-                    </a>
-                </li>
             </ul>
         </div>
         {{--<div class="menuCate">--}}

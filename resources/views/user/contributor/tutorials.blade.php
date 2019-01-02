@@ -1,6 +1,6 @@
 @extends('layouts.secured_header')
 @section('title')
-    {!! t('Tutorials') !!}
+    {!! t('Tutorial') !!}
 @stop
 @section('content')
 <div class="container-fluid contributorMain userTutorial">
@@ -13,7 +13,7 @@
             @else
                 <div class="col-md-12">
                     <div class="text-center">
-                        <strong class="record-message">{!! t('No Tutorials available') !!}</strong>
+                        <strong class="record-message">{!! t('No Tutorial available') !!}</strong>
                     </div>
                 </div>
             @endif
