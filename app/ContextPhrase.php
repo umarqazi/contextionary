@@ -32,7 +32,7 @@ class ContextPhrase extends Model
     public function getRand($context_id){
         return self::where('context_id', $context_id)->whereHas('phrases', function ($query) {
             $query->where('red_flag', 0)->whereRaw('LENGTH(phrase_text) > 5');
-        })->inRandomOrder()->with('phrases')->limit(10)->get();
+        })->where('work_order', '>',0)->inRandomOrder()->with('phrases')->limit(10)->get();
     }
 
     /**
