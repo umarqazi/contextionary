@@ -135,7 +135,7 @@ class ReadingAssistantController extends Controller
             }
 //            $export_data = $this->exportDataGenerator($context_list);
 //            Session::put('export_data' , $export_data);
-            return view::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list]);
+            return view::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list])->withInput();
         }
     }
 

@@ -83,7 +83,7 @@ class TutorialsController extends Controller
             $form->display('content', trans('Content'));
             $form->tools(function (Form\Tools $tools) use ($id) {
                 $tools->disableListButton();
-                $tools->add('<div class="btn-group pull-right"><a class="btn btn-sm btn-default" href="/admin/auth/tutorials-user/"'.$id.'"/edit"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit</a></div>');
+                $tools->add('<div class="btn-group pull-right"><a class="btn btn-sm btn-default" href="/admin/auth/tutorials/'.$id.'/edit"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit</a></div>');
             });
             $form->disableSubmit();
             $form->disableReset();
