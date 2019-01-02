@@ -326,17 +326,15 @@ class UsersController extends Controller
      * @return mixed
      */
     public function saveEarning(Request $request){
-        $roles=['meaning'=>'','illustrate'=>'', 'translate'=>''];
+        $roles=['meaning'=>0,'illustrate'=>0, 'translate'=>0];
         $user_data=['user_id'=>Auth::user()->id];
         $points_group=$this->user_points->points($user_data);
         foreach($points_group as $key=>$points){
             $earning    =   Auth::user()->redeemPoints->where('type', $points->type)->sum('points');
-            if($earning){
-                $points_group[$key]['sum']=$points_group[$key]['sum']-$earning;
-                foreach($roles as $i=>$role){
-                    if($i==$points_group[$key]['type']){
-                        $roles[$i]=$points_group[$key]['sum'];
-                    }
+            $points_group[$key]['sum']=$points_group[$key]['sum']-$earning;
+            foreach($roles as $i=>$role){
+                if($i==$points_group[$key]['type']){
+                    $roles[$i]=$points_group[$key]['sum'];
                 }
             }
         }
