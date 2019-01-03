@@ -40,6 +40,7 @@
         @if($flag)
             <div class="context-finder-content">
                 <div class="exportRow">
+                    @if(count($context_list) > 0)
                     <div class="col-md-6">
                         <span>Context</span>
                         <select class="selectOption" onchange="contextChange(this)">
@@ -48,6 +49,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @endif
                     @if(!empty(Session::get('export_data')))
                         <div class="col-md-6 text-right">
                             <a href="{{ lang_route('text-test') }}" class="orangeBtn">Export report</a>
@@ -58,11 +60,17 @@
 
                 <div class="col-md-12">
 
-                    @foreach( $context_list as $context_key => $context)
-                    <div class="exportBlock exportBlock_{{$context['context_id']}} @if($context_key != 0 ) hidden @endif">
-                            {!! $string[$context['context_id']] !!}
-                    </div>
-                    @endforeach
+                    @if(count($context_list) > 0)
+                        @foreach( $context_list as $context_key => $context)
+                        <div class="exportBlock exportBlock_{{$context['context_id']}} @if($context_key != 0 ) hidden @endif">
+                                {!! $string[$context['context_id']] !!}
+                        </div>
+                        @endforeach
+                    @else
+                        <div class="exportBlock">
+                            <p class="bold record-message">{{t('No Record for the Text')}}</p>
+                        </div>
+                    @endif
 
                     {{--<div class="contextTabs">--}}
                         {{--<ul class="nav nav-pills" role="tablist">--}}
