@@ -3,7 +3,8 @@
     {!! t('Hangman') !!}
 @stop
 @section('content')
-<div class="container-fluid contributorMain funfact pictionaryQuiz hangman">
+<div class="container-fluid contributorMain funfact pictionaryQuiz hangman" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $picture !!}); background-size:cover">
+    <div class="wrapperMask"></div>
     @include('layouts.flc_header')
     <div class="row">
         <div class="col-md-12">

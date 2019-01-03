@@ -56,7 +56,7 @@ class HangmanController extends Controller
         $context            = $this->context_service->get();
         $context_phrases    = $this->context_phrase_service->getRandContextPhrase($context->context_id);
         if($context_phrases->count() > 0){
-            return View::make('user.user_plan.games.hangman')->with(['context_phrases'=> $context_phrases, 'context' => $context->context_name]);
+            return View::make('user.user_plan.games.hangman')->with(['context_phrases'=> $context_phrases, 'context' => $context->context_name, 'picture'=>$context->context_picture]);
         }else{
             return $this->getPhrase();
         }
