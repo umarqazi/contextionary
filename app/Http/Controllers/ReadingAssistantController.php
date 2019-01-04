@@ -118,24 +118,25 @@ class ReadingAssistantController extends Controller
             $string                 = [];
             foreach ($body as $context_div) {
                 foreach ($context_div as $context_id => $context) {
-
-                    $context_obj = $this->context_service->findById(intval($context_id))->toArray();
-                    $final_string_array[$context_id]     = explode("_",$final_string);
-                    foreach ($context as $phrase_key => $phrase) {
-                        foreach ($final_string_array[$context_id] as $key => $word){
-                            if ((strtolower($word) == strtolower($phrase->keyword_text))) {
-                                $final_string_array[$context_id][$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
+                    if(!empty((array)$context)){
+                        $context_obj = $this->context_service->findById(intval($context_id))->toArray();
+                        $final_string_array[$context_id]     = explode("_",$final_string);
+                        foreach ($context as $phrase_key => $phrase) {
+                            foreach ($final_string_array[$context_id] as $key => $word){
+                                if ((strtolower($word) == strtolower($phrase->keyword_text))) {
+                                    $final_string_array[$context_id][$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
+                                }
                             }
-                        }
 //                        $context_obj['phrases'][$phrase_key] = $this->getPhraseDetails($context_id, $phrase);
+                        }
+                        array_push($context_list, $context_obj);
+                        $string[$context_id] = implode(" ",$final_string_array[$context_id]);
                     }
-                    array_push($context_list, $context_obj);
-                    $string[$context_id] = implode(" ",$final_string_array[$context_id]);
                 }
             }
 //            $export_data = $this->exportDataGenerator($context_list);
 //            Session::put('export_data' , $export_data);
-            return view::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list])->withInput();
+            return View::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list]);
         }
     }
 
