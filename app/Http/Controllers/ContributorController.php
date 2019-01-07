@@ -193,7 +193,7 @@ class ContributorController
                 ->withErrors($validator)
                 ->withInput();
         }
-        $data=['coins'=>$request->bid,'context_id'=>$request->context_id,'phrase_id'=>$request->phrase_id, 'model'=>$request->model, 'type'=>$request->type];
+        $data=['status'=>0,'coins'=>$request->bid,'context_id'=>$request->context_id,'phrase_id'=>$request->phrase_id, 'model'=>$request->model, 'type'=>$request->type];
         $updateRecord=$this->contributor->bidding($data, $request->meaning_id);
         if($updateRecord==false):
             $notification = array(
