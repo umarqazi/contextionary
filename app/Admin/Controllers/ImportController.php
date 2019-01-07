@@ -40,10 +40,8 @@ class ImportController extends Controller
      */
     public function __construct()
     {
-        $pictionary                 = new Pictionary();
-        $this->pictionary           = $pictionary;
-        $spot_the_intruder          = new SpotIntruder();
-        $this->spot_the_intruder    = $spot_the_intruder;
+        $this->pictionary           = new Pictionary();
+        $this->spot_the_intruder    = new SpotIntruder();
     }
 
     /**
@@ -56,7 +54,7 @@ class ImportController extends Controller
         $dir ='images/imports/files';
         return Admin::form(Import::class, function (Form $form) use ($model_name, $dir, $route){
             $form->setAction('import');
-            $form->file('file', trans('CSV File'))->move($dir)->rules('required|mimes:csv');
+            $form->file('file', trans('CSV File'))->move($dir)->rules('required');
             $form->hidden('type', 'Type')->default('Pictionary');
             $form->hidden('model')->default($model_name);
             $form->hidden('route')->default($route);

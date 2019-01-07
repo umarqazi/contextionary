@@ -28,7 +28,7 @@
                 @if ($errors->has('context'))
                     <div class="record-message text-center bold">{{ $errors->first('context') }}</div>
                 @endif
-                <p class="text-right white-text"><span id="count">{!! t('Characters:') !!} {!! Input::old('context') !!}/2500</span></p>
+                <p class="text-right white-text"><span id="count">{!! t('Characters:') !!} {!! $length !!}/2500</span></p>
             </div>
 
             <div class="col-md-12 mt-4 text-center actionsBtn">
