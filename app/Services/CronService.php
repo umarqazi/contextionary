@@ -180,7 +180,7 @@ class CronService
         if($getVote):
             foreach($getVote as $vote):
                 $cron_run='0';
-                $totalVotes=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'type'=>$type];
+                $totalVotes=['context_id'=>$vote['context_id'], 'phrase_id'=>$vote['phrase_id'], 'type'=>$type, 'vote'=>'1'];
                 if($type==env('TRANSLATE')):
                     $totalVotes['language']=$vote['language'];
                 endif;

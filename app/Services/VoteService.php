@@ -175,6 +175,7 @@ Class VoteService{
                     if($type==env('TRANSLATE')):
                         $checkMeaning['language']=Auth::user()->profile->language_proficiency;
                     endif;
+                    $checkMeaning['vote']='1';
                     $getTotalVote=$this->voteMeaning->totalVotes($checkMeaning);
                     if($getTotalVote >= $this->minimumVotes):
                         $records[$key]['expiry_date']=$this->mutual->displayHumanTimeLeft($context['expiry_date']);
