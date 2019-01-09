@@ -126,6 +126,8 @@ class RedeemController extends Controller
 
     /**
      * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
     public function redeem($id){
         $redeem_request = $this->redeem_service->findById($id);
@@ -135,28 +137,23 @@ class RedeemController extends Controller
                 [
                     'email'     => $user->paypal_email,
                     'amount'    => $redeem_request->earning,
-                    'primary'   => true,
-                ],
-                [
-                    'email'     => 'jazib.javed-buyer@gems.techverx.com',
-                    'amount'    => $redeem_request->earning,
-                    'primary'   => false,
                 ],
             ],
             'payer' => 'EACHRECEIVER',
-            'return_url' => url('/test-redeem-success'),
-            'cancel_url' => url('/test-redeem-success'),
+            'return_url' => url('/admin/auth/redeem'),
+            'cancel_url' => url('/admin/auth/redeem'),
         ];
         $response = $this->provider->createPayRequest($data);
         if($response['responseEnvelope']['ack'] == 'Failure'){
             $this->redeem_service->update($id, ['status' => 0]);
             $message    = $response['error'][0]['message'];
             admin_toastr(trans($message));
+            return Redirect::to('/admin/auth/redeem');
         }
         else{
             $this->redeem_service->update($id, ['status' => 1]);
-            admin_toastr(trans('Redeemed successfully!'));
+            $redirect_url = $this->provider->getRedirectUrl('approved', $response['payKey']);
+            return redirect($redirect_url);
         }
-        return Redirect::to('/admin/auth/redeem');
     }
 }

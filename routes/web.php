@@ -20,8 +20,6 @@ MultiLang::routeGroup(function($router) {
         Route::get('/about-us', 'AboutUsController@index')->name('aboutUs');
         Route::get('/test', 'CronController@subscriptionCheck');
         Route::post('/test2', 'ReadingAssistantController@docxToText');
-        Route::get('/test-redeem-success', 'UserdController@ts');
-        Route::get('/test-redeem-cancel', 'UserdController@tc');
         Route::get('verificationEmail', 'Auth\RegisterController@sendVerificationEmail');
         Route::get('resend-email/{id}', 'Auth\RegisterController@sendVerificationEmail');
         Route::get('/verifyEmail/{token}', 'Auth\RegisterController@verifyEmail');
