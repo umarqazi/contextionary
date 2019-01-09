@@ -28,10 +28,8 @@ class SpotIntruderController extends Controller
      */
     public function __construct()
     {
-        $spot_the_intruder_service = new SpotTheIntruderService();
-        $this->spot_the_intruder_service = $spot_the_intruder_service;
-        $spot_the_intruder_game_service = new SpotTheIntruderGameService();
-        $this->spot_the_intruder_game_service = $spot_the_intruder_game_service;
+        $this->spot_the_intruder_service        = new SpotTheIntruderService();
+        $this->spot_the_intruder_game_service   = new SpotTheIntruderGameService();
     }
 
     /**
