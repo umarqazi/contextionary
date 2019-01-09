@@ -25,6 +25,7 @@ class SpotIntruder extends Model
     protected $fillable = ['option1', 'option2', 'option3', 'option4', 'question','answer'];
 
     /**
+     * @param $exclude
      * @return mixed
      */
     public function getRandom($exclude){
