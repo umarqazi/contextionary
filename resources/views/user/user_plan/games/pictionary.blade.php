@@ -108,10 +108,10 @@
         if(!$(this).hasClass('disabled')) {
             var opt = $("input[name='game_ans']:checked").val();
             $.ajax({
-                type: "POST",
-                url: '/en/verify-pictionary',
-                async: false,
-                data: {game_id:{{$game->id}}, ques_id:{{$pictionary->id}}, option: opt, _token: '{{csrf_token()}}'}
+                type    : 'POST',
+                url     : '/en/verify-pictionary',
+                async   : false,
+                data    : {game_id:{{$game->id}}, ques_id:{{$pictionary->id}}, option: opt, _token: '{{csrf_token()}}'}
             }).done(function (res) {
                 $('.cont-div').remove();
                 $(".gameOptionDiv").off();
