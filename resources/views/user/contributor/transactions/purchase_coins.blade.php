@@ -31,6 +31,12 @@
                                 <div class="col-sm-12 col-md-12 mt-4 mb-3 text-center hide-button" id="show-purchase">
                                     <button type="submit" class="orangeBtn waves-light">{!! t('Purchase') !!}</button>
                                 </div>
+                            @else
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <strong class="record-message">{!! t('This functionality will be available soon. Thank you for your patience.') !!}</strong>
+                                    </div>
+                                </div>
                             @endif;
                         </div>
                     </div>
