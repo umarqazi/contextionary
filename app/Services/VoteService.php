@@ -59,7 +59,7 @@ Class VoteService{
      */
     public function addPhraseForVote($data){
         $this->voteExpiryDate   =   $this->setting->getKeyValue(env('VOTE_EXPIRY'))->values;
-        $date=Carbon::now()->addMinutes($this->voteExpiryDate);
+        $date=Carbon::now()->addDays($this->voteExpiryDate);
         $record=$this->voteExpiry->checkRecords($data);
         if(!$record):
             $record['expiry_date']=$date;

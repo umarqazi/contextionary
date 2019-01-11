@@ -48,7 +48,7 @@ class BiddingExpiryRepo extends BaseRepo implements IRepo
         if($setting){
             $this->total_context=$setting->values;
         }
-        $date=Carbon::now()->addMinutes($this->total_context);
+        $date=Carbon::now()->addDays($this->total_context);
         $insert_record=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'],'bid_type'=>$data['type'], 'expiry_date'=>$date];
         if($data['type']==env('TRANSLATE')):
             $insert_record['language']=Auth::user()->profile->language_proficiency;
