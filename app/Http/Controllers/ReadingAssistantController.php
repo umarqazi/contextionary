@@ -102,7 +102,6 @@ class ReadingAssistantController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
         $data           =   [
                                 'text'      =>  $request->context,
                                 'user_id'   =>  Auth::user()->id,
@@ -111,7 +110,7 @@ class ReadingAssistantController extends Controller
         $this->read_assistant_service->saveHistory($data);
         $final_string   =   str_replace(' ', '_', $request->context);
         $client         =   new Client();
-        $res            =   $client->get('http://54.189.114.107:5400/'.$final_string);
+        $res            =   $client->get('http://52.43.120.48:5400/'.$final_string);
         $response       =   $res->getStatusCode(); // 200
         if( $response   ==  '200') {
             $body = json_decode($res->getBody());
@@ -119,20 +118,30 @@ class ReadingAssistantController extends Controller
             $string                 = [];
             foreach ($body as $context_div) {
                 foreach ($context_div as $context_id => $context) {
-//                    if(!empty((array)$context)){
-                        $context_obj = $this->context_service->findById(intval($context_id))->toArray();
-                        $final_string_array[$context_id]     = explode("_",$final_string);
-                        foreach ($context as $phrase_key => $phrase) {
-                            foreach ($final_string_array[$context_id] as $key => $word){
-                                if ((strtolower($word) == strtolower($phrase->keyword_text))) {
-                                    $final_string_array[$context_id][$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
-                                }
+                    $context_obj = $this->context_service->findById(intval($context_id))->toArray();
+                    $final_string_array[$context_id] = explode("_", $final_string);
+                    $string2 = [];
+                    foreach ($context as $phrase_key => $phrase) {
+                        $location = $phrase->keyword_location[0];
+                        array_push($string2, intval(str_replace(array('{', '}'), '', $location)) - 1);
+                        array_unique($string2);
+                    }
+                    foreach ($final_string_array[$context_id] as $key1 => $word) {
+                        foreach ($string2 as $key2) {
+                            if ($key1 == $key2){
+                                $final_string_array[$context_id][$key1] = '<span class="orange">'.$word.'</span>';
                             }
-//                        $context_obj['phrases'][$phrase_key] = $this->getPhraseDetails($context_id, $phrase);
                         }
-                        array_push($context_list, $context_obj);
-                        $string[$context_id] = implode(" ",$final_string_array[$context_id]);
-//                    }
+                    }
+//                            foreach ($final_string_array[$context_id] as $key => $word){
+////                                if ((strtolower($word) == strtolower($phrase->keyword_text))) {
+////                                    $final_string_array[$context_id][$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
+////                                }
+//                            }
+//                        $context_obj['phrases'][$phrase_key] = $this->getPhraseDetails($context_id, $phrase);
+//                }
+                    array_push($context_list, $context_obj);
+                    $string[$context_id] = implode(" ",$final_string_array[$context_id]);
                 }
             }
 //            $export_data = $this->exportDataGenerator($context_list);
