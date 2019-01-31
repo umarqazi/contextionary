@@ -54,7 +54,7 @@ class ImportController extends Controller
         $dir ='images/imports/files';
         return Admin::form(Import::class, function (Form $form) use ($model_name, $dir, $route){
             $form->setAction('import');
-            $form->file('file', trans('CSV File'))->move($dir)->rules('required|file|mimes:csv');
+            $form->file('file', trans('CSV File'))->move($dir)->rules('required');
             $form->hidden('type', 'Type')->default('Pictionary');
             $form->hidden('model')->default($model_name);
             $form->hidden('route')->default($route);
