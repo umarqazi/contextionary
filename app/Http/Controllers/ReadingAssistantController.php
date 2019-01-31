@@ -111,7 +111,7 @@ class ReadingAssistantController extends Controller
         $this->read_assistant_service->saveHistory($data);
         $final_string   =   str_replace(' ', '_', $request->context);
         $client         =   new Client();
-        $res            =   $client->get('http://54.189.114.107:5400/'.$final_string);
+        $res            =   $client->get('http://52.43.120.48:5400/'.$final_string);
         $response       =   $res->getStatusCode(); // 200
         if( $response   ==  '200') {
             $body = json_decode($res->getBody());
