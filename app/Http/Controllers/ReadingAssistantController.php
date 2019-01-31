@@ -122,14 +122,16 @@ class ReadingAssistantController extends Controller
                     $final_string_array[$context_id] = explode("_", $final_string);
                     $string2 = [];
                     foreach ($context as $phrase_key => $phrase) {
-                        $location = $phrase->keyword_location[0];
-                        array_push($string2, intval(str_replace(array('{', '}'), '', $location)) - 1);
-                        array_unique($string2);
+                        $location = str_replace(array('{', '}'), '', $phrase->keyword_location[0]);
+                        $locaion   =    explode(', ', $location);
+                        $string2= array_merge($string2, $locaion);
                     }
+                    $string2=array_unique($string2);
+                    sort($string2);
                     foreach ($final_string_array[$context_id] as $key1 => $word) {
                         foreach ($string2 as $key2) {
-                            if ($key1 == $key2){
-                                $final_string_array[$context_id][$key1] = '<span class="orange">'.$word.'</span>';
+                            if ($key1 == ($key2 -1)){
+                                $final_string_array[$context_id][$key1] = '<span class="orange-clr">'.$word.'</span>';
                             }
                         }
                     }
