@@ -143,7 +143,6 @@ class UsersController extends Controller
             $user->timezone=strip_tags(Input::get('timezone'));
             $user->save();
             $updateProfile=Profile::where('user_id', $user->id)->first();
-            $updateProfile->phone_number=strip_tags(Input::get('phone_number'));
             $updateProfile->gender=strip_tags(Input::get('gender'));
             $updateProfile->country=strip_tags(Input::get('country'));
             $updateProfile->date_birth=strip_tags(Input::get('date_birth'));

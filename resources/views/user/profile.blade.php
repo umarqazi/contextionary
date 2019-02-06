@@ -21,12 +21,11 @@
                 <div class="basicInfo">
                     <ul>
                         <li>{!! t('First Name') !!}: <span>{!! $user['first_name']!!}</span></li>
-                        <li>{!! t('Last Name') !!}: <span>{!! $user['last_name']!!}</span></li>
+                        @if($user['last_name'])<li>{!! t('Last Name') !!}: <span>{!! $user['last_name']!!}</span></li>@endif
                         @if($user['profile']['pseudonyme'])<li>{!! t('Pseudonyme') !!}: <span>{!! $user['profile']['pseudonyme']!!}</span></li>@endif
-                        <li>{!! t('Sex') !!}: <span>{!! $user['profile']['gender']!!}</span></li>
-                        <li>{!! t('Phone No') !!}: <span>{!! $user['profile']['phone_number']!!}</span></li>
-                        <li>{!! t('Native Language') !!}: <span>{!! $user['profile']['native_language']!!}</span></li>
-                        <li>{!! t('Country') !!}: <span>{!! $user['profile']['country']!!}</span></li>
+                        @if($user['profile']['gender'])<li>{!! t('Sex') !!}: <span>{!! $user['profile']['gender']!!}</span></li>@endif
+                        @if($user['profile']['native_language'])<li>{!! t('Native Language') !!}: <span>{!! $user['profile']['native_language']!!}</span></li>@endif
+                        @if($user['profile']['country'])<li>{!! t('Country') !!}: <span>{!! $user['profile']['country']!!}</span></li>@endif
                         <li>{!! t('Email') !!}: <span>{!! $user['email']!!}</span></li>
                     </ul>
                 </div>

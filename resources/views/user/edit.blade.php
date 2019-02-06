@@ -97,17 +97,6 @@
                 <div class="col-md-6 make-left">
 
                     <div class="customForm-group">
-                        <input type="text" class="customSelect w-100" name="phone_number" value="{{ $user->profile->phone_number }}" required>
-                        @if ($errors->has('phone_number'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('phone_number') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-6 make-left">
-
-                    <div class="customForm-group">
                         {!! Form::textarea('bio', $user->profile->bio, ['class'=>'customSelect w-100', 'Placeholder'=>t('Enter Your Bio')]) !!}
                         @if ($errors->has('bio'))
                             <span class="help-block">
