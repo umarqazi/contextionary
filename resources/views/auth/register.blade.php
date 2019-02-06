@@ -83,19 +83,6 @@
 
         <div class="col-md-6">
           <div class="customForm-group">
-            {!! Form::text('phone_number', Input::old('phone_number'), ['class'=>'customInput', 'placeholder'=>'Phone']) !!}
-            <span class="focus-border"></span>
-            <i class="fa fa-phone"></i><span class="asterick">*</span>
-            @if ($errors->has('phone_number'))
-              <span class="help-block">
-            <strong>{{ t($errors->first('phone_number')) }}</strong>
-          </span>
-            @endif
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="customForm-group">
             {!! Form::select('country', Config::get('countries.countries'), Input::old('country'), ['class'=>'customSelect w-100', 'placeholder'=>t('Country of Residence')]) !!}
             <span class="focus-border"></span>
           </div>
@@ -139,7 +126,6 @@
             @endif
           </div>
         </div>
-        <div class="col-md-6"></div>
         <div class="col-md-6">
           <div class="customForm-group">
             {!! Form::password('password', ['class'=>'customInput','id'=>"password-field", 'placeholder'=>'Password']) !!}

@@ -66,7 +66,6 @@ class RegisterController extends Controller
             'profile_image' => 'mimes:jpg,png,jpeg|max:5120',
             'pseudonyme'=>'string|nullable',
             'gender'=>'required',
-            'phone_number'=>'required',
             'native_language'=>'required',
             'timezone'=>'required'
         ]);
@@ -100,7 +99,6 @@ class RegisterController extends Controller
         $userProfile->pseudonyme = strip_tags($data['pseudonyme']);
         $userProfile->date_birth=strip_tags($data['date_birth']);
         $userProfile->gender= strip_tags($data['gender']);
-        $userProfile->phone_number=strip_tags($data['phone_number']);
         $userProfile->country=strip_tags($data['country']);
         $userProfile->native_language=strip_tags($data['native_language']);
         $userProfile->user_id =$id;
