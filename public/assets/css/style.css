@@ -634,3 +634,6 @@ img#hangman {
 .custom-checkbox label{
   position: inherit;
 }
+.orange-clr{
+  color: #f7942e;
+}
