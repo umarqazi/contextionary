@@ -114,5 +114,9 @@ class UserRepo {
     public function countActive(){
         return User::where('status',1)->get()->count();
     }
+
+    public function checkUser($data){
+        return $this->user->where($data)->first();
+    }
 }
 ?>
