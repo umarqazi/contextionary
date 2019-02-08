@@ -185,4 +185,8 @@ class UserService extends BaseService implements IService
     public function insertCardInfo($data){
         return $this->userCard->create($data);
     }
+
+    public function getUser($data){
+        return $this->user_repo->checkUser($data);
+    }
 }

@@ -117,4 +117,35 @@ class MutualService
         }
         return $formatted_date = "Card expires on: <br>".$date->format('d M Y h:i A');
     }
+
+    /**
+     * @param $context
+     * @return string
+     */
+    public function explanatoryText($contributor){
+        foreach($contributor as $key=>$context){
+            $text='';
+            switch (strtolower($context['context_name'])){
+                case "pseudoscience":
+                    $text   = "(alternative medicine, astrology, pseudoscientic theories)";
+                    break;
+                case "traditional belief":
+                    $text   =  "(folklore, mythology)";
+                    break;
+                case "art":
+                    $text   =  "(performing art, visual art, decorative art)";
+                    break;
+                case "science":
+                    $text   =  "(social science, natural science, mathematics, medicine, Engineering)";
+                    break;
+                case "technology":
+                    $text   =  "(industry, invention, equipment, machinery, instrument)";
+                    break;
+
+            }
+            $contributor[$key]['context_name'] =$contributor[$key]['context_name'].' <span class="small-text">'.$text.'</span>';
+        }
+
+        return $contributor;
+    }
 }

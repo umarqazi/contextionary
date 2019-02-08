@@ -96,7 +96,7 @@ View::composer(['user.profile', 'user.edit', 'user.roles', 'user.contributor.tut
     $page=['profile'=>'My Profile'];
     if(Auth::check()):
         if(Auth::user()->hasRole(Config::get('constant.contributorRole'))):
-            $page['edit-roles']='Roles & Context';
+            $page['edit-roles']='My Roles';
             $page['tutorials-contributor']='Tutorial';
         endif;
     endif;

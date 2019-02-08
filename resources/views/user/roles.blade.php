@@ -35,7 +35,7 @@
                                             @foreach($contextList as $key=>$context)
                                                 @if($context['context_id'] >= 4)
                                                     <div class="col-md-4">
-                                                        <div class="md-form ml-4 mt-0">
+                                                        <div class="md-form text-left mb-0 mt-0">
                                                             <div class="custom-control custom-checkbox">
                                                                 {!! Form::checkbox('context[]',$context['context_id'],$context['selected'],['class'=>'custom-control-input', 'id'=>'checkContextBox'.$key]) !!}
                                                                 <label class="custom-control-label" for="checkContextBox{!! $key !!}">{!! t($context['context_name']) !!}</label>
