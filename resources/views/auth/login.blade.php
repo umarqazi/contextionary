@@ -40,6 +40,11 @@
         <a href="{!! lang_url('resend-email', ['id'=>$errors->first('resend')]) !!}">{!! t('Resend Verification Email') !!}</a>
       </div>
     @endif
+    <div class=" customForm-group mt-4">
+      <div class="social-div">
+        <a href="{{ url('/auth/facebook') }}"><img src="{!! asset('assets/images/facebook.png') !!}" > </a>
+      </div>
+    </div>
     <div class="mt-4">
       <button type="submit" class="orangeBtn waves-light">{!! t('Log in') !!}</button>
       <div class="font14 mt-4">

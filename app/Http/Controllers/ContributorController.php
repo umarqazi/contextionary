@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddContextMeaning;
 use App\Mail\GiftMail;
 use App\Services\ContributorService;
+use App\Services\MutualService;
 use App\Services\UserService;
 use Session;
 use App\Services\AuthService;
@@ -32,12 +33,14 @@ class ContributorController
     protected $authService;
     protected $userService;
     protected $user;
+    protected $mutualService;
 
     public function __construct()
     {
         $this->authService      =   new AuthService();
         $this->contributor      =   new ContributorService();
         $this->userService      =   new UserService();
+        $this->mutualService    =   new MutualService();
     }
 
     /**
@@ -45,7 +48,8 @@ class ContributorController
      */
     public function contributorPlan(){
         try{
-            $contextList=$this->contributor->getParentContextList();
+            $contextList    =   $this->contributor->getParentContextList();
+            $contextList    =   $this->mutualService->explanatoryText($contextList);
             $this->user= Auth::user();
             return view::make('user.contributor.select_role')->with(['contextList'=>$contextList,'id'=> $this->user->id]);
 

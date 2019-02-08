@@ -16,7 +16,7 @@
                         <h3 class="BlueBackground">{!! t('Select Your Desired Role(s)') !!}</h3>
                         <div class="row justify-content-center">
                             <div class="col-md-2">
-                                <div class="md-form ml-4 mt-0">
+                                <div class="md-form ml-4 mt-0 mb-0">
                                     <div class="custom-control custom-checkbox">
                                         {!! Form::checkbox('role[]', Config::get('constant.contributorRole.define'),null,['class'=>'custom-control-input', 'id'=>'checkBoxw']) !!}
                                         <label class="custom-control-label" for="checkBoxw">{!! t('Writer') !!}</label>
@@ -52,7 +52,7 @@
                                     @foreach($contextList as $key=>$context)
                                         @if($context['context_id'] >= 4)
                                             <div class="col-md-4">
-                                                <div class="md-form ml-4 mt-0">
+                                                <div class="md-form ml-0 text-left mt-0 mb-1">
                                                     <div class="custom-control custom-checkbox">
                                                         {!! Form::checkbox('context[]',$context['context_id'],null,['class'=>'custom-control-input', 'id'=>'checkBox'.$key]) !!}
                                                         <label class="custom-control-label" for="checkBox{!! $key !!}">{!! t($context['context_name']) !!}</label>

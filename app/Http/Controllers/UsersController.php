@@ -216,6 +216,7 @@ class UsersController extends Controller
         $user=Auth::user();
         $roles=$user->getRoleNames();
         $contributor=$this->contributorService->getParentContextList();
+        $contributor    =   $this->mutualService->explanatoryText($contributor);
         $familiarContext=$this->mutualService->getUserContext($user->id);
         foreach($contributor as $key=>$context):
             foreach($familiarContext as $familiar):

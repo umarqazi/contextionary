@@ -181,7 +181,8 @@ return [
         Longman\LaravelMultiLang\MultiLangServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
-        Srmklive\PayPal\Providers\PayPalServiceProvider::class
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class
 
     ],
 
@@ -239,6 +240,7 @@ return [
         'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
         'Carbon' => Carbon\Carbon::class,
         'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 
