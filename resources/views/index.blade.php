@@ -17,8 +17,7 @@
             <p>{!! t('Guest User Description')!!}</p>
             @if(!Auth::check())
               <div class="actions-btn">
-                <a href="{!! lang_url('login') !!}" class="orangeBtn waves-light mr-3">{!! t('Log in') !!}</a>
-                <a href="{!! lang_url('register') !!}" class="orangeBtn waves-light">{!! t('Sign up') !!}</a>
+                <a href="{!! lang_url('login') !!}" class="orangeBtn waves-light mr-3">{!! t('Sign in') !!}</a>
               </div>
             @else
               <div class="actions-btn">
