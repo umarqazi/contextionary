@@ -40,15 +40,21 @@
         <a href="{!! lang_url('resend-email', ['id'=>$errors->first('resend')]) !!}">{!! t('Resend Verification Email') !!}</a>
       </div>
     @endif
-    <div class=" customForm-group mt-4">
-      <div class="social-div">
-        <a href="{{ url('/auth/facebook') }}"><img src="{!! asset('assets/images/facebook.png') !!}" > </a>
-      </div>
-    </div>
     <div class="mt-4">
       <button type="submit" class="orangeBtn waves-light">{!! t('Log in') !!}</button>
       <div class="font14 mt-4">
         <span class="whiteText">{!! t("Don't Have an account?") !!} </span><a href="{{ lang_route('register') }}"> {!! t('Sign Up') !!}</a>
+      </div>
+    </div>
+    <div class="col-md-12 text-center mt-2">
+      <span class="whiteText">---OR---</span>
+    </div>
+    <div class=" customForm-group mt-2">
+      <div class="social-div">
+        <a href="{{ url('/auth/facebook') }}"><img src="{!! asset('assets/images/facebook.jpg') !!}" > </a>
+      </div>
+      <div class="social-div">
+        <a href="{{ url('/auth/google') }}"><img src="{!! asset('assets/images/google.jpg') !!}" > </a>
       </div>
     </div>
     {!! Form::close() !!}
