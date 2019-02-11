@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-md-12 form-container select-fimiliar">
                         <div class="planBlock ">
-                            <h3 class="BlueBackground">{!! t('Select Your Preferred Topics') !!}</h3>
+                            <h3 class="BlueBackground">{!! t('You would like to Contribute for') !!}</h3>
                             <div class="row">
                                 @if($contextList)
                                     @foreach($contextList as $key=>$context)
@@ -70,12 +70,12 @@
                     <div class="row wow fadeIn form-container select-lang" data-wow-delay="0.6s">
                         <div class="col-md-12">
                             <div class="planBlock">
-                                <h3 class="BlueBackground">{!! t('Select The Language You Have The Most Advanced Level Of Proficiency') !!}</h3>
+                                <h3 class="BlueBackground">{!! t('You would like to Translate from English to') !!}</h3>
                                 <div class="row justify-content-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="custom-control custom-radio d-block my-2">
                                             {!! Form::radio('language', 'Chinese',null,['class'=>'custom-control-input', "id"=>"customRadio1"]) !!}
-                                            <label class="custom-control-label" for="customRadio1">{!! t('Chinese') !!}</label>
+                                            <label class="custom-control-label" for="customRadio1">{!! t('Simplified Chinese') !!}</label>
                                         </div>
                                     </div>
 

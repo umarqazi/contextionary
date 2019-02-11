@@ -29,7 +29,7 @@
                             </div>
                             <div class="desired-roles">
                                 <div class="planBlock ">
-                                    <h3 class="heading-color">{!! t('Select Familiar contexts') !!}</h3>
+                                    <h3 class="heading-color">{!! t('You would like to contribute for') !!}</h3>
                                     <div class="row">
                                         @if($contextList)
                                             @foreach($contextList as $key=>$context)
@@ -51,12 +51,12 @@
                         </div>
                         <div class="desired-roles">
                             <div class="planBlock">
-                                <h3 class="heading-color">{!! t('Select Language') !!}</h3>
+                                <h3 class="heading-color">{!! t('You would like to translate from English to') !!}</h3>
                                 <div class="row justify-content-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="custom-control custom-radio d-block my-2">
                                             {!! Form::radio('language', 'Chinese',null,[($language=='Chinese')? 'checked':'','class'=>'custom-control-input', "id"=>"customRadio1"]) !!}
-                                            <label class="custom-control-label" for="customRadio1">{!! t('Chinese') !!}</label>
+                                            <label class="custom-control-label" for="customRadio1">{!! t('Simplified Chinese') !!}</label>
                                         </div>
                                     </div>
 
