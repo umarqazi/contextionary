@@ -109,8 +109,12 @@ class LoginController extends Controller
             Auth::login($authUser, true);
             return redirect($this->redirectTo);
         }catch (\Exception $e){
+            $notification = array(
+                'message' => $e->getMessage(),
+                'alert_type' => 'error'
+            );
             $url=lang_url('login');
-            return Redirect::to($url);
+            return Redirect::to($url)->with($notification);
         }
 
     }
