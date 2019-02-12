@@ -54,7 +54,11 @@ View::composer('user.user_plan.reading_assistant.*', function($view)
  */
 View::composer('user.user_plan.games.*', function($view)
 {
-    $page=['pictionary'=>'Pictionary', 'intruder'=>'Spot The Intruder', 'hangman'=>'Hangman'];
+    if(Auth::check()):
+        $page=['pictionary'=>'Pictionary', 'intruder'=>'Spot The Intruder'];
+    endif;
+    $page['hangman']='Hangman';
+
     $view->with(['pageMenu'=>$page]);
 });
 
