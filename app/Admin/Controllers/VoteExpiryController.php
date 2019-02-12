@@ -13,7 +13,11 @@ namespace App\Admin\Controllers;
 
 use App\Context;
 use App\Phrase;
+use App\Repositories\IllustratorRepo;
+use App\Repositories\TranslationRepo;
+use App\Repositories\DefineMeaningRepo;
 use App\VoteExpiry;
+use App\DefineMeaning;
 use Illuminate\Support\Facades\Storage;
 use \Illuminate\Database\Eloquent\Model;
 use Encore\Admin\Controllers\ModelForm;
@@ -22,9 +26,24 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
+use Config;
 
 class VoteExpiryController extends Controller
 {
+
+    protected $defineMeaningRepo;
+    protected $illustratorRepo;
+    protected $translatorRepo;
+
+    /**
+     * VoteExpiryController constructor.
+     */
+    public function __construct()
+    {
+        $this->defineMeaningRepo    =   new DefineMeaningRepo();
+        $this->illustratorRepo      =   new IllustratorRepo();
+        $this->translatorRepo       =   new TranslationRepo();
+    }
 
     /**
      * Index interface.
@@ -49,7 +68,8 @@ class VoteExpiryController extends Controller
      */
     protected function grid($status)
     {
-        return Admin::grid(VoteExpiry::class, function (Grid $grid) use ($status){
+        $self= $this;
+        return Admin::grid(VoteExpiry::class, function (Grid $grid) use ($status, $self){
             $grid->model()->where('status', '=', $status);
             $grid->disableExport();
             $grid->id('ID')->sortable();
@@ -62,6 +82,10 @@ class VoteExpiryController extends Controller
                 $phrase = Phrase::where('phrase_id','=',$phrase_id)->first();
                 return $phrase->phrase_text;
             })->sortable();
+            $grid->column('Total Votes')->display(function () use ($self) {
+                $model=Config::get('constant.repo_name.'.$this->vote_type);
+                return $self->$model->totalRecords(['context_id' => $this->context_id,'phrase_id' => $this->phrase_id]);
+            });
             $grid->vote_type()->sortable();
             $grid->disableCreateButton();
             $grid->disableExport();
