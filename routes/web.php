@@ -133,8 +133,6 @@ MultiLang::routeGroup(function($router) {
             Route::get('intruder', 'SpotIntruderController@getQuestion')->name('spot-the-intruder');
             Route::post('verify-spot-the-intruder', 'SpotIntruderController@verifyAnswer');
             Route::get('intruder', 'SpotIntruderController@getQuestion')->name('intruder');
-            Route::get('start-hangman',  'HangmanController@index')->name('start-hangman');
-            Route::get('hangman',  'HangmanController@getPhrase')->name('hangman');
 
         });
         Route::get('glossary', 'GlossaryController@index')->name('glossary');
@@ -142,6 +140,8 @@ MultiLang::routeGroup(function($router) {
         Route::get('fun-facts/{id}',  'FunFactsController@get');
         Route::get('contact-us',  'SettingController@contactUs')->name('contactUs');
         Route::post('contact-us',  'SettingController@sendMessage');
+        Route::get('start-hangman',  'HangmanController@index')->name('start-hangman');
+        Route::get('hangman',  'HangmanController@getPhrase')->name('hangman');
     });
     Route::group(array('prefix' => 'cron'), function(){
         Route::get('meaning',  'CronController@meaningToVote')->name('meaning');
