@@ -10,12 +10,13 @@
                 @include('layouts.contributor_sidebar')
             @endif
         @endif
-        @if(Auth::check())
-            <div class="menuCate">
-                <div class="title">
-                    {!! t('A Game of Contexts')!!}
-                </div>
-                <ul class="menuListing">
+
+        <div class="menuCate">
+            <div class="title">
+                {!! t('A Game of Contexts')!!}
+            </div>
+            <ul class="menuListing">
+                @if(Auth::check())
                     <li>
                         <a href="{!! lang_route('start-pictionary') !!}" class="{{ (Request::segment(2) == 'pictionary') ? 'active' : '' }} menu20">
                             <span>Pictionary</span>
@@ -26,14 +27,14 @@
                             <span>Spot the Intruder</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{!! lang_route('start-hangman') !!}" class="{{ (Request::segment(2) == 'hangman' || Request::segment(2) == 'start-hangman') ? 'active' : ''  }} menu20">
-                            <span>Hangman</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        @endif
+                @endif
+                <li>
+                    <a href="{!! lang_route('start-hangman') !!}" class="{{ (Request::segment(2) == 'hangman' || Request::segment(2) == 'start-hangman') ? 'active' : ''  }} menu20">
+                        <span>Hangman</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div class="menuCate">
             <div class="title">
                 {!! t('Miscellaneous')!!}
