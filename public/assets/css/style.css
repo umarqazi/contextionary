@@ -222,6 +222,28 @@ a.disabled{
    color: #f7952d !important;
 }
 
+.tab-content.meaning-container{
+  border: none;
+  height: inherit;
+  padding: 0px 0px;
+}
+
+.tab-content.meaning-container .wrapper{
+  border: #fff solid 1px;
+  padding: 15px;
+}
+
+.tab-content.meaning-container .tab-pane{
+  height: inherit;
+  padding: 0px;
+}
+
+
+.tab-content.meaning-container .mCustomScrollbar{
+  max-height: 120px;
+  overflow: auto;
+}
+
 .glossarybg .glossary-block:hover .img-holder .favIcon{
   display: inline-block;
 }
