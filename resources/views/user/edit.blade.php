@@ -3,6 +3,7 @@
     {!! t('Edit Profile') !!}
 @stop
 @section('content')
+    <?php $countries=Config::get('countries.countries');ksort($countries);?>
     <div class="container-fluid contributorMain userProfile">
         @include('layouts.flc_header')
         @include('layouts.toaster')
@@ -68,7 +69,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="customForm-group">
-                        {!! Form::select('country', Config::get('countries.countries'),  $user->profile->country, ['class'=>'customSelect w-100', 'placeholder'=>t('Country of Residence')]) !!}
+                        {!! Form::select('country', $countries,  $user->profile->country, ['class'=>'customSelect w-100', 'placeholder'=>t('Country of Residence')]) !!}
                         <span class="focus-border"></span>
                     </div>
                 </div>
