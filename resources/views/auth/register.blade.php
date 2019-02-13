@@ -3,7 +3,7 @@
   {!! t('Sign Up') !!}
 @stop
 @section('content')
-
+  <?php $countries=Config::get('countries.countries');ksort($countries);?>
   <div class="col-md-10 text-center">
     <div class="blockStyle wow fadeIn" data-wow-delay="0.6s">
       @include('layouts.toaster')
@@ -83,7 +83,7 @@
 
         <div class="col-md-6">
           <div class="customForm-group">
-            {!! Form::select('country', Config::get('countries.countries'), Input::old('country'), ['class'=>'customSelect w-100', 'placeholder'=>t('Country of Residence')]) !!}
+            {!! Form::select('country', $countries, Input::old('country'), ['class'=>'customSelect w-100', 'placeholder'=>t('Country of Residence')]) !!}
             <span class="focus-border"></span>
           </div>
         </div>
