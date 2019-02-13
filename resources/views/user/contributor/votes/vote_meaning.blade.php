@@ -37,16 +37,21 @@
                             @endforeach
                         @endif
                     </ul>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <p class="whiteText"><strong>{!! t('Phrase Type') !!}:</strong> {!! Config::get('constant.PhraseType.'.$phraseMeaning['phrase_type']) !!}</p>
-                        </div>
-                    </div>
-                    <div class="tab-content contextContent ">
+
+                    <div class="tab-content contextContent meaning-container">
                         @if($phraseMeaning)
                             @foreach($phraseMeaning['allMeaning'] as $key=>$meaning)
-                                <div id="tab-{!! $key+1 !!}" class="tab-pane mCustomScrollbar fade show @if(old('meaning')==$meaning['id']) current @endif">
-                                    <p>{!! $meaning['meaning'] !!}</p>
+                                <div id="tab-{!! $key+1 !!}" class="tab-pane fade show @if(old('meaning')==$meaning['id']) current @endif">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <p class="whiteText"><strong>{!! t('Phrase Type') !!}:</strong> {!! Config::get('constant.PhraseType.'.$meaning['phrase_type']) !!}</p>
+                                        </div>
+                                    </div>
+                                    <div class="wrapper">
+                                        <div class="mCustomScrollbar">
+                                            <p>{!! $meaning['meaning'] !!}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             @endforeach
                         @endif
