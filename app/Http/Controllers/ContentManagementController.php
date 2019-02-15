@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use View;
 use Redirect;
 
-class AboutUsController extends Controller
+class ContentManagementController extends Controller
 {
     /**
      * @var ContentManagementService
@@ -23,7 +23,7 @@ class AboutUsController extends Controller
     protected $content_management_service;
 
     /**
-     * AboutUsController constructor.
+     * ContentManagementController constructor.
      */
     public function __construct()
     {
@@ -35,13 +35,25 @@ class AboutUsController extends Controller
      * @return mixed
      */
     public function index(){
-        $about_us = $this->content_management_service->find(['slug' => 'about_us']);
-        if(!empty($about_us)){
+        $about_us   =   '';
+        $about_us   =   $this->content_management_service->find(['slug' => 'about_us']);
+        if($about_us) {
             $about_us = $about_us->content;
-            return View::make('guest_pages.about-us')->with('about_us', $about_us);
-        }else{
-            return View::make('guest_pages.about-us')->with('about_us', null);
         }
+        return View::make('guest_pages.content-management')->with(['content'=>$about_us, 'title'=>'About Us']);
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public function faq(){
+        $faq   =   '';
+        $faq   =   $this->content_management_service->find(['slug' => 'faq']);
+        if($faq) {
+            $faq = $faq->content;
+        }
+        return View::make('guest_pages.content-management')->with(['content'=>$faq, 'title'=>'FAQ']);
 
     }
 

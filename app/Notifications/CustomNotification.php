@@ -15,7 +15,7 @@ class CustomNotification extends Notification
 
     /**
      * Create a new notification instance.
-     * CustomNotification constructor.
+     * Notification constructor.
      * @param $data
      * @return void
      */
@@ -32,7 +32,7 @@ class CustomNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -44,10 +44,11 @@ class CustomNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('No Reply - '.$this->data['subject'])
+            ->subject($this->data['subject'])
             ->greeting('Hello!')
             ->line($this->data['subject'])
-            ->line($this->data['content']);
+            ->line($this->data['content'])
+            ->markdown('vendor.notifications.email');
     }
 
     /**
@@ -59,7 +60,8 @@ class CustomNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'subject'=>$this->data['subject'],
+            'content'=>$this->data['content']
         ];
     }
 }

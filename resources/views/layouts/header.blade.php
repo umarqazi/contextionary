@@ -10,6 +10,7 @@
         <li><a href="{!! lang_url('about-us') !!}">{!! t('About Us') !!}</a></li>
         <li><a href="{!! lang_route('fun-facts') !!}">{!! t('Word Facts') !!}</a></li>
         <li><a href="{!! lang_route('start-hangman') !!}">{!! t('Hangman') !!}</a></li>
+        <li><a href="{!! lang_route('faq') !!}">{!! t('FAQ') !!}</a></li>
         <li><a href="{!! lang_route('contactUs') !!}">{!! t('Contact Us') !!}</a></li>
       </ul>
       {{--<div class="searchWrapper">--}}

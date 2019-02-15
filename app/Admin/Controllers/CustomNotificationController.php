@@ -3,7 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\ContentManagement;
-use App\CustomNotification;
+use App\Notification as CustomNotification;
 use App\Notifications\CustomNotification as CNotification;
 use App\User;
 use \Illuminate\Database\Eloquent\Model;
@@ -14,7 +14,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
-
+use Config;
 class CustomNotificationController extends Controller
 {
     /**
@@ -65,9 +65,9 @@ class CustomNotificationController extends Controller
         if($request->sent_to == 1){
             $users  = User::all();
         }elseif($request->sent_to == 2){
-            $users  = User::role(['define','illustrate','translator'])->get();
+            $users  = User::role(Config::get('constant.contributorRole'))->get();
         }elseif($request->sent_to == 3){
-            $users  = User::role(['basic plan','premium plan','advance plan'])->get();
+            $users  = User::role(Config::get('constant.userRole'))->get();
         }
         admin_toastr(trans('Notification Mails are been sent!'));
         return Notification::send($users, new CNotification($request->all()));
