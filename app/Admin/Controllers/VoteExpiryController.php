@@ -83,7 +83,10 @@ class VoteExpiryController extends Controller
             })->sortable();
             $grid->column('phrase_id')->display(function ($phrase_id) {
                 $phrase = Phrase::where('phrase_id','=',$phrase_id)->first();
-                return $phrase->phrase_text;
+                if($phrase){
+                    return $phrase->phrase_text;
+                }
+                return NULL;
             })->sortable();
             $grid->column('Total Votes')->display(function () use ($self) {
                 $data = ['context_id' => $this->context_id, 'phrase_id' => $this->phrase_id, 'type' => $this->vote_type, 'vote' => '1'];
