@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
-class AboutUs extends Model
+class Notification extends Model
 {
     use Notifiable;
 
@@ -14,13 +14,9 @@ class AboutUs extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'content',
-    ];
 
     /**
      * @var string
      */
-    protected $table = 'about_us';
-
+    protected $table = 'notifications';
 }

@@ -16,6 +16,7 @@ use App\Phrase;
 use App\Repositories\IllustratorRepo;
 use App\Repositories\TranslationRepo;
 use App\Repositories\DefineMeaningRepo;
+use App\Repositories\VoteMeaningRepo;
 use App\VoteExpiry;
 use App\DefineMeaning;
 use Illuminate\Support\Facades\Storage;
@@ -34,6 +35,7 @@ class VoteExpiryController extends Controller
     protected $defineMeaningRepo;
     protected $illustratorRepo;
     protected $translatorRepo;
+    protected $voteMeaningRepo;
 
     /**
      * VoteExpiryController constructor.
@@ -43,6 +45,7 @@ class VoteExpiryController extends Controller
         $this->defineMeaningRepo    =   new DefineMeaningRepo();
         $this->illustratorRepo      =   new IllustratorRepo();
         $this->translatorRepo       =   new TranslationRepo();
+        $this->voteMeaningRepo      =   new VoteMeaningRepo();
     }
 
     /**
@@ -80,11 +83,17 @@ class VoteExpiryController extends Controller
             })->sortable();
             $grid->column('phrase_id')->display(function ($phrase_id) {
                 $phrase = Phrase::where('phrase_id','=',$phrase_id)->first();
-                return $phrase->phrase_text;
+                if($phrase){
+                    return $phrase->phrase_text;
+                }
+                return NULL;
             })->sortable();
             $grid->column('Total Votes')->display(function () use ($self) {
-                $model=Config::get('constant.repo_name.'.$this->vote_type);
-                return $self->$model->totalRecords(['context_id' => $this->context_id,'phrase_id' => $this->phrase_id]);
+                $data = ['context_id' => $this->context_id, 'phrase_id' => $this->phrase_id, 'type' => $this->vote_type, 'vote' => '1'];
+                if($this->vote_type=='translate'):
+                    $data['language']=$this->language;
+                endif;
+                return $self->voteMeaningRepo->totalVotes($data);
             });
             $grid->vote_type()->sortable();
             $grid->disableCreateButton();

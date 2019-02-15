@@ -48,6 +48,7 @@
                 @endif
                 <li><a href="{!! lang_route('contactUs') !!}" class="{{ (Request::segment(2) == 'contact-us') ? 'active' : '' }} menu13"><span>{!! t('Contact Us') !!}</span></a></li>
                 <li><a href="{!! lang_route('aboutUs') !!}" class="{{ (Request::segment(2) == 'about-us') ? 'active' : '' }} menu21"><span>{!! t('About Us') !!}</span></a></li>
+                <li><a href="{!! lang_route('faq') !!}" class="{{ (Request::segment(2) == 'faq') ? 'active' : '' }} menu21"><span>{!! t('FAQ') !!}</span></a></li>
             </ul>
         </div>
     </div>
