@@ -90,7 +90,7 @@ class VoteExpiryController extends Controller
                 if($this->vote_type=='translate'):
                     $data['language']=$this->language;
                 endif;
-                return $this->voteMeaningRepo->totalVotes($data);
+                return $self->voteMeaningRepo->totalVotes($data);
             });
             $grid->vote_type()->sortable();
             $grid->disableCreateButton();
