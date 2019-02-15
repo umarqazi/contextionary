@@ -53,23 +53,16 @@ class VoteMeaningRepo
     }
 
     /**
-     * @param $context_id
-     * @param $phrase_id
-     * @param $key
+     * @param $data
      * @return mixed
-     * total number of vote
      */
     public function totalVotes($data){
         return $total=$this->getVotesMeaning($data)->get()->count();
     }
 
     /**
-     * @param $context_id
-     * @param $phrase_id
-     * @param $columnKey
-     * @param $type
+     * @param $checkArray
      * @return mixed
-     * get highest votes
      */
     public function hightVotes($checkArray){
         $data=['context_id'=>$checkArray['context_id'], 'phrase_id'=>$checkArray['phrase_id'], 'type'=>$checkArray['type']];
