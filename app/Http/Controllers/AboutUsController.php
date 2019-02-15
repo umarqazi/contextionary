@@ -10,7 +10,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AboutUsService;
+use App\Services\ContentManagementService;
 use Illuminate\Http\Request;
 use View;
 use Redirect;
@@ -18,24 +18,24 @@ use Redirect;
 class AboutUsController extends Controller
 {
     /**
-     * @var AboutUsService
+     * @var ContentManagementService
      */
-    protected $about_us_service;
+    protected $content_management_service;
 
     /**
      * AboutUsController constructor.
      */
     public function __construct()
     {
-        $about_us_service          = new AboutUsService();
-        $this->about_us_service    = $about_us_service;
+        $content_management_service         = new ContentManagementService();
+        $this->content_management_service   = $content_management_service;
     }
 
     /**
      * @return mixed
      */
     public function index(){
-        $about_us = $this->about_us_service->first();
+        $about_us = $this->content_management_service->find(['slug' => 'about_us']);
         if(!empty($about_us)){
             $about_us = $about_us->content;
             return View::make('guest_pages.about-us')->with('about_us', $about_us);
