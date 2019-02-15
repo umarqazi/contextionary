@@ -45,7 +45,7 @@ class CustomNotification extends Notification
     {
         return (new MailMessage)
             ->subject($this->data['subject'])
-            ->greeting('Hello!')
+            ->greeting('Hello  '.$notifiable->first_name.' '.$notifiable->last_name)
             ->line($this->data['content'])
             ->line(' <br>')
             ->markdown('vendor.notifications.email');
