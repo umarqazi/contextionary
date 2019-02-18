@@ -96,7 +96,7 @@ View::composer(['user.user_plan.glossary.*'], function($view)
 /**
  * Guest Menus
  */
-View::composer(['user.profile', 'user.edit', 'user.roles', 'user.contributor.tutorials'], function($view)
+View::composer(['user.profile', 'user.edit', 'user.roles', 'user.contributor.tutorials', 'user.notifications', 'user.view-notification'], function($view)
 {
     $page=['profile'=>'My Profile'];
     if(Auth::check()):
@@ -105,6 +105,7 @@ View::composer(['user.profile', 'user.edit', 'user.roles', 'user.contributor.tut
             $page['tutorials-contributor']='Tutorial';
         endif;
     endif;
+    $page['notification']='Notifications';
     $view->with(['pageMenu'=>$page]);
 });
 

@@ -12,6 +12,7 @@
               <img src="{!! asset('assets/images/default.jpg')!!}">
             @endif
           </div>
+          <sup class="red-text"><strong>{!! $notification !!}</strong></sup>
           <span class="name cursor"><i class="fa fa-chevron-down"></i></span>
           <div class="dropDown-block">
             <div class="avtar-holder">
@@ -26,11 +27,11 @@
             </div>
             <ul class="userMenu">
               {{--@if(Auth::user()->hasRole(Config::get('constant.userRole')))--}}
-                {{--<li>--}}
-                  {{--<a href="{!! lang_route('activeUserPlan') !!}">--}}
-                    {{--<div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> {!! t('User Plan') !!}--}}
-                  {{--</a>--}}
-                {{--</li>--}}
+              {{--<li>--}}
+              {{--<a href="{!! lang_route('activeUserPlan') !!}">--}}
+              {{--<div class="img-holder"><img src="{!! asset('assets/images/user-plan-icon.png') !!}"></div> {!! t('User Plan') !!}--}}
+              {{--</a>--}}
+              {{--</li>--}}
               {{--@endif--}}
               <li>
                 <a href="{!! lang_route('profile') !!}">
@@ -38,11 +39,11 @@
                 </a>
               </li>
               @if(!Auth::user()->hasRole(Config::get('constant.userRole')))
-              <li>
-                <a href="{!! lang_route('tutorials-con') !!}">
-                  <div class="img-holder"><img src="{!! asset('assets/images/tutorial-icon.png') !!}"></div> {!! t('Tutorial') !!}
-                </a>
-              </li>
+                <li>
+                  <a href="{!! lang_route('tutorials-con') !!}">
+                    <div class="img-holder"><img src="{!! asset('assets/images/tutorial-icon.png') !!}"></div> {!! t('Tutorial') !!}
+                  </a>
+                </li>
               @endif
               <li>
                 <a href="{!! lang_route('logout') !!}">
@@ -72,10 +73,10 @@
             </div>
           @else
             @if(!Auth::user()->hasRole(Config::get('constant.userRole.guest')))
-            <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
-            <div class="dropDown-block right-dropdown">
-              <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contributor Account') !!}</a>
-            </div>
+              <img src="{!! asset('assets/images/switch-account-icon.png') !!}"> <span> <i class="fa fa-angle-down"></i></span>
+              <div class="dropDown-block right-dropdown">
+                <a href="{!! lang_url('switchToContributor') !!}" class="account"><i class="fa fa-angle-right"></i> {!! t('Switch to Contributor Account') !!}</a>
+              </div>
             @endif
           @endif
         @endif
@@ -151,14 +152,14 @@
         @endif
       @endif
       {{--<div class="languageBar">--}}
-        {{--<span class="active"><img src="{!! asset('assets/images/') !!}/{!!Config::get('multilang.locales.'.App::getLocale().'.flag') !!}"> {!! Config::get('multilang.locales.'.App::getLocale().'.name') !!} <i class="fa fa-chevron-down"></i></span>--}}
-        {{--<ul class="list">--}}
-          {{--<li><a href="{!! lang_route('locale', ['locale'=>'en']) !!}"><img src="{!! asset('assets/images/english-flag.png') !!}"> English </a></li>--}}
-          {{--<li><a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><img src="{!! asset('assets/images/french-flag.png') !!}"> French </a></li>--}}
-          {{--<li><a href="{!! lang_route('locale', ['locale'=>'sp']) !!}"><img src="{!! asset('assets/images/spain-flag.png') !!}"> Spanish </a></li>--}}
-          {{--<li><a href="{!! lang_route('locale', ['locale'=>'hi']) !!}"><img src="{!! asset('assets/images/hindi-flag.png') !!}"> Hindi </a></li>--}}
-          {{--<li><a href="{!! lang_route('locale', ['locale'=>'ch']) !!}"><img src="{!! asset('assets/images/china-flag.png') !!}"> Chinese </a></li>--}}
-        {{--</ul>--}}
+      {{--<span class="active"><img src="{!! asset('assets/images/') !!}/{!!Config::get('multilang.locales.'.App::getLocale().'.flag') !!}"> {!! Config::get('multilang.locales.'.App::getLocale().'.name') !!} <i class="fa fa-chevron-down"></i></span>--}}
+      {{--<ul class="list">--}}
+      {{--<li><a href="{!! lang_route('locale', ['locale'=>'en']) !!}"><img src="{!! asset('assets/images/english-flag.png') !!}"> English </a></li>--}}
+      {{--<li><a href="{!! lang_route('locale', ['locale'=>'fr']) !!}"><img src="{!! asset('assets/images/french-flag.png') !!}"> French </a></li>--}}
+      {{--<li><a href="{!! lang_route('locale', ['locale'=>'sp']) !!}"><img src="{!! asset('assets/images/spain-flag.png') !!}"> Spanish </a></li>--}}
+      {{--<li><a href="{!! lang_route('locale', ['locale'=>'hi']) !!}"><img src="{!! asset('assets/images/hindi-flag.png') !!}"> Hindi </a></li>--}}
+      {{--<li><a href="{!! lang_route('locale', ['locale'=>'ch']) !!}"><img src="{!! asset('assets/images/china-flag.png') !!}"> Chinese </a></li>--}}
+      {{--</ul>--}}
       {{--</div>--}}
 
     </div>

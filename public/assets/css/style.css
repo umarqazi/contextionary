@@ -659,3 +659,24 @@ img#hangman {
 .orange-clr{
   color: #f7942e;
 }
+.highlighted{
+  background-color: #444444 !important;
+}
+.highlighted td, .highlighted td a{
+  color:white !important;
+  font-weight: bold !important;
+}
+.highlighted td a{
+  background-color: #f7941d !important ;
+}
+.notification-content{
+  color:white;
+  padding:15px;
+  border:1px solid #f7941d;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.notification-content p{
+  color: white;
+}
+table.table a

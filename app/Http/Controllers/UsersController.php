@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Mail\RedeemPoint;
 use App\Mail\UserPlanMail;
+use App\Notification;
 use App\Profile;
 use App\Repositories\UserPointRepo;
 use App\Services\AuthService;
@@ -28,6 +29,7 @@ use Illuminate\Support\Facades\Validator;
 use View;
 use Mail;
 use Srmklive\PayPal\Services\AdaptivePayments;
+use Illuminate\Notifications\Notifiable;
 
 class UsersController extends Controller
 {
@@ -483,5 +485,18 @@ class UsersController extends Controller
             return Redirect::to(lang_url('dashboard'));
         }
         return Redirect::back();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function notification(){
+        return view::make('user.notifications');
+    }
+
+    public function viewNotification(Notification $id){
+        $notifications=Auth::user()->unreadNotifications->where('id', $id->id)->markAsRead();
+        $data   =   json_decode($id->data);
+        return view::make('user.view-notification')->with(['notification'=> $data->content, 'title'=>$data->subject]);
     }
 }
