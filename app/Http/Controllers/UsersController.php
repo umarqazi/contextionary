@@ -494,9 +494,10 @@ class UsersController extends Controller
         return view::make('user.notifications');
     }
 
-    public function viewNotification(Notification $id){
-        $notifications=Auth::user()->unreadNotifications->where('id', $id->id)->markAsRead();
-        $data   =   json_decode($id->data);
+    public function viewNotification($id){
+        Auth::user()->unreadNotifications->where('id', $id)->markAsRead();
+        $notifications = Notification::find($id);
+        $data   =   json_decode($notifications->data);
         return view::make('user.view-notification')->with(['notification'=> $data->content, 'title'=>$data->subject]);
     }
 }
