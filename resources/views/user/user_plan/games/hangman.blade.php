@@ -3,149 +3,153 @@
     {!! t('Hangman') !!}
 @stop
 @section('content')
-<div class="container-fluid contributorMain funfact pictionaryQuiz hangman" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $picture !!}); background-size:cover">
-    <div class="wrapperMask"></div>
-    @include('layouts.flc_header')
-    <div class="row">
-        <div class="col-md-12">
-            <div class="gameTitle">
-                Context: {{ucwords($context)}}
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <a href="{!! lang_route('hangman') !!}" class="btn orangeBtn waves-effect waves-light padding-class float-right">
-                <img src="{!! asset('storage/images/next.png') !!}">
-            </a>
-            <div class="gameWrapper">
-                <img id="hangman" src="{!! asset('assets/images/0.png') !!}">
-                <h3 class="category"></h3>
-                <div id="container">
-                    <!-- Random word Divs appended here -->
-                </div>
-                <div>
-                    <button>A</button>
-                    <button>B</button>
-                    <button>C</button>
-                    <button>D</button>
-                    <button>E</button>
-                    <button>F</button>
-                    <button>G</button>
-                    <button>H</button>
-                    <button>I</button>
-                </div>
-
-                <div>
-                    <button>J</button>
-                    <button>K</button>
-                    <button>L</button>
-                    <button>M</button>
-                    <button>N</button>
-                    <button>O</button>
-                    <button>P</button>
-                    <button>Q</button>
-                </div>
-
-                <div>
-                    <button>R</button>
-                    <button>S</button>
-                    <button>T</button>
-                    <button>U</button>
-                    <button>V</button>
-                    <button>W</button>
-                    <button>X</button>
-                    <button>Y</button>
-                    <button>Z</button>
+    <div class="container-fluid contributorMain funfact pictionaryQuiz hangman" style="background: url({!! Storage::disk(Config::get('constant.Storage'))->url('Contexts') !!}/{!! $picture !!}); background-size:cover">
+        <div class="wrapperMask"></div>
+        @include('layouts.flc_header')
+        <div class="row">
+            <div class="col-md-12">
+                <div class="gameTitle">
+                    Context: {{ucwords($context)}}
                 </div>
             </div>
+
+            <div class="col-md-12">
+                <a href="{!! lang_route('hangman') !!}" class="btn orangeBtn waves-effect waves-light padding-class float-right">
+                    <img src="{!! asset('storage/images/next.png') !!}">
+                </a>
+                <div class="gameWrapper">
+                    <img id="hangman" src="{!! asset('assets/images/0.png') !!}">
+                    <h3 class="category"></h3>
+                    <div id="container">
+                        <!-- Random word Divs appended here -->
+                    </div>
+                    <div>
+                        <button>A</button>
+                        <button>B</button>
+                        <button>C</button>
+                        <button>D</button>
+                        <button>E</button>
+                        <button>F</button>
+                        <button>G</button>
+                        <button>H</button>
+                        <button>I</button>
+                    </div>
+
+                    <div>
+                        <button>J</button>
+                        <button>K</button>
+                        <button>L</button>
+                        <button>M</button>
+                        <button>N</button>
+                        <button>O</button>
+                        <button>P</button>
+                        <button>Q</button>
+                    </div>
+
+                    <div>
+                        <button>R</button>
+                        <button>S</button>
+                        <button>T</button>
+                        <button>U</button>
+                        <button>V</button>
+                        <button>W</button>
+                        <button>X</button>
+                        <button>Y</button>
+                        <button>Z</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
 
-</div>
-<script type="text/javascript">
-    $(document).ready(function () {
+            // Pick a category and secret word
+            var categories = [
+                [
+                    @foreach($context_phrases as $context_phrase)
+                        '{{$context_phrase->phrases->phrase_text}}',
+                    @endforeach
+                ]
+            ];
+            var randomCategoryArray = categories[Math.floor((Math.random() * categories.length))];
+            var randomWord = (randomCategoryArray[Math.floor((Math.random() * randomCategoryArray.length))]).toUpperCase();
+            var randomWordArray = randomWord.split("");
 
-        // Pick a category and secret word
-        var categories = [
-            [
-                @foreach($context_phrases as $context_phrase)
-                    '{{$context_phrase->phrases->phrase_text}}',
-                @endforeach
-            ]
-        ];
-        var randomCategoryArray = categories[Math.floor((Math.random() * categories.length))];
-        var randomWord = (randomCategoryArray[Math.floor((Math.random() * randomCategoryArray.length))]).toUpperCase();
-        var randomWordArray = randomWord.split("");
-
-        var spaces = 0;
-        // Draw squares for secret word & hide letters
-        for (var i = 0; i < randomWord.length; i++) {
-            if(randomWordArray[i] == ' '){
-                $('#container').append('<br>');
-                spaces = spaces + 1;
-            }else {
-                $('#container').append('<div class="letter ' + i + '"></div>');
-                $('#container').find(":nth-child(" + (i + 1) + ")").text(randomWordArray[i]);
-                $(".letter").css("color", "#000");
-                $(".letter").css("background-color", "#000");
-            }
-        }
-
-        // Button click function
-        var wrongGuesses = 0;
-        $("button").on("click", function () {
-            $(this).addClass("used");
-            $(this).prop("disabled", "true");
-            var matchFound = false;
-
-            // Check if clicked letter is in secret word
-            var userGuess = $(this).text();
-            var elem = this;
+            var spaces = 0;
+            // Draw squares for secret word & hide letters
             for (var i = 0; i < randomWord.length; i++) {
-                if (userGuess === randomWord.charAt(i)) {
-                    $(elem).addClass("correct_char");
-                    $('#container').find(":nth-child(" + (i + 1) + ")").css("color", "#EFEFEF").addClass("winner");
-                    matchFound = true;
+                if(randomWordArray[i] == ' ' || randomWordArray[i] == '-'){
+                    if(randomWordArray[i] == ' ')
+                        $('#container').append('<br>');
+                    else if(randomWordArray[i] == '-')
+                        $('#container').append('<strong class="bold orange-clr"><br>-<br></strong>');
+
+                    spaces = spaces + 1;
+                }else {
+                    $('#container').append('<div class="letter ' + i + '"></div>');
+                    $('#container').find(":nth-child(" + (i + 1) + ")").text(randomWordArray[i]);
+                    $(".letter").css("color", "#000");
+                    $(".letter").css("background-color", "#000");
                 }
             }
 
-            //Check for winner
-            var goodGuesses = [];
-            var randomWordArrayCount =  randomWordArray.length - spaces;
-            $(".letter").each(function (index) {
-                if ($(this).hasClass("winner")) {
-                    goodGuesses.push(index);
-                    if (goodGuesses.length === randomWordArrayCount) {
-                        //$("#container").hide();
-                        $("button").prop("disabled", "true");
-                        $(".category").text("Great job you guessed the secret word!");
-                        // $(".category").append("<br><button enabled class='play-again'>Play again?</button>");
+            // Button click function
+            var wrongGuesses = 0;
+            $("button").on("click", function () {
+                $(this).addClass("used");
+                $(this).prop("disabled", "true");
+                var matchFound = false;
+
+                // Check if clicked letter is in secret word
+                var userGuess = $(this).text();
+                var elem = this;
+                for (var i = 0; i < randomWord.length; i++) {
+                    if (userGuess === randomWord.charAt(i)) {
+                        $(elem).addClass("correct_char");
+                        $('#container').find(":nth-child(" + (i + 1) + ")").css("color", "#EFEFEF").addClass("winner");
+                        matchFound = true;
                     }
                 }
-            });
 
-            // If no match, increase count and add appropriate image
-            if (matchFound === false) {
-                wrongGuesses += 1;
-                $("#hangman").attr("src", "/assets/images/" + wrongGuesses + ".png");
-            }
+                //Check for winner
+                var goodGuesses = [];
+                var randomWordArrayCount =  randomWordArray.length - spaces;
+                $(".letter").each(function (index) {
+                    if ($(this).hasClass("winner")) {
+                        goodGuesses.push(index);
+                        if (goodGuesses.length === randomWordArrayCount) {
+                            //$("#container").hide();
+                            $("button").prop("disabled", "true");
+                            $(".category").text("Great job you guessed the secret word!");
+                            // $(".category").append("<br><button enabled class='play-again'>Play again?</button>");
+                        }
+                    }
+                });
 
-            // If wrong guesses gets to 7 exit the game
-            if (wrongGuesses === 7) {
-                //$("#container").hide();
-                $("button").prop("disabled", "true");
-                $(".category").text("Sorry you lost! The secret word was " + randomWord);
-                // $(".category").append("<br><button enabled class='play-again'>Play again?</button>");
-            }
+                // If no match, increase count and add appropriate image
+                if (matchFound === false) {
+                    wrongGuesses += 1;
+                    $("#hangman").attr("src", "/assets/images/" + wrongGuesses + ".png");
+                }
 
-            // Play again button
-            $(".play-again").on("click", function () {
-                location.reload();
-            });
+                // If wrong guesses gets to 7 exit the game
+                if (wrongGuesses === 7) {
+                    //$("#container").hide();
+                    $("button").prop("disabled", "true");
+                    $(".category").text("Sorry you lost! The secret word was " + randomWord);
+                    // $(".category").append("<br><button enabled class='play-again'>Play again?</button>");
+                }
 
-        }); // End button click
+                // Play again button
+                $(".play-again").on("click", function () {
+                    location.reload();
+                });
 
-    }); // End document.ready
-</script>
+            }); // End button click
+
+        }); // End document.ready
+    </script>
 @endsection
