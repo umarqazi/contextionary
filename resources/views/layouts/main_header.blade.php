@@ -12,8 +12,19 @@
               <img src="{!! asset('assets/images/default.jpg')!!}">
             @endif
           </div>
-          <sup class="red-text"><strong>{!! $notification !!}</strong></sup>
           <span class="name cursor"><i class="fa fa-chevron-down"></i></span>
+          <div class="switch-account dropDown">
+            <span class="name cursor">
+              <a href="{!! lang_route('notification') !!}">
+                <i class="fa fa-bell grey-org-clr"></i>
+                <sup class="red-text">
+                  <strong>
+                    @if($notification > 0){!! $notification !!}@endif
+                  </strong>
+                </sup>
+              </a>
+            </span>
+          </div>
           <div class="dropDown-block">
             <div class="avtar-holder">
               <div class="img-holder">
