@@ -28,7 +28,11 @@
                                                 <td>{!! Carbon::parse($noti['created_at'])->format('Y-m-d') !!}</td>
                                                 <td>{!! $noti['data']['subject'] !!}</td>
                                                 <td>{!! substr($noti['data']['content'],0,100) !!}</td>
-                                                <td><a href="{!! lang_route('view-notification', ['id'=>$noti['id']]) !!}" class='btn btn-primary'>View</a> </td>
+                                                <td>
+                                                    <a href="{!! lang_route('view-notification', ['id'=>$noti['id']]) !!}" class="orange-clr">
+                                                        <i class="fa fa-eye grey-org-clr"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                         @endif
                                     @endforeach
