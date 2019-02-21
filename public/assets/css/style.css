@@ -678,11 +678,14 @@ img#hangman {
 .notification-content{
   color:white;
   padding:15px;
+  padding-top: 0px;
+  padding-bottom: 0px;
   border:1px solid #f7941d;
-  border-radius: 5px;
   margin-bottom: 10px;
 }
 .notification-content p{
   color: white;
 }
-table.table a
+.noti-logo{
+  background-color: #333b47;
+}
