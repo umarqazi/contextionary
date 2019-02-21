@@ -14,20 +14,20 @@
                             <table class="table table-striped notification-table">
                                 <thead>
                                 <tr>
-                                    <th>{!! t('Date') !!}</th>
+                                    <th>{!! t('S.No') !!}</th>
                                     <th>{!! t('Subject') !!}</th>
-                                    <th>{!! t('Message') !!}</th>
+                                    <th>{!! t('Recieved At') !!}</th>
                                     <th>{!! t('Action') !!}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @if(!$messages->isEmpty())
-                                    @foreach($messages as $noti)
+                                    @foreach($messages as $key => $noti)
                                         @if($noti['data'])
                                             <tr @if(empty($noti['read_at'])) class="highlighted" @endif>
-                                                <td>{!! Carbon::parse($noti['created_at'])->format('Y-m-d') !!}</td>
+                                                <td>{{ $key + 1 }}</td>
                                                 <td>{!! $noti['data']['subject'] !!}</td>
-                                                <td>{!! substr($noti['data']['content'],0,100) !!}</td>
+                                                <td>{!! $noti['created_at']->diffForHumans()!!}</td>
                                                 <td>
                                                     <a href="{!! lang_route('view-notification', ['id'=>$noti['id']]) !!}" class="orange-clr">
                                                         <i class="fa fa-eye grey-org-clr"></i>
