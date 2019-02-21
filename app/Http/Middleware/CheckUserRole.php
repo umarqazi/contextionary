@@ -18,7 +18,7 @@ class CheckUserRole
     public function handle($request, Closure $next)
     {
         if (!Auth::user()->hasAnyRole(Role::all())) {
-            return redirect(lang_route('selectPlan'));
+            return redirect(lang_route('contributorPlan'));
         }else{
             return $next($request);
         }
