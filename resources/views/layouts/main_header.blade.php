@@ -13,7 +13,7 @@
             @endif
           </div>
           <span class="name cursor"><i class="fa fa-chevron-down"></i></span>
-          <div class="switch-account dropDown">
+          <div class="switch-account dropDown mr-0">
             <span class="name cursor">
               <a href="{!! lang_route('notification') !!}">
                 <i class="fa fa-bell grey-org-clr"></i>
