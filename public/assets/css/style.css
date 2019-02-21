@@ -689,3 +689,6 @@ img#hangman {
 .noti-logo{
   background-color: #333b47;
 }
+.notification-section img{
+  width: 100%;
+}
