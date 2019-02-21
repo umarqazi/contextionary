@@ -70,7 +70,7 @@ class UsersController extends Controller
             if(!$userRole->isEmpty()){
                 return Redirect::to(lang_route('dashboard'));
             }else{
-                return Redirect::to(lang_route('selectPlan'));
+                return Redirect::to(lang_route('contributorPlan'));
             }
         }
 
