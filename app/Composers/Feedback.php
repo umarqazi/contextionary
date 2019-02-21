@@ -16,4 +16,12 @@ View::composer('layouts.body_footer', function ($view) {
     $view->with(['settings'=>$settings , 'feedback'=> $feedback ]);
 });
 
+View::composer(['layouts.main_header', 'user.notifications'], function ($view) {
+    $notification=0;
+    if(Auth::check()){
+        $notification = count(Auth::user()->unreadnotifications->where('data', '!=', NULL));
+        $messages = Auth::user()->notifications;
+    }
+    $view->with(['notification'=>$notification, 'messages'=>$messages]);
+});
 ?>

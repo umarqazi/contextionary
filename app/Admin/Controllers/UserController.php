@@ -70,7 +70,8 @@ class UserController extends Controller
                 return $this->profile['native_language'];
             });
             $grid->filter(function ($filter){
-                $filter->like('name');
+                $filter->like('first_name');
+                $filter->like('last_name');
                 $filter->like('email');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {

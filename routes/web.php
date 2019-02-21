@@ -133,6 +133,8 @@ MultiLang::routeGroup(function($router) {
             Route::get('intruder', 'SpotIntruderController@getQuestion')->name('spot-the-intruder');
             Route::post('verify-spot-the-intruder', 'SpotIntruderController@verifyAnswer');
             Route::get('intruder', 'SpotIntruderController@getQuestion')->name('intruder');
+            Route::get('notification', 'UsersController@notification')->name('notification');
+            Route::get('/notification/view-notification/{id}', 'UsersController@viewNotification')->name('view-notification');
 
         });
         Route::get('glossary', 'GlossaryController@index')->name('glossary');

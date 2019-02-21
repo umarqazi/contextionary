@@ -659,3 +659,33 @@ img#hangman {
 .orange-clr{
   color: #f7942e;
 }
+.grey-org-clr{
+  color: #737373;
+}
+.grey-org-clr:hover{
+  color: #f7942e;
+}
+.highlighted{
+  background-color: #444444 !important;
+}
+.highlighted td, .highlighted td a{
+  color:white !important;
+  font-weight: bold !important;
+}
+.highlighted td a{
+  /*background-color: #f7941d !important ;*/
+}
+.notification-content{
+  color:white;
+  padding:15px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border:1px solid #f7941d;
+  margin-bottom: 10px;
+}
+.notification-content p{
+  color: white;
+}
+.noti-logo{
+  background-color: #333b47;
+}
