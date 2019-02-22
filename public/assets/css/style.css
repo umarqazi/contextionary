@@ -665,8 +665,11 @@ img#hangman {
 .grey-org-clr:hover{
   color: #f7942e;
 }
+.eye-org-clr{
+  color: #f7942e;
+}
 .highlighted{
-  background-color: #444444 !important;
+  background-color: #333b47 !important;
 }
 .highlighted td, .highlighted td a{
   color:white !important;
@@ -691,4 +694,21 @@ img#hangman {
 }
 .notification-section div img{
   width: 100%;
+}
+.square-number{
+  padding:4px 8px;
+  font-weight: bold !important;
+  font-size: 12px !important;
+  color:white !important;
+  background-color: red;
+  border-radius: 2px;
+}
+.red-text{
+  position: absolute;
+  right: -12px;
+  top: 0px;
+}
+.bell-container{
+  display: inline-block;
+  
 }

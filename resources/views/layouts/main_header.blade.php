@@ -1,6 +1,6 @@
 <div class="userHeader">
   <div class="row">
-    <div class="col-md-7 col-sm-4">
+    <div class="col-md-8 col-sm-4">
       <img src="{!! asset('assets/images/dashboard-icon.png') !!}" class="menuIcon cursor">
       <img src="{!! asset('assets/images/dashboard-icon.png') !!}" class="mobileIcon cursor">
       @if(Auth::check())
@@ -13,13 +13,13 @@
             @endif
           </div>
           <span class="name cursor"><i class="fa fa-chevron-down"></i></span>
-          <div class="switch-account dropDown mr-0">
+          <div class="bell-container mr-0">
             <span class="name cursor">
               <a href="{!! lang_route('notification') !!}">
-                <i class="fa fa-bell grey-org-clr"></i>
+                <i class="fa fa-bell fa-2x grey-org-clr"></i>
                 <sup class="red-text">
                   <strong>
-                    @if($notification > 0){!! $notification !!}@endif
+                    @if($notification > 0)<span class="square-number">{!! $notification !!}</span>@endif
                   </strong>
                 </sup>
               </a>
@@ -74,7 +74,7 @@
         @endif
       @endif
     </div>
-    <div class="col-md-5 col-sm-8 text-right">
+    <div class="col-md-4 col-sm-8 text-right">
       <div class="switch-account dropDown">
         @if(Auth::check())
           @if(Auth::user()->hasRole(Config::get('constant.contributorRole')))

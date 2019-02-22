@@ -16,7 +16,7 @@
                                 <tr>
                                     <th>{!! t('S.No') !!}</th>
                                     <th>{!! t('Subject') !!}</th>
-                                    <th>{!! t('Recieved At') !!}</th>
+                                    <th>{!! t('Received At') !!}</th>
                                     <th>{!! t('Action') !!}</th>
                                 </tr>
                                 </thead>
@@ -30,7 +30,7 @@
                                                 <td>{!! $noti['created_at']->diffForHumans()!!}</td>
                                                 <td>
                                                     <a href="{!! lang_route('view-notification', ['id'=>$noti['id']]) !!}" class="orange-clr">
-                                                        <i class="fa fa-eye grey-org-clr"></i>
+                                                        <i class="fa fa-eye eye-org-clr"></i>
                                                     </a>
                                                 </td>
                                             </tr>
