@@ -16,7 +16,7 @@
           <div class="bell-container mr-0">
             <span class="name cursor">
               <a href="{!! lang_route('notification') !!}">
-                <i class="fa fa-bell fa-2x grey-org-clr"></i>
+                <i class="fa fa-bell grey-org-clr"></i>
                 <sup class="red-text">
                   <strong>
                     @if($notification > 0)<span class="square-number">{!! $notification !!}</span>@endif
