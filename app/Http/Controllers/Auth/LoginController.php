@@ -133,14 +133,15 @@ class LoginController extends Controller
         $getUser    =   $this->userService->getUser(['email'=>$user->email]);
         if(!$getUser){
             $getUser   =   User::create([
-                'first_name'     => $user->name,
+                'first_name'    => $user->name,
                 'last_name'     => NULL,
-                'password'     => NULL,
-                'timezone'     => NULL,
-                'coins'     => 100,
-                'email'    => $user->email,
-                'provider' => $provider,
-                'provider_id' => $user->id
+                'password'      => NULL,
+                'timezone'      => NULL,
+                'coins'         => 100,
+                'email'         => $user->email,
+                'provider'      => $provider,
+                'status'        => 1,
+                'provider_id'   => $user->id
             ]);
             $profile    =   App\Profile::create(['user_id'=>$getUser->id]);
         }else{

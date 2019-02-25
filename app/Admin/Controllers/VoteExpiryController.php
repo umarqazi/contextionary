@@ -19,6 +19,7 @@ use App\Repositories\TranslationRepo;
 use App\Repositories\DefineMeaningRepo;
 use App\Repositories\VoteMeaningRepo;
 use App\Translation;
+use App\User;
 use App\VoteExpiry;
 use App\DefineMeaning;
 use App\VoteMeaning;
@@ -192,6 +193,7 @@ class VoteExpiryController extends Controller
             $form->display('vote_type','Type');
             if($data['type'] == 'illustrate'){
                 if($votes_data['position1']){
+                    $form->display('', 'Winner')->default($votes_data['winner']);
                     $form->html('<img src="/storage/'.$votes_data['position1'].'" class="img-thumbnail">');
                     $form->display('', 'First Position Votes')->default($votes_data['position_votes1']);
                 }
@@ -205,6 +207,7 @@ class VoteExpiryController extends Controller
                 }
             }else{
                 if($votes_data['position1']) {
+                    $form->display('', 'Winner')->default($votes_data['winner']);
                     $form->display('', 'First Position')->default($votes_data['position1']);
                     $form->display('', 'First Position Votes')->default($votes_data['position_votes1']);
                 }
@@ -290,8 +293,11 @@ class VoteExpiryController extends Controller
                 ${'position'.$i} = $model;
                 ${'position_votes'.$i} = 0;
             }
-            $results['position'.$i] = ${'position'.$i}->{$feild_name};
+            if($i == 1){
+                $results['winner'] = ucwords(strtolower(User::where('id',${'position'.$i}->user_id)->first()->full_name));
+            }
             $results['position_votes'.$i] = ${'position_votes'.$i};
+            $results['position'.$i] = ${'position'.$i}->{$feild_name};
         }
         return $results;
     }
