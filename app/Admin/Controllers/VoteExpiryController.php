@@ -207,15 +207,17 @@ class VoteExpiryController extends Controller
                 }
             }else{
                 if($votes_data['position1']) {
-                    $form->display('', 'Winner')->default($votes_data['winner']);
+                    $form->display('', 'Winner 1')->default($votes_data['winner1']);
                     $form->display('', 'First Position')->default($votes_data['position1']);
                     $form->display('', 'First Position Votes')->default($votes_data['position_votes1']);
                 }
                 if($votes_data['position2']) {
+                    $form->display('', 'Winner 2')->default($votes_data['winner2']);
                     $form->display('', 'Second Position')->default($votes_data['position2']);
                     $form->display('', 'Second Position Votes')->default($votes_data['position_votes2']);
                 }
                 if($votes_data['position3']) {
+                    $form->display('', 'Winner 3')->default($votes_data['winner3']);
                     $form->display('', 'Third Position')->default($votes_data['position3']);
                     $form->display('', 'Third Position Votes')->default($votes_data['position_votes3']);
                 }
@@ -286,18 +288,18 @@ class VoteExpiryController extends Controller
         }
         $results = [];
         for ($i=1; $i <=3; $i++){
-            ${'position'.$i} = $model->where($data1)->where('position', $i)->first();
+            ${'position'.$i}                = $model->where($data1)->where('position', $i)->first();
             if(${'position'.$i}){
-                ${'position_votes'.$i} = VoteMeaning::where($id_name, ${'position'.$i}->id)->get()->count();
+                ${'position_votes'.$i}      = VoteMeaning::where($id_name, ${'position'.$i}->id)->get()->count();
+                ${'winner'.$i}              = ucwords(strtolower(User::where('id',${'position'.$i}->user_id)->first()->full_name));
             }else{
-                ${'position'.$i} = $model;
-                ${'position_votes'.$i} = 0;
+                ${'position'.$i}            = $model;
+                ${'position_votes'.$i}      = 0;
+                ${'winner'.$i}              = '';
             }
-            if($i == 1){
-                $results['winner'] = ucwords(strtolower(User::where('id',${'position'.$i}->user_id)->first()->full_name));
-            }
-            $results['position_votes'.$i] = ${'position_votes'.$i};
-            $results['position'.$i] = ${'position'.$i}->{$feild_name};
+            $results['position'.$i]         = ${'position'.$i}->{$feild_name};
+            $results['position_votes'.$i]   = ${'position_votes'.$i};
+            $results['winner'.$i]           = ${'winner'.$i};
         }
         return $results;
     }

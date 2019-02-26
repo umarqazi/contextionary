@@ -114,9 +114,9 @@
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Value') !!}</td>
-                  <td>${!! $contributions['earning'][env('MEANING')] !!}</td>
-                  <td>${!! $contributions['earning'][env('ILLUSTRATE')] !!}</td>
-                  <td>${!! $contributions['earning'][env('TRANSLATE')] !!}</td>
+                  <td>${!! $contributions['earning'][env('MEANING', 'meaning')] !!}</td>
+                  <td>${!! $contributions['earning'][env('ILLUSTRATE', 'illustrate')] !!}</td>
+                  <td>${!! $contributions['earning'][env('TRANSLATE', 'translate')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Contributions') !!}</td>
@@ -153,9 +153,9 @@
                 </tr>
                 <tr>
                   <td class="name">{!! t('Highest Value') !!}</td>
-                  <td>${!! $contributions['otherContributorsRedeem'][env('MEANING')] !!}</td>
-                  <td>${!! $contributions['otherContributorsRedeem'][env('ILLUSTRATE')] !!}</td>
-                  <td>${!! $contributions['otherContributorsRedeem'][env('TRANSLATE')] !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('MEANING', 'meaning')] !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('ILLUSTRATE', 'illustrate')] !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('TRANSLATE', 'translate')] !!}</td>
                 </tr>
               </table>
             </div>
