@@ -18,7 +18,7 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
 {
     $totalContributions='';
     $coins=0;
-    $types=[env('MEANING')=>0,env('ILLUSTRATE')=>0,env('TRANSLATE')=>0 ];
+    $types=[env('MEANING', 'meaning')=>0,env('ILLUSTRATE', 'illustrate')=>0,env('TRANSLATE', 'translate')=>0 ];
     $allContributions=['points'=>$types,'earning'=>$types, 'otherContributors'=>$types, 'otherContributorsRedeem'=>$types,'user_contributions'=>$types, 'user_pole_positions'=>$types, 'user_runner_up'=>$types];
     if(Auth::check()):
         $contributions      =   new DefineMeaningRepo();
@@ -26,10 +26,11 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         $translationRepo    =   new TranslationRepo();
         $pointsRepo         =   new UserPointRepo();
         $redeem             =   new RedeemPointRepo();
+        $userController             =   new \App\Http\Controllers\UsersController();
 
-        $allContributions['user_contributions'][env('MEANING')]=$contributions->getUserContributions(Auth::user()->id);
-        $allContributions['user_contributions'][env('ILLUSTRATE')]=$illustrators->getUserContributions(Auth::user()->id);
-        $allContributions['user_contributions'][env('TRANSLATE')]=$translationRepo->getUserContributions(Auth::user()->id);
+        $allContributions['user_contributions'][env('MEANING', 'meaning')]=$contributions->getUserContributions(Auth::user()->id);
+        $allContributions['user_contributions'][env('ILLUSTRATE', 'illustrate')]=$illustrators->getUserContributions(Auth::user()->id);
+        $allContributions['user_contributions'][env('TRANSLATE', 'translate')]=$translationRepo->getUserContributions(Auth::user()->id);
 
         $coins=Auth::user()->coins;
         /* get points of login user*/
@@ -41,13 +42,13 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         $pole=$pointsRepo->postions();
 
         $runnerUp=$pointsRepo->runnerUp();
-
-        $allContributions['otherContributorsRedeem']=$redeem->otherContributors();
-
+        foreach($allContributions['otherContributors'] as $key=>$number){
+            $allContributions['otherContributorsRedeem'][$key]  =   $userController->getEarning($number);
+        }
         foreach($points_group as $user_point){
             $getRedeemPoints=Auth::user()->redeemPoints->where('type', $user_point['type'])->sum('points');
             $allContributions['points'][$user_point['type']]=$user_point['sum']-$getRedeemPoints;
-            $allContributions['earning'][$user_point['type']]=Auth::user()->redeemPoints->where('type', $user_point['type'])->sum('earning');
+            $allContributions['earning'][$user_point['type']]=$userController->getEarning($allContributions['points'][$user_point['type']]);
         }
 
         foreach($pole as $user_pole){
