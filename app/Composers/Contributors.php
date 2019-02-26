@@ -19,7 +19,7 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
     $totalContributions='';
     $coins=0;
     $types=[env('MEANING', 'meaning')=>0,env('ILLUSTRATE', 'illustrate')=>0,env('TRANSLATE', 'translate')=>0 ];
-    $allContributions=['points'=>$types,'earning'=>$types, 'otherContributors'=>$types, 'otherContributorsRedeem'=>$types,'user_contributions'=>$types, 'user_pole_positions'=>$types, 'user_runner_up'=>$types];
+    $allContributions=['points'=>$types,'earning'=>$types, 'otherContributors'=>$types, 'otherContributorsRedeem'=>$types,'user_contributions'=>$types, 'user_pole_positions'=>$types, 'user_runner_up'=>$types, 'totalValueLT'=>$types];
     if(Auth::check()):
         $contributions      =   new DefineMeaningRepo();
         $illustrators       =   new IllustratorRepo();
@@ -47,8 +47,10 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         }
         foreach($points_group as $user_point){
             $getRedeemPoints=Auth::user()->redeemPoints->where('type', $user_point['type'])->sum('points');
+            $totalUserValue =   $user_point['sum'];
             $allContributions['points'][$user_point['type']]=$user_point['sum']-$getRedeemPoints;
             $allContributions['earning'][$user_point['type']]=$userController->getEarning($allContributions['points'][$user_point['type']]);
+            $allContributions['totalValueLT'][$user_point['type']]=$userController->getEarning($totalUserValue);
         }
 
         foreach($pole as $user_pole){
@@ -58,7 +60,7 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         foreach($runnerUp as $user_pole){
             $allContributions['user_runner_up'][$user_pole['type']]=$user_pole['total'];
         }
-    
+
     endif;
     $view->with(['contributions'=>$allContributions, 'coins'=>$coins]);
 });

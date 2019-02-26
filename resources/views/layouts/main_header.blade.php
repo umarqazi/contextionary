@@ -113,10 +113,17 @@
                   <td>{!! $contributions['points'][env('TRANSLATE', 'translate')] !!}</td>
                 </tr>
                 <tr>
-                  <td class="name">{!! t('My Value') !!}</td>
+                  <td class="name">{!! t('My Value (current)') !!}</td>
                   <td>${!! $contributions['earning'][env('MEANING', 'meaning')] !!}</td>
                   <td>${!! $contributions['earning'][env('ILLUSTRATE', 'illustrate')] !!}</td>
                   <td>${!! $contributions['earning'][env('TRANSLATE', 'translate')] !!}</td>
+                </tr>
+
+                <tr>
+                  <td class="name">{!! t('My Value (long-term)') !!}</td>
+                  <td>${!! $contributions['totalValueLT'][env('MEANING', 'meaning')] !!}</td>
+                  <td>${!! $contributions['totalValueLT'][env('ILLUSTRATE', 'illustrate')] !!}</td>
+                  <td>${!! $contributions['totalValueLT'][env('TRANSLATE', 'translate')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Contributions') !!}</td>
