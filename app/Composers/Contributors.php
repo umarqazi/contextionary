@@ -19,7 +19,7 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
     $totalContributions='';
     $coins=0;
     $types=[env('MEANING', 'meaning')=>0,env('ILLUSTRATE', 'illustrate')=>0,env('TRANSLATE', 'translate')=>0 ];
-    $allContributions=['points'=>$types,'earning'=>$types, 'otherContributors'=>$types, 'otherContributorsRedeem'=>$types,'user_contributions'=>$types, 'user_pole_positions'=>$types, 'user_runner_up'=>$types, 'totalValueLT'=>$types];
+    $allContributions=['points'=>$types,'earning'=>$types, 'otherContributors'=>$types, 'otherContributorsRedeem'=>$types,'user_contributions'=>$types, 'user_pole_positions'=>$types, 'user_runner_up'=>$types, 'totalValueLT'=>$types, 'otherContributorsLongT'=>$types];
     if(Auth::check()):
         $contributions      =   new DefineMeaningRepo();
         $illustrators       =   new IllustratorRepo();
@@ -36,7 +36,6 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         /* get points of login user*/
         $user_data=['user_id'=>Auth::user()->id];
         $points_group=$pointsRepo->points($user_data);
-
         $allContributions['otherContributors']=$pointsRepo->otherContributors();
 
         $pole=$pointsRepo->postions();
@@ -44,13 +43,14 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         $runnerUp=$pointsRepo->runnerUp();
         foreach($allContributions['otherContributors'] as $key=>$number){
             $allContributions['otherContributorsRedeem'][$key]  =   $userController->getEarning($number);
+            $allContributions['otherContributorsLongT'][$key]  =   $userController->getHighestEarning($number);
         }
         foreach($points_group as $user_point){
             $getRedeemPoints=Auth::user()->redeemPoints->where('type', $user_point['type'])->sum('points');
-            $totalUserValue =   $user_point['sum'];
-            $allContributions['points'][$user_point['type']]=$user_point['sum']-$getRedeemPoints;
+            $allContributions['points'][$user_point['type']]=($user_point['sum']-$getRedeemPoints)+$allContributions['user_contributions'][$user_point['type']]*1;
             $allContributions['earning'][$user_point['type']]=$userController->getEarning($allContributions['points'][$user_point['type']]);
-            $allContributions['totalValueLT'][$user_point['type']]=$userController->getEarning($totalUserValue);
+            $totalUserValue =   $allContributions['points'][$user_point['type']];
+            $allContributions['totalValueLT'][$user_point['type']]=$userController->getHighestEarning($totalUserValue);
         }
 
         foreach($pole as $user_pole){

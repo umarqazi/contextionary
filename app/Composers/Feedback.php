@@ -18,6 +18,7 @@ View::composer('layouts.body_footer', function ($view) {
 
 View::composer(['layouts.main_header', 'user.notifications'], function ($view) {
     $notification=0;
+    $messages='';
     if(Auth::check()){
         $notification = count(Auth::user()->unreadnotifications->where('data', '!=', NULL));
         $messages = Auth::user()->notifications;
