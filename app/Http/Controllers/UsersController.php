@@ -452,11 +452,27 @@ class UsersController extends Controller
      */
     public function getEarning($points){
         $pointsPrices=PointsPrice::all();
+        $earning=0;
         foreach($pointsPrices as $key2=>$range):
             if($points >=1000 && ($range['min_points']==0) && ($points >= $range['max_points'])):
                 $earning=$range['price']*$points;
                 break;
             elseif(($points >= $range['min_points']) && ($points <= $range['max_points'])):
+                $earning=$range['price']*$points;
+                break;
+            endif;
+        endforeach;
+        return $earning;
+    }
+    /**
+     * @param $points
+     * @return \___PHPSTORM_HELPERS\static|mixed
+     */
+    public function getHighestEarning($points){
+        $pointsPrices=PointsPrice::all();
+        $earning=0;
+        foreach($pointsPrices as $key2=>$range):
+            if($range['min_points']==0):
                 $earning=$range['price']*$points;
                 break;
             endif;
