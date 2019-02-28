@@ -32,7 +32,7 @@
             <div class="col-md-12">
                 <label class="customLabel">{!! t('Phrase Meaning') !!}</label>
                 @if(!$data['id'])
-                    {!! Form::textarea('meaning', $data['meaning'], ['maxlength'=>"2500",'id'=>'meaning-area','class'=>'enter-phrase' ,'placeholder'=>'Enter Phrase Meaning']) !!}
+                    {!! Form::textarea('meaning', $data['meaning'], ['maxlength'=>"2500",'id'=>'meaning-area','class'=>'enter-phrase' ,'placeholder'=>'Example: A quarterback is an American football player who is positioned behind the offensive line and leads or coordinates the offensive play of the team.']) !!}
                     <p class="text-right white-text"><span id="count">{!! t('Characters') !!} {!! strlen(Input::old('meaning')) !!}/2500</span></p>
                     @if ($errors->has('meaning'))
                         <div class="help-block"><strong>{{ $errors->first('meaning') }}</strong></div>

@@ -7,6 +7,7 @@ return [
     'vote_successfully_done'=>'Vote has been added Successfully',
     'no_money'=>'Money not add in wallet!!',
     'select_option'=>'Select atleast one option',
+    'select_option_trans'=>'Select at least one language to translate!',
     'record_updated'=>'Record has been updated',
     'meaning_added'=>'Your Meaning has been added against phrase. You can bid now',
     'purchase_coins'=>'Purchase coins for bidding on your meaning',
