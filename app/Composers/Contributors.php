@@ -46,9 +46,9 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         }
         foreach($points_group as $user_point){
             $getRedeemPoints=Auth::user()->redeemPoints->where('type', $user_point['type'])->sum('points');
-            $totalUserValue =   $user_point['sum'];
             $allContributions['points'][$user_point['type']]=($user_point['sum']-$getRedeemPoints)+$allContributions['user_contributions'][$user_point['type']]*1;
             $allContributions['earning'][$user_point['type']]=$userController->getEarning($allContributions['points'][$user_point['type']]);
+            $totalUserValue =   $allContributions['points'][$user_point['type']];
             $allContributions['totalValueLT'][$user_point['type']]=$userController->getHighestEarning($totalUserValue);
         }
 
