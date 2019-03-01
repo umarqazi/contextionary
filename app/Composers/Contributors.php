@@ -63,13 +63,13 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
             $allContributions['user_runner_up'][$user_pole['type']]=$user_pole['total'];
         }
         if($checkAllContribution[env('MEANING', 'meaning')]!=0){
-            $allContributions['otherContributors'][env('MEANING', 'meaning')]=$allContributions['otherContributors'][env('MEANING', 'meaning')]+$contributions->getUserContributions(Auth::user()->id);
+            $allContributions['otherContributors'][env('MEANING', 'meaning')]=$allContributions['otherContributors'][env('MEANING', 'meaning')]+$contributions->getUserContributions($checkAllContribution[env('MEANING', 'meaning')]);
         }
         if($checkAllContribution[env('ILLUSTRATE', 'illustrate')]!=0){
-            $allContributions['otherContributors'][env('ILLUSTRATE', 'illustrate')]=$allContributions['otherContributors'][env('ILLUSTRATE', 'illustrate')]+$illustrators->getUserContributions(Auth::user()->id);
+            $allContributions['otherContributors'][env('ILLUSTRATE', 'illustrate')]=$allContributions['otherContributors'][env('ILLUSTRATE', 'illustrate')]+$illustrators->getUserContributions($checkAllContribution[env('ILLUSTRATE', 'illustrate')]);
         }
         if($checkAllContribution[env('TRANSLATE', 'translate')]!=0){
-            $allContributions['otherContributors'][env('TRANSLATE', 'translate')]=$allContributions['otherContributors'][env('TRANSLATE', 'translate')]+$translationRepo->getUserContributions(Auth::user()->id);
+            $allContributions['otherContributors'][env('TRANSLATE', 'translate')]=$allContributions['otherContributors'][env('TRANSLATE', 'translate')]+$translationRepo->getUserContributions($checkAllContribution[env('TRANSLATE', 'translate')]);
         }
     endif;
     $view->with(['contributions'=>$allContributions, 'coins'=>$coins]);
