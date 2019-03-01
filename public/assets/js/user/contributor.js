@@ -4,13 +4,16 @@ $(".form-container a.orangeBtn").click(function() {
 });
 
 $("a.goto-fimiliar").click(function() {
-
     $(".select-fimiliar").addClass("active");
 });
 
 $("a.goto-lang").click(function() {
-
-    $(".select-lang").addClass("active");
+    if($('#checkBoxT').prop("checked") == false){
+        $('#loader').removeClass('hidden');
+        $('#init_cont_form').submit();
+    }else{
+        $(".select-lang").addClass("active");
+    }
 });
 
 $("a.back-to").click(function() {
