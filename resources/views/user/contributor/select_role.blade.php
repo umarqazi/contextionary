@@ -9,7 +9,7 @@
             <div class="row">
                 @include('layouts.toaster')
                 <div class="col-md-12">
-                    {!! Form::open(['url'=>lang_route("saveContributor"), 'enctype'=>'multipart/form-data', 'method'=>'post']) !!}
+                    {!! Form::open(['url'=>lang_route("saveContributor"), 'enctype'=>'multipart/form-data', 'method'=>'post', 'id'=> 'init_cont_form']) !!}
                     {!! Form::hidden('user_id', $id,[]) !!}
                     {!! Form::hidden('profile', '0',[]) !!}
                     <div class="planBlock form-container active desired-rolls">
@@ -107,6 +107,7 @@
                         </div>
                     </div>
                     {!! Form::close() !!}
+                    <div id="loader" class="loader hidden">Loading...</div>
                 </div>
             </div>
         </div>

@@ -61,6 +61,14 @@ class VoteMeaningRepo
     }
 
     /**
+     * @param $data
+     * @return mixed
+     */
+    public function votesPerDefineMe($data){
+        return $total=$this->getVotesMeaning($data)->get()->count();
+    }
+
+    /**
      * @param $checkArray
      * @return mixed
      */

@@ -78,7 +78,28 @@ class UserPointRepo
         return $types;
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function getPoint($data){
         return $this->userPoints->where($data)->first();
+    }
+
+    /**
+     * @return mixed
+     * get points of other user
+     */
+    public function pointsContributions(){
+        $otherPoints=$this->userPoints->selectRaw('sum(point) as sum, type, user_id')->groupBy('type','user_id')->orderBy('sum', 'desc')->get();
+        $types=[env('MEANING')=>0,env('ILLUSTRATE')=>0,env('TRANSLATE')=>0];
+        foreach($otherPoints as $key=>$points):
+            if($types[$points['type']]==0):
+                if($points['user_id']!=0){
+                    $types[$points['type']]=$points['user_id'];
+                }
+            endif;
+        endforeach;
+        return $types;
     }
 }

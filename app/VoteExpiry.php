@@ -4,6 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class VoteExpiry
+ * @package App
+ *
+ * @property integer context_id
+ * @property integer phrase_id
+ * @property integer vote_type
+ * @property integer expiry_date
+ * @property integer language
+ */
 class VoteExpiry extends Model
 {
     protected $fillable = [

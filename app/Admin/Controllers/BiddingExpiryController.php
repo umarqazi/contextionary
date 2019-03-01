@@ -63,7 +63,15 @@ class BiddingExpiryController extends Controller
             $content->header(trans('Bidding Expiry'));
             $content->description(trans('List'));
             $content->body($this->grid(0)->render());
-            $content->row('<section class="content-header custom-header"><h1>'.trans('Expired Bids').'<small>List</small></h1></section>');
+        });
+    }
+
+    /**
+     * @return Content
+     */
+    public function expiredBiddings(){
+        return Admin::content(function (Content $content) {
+            $content->header(trans('Expired Biddings'));
             $content->description(trans('List'));
             $content->body($this->grid(1)->render());
         });

@@ -113,10 +113,17 @@
                   <td>{!! $contributions['points'][env('TRANSLATE', 'translate')] !!}</td>
                 </tr>
                 <tr>
-                  <td class="name">{!! t('My Value') !!}</td>
-                  <td>${!! $contributions['earning'][env('MEANING')] !!}</td>
-                  <td>${!! $contributions['earning'][env('ILLUSTRATE')] !!}</td>
-                  <td>${!! $contributions['earning'][env('TRANSLATE')] !!}</td>
+                  <td class="name">{!! t('My Value (current)') !!}</td>
+                  <td>${!! $contributions['earning'][env('MEANING', 'meaning')] !!}</td>
+                  <td>${!! $contributions['earning'][env('ILLUSTRATE', 'illustrate')] !!}</td>
+                  <td>${!! $contributions['earning'][env('TRANSLATE', 'translate')] !!}</td>
+                </tr>
+
+                <tr>
+                  <td class="name">{!! t('My Value (long-term)') !!}</td>
+                  <td>${!! $contributions['totalValueLT'][env('MEANING', 'meaning')] !!}</td>
+                  <td>${!! $contributions['totalValueLT'][env('ILLUSTRATE', 'illustrate')] !!}</td>
+                  <td>${!! $contributions['totalValueLT'][env('TRANSLATE', 'translate')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Contributions') !!}</td>
@@ -152,10 +159,16 @@
                   <td>{!! $contributions['otherContributors'][env('TRANSLATE', 'translate')] !!}</td>
                 </tr>
                 <tr>
-                  <td class="name">{!! t('Highest Value') !!}</td>
-                  <td>${!! $contributions['otherContributorsRedeem'][env('MEANING')] !!}</td>
-                  <td>${!! $contributions['otherContributorsRedeem'][env('ILLUSTRATE')] !!}</td>
-                  <td>${!! $contributions['otherContributorsRedeem'][env('TRANSLATE')] !!}</td>
+                  <td class="name">{!! t('Highest Value (current)') !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('MEANING', 'meaning')] !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('ILLUSTRATE', 'illustrate')] !!}</td>
+                  <td>${!! $contributions['otherContributorsRedeem'][env('TRANSLATE', 'translate')] !!}</td>
+                </tr>
+                <tr>
+                  <td class="name">{!! t('Highest Value (long-term)') !!}</td>
+                  <td>${!! $contributions['otherContributorsLongT'][env('MEANING', 'meaning')] !!}</td>
+                  <td>${!! $contributions['otherContributorsLongT'][env('ILLUSTRATE', 'illustrate')] !!}</td>
+                  <td>${!! $contributions['otherContributorsLongT'][env('TRANSLATE', 'translate')] !!}</td>
                 </tr>
               </table>
             </div>

@@ -69,12 +69,21 @@ class ContributorController
      */
     public function saveContributor(Request $request){
         try{
-            if(empty($request->context) || empty($request->role)|| empty($request->language)){
+            if(empty($request->context) || empty($request->role)){
                 $notification = array(
                     'message' => trans('content.select_option'),
                     'alert_type' => 'error'
                 );
                 return Redirect::back()->with($notification)->withInput(Input::all());
+            }
+            if(in_array ( 'translate', $request->role )){
+                if(empty($request->language)){
+                    $notification = array(
+                        'message' => trans('content.select_option_trans'),
+                        'alert_type' => 'error'
+                    );
+                    return Redirect::back()->with($notification)->withInput(Input::all());
+                }
             }
             $notification=[];
 
