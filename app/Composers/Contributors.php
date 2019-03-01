@@ -36,6 +36,8 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         /* get points of login user*/
         $user_data=['user_id'=>Auth::user()->id];
         $points_group=$pointsRepo->points($user_data);
+        $checkAllContribution=$pointsRepo->pointsContributions();
+
         $allContributions['otherContributors']=$pointsRepo->otherContributors();
 
         $pole=$pointsRepo->postions();
@@ -60,7 +62,15 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         foreach($runnerUp as $user_pole){
             $allContributions['user_runner_up'][$user_pole['type']]=$user_pole['total'];
         }
-
+        if($checkAllContribution[env('MEANING', 'meaning')]!=0){
+            $allContributions['otherContributors'][env('MEANING', 'meaning')]=$allContributions['otherContributors'][env('MEANING', 'meaning')]+$contributions->getUserContributions(Auth::user()->id);
+        }
+        if($checkAllContribution[env('ILLUSTRATE', 'illustrate')]!=0){
+            $allContributions['otherContributors'][env('ILLUSTRATE', 'illustrate')]=$allContributions['otherContributors'][env('ILLUSTRATE', 'illustrate')]+$illustrators->getUserContributions(Auth::user()->id);
+        }
+        if($checkAllContribution[env('TRANSLATE', 'translate')]!=0){
+            $allContributions['otherContributors'][env('TRANSLATE', 'translate')]=$allContributions['otherContributors'][env('TRANSLATE', 'translate')]+$translationRepo->getUserContributions(Auth::user()->id);
+        }
     endif;
     $view->with(['contributions'=>$allContributions, 'coins'=>$coins]);
 });
