@@ -9,7 +9,7 @@ class DefineMeaning extends Model
     protected $table="define_meanings";
 
     protected $fillable = [
-        'meaning', 'context_id', 'phrase_id', 'user_id', 'phrase_type', 'status'
+        'meaning', 'old_meaning', 'context_id', 'phrase_id', 'user_id', 'phrase_type', 'status'
     ];
 
     public function votes(){
