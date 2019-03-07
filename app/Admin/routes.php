@@ -36,6 +36,9 @@ Route::group([
     $router->resource('auth/vote-expiry', 'VoteExpiryController')->only('index', 'show', 'update');
     $router->get('auth/expired-votes', 'VoteExpiryController@expiredVotes');
     $router->resource('auth/bidding-expiry', 'BiddingExpiryController')->only('index', 'show', 'update');
+    $router->resource('auth/meaning', 'MeaningController')->only('edit', 'update');
+    $router->resource('auth/translate', 'TranslationController')->only('edit', 'update');
+    $router->resource('auth/illustrate', 'IllustratorController')->only('edit', 'update');
     $router->get('auth/expired-biddings', 'BiddingExpiryController@expiredBiddings');
     $router->get('auth/contribution-winner', 'ContributorPointsController@index');
 });
