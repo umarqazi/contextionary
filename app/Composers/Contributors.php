@@ -67,7 +67,6 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
         }else{
             foreach($allContributions['points'] as $key=>$user_point){
                 $allContributions['points'][$key]=$allContributions['user_contributions'][$key]*1;
-                $allContributions['earning'][$key]=$userController->getEarning($allContributions['points'][$key]);
                 $totalUserValue =   $allContributions['points'][$key];
                 $allContributions['totalValueLT'][$key]=$userController->getHighestEarning($totalUserValue);
             }
