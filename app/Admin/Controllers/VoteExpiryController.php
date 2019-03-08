@@ -33,6 +33,10 @@ use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Config;
 
+/**
+ * Class VoteExpiryController
+ * @package App\Admin\Controllers
+ */
 class VoteExpiryController extends Controller
 {
 
@@ -191,35 +195,19 @@ class VoteExpiryController extends Controller
             $form->display('', 'Phrase')->default($phrase_text);
             $form->display('', 'Total Votes')->default($total_votes);
             $form->display('vote_type','Type');
-            if($data['type'] == 'illustrate'){
-                if($votes_data['position1']){
-                    $form->display('', 'Winner')->default($votes_data['winner']);
-                    $form->html('<img src="/storage/'.$votes_data['position1'].'" class="img-thumbnail">');
-                    $form->display('', 'First Position Votes')->default($votes_data['position_votes1']);
-                }
-                if($votes_data['position2']) {
-                    $form->html('<img src="/storage/' . $votes_data['position2'] . '" class="img-thumbnail">');
-                    $form->display('', 'Second Position Votes')->default($votes_data['position_votes2']);
-                }
-                if($votes_data['position3']) {
-                    $form->html('<img src="/storage/' . $votes_data['position3'] . '" class="img-thumbnail">');
-                    $form->display('', 'Third Position Votes')->default($votes_data['position_votes3']);
-                }
-            }else{
-                if($votes_data['position1']) {
-                    $form->display('', 'Winner 1')->default($votes_data['winner1']);
-                    $form->display('', 'First Position')->default($votes_data['position1']);
-                    $form->display('', 'First Position Votes')->default($votes_data['position_votes1']);
-                }
-                if($votes_data['position2']) {
-                    $form->display('', 'Winner 2')->default($votes_data['winner2']);
-                    $form->display('', 'Second Position')->default($votes_data['position2']);
-                    $form->display('', 'Second Position Votes')->default($votes_data['position_votes2']);
-                }
-                if($votes_data['position3']) {
-                    $form->display('', 'Winner 3')->default($votes_data['winner3']);
-                    $form->display('', 'Third Position')->default($votes_data['position3']);
-                    $form->display('', 'Third Position Votes')->default($votes_data['position_votes3']);
+            foreach ($votes_data as $index => $position_data){
+                if($position_data['value'] != ''){
+                    $form->display('', $this->numToOrdinalWord($index).' Position')->default($position_data['winner']);
+                    if($data['type'] == 'meaning'){
+                        $form->display('', $this->numToOrdinalWord($index).' Position Phrase Type')->default(Config::get('constant.PhraseType.'.$position_data['phrase_type']));
+                    }
+                    if($data['type'] == 'illustrate'){
+                        $form->html('<img src="/storage/'.$position_data['value'].'" class="img-thumbnail">');
+                    }else{
+                        $form->display('', $this->numToOrdinalWord($index).' Position '. ucwords($data['type']))->default($position_data['value']);
+                    }
+                    $form->html('<a class="btn btn-sm btn-default" href="/admin/auth/'.$data['type'].'/'.$position_data['id'].'/edit"><i class="fa fa-pencil"></i>  Edit</a>');
+                    $form->display('', $this->numToOrdinalWord($index).' Position Votes')->default($position_data['votes']);
                 }
             }
             $form->disableReset();
@@ -270,8 +258,8 @@ class VoteExpiryController extends Controller
      */
     public function getVotesData($data){
         $data1          = [
-        'context_id'    => $data['context_id'],
-        'phrase_id'     => $data['phrase_id'],
+            'context_id'    => $data['context_id'],
+            'phrase_id'     => $data['phrase_id'],
         ];
         if($data['type'] == 'meaning'){
             $model      = new DefineMeaning();
@@ -288,18 +276,26 @@ class VoteExpiryController extends Controller
         }
         $results = [];
         for ($i=1; $i <=3; $i++){
-            ${'position'.$i}                = $model->where($data1)->where('position', $i)->first();
-            if(${'position'.$i}){
-                ${'position_votes'.$i}      = VoteMeaning::where($id_name, ${'position'.$i}->id)->get()->count();
-                ${'winner'.$i}              = ucwords(strtolower(User::where('id',${'position'.$i}->user_id)->first()->full_name));
+            ${'position'.$i}                        = [];
+            ${'position'.$i}['value']               = $model->where($data1)->where('position', $i)->first();
+            if(!is_null(${'position'.$i}['value'])){
+                ${'position'.$i}['votes']           = VoteMeaning::where($id_name, ${'position'.$i}['value']->id)->get()->count();
+                ${'position'.$i}['winner']          = ucwords(strtolower(User::where('id',${'position'.$i}['value']->user_id)->first()->full_name));
+                ${'position'.$i}['id']              =  ${'position'.$i}['value']->id;
+                if($data['type'] == 'meaning'){
+                    ${'position'.$i}['phrase_type'] =  ${'position'.$i}['value']->phrase_type;
+                }
+                ${'position'.$i}['value']           =  ${'position'.$i}['value']->$feild_name;
             }else{
-                ${'position'.$i}            = $model;
-                ${'position_votes'.$i}      = 0;
-                ${'winner'.$i}              = '';
+                ${'position'.$i}['winner']          = '';
+                ${'position'.$i}['id']              = '';
+                if($data['type'] == 'meaning'){
+                    ${'position'.$i}['phrase_type'] = '';
+                }
+                ${'position'.$i}['value']           = $model->$feild_name;
+                ${'position'.$i}['votes']           = 0;
             }
-            $results['position'.$i]         = ${'position'.$i}->{$feild_name};
-            $results['position_votes'.$i]   = ${'position_votes'.$i};
-            $results['winner'.$i]           = ${'winner'.$i};
+            $results[$i]                    = ${'position'.$i};
         }
         return $results;
     }
@@ -314,6 +310,16 @@ class VoteExpiryController extends Controller
     public function update($id)
     {
         return $this->form()->update($id);
+    }
+
+    /**
+     * @param $num
+     * @return mixed
+     */
+    private function numToOrdinalWord($num)
+    {
+        $first_word = array('', 'First', 'Second', 'Third');
+        return $first_word[$num];
     }
 
 }

@@ -56,12 +56,20 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
             $allContributions['otherContributorsRedeem'][$key]  =   $userController->getEarning($number);
             $allContributions['otherContributorsLongT'][$key]  =   $userController->getHighestEarning($number);
         }
-        foreach($points_group as $user_point){
-            $getRedeemPoints=Auth::user()->redeemPoints->where('type', $user_point['type'])->sum('points');
-            $allContributions['points'][$user_point['type']]=($user_point['sum']-$getRedeemPoints)+$allContributions['user_contributions'][$user_point['type']]*1;
-            $allContributions['earning'][$user_point['type']]=$userController->getEarning($allContributions['points'][$user_point['type']]);
-            $totalUserValue =   $allContributions['points'][$user_point['type']];
-            $allContributions['totalValueLT'][$user_point['type']]=$userController->getHighestEarning($totalUserValue);
+        if(!$points_group->isEmpty()){
+            foreach($points_group as $user_point){
+                $getRedeemPoints=Auth::user()->redeemPoints->where('type', $user_point['type'])->sum('points');
+                $allContributions['points'][$user_point['type']]=($user_point['sum']-$getRedeemPoints)+$allContributions['user_contributions'][$user_point['type']]*1;
+                $allContributions['earning'][$user_point['type']]=$userController->getEarning($allContributions['points'][$user_point['type']]);
+                $totalUserValue =   $allContributions['points'][$user_point['type']];
+                $allContributions['totalValueLT'][$user_point['type']]=$userController->getHighestEarning($totalUserValue);
+            }
+        }else{
+            foreach($allContributions['points'] as $key=>$user_point){
+                $allContributions['points'][$key]=$allContributions['user_contributions'][$key]*1;
+                $totalUserValue =   $allContributions['points'][$key];
+                $allContributions['totalValueLT'][$key]=$userController->getHighestEarning($totalUserValue);
+            }
         }
 
         foreach($pole as $user_pole){
