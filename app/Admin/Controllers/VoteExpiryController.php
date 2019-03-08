@@ -33,6 +33,10 @@ use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Config;
 
+/**
+ * Class VoteExpiryController
+ * @package App\Admin\Controllers
+ */
 class VoteExpiryController extends Controller
 {
 
@@ -194,6 +198,9 @@ class VoteExpiryController extends Controller
             foreach ($votes_data as $index => $position_data){
                 if($position_data['value'] != ''){
                     $form->display('', $this->numToOrdinalWord($index).' Position')->default($position_data['winner']);
+                    if($data['type'] == 'meaning'){
+                        $form->display('', $this->numToOrdinalWord($index).' Position Phrase Type')->default(Config::get('constant.PhraseType.'.$position_data['phrase_type']));
+                    }
                     if($data['type'] == 'illustrate'){
                         $form->html('<img src="/storage/'.$position_data['value'].'" class="img-thumbnail">');
                     }else{
@@ -251,8 +258,8 @@ class VoteExpiryController extends Controller
      */
     public function getVotesData($data){
         $data1          = [
-        'context_id'    => $data['context_id'],
-        'phrase_id'     => $data['phrase_id'],
+            'context_id'    => $data['context_id'],
+            'phrase_id'     => $data['phrase_id'],
         ];
         if($data['type'] == 'meaning'){
             $model      = new DefineMeaning();
@@ -269,18 +276,24 @@ class VoteExpiryController extends Controller
         }
         $results = [];
         for ($i=1; $i <=3; $i++){
-            ${'position'.$i}                = [];
-            ${'position'.$i}['value']       = $model->where($data1)->where('position', $i)->first();
+            ${'position'.$i}                        = [];
+            ${'position'.$i}['value']               = $model->where($data1)->where('position', $i)->first();
             if(!is_null(${'position'.$i}['value'])){
-                ${'position'.$i}['votes']   = VoteMeaning::where($id_name, ${'position'.$i}['value']->id)->get()->count();
-                ${'position'.$i}['winner']  = ucwords(strtolower(User::where('id',${'position'.$i}['value']->user_id)->first()->full_name));
-                ${'position'.$i}['id']      =  ${'position'.$i}['value']->id;
-                ${'position'.$i}['value']   =  ${'position'.$i}['value']->$feild_name;
+                ${'position'.$i}['votes']           = VoteMeaning::where($id_name, ${'position'.$i}['value']->id)->get()->count();
+                ${'position'.$i}['winner']          = ucwords(strtolower(User::where('id',${'position'.$i}['value']->user_id)->first()->full_name));
+                ${'position'.$i}['id']              =  ${'position'.$i}['value']->id;
+                if($data['type'] == 'meaning'){
+                    ${'position'.$i}['phrase_type'] =  ${'position'.$i}['value']->phrase_type;
+                }
+                ${'position'.$i}['value']           =  ${'position'.$i}['value']->$feild_name;
             }else{
-                ${'position'.$i}['winner']  = '';
-                ${'position'.$i}['id']      = '';
-                ${'position'.$i}['value']   = $model->$feild_name;
-                ${'position'.$i}['votes']   = 0;
+                ${'position'.$i}['winner']          = '';
+                ${'position'.$i}['id']              = '';
+                if($data['type'] == 'meaning'){
+                    ${'position'.$i}['phrase_type'] = '';
+                }
+                ${'position'.$i}['value']           = $model->$feild_name;
+                ${'position'.$i}['votes']           = 0;
             }
             $results[$i]                    = ${'position'.$i};
         }
