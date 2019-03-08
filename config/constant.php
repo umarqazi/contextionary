@@ -20,7 +20,7 @@ return [
 Brand', '6'=>'Proper Noun – Other', '7'=>'Adjective', '8'=>'Verb', '9'=>'Pronoun', '10'=>'Adverb', '11'=>'Preposition', '12'=>'Conjunction', '13'=>'Interjection', '14'=>'Abbreviation'],
     'Storage'=>'local',
     'status'=>
-        ['0'=>'Pending', '1'=>'Accepted', '2'=>'Rejected', '3'=>'Completed'],
+        ['0'=>'Pending', '1'=>'Selected', '2'=>'Not selected', '3'=>'Completed'],
     'position'=>
         [ '1'=>'First', '2'=>'Second', '3'=>'Third'],
     'phrase_status'=>
