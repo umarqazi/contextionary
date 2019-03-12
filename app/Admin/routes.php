@@ -39,6 +39,8 @@ Route::group([
     $router->resource('auth/meaning', 'MeaningController')->only('edit', 'update');
     $router->resource('auth/translate', 'TranslationController')->only('edit', 'update');
     $router->resource('auth/illustrate', 'IllustratorController')->only('edit', 'update');
+    $router->get('auth/simple-users/{id}/add-points', 'UserPointsController@create');
+    $router->post('auth/simple-users/{id}/store-points', 'UserPointsController@store');
     $router->get('auth/expired-biddings', 'BiddingExpiryController@expiredBiddings');
     $router->get('auth/contribution-winner', 'ContributorPointsController@index');
 });
