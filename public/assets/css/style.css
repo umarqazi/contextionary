@@ -773,3 +773,6 @@ img#hangman {
 .bell-container{
   display: inline-block;
 }
+.text-setting{
+  text-transform: inherit;
+}

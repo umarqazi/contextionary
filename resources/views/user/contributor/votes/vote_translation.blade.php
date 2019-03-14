@@ -41,7 +41,7 @@
                     @if($phraseMeaning['meaning'])
                         <div class="row contextRow">
                             <div class="col-md-12">
-                                <p class="whiteText"><strong>{!! t('Phrase Meaning') !!}:</strong> {!! $phraseMeaning['meaning'] !!}</p>
+                                <p class="whiteText text-setting"><strong>{!! t('Phrase Meaning') !!}:</strong> {!! $phraseMeaning['meaning'] !!}</p>
                             </div>
                         </div>
                     @endif
