@@ -75,8 +75,10 @@ class UserController extends Controller
                 $filter->like('email');
             });
             $grid->actions(function (Grid\Displayers\Actions $actions) {
-                $action = "".$actions->getResource()."/".$actions->getKey()."";
-                $actions->prepend('<a href="'.$action.'"><i class="fa fa-eye"></i></a>');
+                $show_action            = "".$actions->getResource()."/".$actions->getKey()."";
+                $add_points_action      = "".$actions->getResource()."/".$actions->getKey()."/add-points";
+                $actions->prepend('<a href="'.$show_action.'" data-toggle="tooltip" title="Show"><i class="fa fa-eye"></i></a>');
+                $actions->prepend('<a href="'.$add_points_action.'" data-toggle="tooltip" title="Add Points"><i class="fa fa-creative-commons"></i></a> ');
             });
             $grid->disableRowSelector();
         });

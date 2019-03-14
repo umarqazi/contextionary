@@ -433,6 +433,7 @@ class ContributorService implements IService
         if($define):
             foreach($define as $writer):
                 $user_point='-';
+                $contribution_status=0;
                 $context_name=$this->contextRepo->getContextName($writer['context_id']);
                 $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
                 $checkPoint=['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id'], 'user_id'=>$writer['user_id'], 'type'=>env('MEANING')];
@@ -445,15 +446,35 @@ class ContributorService implements IService
                 else:
                     $route='';
                 endif;
+                if($writer['status']==0 && $writer['coins']==NULL){
+
+                    $contribution_status=0;
+                }elseif($writer['status']==0 && $writer['coins']!=NULL){
+
+                    $contribution_status=1;
+                }elseif($writer['status']==1){
+
+                    $contribution_status=2;
+                }elseif($writer['status']==2){
+
+                    $contribution_status=3;
+                }elseif($writer['status']==3 && $writer['position']==NULL){
+
+                    $contribution_status=4;
+                }elseif($writer['status']==3 && $writer['position']!=NULL){
+
+                    $contribution_status=5;
+                }
                 $user_history[$i]=['route'=>$route,'contribution'=>$writer['meaning'], 'type'=>'writer','date'=>$writer['created_at'],
                     'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
-                    'position'=>$writer['position'],'point'=>$user_point, 'coins'=>$writer['coins'], 'status'=>$writer['status']];
+                    'position'=>$writer['position'],'point'=>$user_point, 'coins'=>$writer['coins'], 'status'=>$contribution_status];
                 $i++;
             endforeach;
         endif;
         if($illustrate):
             foreach($illustrate as $writer):
                 $user_point='-';
+                $contribution_status=0;
                 $context_name=$this->contextRepo->getContextName($writer['context_id']);
                 $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
                 $checkPoint=['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id'], 'user_id'=>$writer['user_id'], 'type'=>env('ILLUSTRATE')];
@@ -466,15 +487,35 @@ class ContributorService implements IService
                 else:
                     $route='';
                 endif;
+                if($writer['status']==0 && $writer['coins']==NULL){
+
+                    $contribution_status=0;
+                }elseif($writer['status']==0 && $writer['coins']!=NULL){
+
+                    $contribution_status=1;
+                }elseif($writer['status']==1){
+
+                    $contribution_status=2;
+                }elseif($writer['status']==2){
+
+                    $contribution_status=3;
+                }elseif($writer['status']==3 && $writer['position']==NULL){
+
+                    $contribution_status=4;
+                }elseif($writer['status']==3 && $writer['position']!=NULL){
+
+                    $contribution_status=5;
+                }
                 $user_history[$i]=['route'=>$route,'contribution'=>$writer['illustrator'], 'type'=>'illustrator','date'=>$writer['created_at'],
                     'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
-                    'position'=>$writer['position'],'point'=>$user_point,  'coins'=>$writer['coins'], 'status'=>$writer['status']];
+                    'position'=>$writer['position'],'point'=>$user_point,  'coins'=>$writer['coins'], 'status'=>$contribution_status];
                 $i++;
             endforeach;
         endif;
         if($translator):
             foreach($translator as $writer):
                 $user_point='-';
+                $contribution_status=0;
                 $context_name=$this->contextRepo->getContextName($writer['context_id']);
                 $phrase_name=$this->phraseRepo->getPhraseName($writer['phrase_id']);
                 $checkPoint=['context_id'=>$writer['context_id'], 'phrase_id'=>$writer['phrase_id'], 'user_id'=>$writer['user_id'], 'type'=>env('TRANSLATE')];
@@ -487,9 +528,28 @@ class ContributorService implements IService
                 else:
                     $route='';
                 endif;
+                if($writer['status']==0 && $writer['coins']==NULL){
+
+                    $contribution_status=0;
+                }elseif($writer['status']==0 && $writer['coins']!=NULL){
+
+                    $contribution_status=1;
+                }elseif($writer['status']==1){
+
+                    $contribution_status=2;
+                }elseif($writer['status']==2){
+
+                    $contribution_status=3;
+                }elseif($writer['status']==3 && $writer['position']==NULL){
+
+                    $contribution_status=4;
+                }elseif($writer['status']==3 && $writer['position']!=NULL){
+
+                    $contribution_status=5;
+                }
                 $user_history[$i]=['route'=>$route,'contribution'=>$writer['translation'], 'type'=>'translator','language'=>$writer['language'],'date'=>$writer['created_at'],
                     'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
-                    'position'=>$writer['position'],'point'=>$user_point, 'coins'=>$writer['coins'], 'status'=>$writer['status']];
+                    'position'=>$writer['position'],'point'=>$user_point, 'coins'=>$writer['coins'], 'status'=>$contribution_status];
                 $i++;
             endforeach;
         endif;

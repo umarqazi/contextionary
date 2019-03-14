@@ -46,11 +46,13 @@
                                 @if(!$history->isEmpty())
                                     @foreach($history as $userHistory)
                                         <?php
-                                        if($userHistory['status']==1 || $userHistory['status']==3):
+                                        if($userHistory['status']==1 || $userHistory['status']==2):
+                                            $class='text-warning';
+                                        elseif($userHistory['status']==5):
                                             $class='text-success';
                                         elseif($userHistory['status']==0):
                                             $class='text-info';
-                                        else:
+                                        elseif($userHistory['status']==3 || $userHistory['status']==4):
                                             $class='text-danger';
                                         endif;
                                         ?>
@@ -63,7 +65,7 @@
                                             <td>{!! ($userHistory['position'])? Config::get('constant.position.'.$userHistory['position']):'-' !!}</td>
                                             <td>{!! ($userHistory['point']) !!}</td>
                                             <td>{!! $userHistory['coins'] !!}</td>
-                                            <td><strong class="{!! $class !!}">{!! Config::get('constant.status.'.$userHistory['status']) !!}</strong></td>
+                                            <td><strong class="{!! $class !!}">{!! Config::get('constant.history_status.'.$userHistory['status']) !!}</strong></td>
                                             <td>@if($userHistory['route'])<a href="{!!  $userHistory['route']!!}" class="btn btn-primary">View</a>@endif</td>
                                         </tr>
                                     @endforeach

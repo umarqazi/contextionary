@@ -95,7 +95,11 @@ class VoteExpiryController extends Controller
             $grid->id('ID')->sortable();
             $grid->option('useWidth', true);
             $grid->column('context_id')->display(function ($context_id) use ($self){
-                return $self->getContextName($context_id);
+                if($self->getContextName($context_id) != NULL){
+                    return $self->getContextName($context_id);
+                }else{
+                    return '-';
+                }
             })->sortable();
             $grid->column('phrase_id')->display(function ($phrase_id) use ($self) {
                 return $self->getPhraseText($phrase_id);
@@ -108,6 +112,13 @@ class VoteExpiryController extends Controller
                 return $self->getTotalVotes($data);
             });
             $grid->vote_type()->sortable();
+            $grid->column('Language')->display(function () use ($self) {
+                if($this->vote_type == 'translate'){
+                    return $this->language;
+                }else{
+                    return '-';
+                }
+            });
             $grid->disableCreateButton();
             $grid->disableExport();
             if($status == 0){
@@ -195,6 +206,9 @@ class VoteExpiryController extends Controller
             $form->display('', 'Phrase')->default($phrase_text);
             $form->display('', 'Total Votes')->default($total_votes);
             $form->display('vote_type','Type');
+            if($data['type'] == 'translate'){
+                $form->display('', 'Language')->default($data['language']);
+            }
             foreach ($votes_data as $index => $position_data){
                 if($position_data['value'] != ''){
                     $form->display('', $this->numToOrdinalWord($index).' Position')->default($position_data['winner']);

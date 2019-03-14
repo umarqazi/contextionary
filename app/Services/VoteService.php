@@ -255,10 +255,9 @@ Class VoteService{
             if($record->status=='0'){
                 $checkVote=$this->voteMeaning->checkUserVote($data, env('TRANSLATE'));
                 if(empty($checkVote)):
-                    $checkMeaning=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id']];
+                    $checkMeaning=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'], 'position'=>'1'];
                     $records=$this->contextPhrase->getFirstPositionMeaning($checkMeaning);
-                    $getIllustrator=['context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'], 'position'=>'1'];
-                    $illustraor_name=$this->illustrators->fetchUserRecord($getIllustrator);
+                    $illustraor_name=$this->illustrators->fetchUserRecord($checkMeaning);
                     if($illustraor_name):
                         $records['illustrators']=$illustraor_name->illustrator;
                     endif;

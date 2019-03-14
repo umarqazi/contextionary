@@ -38,6 +38,13 @@
                             @endforeach
                         @endif
                     </ul>
+                    @if($phraseMeaning['meaning'])
+                        <div class="row contextRow">
+                            <div class="col-md-12">
+                                <p class="whiteText text-setting"><strong>{!! t('Phrase Meaning') !!}:</strong> {!! $phraseMeaning['meaning'] !!}</p>
+                            </div>
+                        </div>
+                    @endif
                     <div class="tab-content contextContent ">
                         @if($phraseMeaning)
                             @foreach($phraseMeaning['translators'] as $key=>$meaning)
@@ -83,7 +90,7 @@
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
                             {!! Form::checkbox('audience', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox3']) !!}
-                            <label class="custom-control-label" for="checkBox3">{!! t('Intelligible to a non-expert audience') !!}</label>
+                            <label class="custom-control-label" for="checkBox3">{!! t('Accurate rendering of the original') !!}</label>
                         </div>
                         @if ($errors->has('audience'))
                             <div class="help-block"><strong>{{ t($errors->first('audience')) }}</strong></div>
@@ -92,7 +99,7 @@
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
                             {!! Form::checkbox('part_of_speech', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox4']) !!}
-                            <label class="custom-control-label" for="checkBox4">{!! t('Part of speech correctly identified') !!}</label>
+                            <label class="custom-control-label" for="checkBox4">{!! t('Bias-free') !!}</label>
                         </div>
                         @if ($errors->has('part_of_speech'))
                             <div class="help-block"><strong>{{ t($errors->first('part_of_speech')) }}</strong></div>

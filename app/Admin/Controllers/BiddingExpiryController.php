@@ -92,7 +92,15 @@ class BiddingExpiryController extends Controller
             $grid->option('useWidth', true);
             $grid->column('context_id')->display(function ($context_id) {
                 $context = Context::where('context_id','=',$context_id)->first();
-                return $context->context_name;
+                if($context != NULL){
+                    if($context->context_name != NULL){
+                        return $context->context_name;
+                    }else{
+                        return '-';
+                    }
+                }else{
+                    return '-';
+                }
             })->sortable();
             $grid->column('phrase_id')->display(function ($phrase_id) {
                 $phrase = Phrase::where('phrase_id','=',$phrase_id)->first();
@@ -103,6 +111,13 @@ class BiddingExpiryController extends Controller
                 return $self->$model->totalRecords(['context_id' => $this->context_id,'phrase_id' => $this->phrase_id]);
             });
             $grid->bid_type()->sortable();
+            $grid->column('Language')->display(function () use ($self) {
+                if($this->bid_type == 'translate'){
+                    return $this->language;
+                }else{
+                    return '-';
+                }
+            });
             $grid->disableCreateButton();
             $grid->disableExport();
             if($status == 0){
