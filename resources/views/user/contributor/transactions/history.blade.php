@@ -48,7 +48,7 @@
                                         <?php
                                         if($userHistory['status']==1 || $userHistory['status']==2):
                                             $class='text-warning';
-                                        elseif($userHistory['status']==5):
+                                        elseif($userHistory['status']==5 || $userHistory['status']==6):
                                             $class='text-success';
                                         elseif($userHistory['status']==0):
                                             $class='text-info';

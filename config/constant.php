@@ -22,7 +22,7 @@ Brand', '6'=>'Proper Noun – Other', '7'=>'Adjective', '8'=>'Verb', '9'=>'Prono
     'status'=>
         ['0'=>'Pending', '1'=>'Selected', '2'=>'Not selected', '3'=>'Completed'],
     'history_status'=>
-        ['0'=>'Saved', '1'=>'Submitted', '2'=>'Selected', '3'=>'Not selected', '4'=>'Not accepted', '5'=>'Accepted'],
+        ['0'=>'Saved', '1'=>'Submitted', '2'=>'Selected', '3'=>'Not selected', '4'=>'Not accepted', '5'=>'Accepted', '6'=>'Runner up'],
     'position'=>
         [ '1'=>'First', '2'=>'Second', '3'=>'Third'],
     'phrase_status'=>

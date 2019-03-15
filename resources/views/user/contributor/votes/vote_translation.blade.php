@@ -31,7 +31,7 @@
                                 @if($meaning['language']==Auth::user()->profile->language_proficiency)
                                     <li data-tab="tab-{!! $key+1 !!}" class="@if(old('meaning')==$meaning['id']) active @endif">
                                         <label class="coin"><input type="radio" name="meaning" @if(old('meaning')==$meaning['id']) checked @endif value="{!! $meaning['id'] !!}"> </label>
-                                        <a href="#tab{!! $key+1 !!}" data-toggle="pill" class="text-capitalize">{!! $meaning['phrase_translation'] !!}</a>
+                                        <a href="#tab{!! $key+1 !!}" data-toggle="pill" class="text-capitalize">{!! strip_tags(mb_strimwidth($meaning['phrase_translation'],0,50)) !!}</a>
                                     </li>
                                 @endif
                             @endforeach
