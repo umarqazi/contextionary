@@ -462,8 +462,12 @@ class ContributorService implements IService
 
                     $contribution_status=4;
                 }elseif($writer['status']==3 && $writer['position']!=NULL){
+                    if($writer['position']==1){
 
-                    $contribution_status=5;
+                        $contribution_status=5;
+                    }elseif($writer['position']==2 || $writer['position']==3){
+                        $contribution_status=6;
+                    }
                 }
                 $user_history[$i]=['route'=>$route,'contribution'=>$writer['meaning'], 'type'=>'writer','date'=>$writer['created_at'],
                     'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
@@ -504,7 +508,12 @@ class ContributorService implements IService
                     $contribution_status=4;
                 }elseif($writer['status']==3 && $writer['position']!=NULL){
 
-                    $contribution_status=5;
+                    if($writer['position']==1){
+
+                        $contribution_status=5;
+                    }elseif($writer['position']==2 || $writer['position']==3){
+                        $contribution_status=6;
+                    }
                 }
                 $user_history[$i]=['route'=>$route,'contribution'=>$writer['illustrator'], 'type'=>'illustrator','date'=>$writer['created_at'],
                     'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
@@ -545,7 +554,12 @@ class ContributorService implements IService
                     $contribution_status=4;
                 }elseif($writer['status']==3 && $writer['position']!=NULL){
 
-                    $contribution_status=5;
+                    if($writer['position']==1){
+
+                        $contribution_status=5;
+                    }elseif($writer['position']==2 || $writer['position']==3){
+                        $contribution_status=6;
+                    }
                 }
                 $user_history[$i]=['route'=>$route,'contribution'=>$writer['translation'], 'type'=>'translator','language'=>$writer['language'],'date'=>$writer['created_at'],
                     'context_name'=>$context_name->context_name, 'phrase_name'=>$phrase_name->phrase_text,
