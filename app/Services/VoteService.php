@@ -73,7 +73,7 @@ Class VoteService{
      * get meanings for allVotes
      */
     public function getVoteList(){
-        return $this->listForVoting(env('MEANING'),env('MEANING_KEY'), 'defineMeaning');
+        return $this->listForVoting(env('MEANING'),env('MEANING_KEY'), 'defineMeaning', 'phrase-list');
     }
 
     /**
@@ -146,7 +146,7 @@ Class VoteService{
      * @return \Illuminate\Pagination\LengthAwarePaginator
      * get list of voting according to type
      */
-    public function listForVoting($type, $column_key, $model){
+    public function listForVoting($type, $column_key, $model, $route_url=NULL){
         $this->minimumVotes     =   $this->setting->getKeyValue(env('MINIMUM_VOTES'))->values;
         $getContext=$this->mutual->getFamiliarContext(Auth::user()->id);
         $records=[];
@@ -189,7 +189,7 @@ Class VoteService{
                 endif;
             endforeach;
         endif;
-        return $this->mutual->paginatedRecord($records, 'phrase-list');
+        return $this->mutual->paginatedRecord($records, $route_url);
     }
 
     /**
@@ -197,7 +197,7 @@ Class VoteService{
      * illustrator list for vote
      */
     public function getIllustratorVoteList(){
-        return $this->listForVoting(env('ILLUSTRATE'), env('ILLUSTRATOR_KEY'), 'illustrators');
+        return $this->listForVoting(env('ILLUSTRATE'), env('ILLUSTRATOR_KEY'), 'illustrators', 'illustrator-vote-list');
     }
 
     /**
@@ -205,7 +205,7 @@ Class VoteService{
      * translator list for vote
      */
     public function getTranslatorVoteList(){
-        return $this->listForVoting(env('TRANSLATE'), env('TRANSLATOR_KEY'), 'translations');
+        return $this->listForVoting(env('TRANSLATE'), env('TRANSLATOR_KEY'), 'translations', 'translate-vote-list');
     }
     /**
      * @param $data
