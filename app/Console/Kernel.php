@@ -29,10 +29,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-        $schedule->command('meaning:vote')->everyMinute();
-        $schedule->command('illustrator:bids')->everyMinute();
-        $schedule->command('translations:bids')->everyMinute();
-        $schedule->command('subscription:check')->everyMinute();
+        $schedule->command('meaning:vote')->twiceDaily(1, 13);
+        $schedule->command('illustrator:bids')->twiceDaily(1, 13);
+        $schedule->command('translations:bids')->twiceDaily(1, 13);
+        $schedule->command('subscription:check')->twiceDaily(1, 13);
     }
 
     /**
