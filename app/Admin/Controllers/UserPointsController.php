@@ -51,9 +51,9 @@ class UserPointsController extends Controller
         return Admin::form(UserPoint::class, function (Form $form) use ($url, $user_id, $action_url) {
             $form->setAction($action_url);
             $form->number('point',trans('Points') );
-            $form->display('', 'Type')->value('Campaign');
+            $form->display('', 'Type')->value('Bonus');
             $form->hidden('url', '')->default($url);
-            $form->hidden('type', '')->default('campaign');
+            $form->hidden('type', '')->default('bonus');
             $form->hidden('user_id', '')->default($user_id);
             $form->ignore('url');
             $form->disableReset();
