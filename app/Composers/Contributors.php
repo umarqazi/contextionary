@@ -18,7 +18,7 @@ View::composer(['layouts.*', 'user.contributor.bid', 'user.contributor.transacti
 {
     $totalContributions='';
     $coins=0;
-    $types=[env('MEANING', 'meaning')=>0,env('ILLUSTRATE', 'illustrate')=>0,env('TRANSLATE', 'translate')=>0 ];
+    $types=[env('MEANING', 'meaning')=>0,env('ILLUSTRATE', 'illustrate')=>0,env('TRANSLATE', 'translate')=>0,env('BONUS', 'bonus')=>0 ];
     $allContributions=['points'=>$types,'earning'=>$types, 'otherContributors'=>$types, 'otherContributorsRedeem'=>$types,'user_contributions'=>$types, 'user_pole_positions'=>$types, 'user_runner_up'=>$types, 'totalValueLT'=>$types, 'otherContributorsLongT'=>$types];
     if(Auth::check()):
         $contributions      =   new DefineMeaningRepo();

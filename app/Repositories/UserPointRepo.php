@@ -69,7 +69,7 @@ class UserPointRepo
      */
     public function otherContributors(){
         $otherPoints=$this->userPoints->selectRaw('sum(point) as sum, type, user_id')->groupBy('type','user_id')->orderBy('sum', 'desc')->get();
-        $types=[env('MEANING')=>0,env('ILLUSTRATE')=>0,env('TRANSLATE')=>0];
+        $types=[env('MEANING')=>0,env('ILLUSTRATE')=>0,env('TRANSLATE')=>0,env('BONUS')=>0];
         foreach($otherPoints as $key=>$points):
             if($types[$points['type']]==0):
                 $types[$points['type']]=$points['sum'];
@@ -92,7 +92,7 @@ class UserPointRepo
      */
     public function pointsContributions(){
         $otherPoints=$this->userPoints->selectRaw('sum(point) as sum, type, user_id')->groupBy('type','user_id')->orderBy('sum', 'desc')->get();
-        $types=[env('MEANING')=>0,env('ILLUSTRATE')=>0,env('TRANSLATE')=>0];
+        $types=[env('MEANING')=>0,env('ILLUSTRATE')=>0,env('TRANSLATE')=>0,env('BONUS')=>0];
         foreach($otherPoints as $key=>$points):
             if($types[$points['type']]==0):
                 if($points['user_id']!=0){

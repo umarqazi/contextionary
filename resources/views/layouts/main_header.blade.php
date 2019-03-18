@@ -105,18 +105,21 @@
                   <td><img src="{!! asset('assets/images/statistics-icon1.png') !!}"></td>
                   <td><img src="{!! asset('assets/images/statistics-icon2.png') !!}"></td>
                   <td><img src="{!! asset('assets/images/statistics-icon3.png') !!}"></td>
+                  <td><img src="{!! asset('assets/images/bonus.png') !!}"></td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Points') !!}</td>
                   <td>{!! $contributions['points'][env('MEANING', 'meaning')]!!}</td>
                   <td>{!! $contributions['points'][env('ILLUSTRATE', 'illustrate')] !!}</td>
                   <td>{!! $contributions['points'][env('TRANSLATE', 'translate')] !!}</td>
+                  <td>{!! $contributions['points'][env('BONUS', 'bonus')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Value (current)') !!}</td>
                   <td>${!! round($contributions['earning'][env('MEANING', 'meaning')]) !!}</td>
                   <td>${!! round($contributions['earning'][env('ILLUSTRATE', 'illustrate')]) !!}</td>
                   <td>${!! round($contributions['earning'][env('TRANSLATE', 'translate')]) !!}</td>
+                  <td>${!! round($contributions['earning'][env('BONUS', 'bonus')]) !!}</td>
                 </tr>
 
                 <tr>
@@ -124,24 +127,28 @@
                   <td>${!! round($contributions['totalValueLT'][env('MEANING', 'meaning')]) !!}</td>
                   <td>${!! round($contributions['totalValueLT'][env('ILLUSTRATE', 'illustrate')]) !!}</td>
                   <td>${!! round($contributions['totalValueLT'][env('TRANSLATE', 'translate')]) !!}</td>
+                  <td>${!! round($contributions['totalValueLT'][env('BONUS', 'bonus')]) !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Contributions') !!}</td>
                   <td>{!! $contributions['user_contributions'][env('MEANING', 'meaning')] !!}</td>
                   <td>{!! $contributions['user_contributions'][env('ILLUSTRATE', 'illustrate')] !!}</td>
                   <td>{!! $contributions['user_contributions'][env('TRANSLATE', 'translate')] !!}</td>
+                  <td>{!! $contributions['user_contributions'][env('BONUS', 'bonus')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Pole Positions') !!}</td>
                   <td>{!! $contributions['user_pole_positions'][env('MEANING', 'meaning')] !!}</td>
                   <td>{!! $contributions['user_pole_positions'][env('ILLUSTRATE', 'illustrate')] !!}</td>
                   <td>{!! $contributions['user_pole_positions'][env('TRANSLATE', 'translate')] !!}</td>
+                  <td>{!! $contributions['user_pole_positions'][env('BONUS', 'bonus')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('My Runner-ups') !!}</td>
                   <td>{!! $contributions['user_runner_up'][env('MEANING', 'meaning')] !!}</td>
                   <td>{!! $contributions['user_runner_up'][env('ILLUSTRATE', 'illustrate')] !!}</td>
                   <td>{!! $contributions['user_runner_up'][env('TRANSLATE', 'translate')] !!}</td>
+                  <td>{!! $contributions['user_runner_up'][env('BONUS', 'bonus')] !!}</td>
                 </tr>
               </table>
               <h2 class="mt-3">{!! t('Other Contributors') !!}</h2>
@@ -151,24 +158,28 @@
                   <td><img src="{!! asset('assets/images/statistics-icon1.png') !!}"></td>
                   <td><img src="{!! asset('assets/images/statistics-icon2.png') !!}"></td>
                   <td><img src="{!! asset('assets/images/statistics-icon3.png') !!}"></td>
+                  <td><img src="{!! asset('assets/images/bonus.png') !!}"></td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('Highest Points') !!}</td>
                   <td>{!! $contributions['otherContributors'][env('MEANING', 'meaning')] !!}</td>
                   <td>{!! $contributions['otherContributors'][env('ILLUSTRATE', 'illustrate')] !!}</td>
                   <td>{!! $contributions['otherContributors'][env('TRANSLATE', 'translate')] !!}</td>
+                  <td>{!! $contributions['otherContributors'][env('BONUS', 'bonus')] !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('Highest Value (current)') !!}</td>
                   <td>${!! round($contributions['otherContributorsRedeem'][env('MEANING', 'meaning')]) !!}</td>
                   <td>${!! round($contributions['otherContributorsRedeem'][env('ILLUSTRATE', 'illustrate')]) !!}</td>
                   <td>${!! round($contributions['otherContributorsRedeem'][env('TRANSLATE', 'translate')]) !!}</td>
+                  <td>${!! round($contributions['otherContributorsRedeem'][env('BONUS', 'bonus')]) !!}</td>
                 </tr>
                 <tr>
                   <td class="name">{!! t('Highest Value (long-term)') !!}</td>
                   <td>${!! round($contributions['otherContributorsLongT'][env('MEANING', 'meaning')]) !!}</td>
                   <td>${!! round($contributions['otherContributorsLongT'][env('ILLUSTRATE', 'illustrate')]) !!}</td>
                   <td>${!! round($contributions['otherContributorsLongT'][env('TRANSLATE', 'translate')]) !!}</td>
+                  <td>${!! round($contributions['otherContributorsLongT'][env('BONUS', 'bonus')]) !!}</td>
                 </tr>
               </table>
             </div>
