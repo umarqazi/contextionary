@@ -106,9 +106,9 @@ class VoteExpiryController extends Controller
             })->sortable();
             $grid->column('Total Votes')->display(function () use ($self) {
                 $data = ['context_id' => $this->context_id, 'phrase_id' => $this->phrase_id, 'type' => $this->vote_type, 'vote' => '1'];
-                if($data['type'] == 'translate'):
+                if($data['type'] == 'translate') {
                     $data['language'] = $this->language;
-                endif;
+                }
                 return $self->getTotalVotes($data);
             });
             $grid->vote_type()->sortable();

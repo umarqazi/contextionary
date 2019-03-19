@@ -108,7 +108,11 @@ class BiddingExpiryController extends Controller
             })->sortable();
             $grid->column('Total Bids')->display(function () use ($self) {
                 $model=Config::get('constant.repo_name.'.$this->bid_type);
-                return $self->$model->totalRecords(['context_id' => $this->context_id,'phrase_id' => $this->phrase_id]);
+                if($this->bid_type == 'translate'){
+                    return $self->$model->totalRecords(['context_id' => $this->context_id,'phrase_id' => $this->phrase_id, 'language' => $this->language]);
+                }else{
+                    return $self->$model->totalRecords(['context_id' => $this->context_id,'phrase_id' => $this->phrase_id]);
+                }
             });
             $grid->bid_type()->sortable();
             $grid->column('Language')->display(function () use ($self) {
