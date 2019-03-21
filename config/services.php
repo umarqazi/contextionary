@@ -43,6 +43,8 @@ return [
         'client_id'     => env('GOOGLE_ID'),
         'client_secret' => env('GOOGLE_SECRET'),
         'redirect'      => env('GOOGLE_URL'),
+    ],'mandrill' => [
+        'secret' => env('MANDRILL_KEY'),
     ],
 
 ];
