@@ -74,6 +74,9 @@ class VoteMeaningRepo
      */
     public function hightVotes($checkArray){
         $data=['context_id'=>$checkArray['context_id'], 'phrase_id'=>$checkArray['phrase_id'], 'type'=>$checkArray['type']];
+        if($checkArray['type']==env('TRANSLATE')){
+            $data['language'] = $checkArray['language'];
+        }
         return $total=$this->getVotesMeaning($data)->with($checkArray['type'])->where('vote', 1)->groupBy($checkArray['columnKey'])->select('vote_meanings.*', DB::raw('count(*) as total'))->limit(3)->orderBy('total', 'DESC')->get();
     }
 
