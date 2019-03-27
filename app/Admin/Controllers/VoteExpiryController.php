@@ -275,6 +275,9 @@ class VoteExpiryController extends Controller
             'context_id'    => $data['context_id'],
             'phrase_id'     => $data['phrase_id'],
         ];
+	if($data['type'] == 'translate'):
+            $data1['language'] = $data['language'];
+        endif;
         if($data['type'] == 'meaning'){
             $model      = new DefineMeaning();
             $id_name    = 'define_meaning_id';

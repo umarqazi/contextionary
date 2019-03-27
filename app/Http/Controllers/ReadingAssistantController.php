@@ -103,10 +103,10 @@ class ReadingAssistantController extends Controller
                 ->withInput();
         }
         $data           =   [
-                                'text'      =>  $request->context,
-                                'user_id'   =>  Auth::user()->id,
-                                'date'      =>  Carbon::now()
-                            ];
+            'text'      =>  $request->context,
+            'user_id'   =>  Auth::user()->id,
+            'date'      =>  Carbon::now()
+        ];
         $this->read_assistant_service->saveHistory($data);
         $final_string   =   str_replace(' ', '_', $request->context);
         $client         =   new Client();
@@ -125,32 +125,31 @@ class ReadingAssistantController extends Controller
                         $location = str_replace(array('{', '}'), '', $phrase->keyword_location[0]);
                         $locaion   =    explode(', ', $location);
                         $string2= array_merge($string2, $locaion);
+                        foreach ($final_string_array[$context_id] as $key1 => $word) {
+                            foreach ($string2 as $key2) {
+                                if ($key1 == ($key2 -1)){
+                                    $final_string_array[$context_id][$key1] = '<span class="orange-clr">'.$word.'</span>';
+                                }
+                            }
+                        }
+                        foreach ($final_string_array[$context_id] as $key => $word){
+                            if ((strtolower($word) == strtolower($phrase->keyword_text))) {
+                                $final_string_array[$context_id][$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
+                            }
+                        }
+                        $context_obj['phrases'][$phrase_key] = $this->getPhraseDetails($context_id, $phrase);
                     }
                     $string2=array_unique($string2);
                     sort($string2);
-                    foreach ($final_string_array[$context_id] as $key1 => $word) {
-                        foreach ($string2 as $key2) {
-                            if ($key1 == ($key2 -1)){
-                                $final_string_array[$context_id][$key1] = '<span class="orange-clr">'.$word.'</span>';
-                            }
-                        }
-                    }
-//                            foreach ($final_string_array[$context_id] as $key => $word){
-////                                if ((strtolower($word) == strtolower($phrase->keyword_text))) {
-////                                    $final_string_array[$context_id][$key] = '<a href="#phrase-'.$phrase->keyword_phrase_id.'">'.$word.'</a>';
-////                                }
-//                            }
-//                        $context_obj['phrases'][$phrase_key] = $this->getPhraseDetails($context_id, $phrase);
-//                }
-                    array_push($context_list, $context_obj);
-                    $string[$context_id] = implode(" ",$final_string_array[$context_id]);
                 }
+                array_push($context_list, $context_obj);
+                $string[$context_id] = implode(" ",$final_string_array[$context_id]);
             }
-//            $export_data = $this->exportDataGenerator($context_list);
-//            Session::put('export_data' , $export_data);
-            $context_length=strlen($request->context);
-            return View::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list, 'length'=>$context_length]);
         }
+        $export_data = $this->exportDataGenerator($context_list);
+        Session::put('export_data' , $export_data);
+        $context_length=strlen($request->context);
+        return View::make('user.user_plan.reading_assistant.context_finder')->with(['flag'=> true, 'string' => $string, 'context_list' => $context_list, 'length'=>$context_length]);
     }
 
     /**
@@ -168,7 +167,7 @@ class ReadingAssistantController extends Controller
      * @return mixed
      */
     public function getPhrase($phrase_id){
-         return $this->phrase_service->findById($phrase_id);
+        return $this->phrase_service->findById($phrase_id);
     }
 
     /**
@@ -252,10 +251,12 @@ class ReadingAssistantController extends Controller
      */
     public function getIllustration($data){
         $illustration = $this->contributor_service->getIllustrations($data);
-        if(count($illustration) > 0) {
-            $illustration = $illustration->illustrator;
-        }else{
-            $illustration = '';
+        if($illustration){
+            if(count($illustration) > 0) {
+                $illustration = $illustration->illustrator;
+            }else{
+                $illustration = '';
+            }
         }
         return $illustration;
     }
