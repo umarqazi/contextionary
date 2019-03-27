@@ -252,7 +252,7 @@ class ReadingAssistantController extends Controller
     public function getIllustration($data){
         $illustration = $this->contributor_service->getIllustrations($data);
         if($illustration){
-            if(count($illustration) > 0) {
+            if(!empty($illustration)) {
                 $illustration = $illustration->illustrator;
             }else{
                 $illustration = '';
