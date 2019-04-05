@@ -83,8 +83,9 @@ MultiLang::routeGroup(function($router) {
                 Route::post('save-illustrator-vote', 'VoteController@saveVoteIllustrator')->name('saveIllustratorVote');
                 Route::group(array('prefix' => 'coins-list'), function () {
                     Route::get('/', 'ContributorController@purchaseCoins')->name('coins');
-                    Route::post('add-coins', 'ContributorController@addCoins')->name('addCoins');
-                    Route::get('add-coins', 'ContributorController@addCoins')->name('addCoins');
+                    Route::post('add-coins', 'TransactionController@paypal')->name('addCoins');
+                    Route::get('get-info', 'TransactionController@getCredientials')->name('getInfo');
+                    Route::get('cancel-request', 'TransactionController@cancelPaypalRequest')->name('cancelRequest');
                 });
                 Route::get('/switchToUser', 'UsersController@switchToUser')->name('switchToUser');
                 Route::get('summary',  'UsersController@summary')->name('summary');

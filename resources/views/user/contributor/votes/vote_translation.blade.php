@@ -69,7 +69,7 @@
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
                             {!! Form::checkbox('grammer', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox1']) !!}
-                            <label class="custom-control-label" for="checkBox1">{!! t('No Grammar Error') !!}</label>
+                            <label class="custom-control-label" for="checkBox1">{!! t('No grammar error') !!}</label>
                         </div>
                         @if ($errors->has('grammer'))
                             <div class="help-block"><strong>{{ t($errors->first('grammer')) }}</strong></div>
@@ -79,7 +79,7 @@
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
                             {!! Form::checkbox('spelling', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox2']) !!}
-                            <label class="custom-control-label" for="checkBox2">{!! t('No Spelling Error') !!}</label>
+                            <label class="custom-control-label" for="checkBox2">{!! t('No spelling error') !!}</label>
                         </div>
                         @if ($errors->has('spelling'))
                             <div class="help-block"><strong>{{ t($errors->first('spelling')) }}</strong></div>
@@ -98,7 +98,7 @@
                     <div class="md-form ml-4 mt-0">
                         <div class="custom-control custom-checkbox">
                             {!! Form::checkbox('part_of_speech', 1, null, ['class'=>'custom-control-input make-unchecked', 'id'=>'checkBox4']) !!}
-                            <label class="custom-control-label" for="checkBox4">{!! t('Bias-free') !!}</label>
+                            <label class="custom-control-label" for="checkBox4">{!! t('Elegant writing style') !!}</label>
                         </div>
                         @if ($errors->has('part_of_speech'))
                             <div class="help-block"><strong>{{ t($errors->first('part_of_speech')) }}</strong></div>
