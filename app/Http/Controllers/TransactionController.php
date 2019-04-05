@@ -55,6 +55,7 @@ class TransactionController
     }
 
     public function cancelPaypalRequest(){
+        session()->put('package_id', '');
         $notification = array(
             'message' => 'Your request has been cancel',
             'alert_type' => 'error'

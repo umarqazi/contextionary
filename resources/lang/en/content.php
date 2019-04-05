@@ -17,5 +17,6 @@ return [
     'profile_updated'=>'Successfully updated your Profile!',
     'user_deleted'=>'Successfully deleted the user!',
     'redeem_points'=>'Your request has been sent to the admin',
-    'card_deleted'=>'Card has been deleted Successfully'
+    'card_deleted'=>'Card has been deleted Successfully',
+    'total_points'=>'Total points should be greater than 150'
 ];
