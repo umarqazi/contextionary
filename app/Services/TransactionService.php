@@ -20,6 +20,9 @@ use Cartalyst\Stripe\Stripe;
 use App\TransactionDetail;
 use Carbon;
 use App\Repositories\TransactionRepo;
+use App\Coin;
+use Srmklive\PayPal\Services\ExpressCheckout;
+use Illuminate\Support\Facades\Redirect;
 
 class TransactionService extends BaseService implements IService
 {
@@ -358,5 +361,40 @@ class TransactionService extends BaseService implements IService
      */
     public function getTransaction($user_id){
         return $this->transactionRepo->getRecord($user_id);
+    }
+
+    /** Paypal integration */
+
+    public function payWithPaypal($request){
+        $getCoinInfo=Coin::find($request['coins']);
+        if($getCoinInfo){
+            $provider = new ExpressCheckout;
+            $data['items'] = [
+                [
+                    'name' => 'Purchase Coins',
+                    'price' => $getCoinInfo->price,
+                    'coins' => $getCoinInfo->coins,
+                ]
+            ];
+            $data['return_url'] = lang_route('getInfo');
+            $data['cancel_url'] = lang_route('cancelRequest');
+            $data['transaction_id'] = $getCoinInfo->coins;
+            $data['invoice_id'] = $getCoinInfo->coins;
+            $data['invoice_description'] = $data['invoice_id'];
+            $data['total'] = $getCoinInfo->price;
+            session()->put('package_id', $request['coins']);
+            $response = $provider->setExpressCheckout($data);
+            return $response['paypal_link'];
+        }
+        return false;
+    }
+
+    public function getCheckoutDetail($token){
+        if(Auth::user()){
+            $package_id = session('package_id');
+            $updateUser=$this->contService->updateCoins(Auth::user()->id, $package_id);
+            return true;
+        }
+        return false;
     }
 }

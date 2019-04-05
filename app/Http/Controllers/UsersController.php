@@ -328,6 +328,14 @@ class UsersController extends Controller
      * @return mixed
      */
     public function saveEarning(Request $request){
+        $checkSum   =   $this->calculateSum($request);
+        if($checkSum == false){
+            $notification = array(
+                'message' => trans('content.total_points'),
+                'alert_type' => 'error'
+            );
+            return Redirect::back()->with($notification);
+        }
         $roles=['meaning'=>0,'illustrate'=>0, 'translate'=>0];
         $user_data=['user_id'=>Auth::user()->id];
         $points_group=$this->user_points->points($user_data);
@@ -516,5 +524,13 @@ class UsersController extends Controller
         $data   =   json_decode($notification->data);
         $noti = ['notification'=> $data->content, 'title'=>$data->subject, 'created_at'=>$notification->created_at];
         return view::make('user.view-notification')->with($noti);
+    }
+
+    public function calculateSum($request){
+        $sum = $request->meaning + $request->illustrate + $request->translate;
+        if($sum < env('TOTAL_POINTS')){
+            return false;
+        }
+        return true;
     }
 }

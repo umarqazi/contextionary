@@ -8,7 +8,7 @@
             <div class="container-fluid contributorMain purchasCoinBg">
                 @include('layouts.flc_header')
                 @include('layouts.toaster')
-                {!! Form::open(['method'=>'POST', 'url'=>lang_route('addCoins')]) !!}
+                {!! Form::open(['method'=>'POST', 'url'=>lang_route('addCoins'), 'id'=>'form-submission']) !!}
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="row">
