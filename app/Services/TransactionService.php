@@ -218,16 +218,16 @@ class TransactionService extends BaseService implements IService
      */
     public function createSubscription($cus, $plan, $request){
         if($request['transition'] == '1'){
-             $transaction = $this->transactionRepo->getRecord([
+            $transaction = $this->transactionRepo->getRecord([
                 'user_id' => $request['user_id'],
                 'status' => 1,
-                ]);
+            ]);
             $subscription   = $this->stripe->subscriptions()->create( $cus,
-                    [
-                        'plan'      =>  $plan,
-                        'trial_end' =>  strtotime($transaction[0]->expiry_date),
-                    ]
-                );
+                [
+                    'plan'      =>  $plan,
+                    'trial_end' =>  strtotime($transaction[0]->expiry_date),
+                ]
+            );
         }else{
             $subscription = $this->stripe->subscriptions()->create($cus, ['plan' => $plan]);
         }
@@ -318,9 +318,9 @@ class TransactionService extends BaseService implements IService
     public function success($params){
 
         $data=[
-                'transaction_id'    =>  $params['transaction_id'],
-                'purchase_type'     =>  $params['type'],
-                'user_id'           =>  $params['user_id']
+            'transaction_id'    =>  $params['transaction_id'],
+            'purchase_type'     =>  $params['type'],
+            'user_id'           =>  $params['user_id']
         ];
         if($params['type']=='purchase_coins'){
             $coins=$this->coinsRepo->findById($params['package_id']);
@@ -396,5 +396,12 @@ class TransactionService extends BaseService implements IService
             return true;
         }
         return false;
+    }
+    public function updatetransaction($paypalId){
+        $package_id = session('package_id');
+        $getCoin=$this->coinsRepo->findById($package_id);
+        $data=['transaction_id'=>$paypalId, 'user_id'=>Auth::user()->id, 'coins'=>$getCoin->coins];
+        $new_transaction    =   $this->transactionRepo->create($data);
+        return true;
     }
 }

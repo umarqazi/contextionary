@@ -32,6 +32,7 @@ class TransactionController
     public function getCredientials(Request $request){
         if($request->has('token')){
             $response = $this->paypalService->getCheckoutDetail($request->token);
+            $add_transaction = $this->paypalService->updatetransaction($request->PayerID);
             if($response==true){
                 $notification = array(
                     'message' => 'Coins has been added into your account',
