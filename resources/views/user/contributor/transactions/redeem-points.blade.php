@@ -24,8 +24,8 @@
                                         </thead>
                                         <tbody>
                                         <?php $sum=0; $total_points=0;?>
-                                        @if($contributions['redeem_points'])
-                                            @foreach($contributions['redeem_points'] as $key=>$point)
+                                        @if($contributions['points'])
+                                            @foreach($contributions['points'] as $key=>$point)
                                                 <?php $earning=0; ?>
                                                 @foreach($pointsPrices as $key2=>$range)
                                                     <?php
@@ -82,7 +82,7 @@
                 </div>
                 {!! Form::open(['id'=>'form-submission', 'url'=>lang_route("saveEarning"), 'enctype'=>'multipart/form-data', 'method'=>'post']) !!}
                 <div class="modal-body">
-                    @foreach($contributions['redeem_points'] as $key=>$points)
+                    @foreach($contributions['points'] as $key=>$points)
                         <div class="row mt-4">
                             <div class="col-md-3">
                                 <p class="text-capitalize"><strong>{!! Config::get('constant.contributorNames.'.$key) !!}</strong></p>
