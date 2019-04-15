@@ -195,10 +195,10 @@ class VoteExpiryController extends Controller
                             'vote' => '1'
                             ];
         if($data['type'] == 'translate'):
-            $data['language'] = $vote_expiry->language;
+            $data['language']           = $vote_expiry->language;
         endif;
         $total_votes    = $this->getTotalVotes($data);
-        $votes_data = $this->getVotesData($data);
+        $votes_data     = $this->getVotesData($data);
         return Admin::form(VoteExpiry::class, function (Form $form) use ($id, $data,  $vote_expiry, $phrase_text, $context_name, $total_votes, $votes_data) {
             $form->display('id', 'ID');
             $form->display('expiry_date','Expiry Date');
@@ -217,6 +217,9 @@ class VoteExpiryController extends Controller
                     }
                     if($data['type'] == 'illustrate'){
                         $form->html('<img src="/storage/'.$position_data['value'].'" class="img-thumbnail">');
+                    }elseif($data['type'] == 'translate'){
+                        $form->display('', $this->numToOrdinalWord($index).' Position Phrase Translation')->default($position_data['value1']);
+                        $form->display('', $this->numToOrdinalWord($index).' Position Phrase Meaning Translation')->default($position_data['value2']);
                     }else{
                         $form->display('', $this->numToOrdinalWord($index).' Position '. ucwords($data['type']))->default($position_data['value']);
                     }
@@ -289,7 +292,8 @@ class VoteExpiryController extends Controller
         }else{
             $model      = new Translation();
             $id_name    = 'translation_id';
-            $feild_name = 'translation';
+            $feild_name1 = 'phrase_translation';
+            $feild_name2 = 'translation';
         }
         $results = [];
         for ($i=1; $i <=3; $i++){
@@ -302,14 +306,24 @@ class VoteExpiryController extends Controller
                 if($data['type'] == 'meaning'){
                     ${'position'.$i}['phrase_type'] =  ${'position'.$i}['value']->phrase_type;
                 }
-                ${'position'.$i}['value']           =  ${'position'.$i}['value']->$feild_name;
+                if($data['type'] == 'translate'){
+                    ${'position'.$i}['value1']           =  ${'position'.$i}['value']->$feild_name1;
+                    ${'position'.$i}['value2']           =  ${'position'.$i}['value']->$feild_name2;
+                }else{
+                    ${'position'.$i}['value']           =  ${'position'.$i}['value']->$feild_name;
+                }
             }else{
                 ${'position'.$i}['winner']          = '';
                 ${'position'.$i}['id']              = '';
                 if($data['type'] == 'meaning'){
                     ${'position'.$i}['phrase_type'] = '';
                 }
-                ${'position'.$i}['value']           = $model->$feild_name;
+                if($data['type'] == 'translate'){
+                    ${'position'.$i}['value1']           = $model->$feild_name1;
+                    ${'position'.$i}['value2']           = $model->$feild_name2;
+                }else{
+                    ${'position'.$i}['value']           = $model->$feild_name;
+                }
                 ${'position'.$i}['votes']           = 0;
             }
             $results[$i]                    = ${'position'.$i};
