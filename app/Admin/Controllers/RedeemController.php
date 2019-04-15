@@ -3,8 +3,11 @@
 namespace App\Admin\Controllers;
 
 use App\Coin;
+use App\Notifications\RedeemRequestCanceled;
 use App\Services\RedeemService;
 use App\Services\UserService;
+use App\User;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -177,6 +180,8 @@ class RedeemController extends Controller
     public function destroy($id)
     {
         $record = RedeemPoint::find($id);
+        $user   = User::where('id',$record->user_id)->first();
+        $user->notify(new RedeemRequestCanceled());
         if ($record->delete()) {
             admin_toastr(trans('admin.delete_succeeded'));
             return response()->json([
