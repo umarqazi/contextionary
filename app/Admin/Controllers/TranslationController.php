@@ -45,7 +45,8 @@ class TranslationController extends Controller
         return Admin::form(Translation::class, function (Form $form) use ($id, $url) {
             $form->display('id', 'ID');
             $form->display('language', 'Language');
-            $form->textarea('translation', trans('Translation'))->rules('required')->placeholder('Enter Translation...');
+            $form->textarea('phrase_translation', trans('Phrase Translation'))->rules('required')->placeholder('Enter Phrase Translation...');
+            $form->textarea('translation', trans('Phrase Meaning Translation'))->rules('required')->placeholder('Enter Phrase Meaning Translation...');
             $form->hidden('url', '')->default($url);
             $form->hidden('old_translation', '')->default(function ($form) {
                 return $form->model()->translation;
