@@ -49,4 +49,11 @@ class TransactionRepo extends BaseRepo implements IRepo
         return $this->transaction->where($data)->get();
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLasttransaction(){
+        return $this->transaction->select('id')->latest()->first();
+    }
 }

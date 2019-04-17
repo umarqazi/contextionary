@@ -35,6 +35,7 @@ class TransactionService extends BaseService implements IService
     protected $userRepo;
     protected $stripe;
     protected $plan_service;
+    protected $provider;
 
     /**
      * TransactionService constructor.
@@ -48,6 +49,7 @@ class TransactionService extends BaseService implements IService
         $this->userRepo         =   new UserRepo();
         $this->stripe           =   Stripe::make(env('STRIPE_SECRET'));
         $this->plan_service     =   new PlanService();
+        $this->provider         =   new ExpressCheckout;
     }
 
     /**
@@ -363,32 +365,36 @@ class TransactionService extends BaseService implements IService
         return $this->transactionRepo->getRecord($user_id);
     }
 
-    /** Paypal integration */
-
+    /**
+     * @param $request
+     * @return bool
+     * @throws \Exception
+     */
     public function payWithPaypal($request){
-        $getCoinInfo=Coin::find($request['coins']);
-        if($getCoinInfo){
-            $provider = new ExpressCheckout;
-            $data['items'] = [
-                [
-                    'name' => 'Purchase Coins',
-                    'price' => $getCoinInfo->price,
-                    'coins' => $getCoinInfo->coins,
-                ]
-            ];
-            $data['return_url'] = lang_route('getInfo');
-            $data['cancel_url'] = lang_route('cancelRequest');
-            $data['transaction_id'] = $getCoinInfo->coins;
-            $data['invoice_id'] = $getCoinInfo->coins;
-            $data['invoice_description'] = $data['invoice_id'];
-            $data['total'] = $getCoinInfo->price;
-            session()->put('package_id', $request['coins']);
-            $response = $provider->setExpressCheckout($data);
+        session()->put('package_id', $request['coins']);
+        $cart_detail = $this->checkoutDetail();
+        if($cart_detail){
+            $response = $this->provider->setExpressCheckout($cart_detail);
+
             return $response['paypal_link'];
         }
         return false;
     }
 
+    /**
+     * @param $data
+     * @return array|\Psr\Http\Message\StreamInterface
+     * @throws \Exception
+     */
+    public function transactionOnPaypal($data){
+        $cart_detail=$this->checkoutDetail();
+        return $payment_status = $this->provider->doExpressCheckoutPayment($cart_detail, $data['token'], $data['PayerID']);
+    }
+
+    /**
+     * @param $token
+     * @return bool
+     */
     public function getCheckoutDetail($token){
         if(Auth::user()){
             $package_id = session('package_id');
@@ -397,11 +403,47 @@ class TransactionService extends BaseService implements IService
         }
         return false;
     }
+
+    /**
+     * @param $paypalId
+     * @return bool
+     */
     public function updatetransaction($paypalId){
         $package_id = session('package_id');
         $getCoin=$this->coinsRepo->findById($package_id);
         $data=['transaction_id'=>$paypalId, 'user_id'=>Auth::user()->id, 'coins'=>$getCoin->coins];
         $new_transaction    =   $this->transactionRepo->create($data);
         return true;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function checkoutDetail(){
+        $getTransaction=$this->transactionRepo->getLasttransaction();
+        $invoice_id=1;
+        if($getTransaction){
+            $invoice_id = $getTransaction->id+1;
+        }
+        $package_id = session('package_id');
+        $getCoinInfo=Coin::find($package_id);
+        $data['items'] = [
+            [
+                'name' => 'Purchase Coins',
+                'price'=> $getCoinInfo->price,
+            ]
+        ];
+        $data['return_url'] = lang_route('getInfo');
+        $data['invoice_id'] = config('paypal.invoice_prefix').'_'.$invoice_id;
+        $data['invoice_description'] = "Order #$invoice_id Invoice";
+        $data['cancel_url'] = lang_route('cancelRequest');
+
+        $total = 0;
+        foreach ($data['items'] as $item) {
+            $total += $item['price'];
+        }
+
+        $data['total'] = $total;
+        return $data;
     }
 }

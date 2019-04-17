@@ -24,13 +24,22 @@ class TransactionController
         $this->paypalService=new TransactionService();
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function paypal(Request $request){
         $url = $this->paypalService->payWithPaypal($request->all());
         return redirect($url );
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function getCredientials(Request $request){
         if($request->has('token')){
+            $payment_status = $this->paypalService->transactionOnPaypal($request->all());
             $response = $this->paypalService->getCheckoutDetail($request->token);
             $add_transaction = $this->paypalService->updatetransaction($request->PayerID);
             if($response==true){
@@ -55,6 +64,9 @@ class TransactionController
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function cancelPaypalRequest(){
         session()->put('package_id', '');
         $notification = array(
