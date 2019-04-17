@@ -3,8 +3,11 @@
 namespace App\Admin\Controllers;
 
 use App\Coin;
+use App\Notifications\RedeemRequestCanceled;
 use App\Services\RedeemService;
 use App\Services\UserService;
+use App\User;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -55,10 +58,21 @@ class RedeemController extends Controller
     {
         return Admin::content(function (Content $content) {
             $content->header(trans('Redeem Points'));
-            $content->description(trans('Redeem Points List'));
-            $content->row('<h4>Redeemable Points List</h4>');
+            $content->description(trans('Redeemable Points List'));
             $content->body($this->grid()->render());
-            $content->row('<h4>Redeemed Points List</h4>');
+        });
+    }
+
+    /**
+     * Index interface.
+     *
+     * @return Content
+     */
+    public function index2()
+    {
+        return Admin::content(function (Content $content) {
+            $content->header(trans('Redeem Points'));
+            $content->description(trans('Redeemed Points List'));
             $content->body($this->grid2()->render());
         });
     }
@@ -85,7 +99,6 @@ class RedeemController extends Controller
             $grid->column('created_at','Created at')->sortable();
             $grid->column('updated_at','Last Updated at')->sortable();
             $grid->actions(function ($actions) use ($grid) {
-                $actions->disableDelete();
                 $actions->disableEdit();
                 $action = "redeem-points/".$actions->getKey()."";
                 $actions->prepend('<a href="'.$action.'"><i class="fa fa-money"></i></a>');
@@ -154,6 +167,32 @@ class RedeemController extends Controller
             $this->redeem_service->update($id, ['status' => 1]);
             $redirect_url = $this->provider->getRedirectUrl('approved', $response['payKey']);
             return redirect($redirect_url);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $record = RedeemPoint::find($id);
+        $user   = User::where('id',$record->user_id)->first();
+        $user->notify(new RedeemRequestCanceled());
+        if ($record->delete()) {
+            admin_toastr(trans('admin.delete_succeeded'));
+            return response()->json([
+                'status'  => true,
+                'message' => trans('admin.delete_succeeded'),
+            ]);
+        } else {
+            return response()->json([
+                'status'  => false,
+                'message' => trans('admin.delete_failed'),
+            ]);
         }
     }
 }
