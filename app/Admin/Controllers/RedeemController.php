@@ -20,6 +20,8 @@ use Encore\Admin\Layout\Content;
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\AdaptivePayments;
 use App\RedeemPoint;
+use Mail;
+use App\Mail\ApproveRedeemRequest;
 
 
 class RedeemController extends Controller
@@ -143,6 +145,7 @@ class RedeemController extends Controller
      * @throws \Exception
      */
     public function redeem($id){
+        session()->put('redeem_id', $id);
         $redeem_request = $this->redeem_service->findById($id);
         $user           = $this->user_service->get($redeem_request->user_id);
         $data = [
@@ -153,8 +156,8 @@ class RedeemController extends Controller
                 ],
             ],
             'payer' => 'EACHRECEIVER',
-            'return_url' => url('/admin/auth/redeem'),
-            'cancel_url' => url('/admin/auth/redeem'),
+            'return_url' => url('/admin/auth/success-transaction'),
+            'cancel_url' => url('/admin/auth/cancel-transaction'),
         ];
         $response = $this->provider->createPayRequest($data);
         if($response['responseEnvelope']['ack'] == 'Failure'){
@@ -164,7 +167,6 @@ class RedeemController extends Controller
             return Redirect::to('/admin/auth/redeem');
         }
         else{
-            $this->redeem_service->update($id, ['status' => 1]);
             $redirect_url = $this->provider->getRedirectUrl('approved', $response['payKey']);
             return redirect($redirect_url);
         }
@@ -194,5 +196,23 @@ class RedeemController extends Controller
                 'message' => trans('admin.delete_failed'),
             ]);
         }
+    }
+
+    public function successTransaction(){
+        $id = session('redeem_id');
+        $redeem_request = $this->redeem_service->findById($id);
+        if($redeem_request){
+            $user           = $this->user_service->get($redeem_request->user_id);
+            $this->redeem_service->update($id, ['status' => 1]);
+            Mail::to($user->email)->send(new ApproveRedeemRequest($user));
+            admin_toastr("Transaction has been done successfully");
+            return Redirect::to('/admin/auth/redeem');
+        }
+    }
+
+    public function cancelTransaction(){
+        session()->put('redeem_id', '');
+        admin_error("Something wrong with the transaction");
+        return Redirect::to('/admin/auth/redeem');
     }
 }

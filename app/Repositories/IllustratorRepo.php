@@ -151,4 +151,8 @@ class IllustratorRepo
     public function selectedIllustrates($data){
         return $this->illustrator->where($data)->with('users')->get();
     }
+
+    public function getContributors($data){
+        return $this->illustrator->where($data)->with('users')->get();
+    }
 }
