@@ -34,6 +34,8 @@ Route::group([
     $router->resource('auth/redeem', 'RedeemController');
     $router->get('auth/redeem-points/{id}', 'RedeemController@redeem');
     $router->get('auth/redeemed-points', 'RedeemController@index2');
+    $router->get('auth/success-transaction', 'RedeemController@successTransaction');
+    $router->get('auth/cancel-transaction', 'RedeemController@cancelTransaction');
     $router->get('auth/expired-biddings', 'BiddingExpiryController@expiredBiddings');
     $router->resource('auth/vote-expiry', 'VoteExpiryController')->only('index', 'show', 'update');
     $router->get('auth/expired-votes', 'VoteExpiryController@expiredVotes');

@@ -11,6 +11,7 @@ namespace App\Services;
 
 use App\Http\Controllers\SettingController;
 use App\Mail\BonusCoinsMail;
+use App\Mail\ExtraPointToContributors;
 use App\Repositories\BiddingExpiryRepo;
 use App\Repositories\ContextPhraseRepo;
 use App\Repositories\ContextRepo;
@@ -255,6 +256,7 @@ class CronService
                             Mail::to($hightesVotes[$type]['users']['email'])->send(new Meanings($hightesVotes));
                             $this->$model->update(['position'=>$key+1], $hightesVotes[$type]['id']);
                         endforeach;
+                        $this->sendPointsToUser($updateVoteStatus, $model, $type);
                         $records=['status'=>'1'];
                         $this->voteExpiryRepo->updateStatus($vote['id'], $records);
                     endif;
@@ -289,5 +291,29 @@ class CronService
                 }
             }
         }
+    }
+
+    public function sendPointsToUser($data, $model, $type){
+        $data['status'] = 3;
+        $data['position'] = NULL;
+        $get_users = $this->$model->getContributors($data);
+        if($get_users){
+            foreach($get_users as $key=>$hightesVotes):
+                $data=['type'=>$type,'point'=>env('POINT'),'context_id'=>$data['context_id'], 'phrase_id'=>$data['phrase_id'], 'user_id'=>$hightesVotes['user_id'], 'position'=>NULL];
+                $this->userPoint->create($data);
+                $hightesVotes['points']=env('POINT');
+                $getContextName=$this->context->getContextName($data['context_id']);
+                $getPhraseName=$this->phrase->getPhraseName($data['phrase_id']);
+                if($getContextName):
+                    $hightesVotes['context_name']=$getContextName->context_name;
+                endif;
+                if($getPhraseName):
+                    $hightesVotes['phrase_name']=$getPhraseName->phrase_text;
+                endif;
+                $hightesVotes['type']=$type;
+                Mail::to($hightesVotes['users']['email'])->send(new ExtraPointToContributors($hightesVotes));
+            endforeach;
+        }
+        return true;
     }
 }
