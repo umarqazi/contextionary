@@ -176,4 +176,8 @@ class DefineMeaningRepo
     public function totalRecords($data){
         return $this->meaning->where($data)->where('coins', '!=', NULL)->count();
     }
+
+    public function getContributors($data){
+        return $this->meaning->where($data)->with('users')->get();
+    }
 }

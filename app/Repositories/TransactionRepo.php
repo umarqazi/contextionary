@@ -56,4 +56,8 @@ class TransactionRepo extends BaseRepo implements IRepo
     public function getLasttransaction(){
         return $this->transaction->select('id')->latest()->first();
     }
+
+    public function getContributors($data){
+        return $this->transaction->where($data)->with('users')->get();
+    }
 }
