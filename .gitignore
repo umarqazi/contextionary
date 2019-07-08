@@ -18,3 +18,6 @@ public/assets/images/*
 /storage/*
 /storage/app/*
 /.gitignore
+/public/vendor/l5-swagger
+/resources/views/vendor/l5-swagger
+/config/l5-swagger.php

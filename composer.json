@@ -7,6 +7,7 @@
     "require": {
         "php": ">=7.0.0",
         "cartalyst/stripe-laravel": "7.0.*",
+        "darkaonline/l5-swagger": "5.5.*",
         "doctrine/dbal": "^2.9",
         "encore/laravel-admin": "1.5.9",
         "fideloper/proxy": "~3.3",
@@ -20,7 +21,8 @@
         "phpoffice/phpword": "v0.13.*",
         "rguedes/pdfmerger": "^1.0",
         "spatie/laravel-permission": "^2.12",
-        "srmklive/paypal": "~1.0"
+        "srmklive/paypal": "~1.0",
+        "zircote/swagger-php": "2.*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
