@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTranslationTable extends Migration
+class AddColumnSignupFromToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +14,8 @@ class AlterTranslationTable extends Migration
      */
     public function up()
     {
-        Schema::table('translations', function($table) {
-            $table->text('old_translation')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('signup_from')->default(1)->comment = "0-From game, 1-From web";
         });
     }
 
@@ -25,9 +26,8 @@ class AlterTranslationTable extends Migration
      */
     public function down()
     {
-
-        Schema::table('translations', function($table) {
-            $table->dropColumn('old_translation');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('signup_from');
         });
     }
 }
