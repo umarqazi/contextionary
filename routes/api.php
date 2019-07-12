@@ -19,4 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/register', 'Api\RegisterController@register');
 Route::post('/login', 'Api\LoginController@login');
+Route::post('/current-user', function() {
+    return response()->json(['data' => auth()->user()], 200);
+})->middleware('auth:api');
 Route::post('/topic_list', 'Api\TopicController@topic_list');

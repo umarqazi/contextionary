@@ -75,7 +75,7 @@ class RegisterController extends Controller
         ]);
 
         if($validate->fails()){
-            return response()->json(['message', $validate->errors()], 422);
+            return json($validate->errors(), 400);
         }
 
         $user = User::create([
@@ -83,6 +83,7 @@ class RegisterController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'api_token' => str_random(60),
             'coins' => 100,
             'status' => 1,
             'signup_from' => 0
@@ -90,10 +91,10 @@ class RegisterController extends Controller
 
         if($user){
 
-            return response()->json(['message', 'You have successfully registered.'], 200);
+            return json('You have successfully registered.', 200);
         } else{
 
-            return response()->json(['message', 'Something wrong'], 500);
+            return json('Something wrong', 400);
         }
     }
 }

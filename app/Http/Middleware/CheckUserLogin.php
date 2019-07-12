@@ -3,9 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Support\Facades\Auth;
 
-class CheckUserLogin
+class CheckUserLogin extends Authenticate
 {
     /**
      * Handle an incoming request.
@@ -14,13 +15,16 @@ class CheckUserLogin
      * @param  \Closure  $next
      * @return mixed
      */
-     public function handle($request, Closure $next, $guard = null)
+     public function handle($request, Closure $next, ...$guards)
      {
-         if (!Auth::guard($guard)->check()) {
-           $route=lang_route('login');
-             return redirect($route);
-         }
+        foreach ($guards as $guard) {
+            if ($guard != 'api') {
+                $route = lang_route('login');
+                return redirect($route);
+            }
+        }
 
+         $this->authenticate($guards);
          return $next($request);
      }
 }
