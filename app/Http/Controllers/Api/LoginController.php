@@ -47,7 +47,7 @@ class LoginController extends Controller
 
         if($validate->fails()){
 
-            return response()->json(['message', $validate->errors()], 422);
+            return json($validate->errors(), 400);
         }
 
         $user_credentials = [
@@ -57,12 +57,10 @@ class LoginController extends Controller
 
         if(Auth::attempt($user_credentials)){
 
-            $current_user_id = auth()->id();
-
-            return response()->json(['message' => 'Login Successfully.', 'UserID' => $current_user_id], 200);
+            return json('Login Successfully.', 200,  ['api_token' => auth()->user()->api_token]);
         }else{
 
-            return response()->json(['message' => 'Email or password is incorrect.'], 500);
+            return json('Email or password is incorrect.', 400);
         }
     }
 }
