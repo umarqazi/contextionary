@@ -23,3 +23,4 @@ Route::post('/current-user', function() {
     return response()->json(['data' => auth()->user()], 200);
 })->middleware('auth:api');
 Route::post('/topic_list', 'Api\TopicController@topic_list');
+Route::post('/contexts', 'Api\ContextController@contexts');
