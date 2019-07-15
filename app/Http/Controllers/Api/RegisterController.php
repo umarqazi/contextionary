@@ -70,7 +70,7 @@ class RegisterController extends Controller
         $validate = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|unique:users|email',
             'password' => 'required|confirmed|min:6'
         ]);
 
@@ -91,7 +91,7 @@ class RegisterController extends Controller
 
         if($user){
 
-            return json('You have successfully registered.', 200);
+            return json('You have successfully registered.', 200, ['user_id' => $user->id, 'api_token' => $user->api_token]);
         } else{
 
             return json('Something wrong', 400);
