@@ -33,7 +33,7 @@ class TopicController extends Controller
         $topics = ContextTopic::all();
         if($topics){
 
-            return response()->json(['Data' => $topics]);
+            return json('Topic List shown as:', 200,  $topics);
         }
     }
 
