@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class TopicController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('auth:api');
-    }
 
     /**
      *
