@@ -25,3 +25,4 @@ Route::post('/current-user', function() {
 Route::post('/topic_list', 'Api\TopicController@topic_list');
 Route::post('/contexts', 'Api\ContextController@contexts');
 Route::post('/context_sprint', 'Api\TopicController@generateTopics')->middleware('auth:api');
+Route::post('/clue_sprint', 'Api\ClueController@clue_sprint');
