@@ -26,3 +26,4 @@ Route::post('/topic_list', 'Api\TopicController@topic_list');
 Route::post('/contexts', 'Api\ContextController@contexts');
 Route::post('/context_sprint', 'Api\TopicController@generateTopics')->middleware('auth:api');
 Route::post('/clue_sprint', 'Api\ClueController@clue_sprint')->middleware('auth:api');
+Route::post('/coffee_break', 'Api\CoffeeController@coffee_quotes');

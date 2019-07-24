@@ -1,6 +1,6 @@
 <?php
 
-if(!define('PERCENTAGE'))
+if(!defined('PERCENTAGE'))
     define('PERCENTAGE', 20);
 
 function json($msg, $code = 200, $data = null) {
