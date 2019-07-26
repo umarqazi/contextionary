@@ -23,11 +23,10 @@ class AppVersionController extends Controller
      */
     public function app_version(){
 
-        $version = Setting::where('keys', 'app_version')->get();
+        $version = Setting::where('keys', 'app_version')->orWhere('keys', 'android_link')->orWhere('keys', 'ios_link')->get();
 
         foreach ($version as $item) {
-
-            $batch = ['app_version' => $item->values,];
+            $batch[$item->keys] = $item->values;
         }
         if($batch){
 
