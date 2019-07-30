@@ -61,9 +61,10 @@ class ClueController extends Controller
 
         foreach ($clues_sprints as $key => $data) {
 
-            ($key == 0) ? $batch['clue_sprint']['has_more'] = $clues_sprints->hasMorePages() : false;
-            $batch['clue_sprint'][] = [
-                'id' => $data->id,
+            ($key == 0) ? $batch['has_more'] = $clues_sprints->hasMorePages() : false;
+            $batch[] = [
+                'topic_id' => $data->topic_id,
+                'bucket' => $data->bucket,
                 'context_name' => $data->context->context_name ?? null,
                 'word_to_replace' => $data->word_to_replace,
                 'phrase' => $data->phrase->phrase_text ?? null,
