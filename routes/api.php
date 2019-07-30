@@ -29,3 +29,4 @@ Route::post('/clue_sprint', 'Api\ClueController@clue_sprint')->middleware('auth:
 Route::post('/coffee_break', 'Api\CoffeeController@coffee_quotes');
 Route::post('/app_version', 'Api\AppVersionController@app_version');
 Route::post('/context_marathon', 'Api\MarathonController@context_marathon')->middleware('auth:api');
+Route::post('/cross_sprint', 'Api\CrossSprintController@cross_sprint_game')->middleware('auth:api');
