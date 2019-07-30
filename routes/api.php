@@ -24,7 +24,8 @@ Route::post('/current-user', function() {
 })->middleware('auth:api');
 Route::post('/topic_list', 'Api\TopicController@topic_list');
 Route::post('/contexts', 'Api\ContextController@contexts');
-Route::post('/context_sprint', 'Api\TopicController@generateTopics')->middleware('auth:api');
+Route::post('/context_sprint_context', 'Api\TopicController@generateContextTopics')->middleware('auth:api');
+Route::post('/context_sprint_phrase', 'Api\TopicController@generatePhraseTopics')->middleware('auth:api');
 Route::post('/clue_sprint', 'Api\ClueController@clue_sprint')->middleware('auth:api');
 Route::post('/coffee_break', 'Api\CoffeeController@coffee_quotes');
 Route::post('/app_version', 'Api\AppVersionController@app_version');

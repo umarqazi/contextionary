@@ -62,7 +62,7 @@ class TopicController extends Controller
      *
      * )
      */
-    public function generateTopics(Request $request) {
+    public function generateContextTopics(Request $request) {
 
         $validate = Validator::make($request->all(), [
             'bucket' => 'required|integer',
@@ -79,6 +79,31 @@ class TopicController extends Controller
             ->inRandomOrder()
             ->get();
         $context_topics = new Paginator($context_topics, $length);
+        $batch = [];
+
+        foreach ($context_topics as $key => $data) {
+            ($key == 0) ? $batch['context_sprint']['has_more'] = $context_topics->hasMorePages() : false;
+            $batch[] = [
+                'id' => $data->id,
+                'context_name' => $data->context->context_name ?? null,
+                'phrase_sol' => $data->solPhrase->phrase_text ?? null,
+                'phrase_wrong' => $data->wrongPhrase->phrase_text ?? null,
+            ];
+        }
+
+        return json('data found', '200', $batch);
+    }
+
+    public function generatePhraseTopics(Request $request){
+
+        $validate = Validator::make($request->all(), [
+            'bucket' => 'required|integer',
+            'topic_id' => 'required|integer'
+        ]);
+
+        if($validate->fails()){
+            return json($validate->errors(), 200);
+        }
         // Phrase Sprint
         $topics = \App\PhraseSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id]);
         $length = $this->percentage($topics->count());
@@ -89,19 +114,9 @@ class TopicController extends Controller
         $phrase_topics = new Paginator($phrase_topics, $length);
         $batch = [];
 
-        foreach ($context_topics as $key => $data) {
-            ($key == 0) ? $batch['context_sprint']['has_more'] = $context_topics->hasMorePages() : false;
-            $batch['context_sprint'][] = [
-                'id' => $data->id,
-                'context_name' => $data->context->context_name ?? null,
-                'phrase_sol' => $data->solPhrase->phrase_text ?? null,
-                'phrase_wrong' => $data->wrongPhrase->phrase_text ?? null,
-            ];
-        }
-
         foreach ($phrase_topics as $key => $data) {
             ($key == 0) ? $batch['phrase_sprint']['has_more'] = $phrase_topics->hasMorePages() : false;
-            $batch['phrase_sprint'][] = [
+            $batch[] = [
                 'id' => $data->id,
                 'phrase_name' => $data->phrase->phrase_text ?? null,
                 'context_sol' => $data->solContext->context_name ?? null,
@@ -111,7 +126,6 @@ class TopicController extends Controller
 
         return json('data found', '200', $batch);
     }
-
     private function percentage($length) {
         if($length > 100) {
             $length *= PERCENTAGE;
