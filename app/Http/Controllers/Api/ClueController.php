@@ -62,7 +62,8 @@ class ClueController extends Controller
         foreach ($clues_sprints as $key => $data) {
 
             ($key == 0) ? $batch['has_more'] = $clues_sprints->hasMorePages() : false;
-            $batch[] = [
+            $batch['clue_sprint'][] = [
+                'id' => $data->id ?? null,
                 'topic_id' => $data->topic_id,
                 'bucket' => $data->bucket,
                 'context_name' => $data->context->context_name ?? null,
@@ -74,7 +75,7 @@ class ClueController extends Controller
             ];
         }
         if($batch) {
-
+            $batch['clue_sprint'] = array_values($batch['clue_sprint']);
             return json('Clue Sprints are:', 200, $batch);
         } else{
 
