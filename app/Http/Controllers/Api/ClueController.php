@@ -47,15 +47,12 @@ class ClueController extends Controller
         ]);
         if($validate->fails()){
 
-            return json($validate->error(), 200);
+            return json($validate->errors(), 400);
         }
 
         $clues = ClueSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id]);
-        $length = $this->percentage($clues->count());
         $clues_sprints = $clues->with(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3'])
-            ->inRandomOrder()
-            ->get();
-        $clues_sprints = new Paginator($clues_sprints, $length);
+            ->paginate(20);
 
         $batch = [];
 
@@ -81,16 +78,5 @@ class ClueController extends Controller
 
             return json('Data not found related to given information!', 400);
         }
-    }
-
-    private function percentage($length) {
-        if($length > 100) {
-            $length *= PERCENTAGE;
-            $length /= 100;
-        } else {
-            $length = 20;
-        }
-
-        return $length;
     }
 }
