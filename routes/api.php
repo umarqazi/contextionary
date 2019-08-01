@@ -31,3 +31,5 @@ Route::post('/coffee_break', 'Api\CoffeeController@coffee_quotes');
 Route::post('/app_version', 'Api\AppVersionController@app_version');
 Route::post('/context_marathon', 'Api\MarathonController@context_marathon')->middleware('auth:api');
 Route::post('/cross_sprint', 'Api\CrossSprintController@cross_sprint_game')->middleware('auth:api');
+Route::post('/games', 'Api\GameController@games');
+Route::post('/update_coins', 'Api\GameController@update_coins')->middleware('auth:api');

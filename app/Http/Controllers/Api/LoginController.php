@@ -56,8 +56,12 @@ class LoginController extends Controller
         ];
 
         if(Auth::attempt($user_credentials)){
-
-            return json('Login Successfully.', 200,  ['user_id' => auth()->user()->id,'api_token' => auth()->user()->api_token]);
+            $data = [
+                'user_id' => auth()->user()->id,
+                'api_token' => auth()->user()->api_token,
+                'game_coins' => auth()->user()->game_coins
+            ];
+            return json('Login Successfully.', 200,  $data);
         }else{
 
             return json('Email or password is incorrect.', 400);

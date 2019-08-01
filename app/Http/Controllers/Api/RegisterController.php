@@ -85,13 +85,18 @@ class RegisterController extends Controller
             'password' => bcrypt($request->password),
             'api_token' => str_random(60),
             'coins' => 100,
+            'game_coins' => 1000,
             'status' => 1,
             'signup_from' => 0
         ]);
 
         if($user){
-
-            return json('You have successfully registered.', 200, ['user_id' => $user->id, 'api_token' => $user->api_token]);
+            $data = [
+                'user_id' => $user->id,
+                'api_token' => $user->api_token,
+                'game_coins' => $user->game_coins
+            ];
+            return json('You have successfully registered.', 200, $data);
         } else{
 
             return json('Something wrong', 400);
