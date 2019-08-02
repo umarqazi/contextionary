@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\UserGamePoint;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +60,8 @@ class LoginController extends Controller
             $data = [
                 'user_id' => auth()->user()->id,
                 'api_token' => auth()->user()->api_token,
-                'game_coins' => auth()->user()->game_coins
+                'game_coins' => auth()->user()->game_coins,
+                'game_points' => UserGamePoint::select('game_id', 'points')->where(['user_id' => auth()->user()->id])->get()
             ];
             return json('Login Successfully.', 200,  $data);
         }else{

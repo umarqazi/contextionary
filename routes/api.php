@@ -34,4 +34,5 @@ Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/context_marathon', 'Api\MarathonController@context_marathon');
     Route::post('/cross_sprint', 'Api\CrossSprintController@cross_sprint_game');
     Route::post('/update_coins', 'Api\GameController@update_coins');
+    Route::post('/game_score', 'Api\UserGamePointController@user_game_points');
 });
