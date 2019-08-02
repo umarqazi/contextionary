@@ -64,7 +64,6 @@ class GameController extends Controller
     public function update_coins(Request $request){
 
         $validate = Validator::make($request->all(), [
-            'id' => 'required|integer',
             'game_coins' => 'required|integer'
         ]);
 
@@ -72,7 +71,7 @@ class GameController extends Controller
             return json($validate->errors(), 400);
         }
 
-        $coins = User::find($request->id);
+        $coins = User::find(auth()->id());
         $coins->game_coins = $request->game_coins;
         $updated = $coins->save();
         if($updated){
