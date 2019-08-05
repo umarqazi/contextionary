@@ -21,12 +21,14 @@ class CrossSprintController extends Controller
         }
 
         $cross_sprints = CrossSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])
-            ->with(['hint_phrase_1', 'hint_phrase_2', 'hint_phrase_3', 'hint_phrase_4'])->inRandomOrder()->paginate(20);
+            ->with(['hint_phrase_1', 'hint_phrase_2', 'hint_phrase_3', 'hint_phrase_4'])->paginate(20);
         $batch = [];
 
         foreach ($cross_sprints as $key => $data) {
-            ($key == 0) ? $batch['cross_sprint']['has_more'] = $cross_sprints->hasMorePages() : false;
+            ($key == 0) ? $batch['has_more'] = $cross_sprints->hasMorePages() : false;
             $batch['cross_sprint'][] = [
+                'id' => $data->id ?? null,
+                'topic_id' => $data->topic_id ?? null,
                 'bucket_level' => $data->bucket ?? null,
                 'solution_puzzle_word' => $data->puzzle_word ?? null,
                 'primary_hint_phrase' => $data->hint_phrase_1->phrase_text ?? null,
@@ -36,6 +38,7 @@ class CrossSprintController extends Controller
             ];
         }
         if($batch){
+            $batch['cross_sprint'] = array_values($batch['cross_sprint']);
             return json('Cross sprint data shown as:', 200, $batch);
         } else{
             return json('Data not found!', 400);
