@@ -51,7 +51,7 @@ class MarathonController extends Controller
         }
 
         $marathon = ContextMarathon::where(['bucket' => $request->bucket, 'context_id' => $request->context_id]);
-        $context_marathon = $marathon->with('phrase')->inRandomOrder()->paginate(20);
+        $context_marathon = $marathon->with('phrase')->paginate(20);
         $batch = [];
 
         foreach ($context_marathon as $key => $data){

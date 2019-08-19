@@ -24,9 +24,7 @@ class CoffeeController extends Controller
      */
     public function coffee_quotes(){
 
-        $quotes = CoffeeBreak::inRandomOrder()->get();
-        $length = $this->percentage($quotes->count());
-        $coffee_quotes = new Paginator($quotes, $length);
+        $coffee_quotes = CoffeeBreak::paginate(20);
 
         $batch = [];
         foreach ($coffee_quotes as $key => $data){
@@ -46,15 +44,5 @@ class CoffeeController extends Controller
 
             return json('Data not found:', 400);
         }
-    }
-
-    private function percentage($length) {
-        if($length > 100) {
-            $length *= PERCENTAGE;
-            $length /= 100;
-        } else {
-            $length = 20;
-        }
-        return $length;
     }
 }
