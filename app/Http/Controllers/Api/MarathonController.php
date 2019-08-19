@@ -56,7 +56,7 @@ class MarathonController extends Controller
 
         foreach ($context_marathon as $key => $data){
 
-            ($key == 0) ? $batch['context_marathon']['has_more'] = $context_marathon->hasMorePages() : false;
+            ($key == 0) ? $batch['has_more'] = $context_marathon->hasMorePages() : false;
             $batch['context_marathon'][] = [
                 'id' => $data->id,
                 'context_id' => $data->context_id ?? null,
@@ -73,6 +73,7 @@ class MarathonController extends Controller
         }
         if($batch){
 
+            $batch['context_marathon'] = array_values($batch['context_marathon']);
             return json('Context marathon shown as:', 200, $batch);
         }else{
 

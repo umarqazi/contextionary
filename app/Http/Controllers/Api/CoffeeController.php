@@ -31,7 +31,7 @@ class CoffeeController extends Controller
         $batch = [];
         foreach ($coffee_quotes as $key => $data){
 
-            ($key==0) ? $batch['coffee_quotes']['has_more'] = $coffee_quotes->hasMorePages() : false;
+            ($key==0) ? $batch['has_more'] = $coffee_quotes->hasMorePages() : false;
             $batch['coffee_quotes'][] = [
                 'quote' => $data->quote,
                 'author' => $data->author,
@@ -40,6 +40,7 @@ class CoffeeController extends Controller
 
         if($batch){
 
+            $batch['coffee_quotes'] = array_values($batch['coffee_quotes']);
             return json('Coffee break quotes are:', 200, $batch);
         }else{
 
