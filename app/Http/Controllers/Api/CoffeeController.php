@@ -24,12 +24,11 @@ class CoffeeController extends Controller
      */
     public function coffee_quotes(){
 
-        $coffee_quotes = CoffeeBreak::paginate(20);
+        $coffee_quotes = CoffeeBreak::all();
 
         $batch = [];
         foreach ($coffee_quotes as $key => $data){
 
-            ($key==0) ? $batch['has_more'] = $coffee_quotes->hasMorePages() : false;
             $batch['coffee_quotes'][] = [
                 'quote' => $data->quote,
                 'author' => $data->author,
