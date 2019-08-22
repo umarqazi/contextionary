@@ -75,7 +75,7 @@ class RegisterController extends Controller
         ]);
 
         if($validate->fails()){
-            return json($validate->errors(), 400);
+            return json($validate->messages()->first(), 400);
         }
 
         $user = User::create([
