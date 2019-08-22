@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\ClueSprint;
+use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\Paginator;
@@ -43,14 +44,20 @@ class ClueController extends Controller
 
         $validate = Validator::make($request->all(), [
             'bucket' => 'required|integer',
-            'topic_id' => 'required|integer'
+            'topic_id' => 'required|integer',
+            'game_id' => 'required|integer'
         ]);
         if($validate->fails()){
 
             return json($validate->errors(), 400);
         }
 
-        $clues = ClueSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id]);
+        $attempted = UserAttemptedQuestion::where(['user_id' => auth()->id(), 'game_id' => $request->game_id])->select('question_id')->get();
+        $attempt_question = [];
+        foreach ($attempted as $attempt) {
+            $attempt_question[] = $attempt->question_id;
+        }
+        $clues = ClueSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $clues_sprints = $clues->with(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3'])
             ->paginate(20);
 

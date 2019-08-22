@@ -35,4 +35,5 @@ Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/cross_sprint', 'Api\CrossSprintController@cross_sprint_game');
     Route::post('/update_coins', 'Api\GameController@update_coins');
     Route::post('/game_score', 'Api\UserGamePointController@user_game_points');
+    Route::post('/attempted_questions', 'Api\UserAttemptedController@user_attempted_questions');
 });
