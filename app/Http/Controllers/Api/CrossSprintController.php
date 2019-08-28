@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\CrossSprint;
+use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -13,14 +14,20 @@ class CrossSprintController extends Controller
 
         $validate = Validator::make($request->all(), [
             'bucket' => 'required|integer',
-            'topic_id' => 'required|integer'
+            'topic_id' => 'required|integer',
+            'game_id' => 'required|integer'
         ]);
 
         if($validate->fails()){
             return json($validate->errors(), 400);
         }
 
-        $cross_sprints = CrossSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])
+        $attempted = UserAttemptedQuestion::where(['user_id' => auth()->id(), 'game_id' => $request->game_id])->select('question_id')->get();
+        $attempt_question = [];
+        foreach ($attempted as $attempt) {
+            $attempt_question[] = $attempt->question_id;
+        }
+        $cross_sprints = CrossSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question)
             ->with(['hint_phrase_1', 'hint_phrase_2', 'hint_phrase_3', 'hint_phrase_4'])->paginate(20);
         $batch = [];
 

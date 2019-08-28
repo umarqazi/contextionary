@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\ContextTopic;
+use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Pagination\Paginator;
@@ -66,14 +67,20 @@ class TopicController extends Controller
 
         $validate = Validator::make($request->all(), [
             'bucket' => 'required|integer',
-            'topic_id' => 'required|integer'
+            'topic_id' => 'required|integer',
+            'game_id' => 'required|integer'
         ]);
 
         if($validate->fails()){
             return json($validate->errors(), 200);
         }
         // Context Sprint
-        $topics = \App\ContextSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id]);
+        $attempted = UserAttemptedQuestion::where(['user_id' => auth()->id(), 'game_id' => $request->game_id])->select('question_id')->get();
+        $attempt_question = [];
+        foreach ($attempted as $attempt) {
+            $attempt_question[] = $attempt->question_id;
+        }
+        $topics = \App\ContextSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $length = $this->percentage($topics->count());
         $context_topics = $topics->with(['context', 'solPhrase', 'wrongPhrase'])->get();
         $context_topics = new Paginator($context_topics, $length);
@@ -102,14 +109,20 @@ class TopicController extends Controller
 
         $validate = Validator::make($request->all(), [
             'bucket' => 'required|integer',
-            'topic_id' => 'required|integer'
+            'topic_id' => 'required|integer',
+            'game_id' => 'required|integer'
         ]);
 
         if($validate->fails()){
             return json($validate->errors(), 200);
         }
         // Phrase Sprint
-        $topics = \App\PhraseSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id]);
+        $attempted = UserAttemptedQuestion::where(['user_id' => auth()->id(), 'game_id' => $request->game_id])->select('question_id')->get();
+        $attempt_question = [];
+        foreach ($attempted as $attempt) {
+            $attempt_question[] = $attempt->question_id;
+        }
+        $topics = \App\PhraseSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $length = $this->percentage($topics->count());
         $phrase_topics = $topics->with(['phrase', 'solContext', 'wrongContext'])->get();
 
