@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\ContextMarathon;
+use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -43,14 +44,20 @@ class MarathonController extends Controller
 
         $validate = Validator::make($request->all(), [
             'bucket' => 'required|integer',
-            'context_id' => 'required|integer'
+            'context_id' => 'required|integer',
+            'game_id' => 'required|integer'
         ]);
 
         if($validate->fails()){
             return json($validate->errors(), 200);
         }
 
-        $marathon = ContextMarathon::where(['bucket' => $request->bucket, 'context_id' => $request->context_id]);
+        $attempted = UserAttemptedQuestion::where(['user_id' => auth()->id(), 'game_id' => $request->game_id])->select('question_id')->get();
+        $attempt_question = [];
+        foreach ($attempted as $attempt) {
+            $attempt_question[] = $attempt->question_id;
+        }
+        $marathon = ContextMarathon::where(['bucket' => $request->bucket, 'context_id' => $request->context_id])->whereNotIn('id', $attempt_question);
         $context_marathon = $marathon->with('phrase')->paginate(20);
         $batch = [];
 

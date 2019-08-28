@@ -40,4 +40,5 @@ Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/user_unlocked_context', 'Api\UserUnlockedContextController@UnlockedContext');
     Route::post('/marathon_statistics', 'Api\ContextMarathonStatisticController@MarathonStatus');
     Route::patch('/update_user_info', 'Api\UserRecordController@UpdateUserInfo');
+    Route::post('/attempted_questions', 'Api\UserAttemptedController@user_attempted_questions');
 });
