@@ -37,4 +37,7 @@ Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/game_score', 'Api\UserGamePointController@user_game_points');
     Route::post('/current_context', 'Api\UserCurrentContextController@CurrentContext');
     Route::post('/user_game_records', 'Api\UserRecordController@UserGameRecords');
+    Route::post('/user_unlocked_context', 'Api\UserUnlockedContextController@UnlockedContext');
+    Route::post('/marathon_statistics', 'Api\ContextMarathonStatisticController@MarathonStatus');
+    Route::patch('/update_user_info', 'Api\UserRecordController@UpdateUserInfo');
 });
