@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserUnlockedContexts extends Migration
+class UnlockedSprintMystery extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateUserUnlockedContexts extends Migration
      */
     public function up()
     {
-        Schema::connection('pgsql')->create('user_unlocked_contexts', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('unlocked_sprint_mystery', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('unlocked_context');
+            $table->integer('unlocked_sprint')->nullable();
+            $table->integer('unlocked_mystery_topic')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateUserUnlockedContexts extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_unlocked_contexts');
+        Schema::dropIfExists('unlocked_sprint_mystery');
     }
 }

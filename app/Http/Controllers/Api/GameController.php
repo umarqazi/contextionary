@@ -32,54 +32,37 @@ class GameController extends Controller
         }
     }
 
-    /**
-     *
-    @SWG\Post(
-     *     path="/update_coins",
-     *     description="Update user ame coins",
-     *
-    @SWG\Parameter(
-     *         name="id",
-     *         in="formData",
-     *         type="string",
-     *         description="Enter user id",
-     *         required=true,
-     *     ),
-     *
-    @SWG\Parameter(
-     *         name="game_coins",
-     *         in="formData",
-     *         type="string",
-     *         description="Enter game_coins",
-     *         required=true,
-     *     ),
-     *
-    @SWG\Response(
-     *         response=200,
-     *         description="OK",
-     *     ),
-     *
-     * )
-     */
-    public function update_coins(Request $request){
+    public function UpdateUserInfo(Request $request){
 
-        $validate = Validator::make($request->all(), [
-            'game_coins' => 'required|integer'
-        ]);
+        $update_info = User::where('id', auth()->id())->first();
+        if($update_info){
 
-        if ($validate->fails()){
-            return json($validate->errors(), 400);
-        }
+            if(isset($request->game_coins)){
 
-        $coins = User::find(auth()->id());
-        $coins->game_coins = $request->game_coins;
-        $updated = $coins->save();
-        if($updated){
+                $update_info->game_coins = $request->game_coins;
+            }
+            if(isset($request->aladdin_lamp)){
 
-            return json('User coins are updated.', 200);
-        } else{
+                $update_info->aladdin_lamp = $request->aladdin_lamp;
+            }
+            if(isset($request->butterfly_effect)){
 
-            return json('Something wrong here!', 400);
+                $update_info->butterfly_effect = $request->butterfly_effect;
+            }
+            if(isset($request->stopwatch)){
+
+                $update_info->stopwatch = $request->stopwatch;
+            }
+            if(isset($request->time_traveller)){
+
+                $update_info->time_traveller = $request->time_traveller;
+            }
+            $updated = $update_info->save();
+            if($updated){
+                return json('User info updated', 200);
+            }else{
+                return json('Something went wrong!', 400);
+            }
         }
     }
 }

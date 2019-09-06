@@ -12,8 +12,7 @@ class UserAttemptedController extends Controller
     public function user_attempted_questions(Request $request){
 
         $validate = Validator::make($request->all(), [
-            'user_id' => 'required|integer',
-            'game_id' => 'required|integer',
+            'game_id' => 'required|integer'
         ]);
         if($validate->fails()){
 
@@ -23,7 +22,7 @@ class UserAttemptedController extends Controller
         foreach ($request->attempted_id as $questions_id){
 
             $attempt_questions_id[] = [
-                'user_id' => $request->user_id,
+                'user_id' => auth()->id(),
                 'game_id' => $request->game_id,
                 'question_id' => $questions_id
             ];

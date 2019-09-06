@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContextMarathonStatistics extends Migration
+class SprintStatistics extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreateContextMarathonStatistics extends Migration
      */
     public function up()
     {
-        Schema::connection('pgsql')->create('context_marathon_statistics', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('sprint_statistics', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('context_id');
+            $table->integer('game_id');
+            $table->integer('topic_id');
+            $table->integer('no_of_correct_answers');
             $table->integer('points');
-            $table->integer('bucket');
-            $table->integer('status');
+            $table->float('best_time');
+            $table->tinyInteger('completed');
+            $table->tinyInteger('has_cup');
             $table->timestamps();
         });
     }
@@ -31,6 +34,6 @@ class CreateContextMarathonStatistics extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('context_marathon_statistics');
+        Schema::dropIfExists('sprint_statistics');
     }
 }
