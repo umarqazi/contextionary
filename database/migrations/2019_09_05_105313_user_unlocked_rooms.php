@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserCurrentContext extends Migration
+class UserUnlockedRooms extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateUserCurrentContext extends Migration
      */
     public function up()
     {
-        Schema::connection('pgsql')->create('user_current_context', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('user_unlocked_rooms', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('current_context_id');
-            $table->integer('last_phrase_id');
+            $table->integer('room_id');
+            $table->integer('door_id');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateUserCurrentContext extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_current_context');
+        Schema::dropIfExists('user_unlocked_rooms');
     }
 }

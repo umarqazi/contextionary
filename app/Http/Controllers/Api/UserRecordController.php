@@ -15,35 +15,26 @@ class UserRecordController extends Controller
         $this->userrecordservice = new UserRecordService();
     }
 
-    public function UserGameRecords(){
+    public function UserGameRecords(Request $request){
 
-        $data = $this->userrecordservice->ShowAllData();
+        if(!empty($request->context_id)){
+
+            $data = $this->userrecordservice->ShowAllData(null, null, $request->context_id);
+        }
+        if(!empty($request->game_id) && !empty($request->topic_id)){
+
+            $data = $this->userrecordservice->ShowAllData($request->game_id, $request->topic_id, null);
+        }
+        if(empty($request->game_id) && empty($request->topic_id) && empty($request->context_id)){
+
+            $data = $this->userrecordservice->ShowAllData();
+        }
         return json('User game data shown as:', 200, $data);
     }
 
-    public function UpdateUserInfo(Request $request){
+    public function UserAllStatistics(){
 
-        $update_info = User::where('id', auth()->id())->first();
-        if($update_info){
-
-            if(isset($request->game_coins)){
-
-                $update_info->game_coins = $request->game_coins;
-            }
-            if(isset($request->aladdin_lamp)){
-
-                $update_info->aladdin_lamp = $request->aladdin_lamp;
-            }
-            if(isset($request->butterfly_effect)){
-
-                $update_info->butterfly_effect = $request->butterfly_effect;
-            }
-            $updated = $update_info->save();
-            if($updated){
-                return json('User info updated', 200);
-            }else{
-                return json('Something went wrong!', 400);
-            }
-        }
+        $data = $this->userrecordservice->UserAllStatistics();
+        return json('User all stats shown as:', 200, $data);
     }
 }
