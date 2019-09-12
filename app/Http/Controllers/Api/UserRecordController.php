@@ -37,4 +37,10 @@ class UserRecordController extends Controller
         $data = $this->userrecordservice->UserAllStatistics();
         return json('User all stats shown as:', 200, $data);
     }
+
+    public function UserAppLoad(){
+
+        $data = $this->userrecordservice->UserAppLoad();
+        return json('User app load status shown as:', 200, $data);
+    }
 }
