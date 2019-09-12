@@ -35,10 +35,11 @@ Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/cross_sprint', 'Api\CrossSprintController@cross_sprint_game');
     Route::post('/marathon_statistics', 'Api\ContextMarathonStatisticController@MarathonStatistic');
     Route::post('/last_played_marathon', 'Api\ContextMarathonStatisticController@LastPlayedMarathonRecord');
-    Route::patch('/update_user_info', 'Api\GameController@UpdateUserInfo');
+    Route::post('/update_user_info', 'Api\GameController@UpdateUserInfo');
     Route::post('/attempted_questions', 'Api\UserAttemptedController@user_attempted_questions');
     Route::post('/sprint_mystery_topic', 'Api\SprintStatisticsController@SprintMysteryTopic');
     Route::post('/sprint_statistic', 'Api\SprintStatisticsController@SprintStatistic');
     Route::post('/user_game_records', 'Api\UserRecordController@UserGameRecords');
-    Route::post('/user_all_statistics', 'Api\UserRecordController@UserAllStatistics');
+    Route::get('/user_all_statistics', 'Api\UserRecordController@UserAllStatistics');
+    Route::get('/user_app_load', 'Api\UserRecordController@UserAppLoad');
 });

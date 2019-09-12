@@ -94,8 +94,12 @@ class MarathonStatisticService extends BaseService implements IService
 
     public function AddUserAllMarathonStatistics($context_marathon_stats){
 
-        $data['unlocked_rooms'] = $this->UnlockedRooms($context_marathon_stats['room_id'], $context_marathon_stats['door_id']);
-        $data['marathon_unlocked'] = $this->UnlockedRegionContexts($context_marathon_stats['unlocked_context'], $context_marathon_stats['region_id']);
+        if(isset($context_marathon_stats['room_id']) && isset($context_marathon_stats['door_id'])){
+            $data['unlocked_rooms'] = $this->UnlockedRooms($context_marathon_stats['room_id'], $context_marathon_stats['door_id']);
+        }
+        if(isset($context_marathon_stats['unlocked_context']) && isset($context_marathon_stats['region_id'])) {
+            $data['marathon_unlocked'] = $this->UnlockedRegionContexts($context_marathon_stats['unlocked_context'], $context_marathon_stats['region_id']);
+        }
         $data['context_stats'] = $this->AddMarathonStatistics($context_marathon_stats['context_id'], $context_marathon_stats['points'], $context_marathon_stats['bucket'], $context_marathon_stats['answered_phrases'], $context_marathon_stats['is_clear']);
         return $data;
     }
