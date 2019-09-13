@@ -76,7 +76,21 @@ class UserRecordService extends BaseService implements IService
 
         $user_context = UserCurrentContext::where('user_id', auth()->id())->first();
         $user_regions = UnlockedRegionContext::select('region_id', DB::raw('count(*) as total'))->where('user_id', auth()->id())->groupBy('region_id')->orderBy('total', 'desc')->pluck('region_id');
-        if($user_context && $user_regions) {
+        $user_regions_1 = '';
+        $user_regions_2 = '';
+        $user_regions_3 = '';
+        if(!$user_regions->isEmpty()) {
+            if (isset($user_regions[0])) {
+                $user_regions_1 = $user_regions[0];
+            }
+            if (isset($user_regions[1])) {
+                $user_regions_2 = $user_regions[1];
+            }
+            if (isset($user_regions[2])) {
+                $user_regions_3 = $user_regions[2];
+            }
+        }
+        if($user_context) {
             $data[] = [
                 'current_context_id' => $user_context->current_context_id,
                 'last_played_phrase_id' => $user_context->last_played_phrase_id,
@@ -84,9 +98,9 @@ class UserRecordService extends BaseService implements IService
                 'top_maze_level' => $user_context->top_maze_level,
                 'max_unlocked_context' => $user_context->unlocked_context,
                 'learning_center' => $user_context->learning_center,
-                'First_region' => $user_regions[0],
-                'Second_region' => $user_regions[1],
-                'Third_region' => $user_regions[2]
+                'First_region' => $user_regions_1,
+                'Second_region' => $user_regions_2,
+                'Third_region' => $user_regions_3
             ];
             return $data;
         }
@@ -100,6 +114,26 @@ class UserRecordService extends BaseService implements IService
             ->orderBy('total', 'desc')
             ->get()->toArray();
         return $sprints_statistics;
+    }
+
+    public function SprintsRecords(){
+
+        $max_points = SprintStatistic::select('points', 'game_id')->where('user_id', auth()->id())->get()->groupBy('game_id')->toArray();
+        $max_answers = SprintStatistic::select('no_of_correct_answers', 'game_id')->where('user_id', auth()->id())->get()->groupBy('game_id')->toArray();
+        $best_time = SprintStatistic::select('best_time', 'game_id')->where('user_id', auth()->id())->get()->groupBy('game_id')->toArray();
+
+        $results['max_points'] = collect($max_points)->map(function($result, $index) {
+            return collect($result)->max('points');
+        });
+
+        $results['max_answers'] = collect($max_answers)->map(function($result, $index) {
+            return collect($result)->max('no_of_correct_answers');
+        });
+
+        $results['best_time'] = collect($best_time)->map(function($result, $index) {
+            return collect($result)->min('best_time');
+        });
+        return $results;
     }
 
     public function UnlockedSprints(){
@@ -160,9 +194,7 @@ class UserRecordService extends BaseService implements IService
         $data['user_info'] = $this->UserInfo();
         $data['context_marathon'] = $this->CurrentContextMarathon();
         $data['sprint_cups'] = $this->SprintCups();
-        if(empty($game_id) && empty($topic_id) && empty($context_id)) {
-            $data['all_statistics'] = $this->AllStatistics();
-        }
+        $data['sprints_records'] = $this->SprintsRecords();
         return $data;
     }
 
