@@ -40,6 +40,6 @@ Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/sprint_mystery_topic', 'Api\SprintStatisticsController@SprintMysteryTopic');
     Route::post('/sprint_statistic', 'Api\SprintStatisticsController@SprintStatistic');
     Route::post('/user_game_records', 'Api\UserRecordController@UserGameRecords');
-    Route::get('/user_all_statistics', 'Api\UserRecordController@UserAllStatistics');
-    Route::get('/user_app_load', 'Api\UserRecordController@UserAppLoad');
+    Route::post('/user_all_statistics', 'Api\UserRecordController@UserAllStatistics');
+    Route::post('/user_app_load', 'Api\UserRecordController@UserAppLoad');
 });
