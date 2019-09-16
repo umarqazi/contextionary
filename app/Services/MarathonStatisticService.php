@@ -14,41 +14,42 @@ use Illuminate\Support\Facades\Validator;
 
 class MarathonStatisticService extends BaseService implements IService
 {
-    public function UnlockedRooms($room_id, $door_id){
+    public function UnlockedRooms($unlocked_rooms){
 
-        $update = UnlockedRoom::where(['user_id' => auth()->id(), 'room_id' => $room_id, 'door_id' => $door_id])->first();
-        if($update){
+        if($unlocked_rooms) {
 
-            return json('Record already exist', 200);
-        } else {
+            foreach ($unlocked_rooms as $unlocked_room) {
 
-            $unlocked_rooms = UnlockedRoom::create([
-                'user_id' => auth()->id(),
-                'room_id' => $room_id,
-                'door_id' => $door_id
-            ]);
-            if($unlocked_rooms){
-                return json('Unlocked context has been saved successfully', 200);
+                $unlocked_room_data[] = [
+                    'user_id' => $unlocked_room['user_id'],
+                    'room_id' => $unlocked_room['room_id'],
+                    'door_id' => $unlocked_room['door_id']
+                ];
+            }
+            $insert_unlocked_room = UnlockedRoom::insert($unlocked_room_data);
+
+            if($insert_unlocked_room){
+                return json('Unlocked rooms has been saved successfully', 200);
             }else{
                 return json('Something wrong here!', 400);
             }
         }
     }
 
-    public function UnlockedRegionContexts($unlocked_context_id, $region_id){
+    public function UnlockedRegionContexts($context_marathon_stats){
+        if($context_marathon_stats) {
 
-        $update = UnlockedRegionContext::where(['user_id' => auth()->id(), 'unlocked_context' => $unlocked_context_id, 'region_id' => $region_id])->first();
-        if($update){
+            foreach ($context_marathon_stats as $unlocked_context_region) {
 
-            return json('Record already exist', 200);
-        } else {
+                $unlocked_context[] = [
+                    'user_id' => $unlocked_context_region['user_id'],
+                    'unlocked_context' => $unlocked_context_region['unlocked_context'],
+                    'region_id' => $unlocked_context_region['region_id']
+                ];
+            }
+            $insert_unlocked_context = UnlockedRegionContext::insert($unlocked_context);
 
-            $unlocked_context = UnlockedRegionContext::create([
-                'user_id' => auth()->id(),
-                'unlocked_context' => $unlocked_context_id,
-                'region_id' => $region_id
-            ]);
-            if($unlocked_context){
+            if($insert_unlocked_context){
                 return json('Unlocked context has been saved successfully', 200);
             }else{
                 return json('Something wrong here!', 400);
@@ -94,12 +95,35 @@ class MarathonStatisticService extends BaseService implements IService
 
     public function AddUserAllMarathonStatistics($context_marathon_stats){
 
-        if(isset($context_marathon_stats['room_id']) && isset($context_marathon_stats['door_id'])){
-            $data['unlocked_rooms'] = $this->UnlockedRooms($context_marathon_stats['room_id'], $context_marathon_stats['door_id']);
+        $unlocked_region_context = [];
+        $unlocked_rooms = [];
+
+        $user_id = auth()->id();
+
+        if(array_key_exists('data', $context_marathon_stats )) {
+            foreach ($context_marathon_stats['data'] as $stat_data) {
+
+                if(array_key_exists('unlocked_context',  $stat_data) && array_key_exists('region_id', $stat_data)) {
+
+                    $region_context['unlocked_context'] = $stat_data['unlocked_context'];
+                    $region_context['region_id'] = $stat_data['region_id'];
+                    $region_context['user_id'] = $user_id;
+
+                    $unlocked_region_context[] = $region_context;
+                }
+
+                if(array_key_exists('room_id',  $stat_data) && array_key_exists('door_id', $stat_data)) {
+
+                    $unlocked_room_data['room_id'] = $stat_data['room_id'];
+                    $unlocked_room_data['door_id'] = $stat_data['door_id'];
+                    $unlocked_room_data['user_id'] = $user_id;
+
+                    $unlocked_rooms[] = $unlocked_room_data;
+                }
+            }
         }
-        if(isset($context_marathon_stats['unlocked_context']) && isset($context_marathon_stats['region_id'])) {
-            $data['marathon_unlocked'] = $this->UnlockedRegionContexts($context_marathon_stats['unlocked_context'], $context_marathon_stats['region_id']);
-        }
+        $data['unlocked_region_context'] = $this->UnlockedRegionContexts($unlocked_region_context);
+        $data['unlocked_rooms'] = $this->UnlockedRooms($unlocked_rooms);
         $data['context_stats'] = $this->AddMarathonStatistics($context_marathon_stats['context_id'], $context_marathon_stats['points'], $context_marathon_stats['bucket'], $context_marathon_stats['answered_phrases'], $context_marathon_stats['is_clear']);
         return $data;
     }

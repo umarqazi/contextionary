@@ -151,6 +151,7 @@ class UserRecordService extends BaseService implements IService
     public function UnlockedRooms(){
 
         $unlocked_mystery_topics = UnlockedRoom::select('room_id', 'door_id')->where('user_id', auth()->id())->get()->groupBy('room_id');
+        $unlocked_mystery_topics = array_values(collect($unlocked_mystery_topics)->toArray());
         return $unlocked_mystery_topics;
     }
 
