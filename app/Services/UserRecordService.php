@@ -27,7 +27,8 @@ class UserRecordService extends BaseService implements IService
                 'context_id' => $marathon_statistics->context_id,
                 'points' => $marathon_statistics->points,
                 'bucket' => $marathon_statistics->bucket,
-                'status' => $marathon_statistics->status,
+                'answered_phrases' => $marathon_statistics->answered_phrases,
+                'is_clear' => $marathon_statistics->is_clear
             ];
             return $data;
         }
@@ -64,11 +65,11 @@ class UserRecordService extends BaseService implements IService
         }
     }
 
-    public function ShowAllData($game_id=null, $topic_id=null, $context_id=null){
+    public function UserGameRecords($game_id=null, $topic_id=null, $context_id=null){
 
-        $data['marathon_statistics'] = $this->MarathonStatistics($context_id);
+        $data['marathon_records'] = $this->MarathonStatistics($context_id);
         $data['user_info'] = $this->UserInfo();
-        $data['sprint_statistics'] = $this->SprintStatistics($game_id, $topic_id);
+        $data['sprint_records'] = $this->SprintStatistics($game_id, $topic_id);
         return $data;
     }
 
