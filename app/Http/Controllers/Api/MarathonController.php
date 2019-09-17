@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\ContextMarathon;
+use App\Services\UserRecordService;
 use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,11 @@ use Illuminate\Support\Facades\Validator;
 
 class MarathonController extends Controller
 {
+    public $userrecordservice;
+    public function __construct()
+    {
+        $this->userrecordservice = new UserRecordService();
+    }
     /**
      *
     @SWG\Post(
@@ -40,7 +46,6 @@ class MarathonController extends Controller
      * )
      */
     public function context_marathon(Request $request){
-
 
         $validate = Validator::make($request->all(), [
             'bucket' => 'required|integer',
@@ -80,6 +85,10 @@ class MarathonController extends Controller
         }
         if($batch){
 
+            if(!empty($request->context_id)){
+
+                $batch['marathon_records'] = $this->userrecordservice->UserGameRecords(null, null, $request->context_id)['marathon_records'];
+            }
             $batch['context_marathon'] = array_values($batch['context_marathon']);
             return json('Context marathon shown as:', 200, $batch);
         }else{

@@ -19,15 +19,11 @@ class UserRecordController extends Controller
 
         if(!empty($request->context_id)){
 
-            $data = $this->userrecordservice->ShowAllData(null, null, $request->context_id);
+            $data = $this->userrecordservice->UserGameRecords(null, null, $request->context_id);
         }
         if(!empty($request->game_id) && !empty($request->topic_id)){
 
-            $data = $this->userrecordservice->ShowAllData($request->game_id, $request->topic_id, null);
-        }
-        if(empty($request->game_id) && empty($request->topic_id) && empty($request->context_id)){
-
-            $data = $this->userrecordservice->ShowAllData();
+            $data = $this->userrecordservice->UserGameRecords($request->game_id, $request->topic_id, null);
         }
         return json('User game data shown as:', 200, $data);
     }
