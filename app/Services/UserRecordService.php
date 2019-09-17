@@ -42,6 +42,7 @@ class UserRecordService extends BaseService implements IService
             'butterfly_effect' => $user_info->butterfly_effect,
             'stopwatch' => $user_info->stopwatch,
             'time_traveller' => $user_info->time_traveller,
+            'learning_center' => $user_info->learning_center,
         ];
         return $data;
     }
@@ -97,7 +98,6 @@ class UserRecordService extends BaseService implements IService
                 'last_played_cell' => $user_context->last_played_cell,
                 'top_maze_level' => $user_context->top_maze_level,
                 'max_unlocked_context' => $user_context->unlocked_context,
-                'learning_center' => $user_context->learning_center,
                 'First_region' => $user_regions_1,
                 'Second_region' => $user_regions_2,
                 'Third_region' => $user_regions_3
@@ -150,8 +150,7 @@ class UserRecordService extends BaseService implements IService
 
     public function UnlockedRooms(){
 
-        $unlocked_mystery_topics = UnlockedRoom::select('room_id', 'door_id')->where('user_id', auth()->id())->get()->groupBy('room_id');
-        $unlocked_mystery_topics = array_values(collect($unlocked_mystery_topics)->toArray());
+        $unlocked_mystery_topics = UnlockedRoom::select('room_id', 'door_id')->where('user_id', auth()->id())->get();
         return $unlocked_mystery_topics;
     }
 

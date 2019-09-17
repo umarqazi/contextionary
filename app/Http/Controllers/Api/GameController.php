@@ -57,6 +57,10 @@ class GameController extends Controller
 
                 $update_info->time_traveller = $request->time_traveller;
             }
+            if(isset($request->learning_center)){
+
+                $update_info->learning_center = $request->learning_center;
+            }
             $updated = $update_info->save();
             if($updated){
                 return json('User info updated', 200);
