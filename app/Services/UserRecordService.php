@@ -73,6 +73,18 @@ class UserRecordService extends BaseService implements IService
         return $data;
     }
 
+    public function IncompleteMaxPoints(){
+        $incomplete_contexts = ContextMarathonStatistic::select('points', 'context_id')->where(['user_id' => auth()->id(), 'is_clear' => 0])->orderBy('points', 'desc')->take(3)->get();
+        if(!$incomplete_contexts->isEmpty()) {
+            foreach ($incomplete_contexts as $incomplete_context) {
+                $incomplete_context_points[] = [
+                    'Points' => $incomplete_context->points,
+                    'Context_id' => $incomplete_context->context_id,
+                ];
+            }
+            return $incomplete_context_points;
+        }
+    }
 
     public function CurrentContextMarathon(){
 
@@ -194,6 +206,7 @@ class UserRecordService extends BaseService implements IService
 
         $data['user_info'] = $this->UserInfo();
         $data['context_marathon'] = $this->CurrentContextMarathon();
+        $data['incomplete_max_points'] = $this->IncompleteMaxPoints();
         $data['sprint_cups'] = $this->SprintCups();
         $data['sprints_records'] = $this->SprintsRecords();
         return $data;
