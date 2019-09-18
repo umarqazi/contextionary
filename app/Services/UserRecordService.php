@@ -78,9 +78,9 @@ class UserRecordService extends BaseService implements IService
 
         $user_context = UserCurrentContext::where('user_id', auth()->id())->first();
         $user_regions = UnlockedRegionContext::select('region_id', DB::raw('count(*) as total'))->where('user_id', auth()->id())->groupBy('region_id')->orderBy('total', 'desc')->pluck('region_id');
-        $user_regions_1 = '';
-        $user_regions_2 = '';
-        $user_regions_3 = '';
+        $user_regions_1 = 0;
+        $user_regions_2 = 0;
+        $user_regions_3 = 0;
         if(!$user_regions->isEmpty()) {
             if (isset($user_regions[0])) {
                 $user_regions_1 = $user_regions[0];
