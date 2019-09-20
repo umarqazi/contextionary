@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Game;
+use App\InAppPurchase;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -68,5 +69,10 @@ class GameController extends Controller
                 return json('Something went wrong!', 400);
             }
         }
+    }
+
+    public function AppPurchases(){
+        $app_puchases = InAppPurchase::select('*')->get()->groupBy('type');
+        return json('In App purchases shown as:', 200, $app_puchases);
     }
 }

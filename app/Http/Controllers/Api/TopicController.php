@@ -75,7 +75,7 @@ class TopicController extends Controller
             return json($validate->errors(), 200);
         }
         // Context Sprint
-        $attempted = UserAttemptedQuestion::where(['user_id' => auth()->id(), 'game_id' => $request->game_id])->select('question_id')->get();
+        $attempted = UserAttemptedQuestion::where(['user_id' => auth()->id(), 'game_id' => $request->game_id, 'game_type' => 2])->select('question_id')->get();
         $attempt_question = [];
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
@@ -117,7 +117,7 @@ class TopicController extends Controller
             return json($validate->errors(), 200);
         }
         // Phrase Sprint
-        $attempted = UserAttemptedQuestion::where(['user_id' => auth()->id(), 'game_id' => $request->game_id])->select('question_id')->get();
+        $attempted = UserAttemptedQuestion::where(['user_id' => auth()->id(), 'game_id' => $request->game_id, 'game_type' => 1])->select('question_id')->get();
         $attempt_question = [];
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
