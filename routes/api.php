@@ -43,4 +43,5 @@ Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/user_all_statistics', 'Api\UserRecordController@UserAllStatistics');
     Route::post('/user_app_load', 'Api\UserRecordController@UserAppLoad');
     Route::post('/in_app_purchases', 'Api\GameController@AppPurchases');
+    Route::post('/coin_history', 'Api\CoinHistoryController@CoinHistory');
 });
