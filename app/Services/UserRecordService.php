@@ -28,7 +28,8 @@ class UserRecordService extends BaseService implements IService
                 'points' => $marathon_statistics->points,
                 'bucket' => $marathon_statistics->bucket,
                 'answered_phrases' => $marathon_statistics->answered_phrases,
-                'is_clear' => $marathon_statistics->is_clear
+                'is_clear' => $marathon_statistics->is_clear,
+                'butterfly_available' => $marathon_statistics->butterfly_available
             ];
             return $data;
         }
@@ -177,6 +178,11 @@ class UserRecordService extends BaseService implements IService
         $unlocked_mystery_topics = UnlockedRoom::select('room_id', 'door_id')->where('user_id', auth()->id())->get();
         return $unlocked_mystery_topics;
     }
+    public function UnlockedContexts(){
+
+        $unlocked_mystery_topics = UnlockedRegionContext::select('unlocked_context', 'region_id')->where('user_id', auth()->id())->get();
+        return $unlocked_mystery_topics;
+    }
 
     public function AllStatistics(){
         $sprint_statistics = SprintStatistic::where('user_id', auth()->id())->get();
@@ -230,6 +236,7 @@ class UserRecordService extends BaseService implements IService
         $data['unlocked_sprints'] = $this->UnlockedSprints();
         $data['unlocked_mystery_topics'] = $this->UnlockedMysteryTopics();
         $data['unlocked_rooms'] = $this->UnlockedRooms();
+        $data['unlocked_contexts'] = $this->UnlockedContexts();
         return $data;
     }
 }
