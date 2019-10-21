@@ -19,6 +19,7 @@ MultiLang::routeGroup(function($router) {
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/faq', 'ContentManagementController@faq')->name('faq');
         Route::get('/about-us', 'ContentManagementController@index')->name('aboutUs');
+        Route::get('/privacy-policy', 'ContentManagementController@privacyPolicy')->name('privacyPolicy');
         Route::get('auth/{provider}', 'Auth\LoginController@redirectToProvider');
         Route::get('auth/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
         Route::get('/test', 'CronController@subscriptionCheck');
