@@ -17,6 +17,7 @@ class UserRecordController extends Controller
 
     public function UserGameRecords(Request $request){
 
+        $data = '';
         if(!empty($request->context_id)){
 
             $data = $this->userrecordservice->UserGameRecords(null, null, $request->context_id);
