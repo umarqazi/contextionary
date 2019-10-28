@@ -76,6 +76,7 @@ View::composer(['guest_pages.*', 'user.user_plan.learning_center.*'], function($
     $page['contact-us']='Contact Us';
     $page['about-us']='About Us';
     $page['faq']='FAQ';
+    $page['privacy-policy']='Privacy Policy';
     $view->with(['pageMenu'=>$page]);
 });
 
