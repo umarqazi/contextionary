@@ -147,17 +147,25 @@ class UserRecordService extends BaseService implements IService
         $max_answers = SprintStatistic::select('no_of_correct_answers', 'game_id')->where('user_id', auth()->id())->get()->groupBy('game_id')->toArray();
         $best_time = SprintStatistic::select('best_time', 'game_id')->where('user_id', auth()->id())->get()->groupBy('game_id')->toArray();
 
-        $results['max_points'] = collect($max_points)->map(function($result, $index) {
-            return collect($result)->max('points');
-        });
+        if(!empty($max_points) && !empty($max_answers) && !empty($best_time)) {
 
-        $results['max_answers'] = collect($max_answers)->map(function($result, $index) {
-            return collect($result)->max('no_of_correct_answers');
-        });
+            $results['max_points'] = collect($max_points)->map(function ($result, $index) {
+                return collect($result)->max('points');
+            });
 
-        $results['best_time'] = collect($best_time)->map(function($result, $index) {
-            return collect($result)->min('best_time');
-        });
+            $results['max_answers'] = collect($max_answers)->map(function($result, $index) {
+                return collect($result)->max('no_of_correct_answers');
+            });
+
+            $results['best_time'] = collect($best_time)->map(function($result, $index) {
+                return collect($result)->min('best_time');
+            });
+        } else{
+
+            $results['max_points'] = [-1 => -1];
+            $results['max_answers'] = [-1 => -1];
+            $results['best_time'] = [-1 => -1];
+        }
         return $results;
     }
 
