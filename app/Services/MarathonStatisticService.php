@@ -18,13 +18,22 @@ class MarathonStatisticService extends BaseService implements IService
 
         if($unlocked_rooms) {
 
+            $unlocked_room_data = [];
             foreach ($unlocked_rooms as $unlocked_room) {
 
-                $unlocked_room_data[] = [
+                $check_if_exist = UnlockedRoom::where([
                     'user_id' => $unlocked_room['user_id'],
                     'room_id' => $unlocked_room['room_id'],
-                    'door_id' => $unlocked_room['door_id']
-                ];
+                    'door_id' => $unlocked_room['door_id'],
+                ])->exists();
+
+                if (!$check_if_exist) {
+                    $unlocked_room_data[] = [
+                        'user_id' => $unlocked_room['user_id'],
+                        'room_id' => $unlocked_room['room_id'],
+                        'door_id' => $unlocked_room['door_id']
+                    ];
+                }
             }
             $insert_unlocked_room = UnlockedRoom::insert($unlocked_room_data);
 
@@ -39,13 +48,23 @@ class MarathonStatisticService extends BaseService implements IService
     public function UnlockedRegionContexts($context_marathon_stats){
         if($context_marathon_stats) {
 
+            $unlocked_context = [];
             foreach ($context_marathon_stats as $unlocked_context_region) {
 
-                $unlocked_context[] = [
+                $check_if_exist = UnlockedRegionContext::where([
                     'user_id' => $unlocked_context_region['user_id'],
                     'unlocked_context' => $unlocked_context_region['unlocked_context'],
-                    'region_id' => $unlocked_context_region['region_id']
-                ];
+                    'region_id' => $unlocked_context_region['region_id'],
+                ])->exists();
+
+                if (!$check_if_exist) {
+
+                    $unlocked_context[] = [
+                        'user_id' => $unlocked_context_region['user_id'],
+                        'unlocked_context' => $unlocked_context_region['unlocked_context'],
+                        'region_id' => $unlocked_context_region['region_id']
+                    ];
+                }
             }
             $insert_unlocked_context = UnlockedRegionContext::insert($unlocked_context);
 
