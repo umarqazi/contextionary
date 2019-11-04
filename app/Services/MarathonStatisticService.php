@@ -22,14 +22,14 @@ class MarathonStatisticService extends BaseService implements IService
             foreach ($unlocked_rooms as $unlocked_room) {
 
                 $check_if_exist = UnlockedRoom::where([
-                    'user_id' => $unlocked_room['user_id'],
+                    'user_id' => auth()->id(),
                     'room_id' => $unlocked_room['room_id'],
                     'door_id' => $unlocked_room['door_id'],
                 ])->exists();
 
                 if (!$check_if_exist) {
                     $unlocked_room_data[] = [
-                        'user_id' => $unlocked_room['user_id'],
+                        'user_id' => auth()->id(),
                         'room_id' => $unlocked_room['room_id'],
                         'door_id' => $unlocked_room['door_id']
                     ];
@@ -52,7 +52,7 @@ class MarathonStatisticService extends BaseService implements IService
             foreach ($context_marathon_stats as $unlocked_context_region) {
 
                 $check_if_exist = UnlockedRegionContext::where([
-                    'user_id' => $unlocked_context_region['user_id'],
+                    'user_id' => auth()->id(),
                     'unlocked_context' => $unlocked_context_region['unlocked_context'],
                     'region_id' => $unlocked_context_region['region_id'],
                 ])->exists();
@@ -60,7 +60,7 @@ class MarathonStatisticService extends BaseService implements IService
                 if (!$check_if_exist) {
 
                     $unlocked_context[] = [
-                        'user_id' => $unlocked_context_region['user_id'],
+                        'user_id' => auth()->id(),
                         'unlocked_context' => $unlocked_context_region['unlocked_context'],
                         'region_id' => $unlocked_context_region['region_id']
                     ];
