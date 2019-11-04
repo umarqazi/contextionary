@@ -4,18 +4,189 @@
 namespace App\Services;
 
 
+use App\Context;
 use App\ContextMarathonStatistic;
+use App\Setting;
 use App\SprintStatistic;
 use App\UnlockedRegionContext;
 use App\UnlockedRoom;
 use App\UnlockedSprintMystery;
 use App\User;
+use App\UserAttemptedQuestion;
 use App\UserCurrentContext;
 use http\Env\Request;
 use Illuminate\Support\Facades\DB;
 
 class UserRecordService extends BaseService implements IService
 {
+
+    public $marathonstatisticservice;
+    public function __construct()
+    {
+        $this->marathonstatisticservice = new MarathonStatisticService();
+    }
+
+    /**
+     * @param $update_user_info
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function UpdateUserInfo($update_user_info){
+
+        $update_info = User::where('id', auth()->id())->first();
+        if($update_info){
+
+            if(isset($update_user_info['game_coins'])){
+
+                $update_info->game_coins = $update_user_info['game_coins'];
+            }
+            if(isset($update_user_info['aladdin_lamp'])){
+
+                $update_info->aladdin_lamp = $update_user_info['aladdin_lamp'];
+            }
+            if(isset($update_user_info['butterfly_effect'])){
+
+                $update_info->butterfly_effect = $update_user_info['butterfly_effect'];
+            }
+            if(isset($update_user_info['stopwatch'])){
+
+                $update_info->stopwatch = $update_user_info['stopwatch'];
+            }
+            if(isset($update_user_info['time_traveller'])){
+
+                $update_info->time_traveller = $update_user_info['time_traveller'];
+            }
+            if(isset($update_user_info['learning_center'])){
+
+                $update_info->learning_center = $update_user_info['learning_center'];
+            }
+            $updated = $update_info->save();
+            if($updated){
+                return json('User info updated', 200);
+            }else{
+                return json('Something went wrong!', 400);
+            }
+        }
+    }
+
+    public function AddUserSprintStatistics($data){
+
+        $msg = '';
+        $code = '';
+        $update_statistics = SprintStatistic::where(['user_id' => auth()->id(), 'game_id' => $data['game_id'], 'topic_id' => $data['topic_id']])->first();
+        if($update_statistics){
+            if($data['correct_answers'] > $update_statistics->no_of_correct_answers){
+
+                $update_statistics->no_of_correct_answers = $data['correct_answers'];
+            }
+
+            if($data['points'] > $update_statistics->points){
+
+                $update_statistics->points = $data['points'];
+            }
+
+            if($data['best_time'] < $update_statistics->best_time){
+
+                $update_statistics->best_time = $data['best_time'];
+            }
+
+            $update_statistics->has_cup = $data['has_cup'];
+            $update_statistics->completed = $data['completed'];
+            $updated = $update_statistics->save();
+            if($updated){
+                $msg = 'Sprint statistic has updated.';
+                $code = '200';
+            }else{
+                $msg = 'Something wrong here!';
+                $code = '400';
+            }
+
+        } else {
+
+            $sprint_statistics = SprintStatistic::create([
+                'user_id' => auth()->id(),
+                'game_id' => $data['game_id'],
+                'topic_id' => $data['topic_id'],
+                'no_of_correct_answers' => $data['correct_answers'],
+                'points' => $data['points'],
+                'best_time' => $data['best_time'],
+                'completed' => $data['completed'],
+                'has_cup' => $data['has_cup']
+            ]);
+            if($sprint_statistics){
+                $msg = 'Sprint statistic has inserted.';
+                $code = '200';
+            }else{
+                $msg = 'Something wrong here!';
+                $code = '400';
+            }
+        }
+
+        $unlocked_sprint = SprintStatistic::where(['user_id' => auth()->id(), 'game_id' => $data['game_id'], 'has_cup' => 1])->first();
+
+        if($unlocked_sprint) {
+
+            $unlocked_sprint_id = $data['game_id']+1;
+
+            $check_unlocked = UnlockedSprintMystery::where(['user_id' => auth()->id(), 'unlocked_sprint' => $unlocked_sprint_id])->get();
+
+            if($check_unlocked->isEmpty()){
+
+                $unlocked_sprint = UnlockedSprintMystery::create([
+                    'user_id' => auth()->id(),
+                    'unlocked_sprint' => $unlocked_sprint_id
+                ]);
+            }
+        }
+        return json($msg, $code);
+    }
+
+    /**
+     * @param $user_attempted_questions
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function UserAttemptedQuestions($user_attempted_questions){
+
+        foreach ($user_attempted_questions['attempted_id'] as $questions_id){
+
+            $attempt_questions_id[] = [
+                'user_id' => auth()->id(),
+                'game_id' => $user_attempted_questions['game_id'],
+                'game_type' => $user_attempted_questions['game_type'] ?? null,
+                'question_id' => $questions_id
+            ];
+        }
+
+        $user_game_points = UserAttemptedQuestion::insert($attempt_questions_id);
+        if($user_game_points){
+
+            return json('User questions id have been saved successfully', 200);
+        } else {
+
+            return json('Something wrong here!', 400);
+        }
+    }
+
+    public function AppVersion(){
+
+        $version = Setting::where('keys', 'app_version')->orWhere('keys', 'android_link')->orWhere('keys', 'ios_link')->get();
+
+        foreach ($version as $item) {
+            $batch[$item->keys] = $item->values;
+        }
+        if($batch){
+
+            return $batch;
+        }else{
+
+            return json('App version not found!', 400);
+        }
+    }
+
+    public function contexts(){
+
+        $contexts = Context::all();
+        return $contexts;
+    }
 
     public function MarathonStatistics($context_id){
 
@@ -245,6 +416,43 @@ class UserRecordService extends BaseService implements IService
         $data['unlocked_mystery_topics'] = $this->UnlockedMysteryTopics();
         $data['unlocked_rooms'] = $this->UnlockedRooms();
         $data['unlocked_contexts'] = $this->UnlockedContexts();
+        return $data;
+    }
+
+    public function UserMarathonStatistics($data){
+
+        $data['add_marathon_statistics'] = $this->marathonstatisticservice->AddMarathonStatistics($data['context_id'], $data['points'], $data['bucket'], $data['answered_phrases'], $data['is_clear'], $data['butterfly_available']);
+        if(array_key_exists('data', $data)){
+
+            $data['unlocked_marathon_rooms'] = $this->marathonstatisticservice->UnlockedRooms($data['data']);
+            $data['unlocked_marathon_region_contexts'] = $this->marathonstatisticservice->UnlockedRegionContexts($data['data']);
+        }
+        $data['last_played_marathon_statistics'] = $this->marathonstatisticservice->LastPlayedMarathonRecord($data);
+        $data['update_user_info'] = $this->UpdateUserInfo($data);
+        if(array_key_exists('attempted_id', $data)){
+
+            $data['UserAttemptedQuestions'] = $this->UserAttemptedQuestions($data);
+        }
+        return $data;
+    }
+
+    public function UserSprintStatistics($data){
+
+        $data['UserSprintStatistic'] = $this->AddUserSprintStatistics($data);
+        $data['update_user_info'] = $this->UpdateUserInfo($data);
+        return $data;
+    }
+
+    public function UserGameLoad(){
+
+        $data['user_info'] = $this->UserInfo();
+        $data['context_marathon'] = $this->CurrentContextMarathon();
+        $data['unlocked_sprints'] = $this->UnlockedSprints();
+        $data['unlocked_mystery_topics'] = $this->UnlockedMysteryTopics();
+        $data['unlocked_rooms'] = $this->UnlockedRooms();
+        $data['unlocked_contexts'] = $this->UnlockedContexts();
+        $data['app_version'] = $this->AppVersion();
+        $data['contexts'] = $this->contexts();
         return $data;
     }
 }
