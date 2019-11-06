@@ -440,6 +440,10 @@ class UserRecordService extends BaseService implements IService
 
         $data['UserSprintStatistic'] = $this->AddUserSprintStatistics($data);
         $data['update_user_info'] = $this->UpdateUserInfo($data);
+        if(array_key_exists('attempted_id', $data)){
+
+            $data['UserAttemptedQuestions'] = $this->UserAttemptedQuestions($data);
+        }
         return $data;
     }
 
