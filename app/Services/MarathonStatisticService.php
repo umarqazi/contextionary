@@ -16,7 +16,7 @@ class MarathonStatisticService extends BaseService implements IService
 {
     public function UnlockedRooms($unlocked_rooms){
 
-        if($unlocked_rooms) {
+        if(array_key_exists('room_id', $unlocked_rooms)) {
 
             $unlocked_room_data = [];
             foreach ($unlocked_rooms as $unlocked_room) {
@@ -46,7 +46,7 @@ class MarathonStatisticService extends BaseService implements IService
     }
 
     public function UnlockedRegionContexts($context_marathon_stats){
-        if($context_marathon_stats) {
+        if(array_key_exists('unlocked_context', $context_marathon_stats)) {
 
             $unlocked_context = [];
             foreach ($context_marathon_stats as $unlocked_context_region) {
