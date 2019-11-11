@@ -16,23 +16,26 @@ class MarathonStatisticService extends BaseService implements IService
 {
     public function UnlockedRooms($unlocked_rooms){
 
-        if(array_key_exists('room_id', $unlocked_rooms)) {
+        if($unlocked_rooms) {
 
             $unlocked_room_data = [];
             foreach ($unlocked_rooms as $unlocked_room) {
 
-                $check_if_exist = UnlockedRoom::where([
-                    'user_id' => auth()->id(),
-                    'room_id' => $unlocked_room['room_id'],
-                    'door_id' => $unlocked_room['door_id'],
-                ])->exists();
+                if(array_key_exists('room_id', $unlocked_room)) {
 
-                if (!$check_if_exist) {
-                    $unlocked_room_data[] = [
+                    $check_if_exist = UnlockedRoom::where([
                         'user_id' => auth()->id(),
                         'room_id' => $unlocked_room['room_id'],
-                        'door_id' => $unlocked_room['door_id']
-                    ];
+                        'door_id' => $unlocked_room['door_id'],
+                    ])->exists();
+
+                    if (!$check_if_exist) {
+                        $unlocked_room_data[] = [
+                            'user_id' => auth()->id(),
+                            'room_id' => $unlocked_room['room_id'],
+                            'door_id' => $unlocked_room['door_id']
+                        ];
+                    }
                 }
             }
             $insert_unlocked_room = UnlockedRoom::insert($unlocked_room_data);
@@ -46,24 +49,27 @@ class MarathonStatisticService extends BaseService implements IService
     }
 
     public function UnlockedRegionContexts($context_marathon_stats){
-        if(array_key_exists('unlocked_context', $context_marathon_stats)) {
+        if($context_marathon_stats) {
 
             $unlocked_context = [];
             foreach ($context_marathon_stats as $unlocked_context_region) {
 
-                $check_if_exist = UnlockedRegionContext::where([
-                    'user_id' => auth()->id(),
-                    'unlocked_context' => $unlocked_context_region['unlocked_context'],
-                    'region_id' => $unlocked_context_region['region_id'],
-                ])->exists();
+                if(array_key_exists('unlocked_context', $unlocked_context_region)) {
 
-                if (!$check_if_exist) {
-
-                    $unlocked_context[] = [
+                    $check_if_exist = UnlockedRegionContext::where([
                         'user_id' => auth()->id(),
                         'unlocked_context' => $unlocked_context_region['unlocked_context'],
-                        'region_id' => $unlocked_context_region['region_id']
-                    ];
+                        'region_id' => $unlocked_context_region['region_id'],
+                    ])->exists();
+
+                    if (!$check_if_exist) {
+
+                        $unlocked_context[] = [
+                            'user_id' => auth()->id(),
+                            'unlocked_context' => $unlocked_context_region['unlocked_context'],
+                            'region_id' => $unlocked_context_region['region_id']
+                        ];
+                    }
                 }
             }
             $insert_unlocked_context = UnlockedRegionContext::insert($unlocked_context);
