@@ -43,7 +43,6 @@ class ClueController extends Controller
     public function clue_sprint(Request $request){
 
         $validate = Validator::make($request->all(), [
-            'bucket' => 'required|integer',
             'topic_id' => 'required|integer',
             'game_id' => 'required|integer'
         ]);
@@ -57,7 +56,7 @@ class ClueController extends Controller
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
         }
-        $clues = ClueSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
+        $clues = ClueSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $clues_sprints = $clues->with(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3'])
             ->paginate(20);
 

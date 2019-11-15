@@ -66,7 +66,6 @@ class TopicController extends Controller
     public function generateContextTopics(Request $request) {
 
         $validate = Validator::make($request->all(), [
-            'bucket' => 'required|integer',
             'topic_id' => 'required|integer',
             'game_id' => 'required|integer'
         ]);
@@ -80,7 +79,7 @@ class TopicController extends Controller
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
         }
-        $topics = \App\ContextSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
+        $topics = \App\ContextSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $length = $this->percentage($topics->count());
         $context_topics = $topics->with(['context', 'solPhrase', 'wrongPhrase'])->get();
         $context_topics = new Paginator($context_topics, $length);
@@ -108,7 +107,6 @@ class TopicController extends Controller
     public function generatePhraseTopics(Request $request){
 
         $validate = Validator::make($request->all(), [
-            'bucket' => 'required|integer',
             'topic_id' => 'required|integer',
             'game_id' => 'required|integer'
         ]);
@@ -122,7 +120,7 @@ class TopicController extends Controller
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
         }
-        $topics = \App\PhraseSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
+        $topics = \App\PhraseSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $length = $this->percentage($topics->count());
         $phrase_topics = $topics->with(['phrase', 'solContext', 'wrongContext'])->get();
 

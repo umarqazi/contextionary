@@ -13,7 +13,6 @@ class CrossSprintController extends Controller
     public function cross_sprint_game(Request $request){
 
         $validate = Validator::make($request->all(), [
-            'bucket' => 'required|integer',
             'topic_id' => 'required|integer',
             'game_id' => 'required|integer'
         ]);
@@ -27,7 +26,7 @@ class CrossSprintController extends Controller
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
         }
-        $cross_sprints = CrossSprint::where(['bucket' => $request->bucket, 'topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question)
+        $cross_sprints = CrossSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question)
             ->with(['hint_phrase_1', 'hint_phrase_2', 'hint_phrase_3', 'hint_phrase_4'])->paginate(20);
         $batch = [];
 
