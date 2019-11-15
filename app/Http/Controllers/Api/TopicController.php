@@ -82,11 +82,11 @@ class TopicController extends Controller
         $topics = \App\ContextSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $length = $this->percentage($topics->count());
         $context_topics = $topics->with(['context', 'solPhrase', 'wrongPhrase'])->get();
-        $context_topics = new Paginator($context_topics, $length);
+        //$context_topics = new Paginator($context_topics, $length);
         $batch = [];
 
         foreach ($context_topics as $key => $data) {
-            ($key == 0) ? $batch['has_more'] = $context_topics->hasMorePages() : false;
+            //($key == 0) ? $batch['has_more'] = $context_topics->hasMorePages() : false;
             $batch['context_sprint'][] = [
                 'id' => $data->id,
                 'topic_id' => $data->topic_id,
@@ -123,12 +123,11 @@ class TopicController extends Controller
         $topics = \App\PhraseSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $length = $this->percentage($topics->count());
         $phrase_topics = $topics->with(['phrase', 'solContext', 'wrongContext'])->get();
-
-        $phrase_topics = new Paginator($phrase_topics, $length);
+        //$phrase_topics = new Paginator($phrase_topics, $length);
         $batch = [];
 
         foreach ($phrase_topics as $key => $data) {
-            ($key == 0) ? $batch['has_more'] = $phrase_topics->hasMorePages() : false;
+            //($key == 0) ? $batch['has_more'] = $phrase_topics->hasMorePages() : false;
             $batch['phrase_sprint'][] = [
                 'id' => $data->id,
                 'topic_id' => $data->topic_id,

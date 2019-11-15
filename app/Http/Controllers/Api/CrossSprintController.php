@@ -27,11 +27,11 @@ class CrossSprintController extends Controller
             $attempt_question[] = $attempt->question_id;
         }
         $cross_sprints = CrossSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question)
-            ->with(['hint_phrase_1', 'hint_phrase_2', 'hint_phrase_3', 'hint_phrase_4'])->paginate(20);
+            ->with(['hint_phrase_1', 'hint_phrase_2', 'hint_phrase_3', 'hint_phrase_4'])->get();
         $batch = [];
 
         foreach ($cross_sprints as $key => $data) {
-            ($key == 0) ? $batch['has_more'] = $cross_sprints->hasMorePages() : false;
+            //($key == 0) ? $batch['has_more'] = $cross_sprints->hasMorePages() : false;
             $batch['cross_sprint'][] = [
                 'id' => $data->id ?? null,
                 'topic_id' => $data->topic_id ?? null,

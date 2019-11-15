@@ -63,12 +63,11 @@ class MarathonController extends Controller
             $attempt_question[] = $attempt->question_id;
         }
         $marathon = ContextMarathon::where(['bucket' => $request->bucket, 'context_id' => $request->context_id])->whereNotIn('id', $attempt_question);
-        $context_marathon = $marathon->with('phrase')->paginate(20);
+        $context_marathon = $marathon->with('phrase')->get();
         $batch = [];
 
         foreach ($context_marathon as $key => $data){
-
-            ($key == 0) ? $batch['has_more'] = $context_marathon->hasMorePages() : false;
+            //($key == 0) ? $batch['has_more'] = $context_marathon->hasMorePages() : false;
             $batch['context_marathon'][] = [
                 'id' => $data->id,
                 'context_id' => $data->context_id ?? null,
