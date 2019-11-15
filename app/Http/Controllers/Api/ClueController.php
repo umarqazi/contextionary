@@ -57,14 +57,12 @@ class ClueController extends Controller
             $attempt_question[] = $attempt->question_id;
         }
         $clues = ClueSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
-        $clues_sprints = $clues->with(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3'])
-            ->paginate(20);
+        $clues_sprints = $clues->with(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3'])->get();
 
         $batch = [];
 
         foreach ($clues_sprints as $key => $data) {
-
-            ($key == 0) ? $batch['has_more'] = $clues_sprints->hasMorePages() : false;
+            //($key == 0) ? $batch['has_more'] = $clues_sprints->hasMorePages() : false;
             $batch['clue_sprint'][] = [
                 'id' => $data->id ?? null,
                 'topic_id' => $data->topic_id,
