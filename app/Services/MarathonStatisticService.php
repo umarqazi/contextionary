@@ -82,7 +82,7 @@ class MarathonStatisticService extends BaseService implements IService
         }
     }
 
-    public function AddMarathonStatistics($context_id, $points, $bucket, $answered, $is_clear, $butterfly_available){
+    public function AddMarathonStatistics($context_id, $points, $bucket, $answered, $is_clear, $butterfly_available, $win_in_a_row, $hint_in_a_row){
 
         $marathon_stats = ContextMarathonStatistic::where(['user_id' => auth()->id(), 'context_id' => $context_id])->first();
         if($marathon_stats){
@@ -92,6 +92,8 @@ class MarathonStatisticService extends BaseService implements IService
             $marathon_stats->answered_phrases = $answered;
             $marathon_stats->is_clear = $is_clear;
             $marathon_stats->butterfly_available = $butterfly_available;
+            $marathon_stats->win_in_a_row = $win_in_a_row;
+            $marathon_stats->hint_in_a_row = $hint_in_a_row;
             $updated = $marathon_stats->save();
             if($updated){
                 return json('User status has been updated', 200);
@@ -108,7 +110,9 @@ class MarathonStatisticService extends BaseService implements IService
                 'bucket' => $bucket,
                 'answered_phrases' => $answered,
                 'is_clear' => $is_clear,
-                'butterfly_available' => $butterfly_available
+                'butterfly_available' => $butterfly_available,
+                'win_in_a_row' => $win_in_a_row,
+                'hint_in_a_row' => $hint_in_a_row
             ]);
             if($marathon_statistics){
 
@@ -151,7 +155,7 @@ class MarathonStatisticService extends BaseService implements IService
         }
         $data['unlocked_region_context'] = $this->UnlockedRegionContexts($unlocked_region_context);
         $data['unlocked_rooms'] = $this->UnlockedRooms($unlocked_rooms);
-        $data['context_stats'] = $this->AddMarathonStatistics($context_marathon_stats['context_id'], $context_marathon_stats['points'], $context_marathon_stats['bucket'], $context_marathon_stats['answered_phrases'], $context_marathon_stats['is_clear'], $context_marathon_stats['butterfly_available']);
+        $data['context_stats'] = $this->AddMarathonStatistics($context_marathon_stats['context_id'], $context_marathon_stats['points'], $context_marathon_stats['bucket'], $context_marathon_stats['answered_phrases'], $context_marathon_stats['is_clear'], $context_marathon_stats['butterfly_available'], $context_marathon_stats['win_in_a_row'], $context_marathon_stats['hint_in_a_row']);
         return $data;
     }
 

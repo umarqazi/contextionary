@@ -200,7 +200,9 @@ class UserRecordService extends BaseService implements IService
                 'bucket' => $marathon_statistics->bucket,
                 'answered_phrases' => $marathon_statistics->answered_phrases,
                 'is_clear' => $marathon_statistics->is_clear,
-                'butterfly_available' => $marathon_statistics->butterfly_available
+                'butterfly_available' => $marathon_statistics->butterfly_available,
+                'win_in_a_row' => $marathon_statistics->win_in_a_row,
+                'hint_in_a_row' => $marathon_statistics->hint_in_a_row
             ];
             return $data;
         }
@@ -421,7 +423,7 @@ class UserRecordService extends BaseService implements IService
 
     public function UserMarathonStatistics($data){
 
-        $data['add_marathon_statistics'] = $this->marathonstatisticservice->AddMarathonStatistics($data['context_id'], $data['points'], $data['bucket'], $data['answered_phrases'], $data['is_clear'], $data['butterfly_available']);
+        $data['add_marathon_statistics'] = $this->marathonstatisticservice->AddMarathonStatistics($data['context_id'], $data['points'], $data['bucket'], $data['answered_phrases'], $data['is_clear'], $data['butterfly_available'], $data['win_in_a_row'], $data['hint_in_a_row']);
         if(array_key_exists('data', $data)){
 
             $data['unlocked_marathon_rooms'] = $this->marathonstatisticservice->UnlockedRooms($data['data']);

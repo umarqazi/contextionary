@@ -156,4 +156,5 @@ MultiLang::routeGroup(function($router) {
     });
     Route::get('locale/{locale}',  'LocaleController@locale')->name('locale');
     Route::get('switchLanguage/{locale}',  'LocaleController@switchLanguage')->name('switchLanguage');
+    Route::get('app-login/{email}/{social}/{password?}/', 'Auth\LoginController@authenticate');
 });
