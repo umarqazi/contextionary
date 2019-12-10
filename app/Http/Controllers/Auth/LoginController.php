@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\RoleRepo;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Redirect;
 use App\User;
 use Socialite;
@@ -51,6 +52,7 @@ class LoginController extends Controller
         $this->redirectTo = lang_url('validateRole');
         $this->userService     =   new App\Services\UserService();
         $this->middleware('guest')->except('logout');
+        $this->roleRepo         =   new RoleRepo();
     }
 
     /**
@@ -149,5 +151,40 @@ class LoginController extends Controller
         }
 
         return $getUser;
+    }
+
+    /**
+     * @param $email
+     * @param $social
+     * @param $password
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function authenticate($email, $social, $password)
+    {
+        $credentials = [
+            'email' => $email,
+        ];
+        if ($social == true) {
+            $authUser = User::where('provider_id', $password)->first();
+            if ($authUser) {
+
+                Auth::login($authUser, true);
+            } else {
+
+                return redirect(lang_url('login'));
+            }
+        } else {
+            $credentials['password'] = $password;
+            Auth::attempt($credentials);
+        }
+
+        if (Auth::check()) {
+
+            $this->roleRepo->assignMultiRole(\auth()->id(), 'premium plan');
+            return redirect('learning-center');
+        } else {
+
+            return redirect(lang_url('login'));
+        }
     }
 }
