@@ -194,6 +194,21 @@ class UserRecordService extends BaseService implements IService
 
         if($marathon_statistics){
 
+            if (is_null($marathon_statistics->win_in_a_row)){
+
+                $win_in_a_row = 0;
+            }else{
+
+                $win_in_a_row = $marathon_statistics->win_in_a_row;
+            }
+            if (is_null($marathon_statistics->win_in_a_row)){
+
+                $hint_in_a_row = 0;
+            }else{
+
+                $hint_in_a_row = $marathon_statistics->hint_in_a_row;
+            }
+
             $data[] = [
                 'context_id' => $marathon_statistics->context_id,
                 'points' => $marathon_statistics->points,
@@ -201,8 +216,8 @@ class UserRecordService extends BaseService implements IService
                 'answered_phrases' => $marathon_statistics->answered_phrases,
                 'is_clear' => $marathon_statistics->is_clear,
                 'butterfly_available' => $marathon_statistics->butterfly_available,
-                'win_in_a_row' => $marathon_statistics->win_in_a_row,
-                'hint_in_a_row' => $marathon_statistics->hint_in_a_row
+                'win_in_a_row' => $win_in_a_row,
+                'hint_in_a_row' => $hint_in_a_row
             ];
             return $data;
         }
