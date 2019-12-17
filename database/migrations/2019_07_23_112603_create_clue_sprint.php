@@ -16,12 +16,12 @@ class CreateClueSprint extends Migration
         Schema::connection('pgsql')->create('clue_sprint', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('topic_id');
-            $table->unsignedInteger('context_id');
-            $table->unsignedInteger('phrase_id');
+            $table->unsignedBigInteger('context_id');
+            $table->unsignedBigInteger('phrase_id');
             $table->integer('word_to_replace');
-            $table->unsignedInteger('replacement_id_1');
-            $table->unsignedInteger('replacement_id_2');
-            $table->unsignedInteger('replacement_id_3');
+            $table->unsignedBigInteger('replacement_id_1');
+            $table->unsignedBigInteger('replacement_id_2');
+            $table->unsignedBigInteger('replacement_id_3');
             $table->integer('bucket');
             $table->foreign('topic_id')->references('id')->on('context_topics')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
