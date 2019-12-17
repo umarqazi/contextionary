@@ -59,6 +59,10 @@ class UserRecordService extends BaseService implements IService
 
                 $update_info->learning_center = $update_user_info['learning_center'];
             }
+            if(isset($update_user_info['honour_badge'])){
+
+                $update_info->honour_badge = $update_user_info['honour_badge'];
+            }
             $updated = $update_info->save();
             if($updated){
                 return json('User info updated', 200);
@@ -218,7 +222,8 @@ class UserRecordService extends BaseService implements IService
             'stopwatch' => $user_info->stopwatch,
             'time_traveller' => $user_info->time_traveller,
             'learning_center' => $user_info->learning_center,
-            'game_session' => $user_info->game_session
+            'game_session' => $user_info->game_session,
+            'honour_badge' => $user_info->honour_badge
         ];
         return $data;
     }
