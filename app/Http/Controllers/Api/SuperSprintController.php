@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class SuperSprintController extends Controller
 {
-    public function super_sprint(Request $request)
+    public function superSprint(Request $request)
     {
         $validate = Validator::make($request->all(), [
             'topic_id' => 'required|integer',
