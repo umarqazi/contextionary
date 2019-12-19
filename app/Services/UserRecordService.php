@@ -42,6 +42,7 @@ class UserRecordService extends BaseService implements IService
             $update_info->time_traveller   = $update_user_info['time_traveller'] ?? $update_info->time_traveller;
             $update_info->learning_center  = $update_user_info['learning_center'] ?? $update_info->learning_center;
             $update_info->game_session     = $update_user_info['game_session'] ?? $update_info->game_session;
+            $update_info->honour_badge     = $update_user_info['honour_badge'] ?? $update_info->honour_badge;
             $update_info->coins_earned     = $update_user_info['coins_earned'] ?? $update_info->coins_earned;
             $update_info->coins_purchased  = $update_user_info['coins_purchased'] ?? $update_info->coins_purchased;
             $update_info->coins_used       = $update_user_info['coins_used'] ?? $update_info->coins_used;
@@ -206,6 +207,7 @@ class UserRecordService extends BaseService implements IService
             'time_traveller' => $user_info->time_traveller,
             'learning_center' => $user_info->learning_center,
             'game_session' => $user_info->game_session,
+            'honour_badge' => $user_info->honour_badge,
             'coins_earned' => $user_info->coins_earned,
             'coins_purchased' => $user_info->coins_purchased,
             'coins_used' => $user_info->coins_used
