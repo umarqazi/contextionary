@@ -82,18 +82,18 @@ class MarathonStatisticService extends BaseService implements IService
         }
     }
 
-    public function AddMarathonStatistics($context_id, $points, $bucket, $answered, $is_clear, $butterfly_available, $win_in_a_row, $hint_in_a_row){
+    public function AddMarathonStatistics($data){
 
-        $marathon_stats = ContextMarathonStatistic::where(['user_id' => auth()->id(), 'context_id' => $context_id])->first();
+        $marathon_stats = ContextMarathonStatistic::where(['user_id' => auth()->id(), 'context_id' => $data['context_id']])->first();
         if($marathon_stats){
 
-            $marathon_stats->points = $points;
-            $marathon_stats->bucket = $bucket;
-            $marathon_stats->answered_phrases = $answered;
-            $marathon_stats->is_clear = $is_clear;
-            $marathon_stats->butterfly_available = $butterfly_available;
-            $marathon_stats->win_in_a_row = $win_in_a_row;
-            $marathon_stats->hint_in_a_row = $hint_in_a_row;
+            $marathon_stats->points = $data['points'] ?? $marathon_stats->points;
+            $marathon_stats->bucket = $data['bucket'] ?? $marathon_stats->bucket;
+            $marathon_stats->answered_phrases = $data['answered_phrases'] ?? $marathon_stats->answered_phrases;
+            $marathon_stats->is_clear = $data['is_clear'] ?? $marathon_stats->is_clear;
+            $marathon_stats->butterfly_available = $data['butterfly_available'] ?? $marathon_stats->butterfly_available;
+            $marathon_stats->win_in_a_row = $data['win_in_a_row'] ?? $marathon_stats->win_in_a_row;
+            $marathon_stats->hint_in_a_row = $data['hint_in_a_row'] ?? $marathon_stats->hint_in_a_row;
             $updated = $marathon_stats->save();
             if($updated){
                 return json('User status has been updated', 200);
@@ -105,14 +105,14 @@ class MarathonStatisticService extends BaseService implements IService
             $marathon_statistics = ContextMarathonStatistic::create([
 
                 'user_id' => auth()->id(),
-                'context_id' => $context_id,
-                'points' => $points,
-                'bucket' => $bucket,
-                'answered_phrases' => $answered,
-                'is_clear' => $is_clear,
-                'butterfly_available' => $butterfly_available,
-                'win_in_a_row' => $win_in_a_row,
-                'hint_in_a_row' => $hint_in_a_row
+                'context_id' => $data['context_id'] ?? null,
+                'points' => $data['points'] ?? null,
+                'bucket' => $data['bucket'] ?? null,
+                'answered_phrases' => $data['answered_phrases'] ?? 0,
+                'is_clear' => $data['is_clear'] ?? null,
+                'butterfly_available' => $data['butterfly_available'] ?? null,
+                'win_in_a_row' => $data['win_in_a_row'] ?? null,
+                'hint_in_a_row' => $data['hint_in_a_row'] ?? null
             ]);
             if($marathon_statistics){
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Game;
 use App\InAppPurchase;
+use App\Services\UserRecordService;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,6 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 class GameController extends Controller
 {
+    private $userrecordservice;
+
+    public function __construct()
+    {
+        $this->userrecordservice = new UserRecordService();
+    }
+
     /**
      *
     @SWG\Post(
@@ -33,44 +41,23 @@ class GameController extends Controller
         }
     }
 
-    public function UpdateUserInfo(Request $request){
-
-        $update_info = User::where('id', auth()->id())->first();
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function UpdateUserInfo(Request $request)
+    {
+        $update_info = $this->userrecordservice->UpdateUserInfo($request->all());
         if($update_info){
-
-            if(isset($request->game_coins)){
-
-                $update_info->game_coins = $request->game_coins;
-            }
-            if(isset($request->aladdin_lamp)){
-
-                $update_info->aladdin_lamp = $request->aladdin_lamp;
-            }
-            if(isset($request->butterfly_effect)){
-
-                $update_info->butterfly_effect = $request->butterfly_effect;
-            }
-            if(isset($request->stopwatch)){
-
-                $update_info->stopwatch = $request->stopwatch;
-            }
-            if(isset($request->time_traveller)){
-
-                $update_info->time_traveller = $request->time_traveller;
-            }
-            if(isset($request->learning_center)){
-
-                $update_info->learning_center = $request->learning_center;
-            }
-            $updated = $update_info->save();
-            if($updated){
-                return json('User info updated', 200);
-            }else{
-                return json('Something went wrong!', 400);
-            }
+            return json('User info updated', 200);
+        }else{
+            return json('Something went wrong!', 400);
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function AppPurchases(){
         $app_puchases = InAppPurchase::select('*')->get()->groupBy('type');
         return json('In App purchases shown as:', 200, $app_puchases);

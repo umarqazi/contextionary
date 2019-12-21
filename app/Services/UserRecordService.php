@@ -35,34 +35,18 @@ class UserRecordService extends BaseService implements IService
         $update_info = User::where('id', auth()->id())->first();
         if($update_info){
 
-            if(isset($update_user_info['game_coins'])){
+            $update_info->game_coins       = $update_user_info['game_coins'] ?? $update_info->game_coins;
+            $update_info->aladdin_lamp     = $update_user_info['aladdin_lamp'] ?? $update_info->aladdin_lamp;
+            $update_info->butterfly_effect = $update_user_info['butterfly_effect'] ?? $update_info->butterfly_effect;
+            $update_info->stopwatch        = $update_user_info['stopwatch'] ?? $update_info->stopwatch;
+            $update_info->time_traveller   = $update_user_info['time_traveller'] ?? $update_info->time_traveller;
+            $update_info->learning_center  = $update_user_info['learning_center'] ?? $update_info->learning_center;
+            $update_info->game_session     = $update_user_info['game_session'] ?? $update_info->game_session;
+            $update_info->honour_badge     = $update_user_info['honour_badge'] ?? $update_info->honour_badge;
+            $update_info->coins_earned     = $update_user_info['coins_earned'] ?? $update_info->coins_earned;
+            $update_info->coins_purchased  = $update_user_info['coins_purchased'] ?? $update_info->coins_purchased;
+            $update_info->coins_used       = $update_user_info['coins_used'] ?? $update_info->coins_used;
 
-                $update_info->game_coins = $update_user_info['game_coins'];
-            }
-            if(isset($update_user_info['aladdin_lamp'])){
-
-                $update_info->aladdin_lamp = $update_user_info['aladdin_lamp'];
-            }
-            if(isset($update_user_info['butterfly_effect'])){
-
-                $update_info->butterfly_effect = $update_user_info['butterfly_effect'];
-            }
-            if(isset($update_user_info['stopwatch'])){
-
-                $update_info->stopwatch = $update_user_info['stopwatch'];
-            }
-            if(isset($update_user_info['time_traveller'])){
-
-                $update_info->time_traveller = $update_user_info['time_traveller'];
-            }
-            if(isset($update_user_info['learning_center'])){
-
-                $update_info->learning_center = $update_user_info['learning_center'];
-            }
-            if(isset($update_user_info['honour_badge'])){
-
-                $update_info->honour_badge = $update_user_info['honour_badge'];
-            }
             $updated = $update_info->save();
             if($updated){
                 return json('User info updated', 200);
@@ -223,7 +207,10 @@ class UserRecordService extends BaseService implements IService
             'time_traveller' => $user_info->time_traveller,
             'learning_center' => $user_info->learning_center,
             'game_session' => $user_info->game_session,
-            'honour_badge' => $user_info->honour_badge
+            'honour_badge' => $user_info->honour_badge,
+            'coins_earned' => $user_info->coins_earned,
+            'coins_purchased' => $user_info->coins_purchased,
+            'coins_used' => $user_info->coins_used
         ];
         return $data;
     }
@@ -428,7 +415,7 @@ class UserRecordService extends BaseService implements IService
 
     public function UserMarathonStatistics($data){
 
-        $data['add_marathon_statistics'] = $this->marathonstatisticservice->AddMarathonStatistics($data['context_id'], $data['points'], $data['bucket'], $data['answered_phrases'], $data['is_clear'], $data['butterfly_available'], $data['win_in_a_row'], $data['hint_in_a_row']);
+        $data['add_marathon_statistics'] = $this->marathonstatisticservice->AddMarathonStatistics($data);
         if(array_key_exists('data', $data)){
 
             $data['unlocked_marathon_rooms'] = $this->marathonstatisticservice->UnlockedRooms($data['data']);
