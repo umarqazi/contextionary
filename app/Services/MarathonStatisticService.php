@@ -155,7 +155,7 @@ class MarathonStatisticService extends BaseService implements IService
         }
         $data['unlocked_region_context'] = $this->UnlockedRegionContexts($unlocked_region_context);
         $data['unlocked_rooms'] = $this->UnlockedRooms($unlocked_rooms);
-        $data['context_stats'] = $this->AddMarathonStatistics($context_marathon_stats['context_id'], $context_marathon_stats['points'], $context_marathon_stats['bucket'], $context_marathon_stats['answered_phrases'], $context_marathon_stats['is_clear'], $context_marathon_stats['butterfly_available'], $context_marathon_stats['win_in_a_row'], $context_marathon_stats['hint_in_a_row']);
+        $data['context_stats'] = $this->AddMarathonStatistics($context_marathon_stats);
         return $data;
     }
 
