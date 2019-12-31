@@ -18,10 +18,10 @@ class CreateCrossSprint extends Migration
             $table->unsignedInteger('topic_id');
             $table->string('puzzle_word');
             $table->integer('bucket');
-            $table->integer('primary_phrase');
-            $table->integer('secondary_phrase_1');
-            $table->integer('secondary_phrase_2');
-            $table->integer('secondary_phrase_3');
+            $table->unsignedBigInteger('primary_phrase');
+            $table->unsignedBigInteger('secondary_phrase_1');
+            $table->unsignedBigInteger('secondary_phrase_2');
+            $table->unsignedBigInteger('secondary_phrase_3');
             $table->timestamps();
 
             $table->foreign('topic_id')->references('id')->on('context_topics')->onUpdate('cascade')->onDelete('cascade');
