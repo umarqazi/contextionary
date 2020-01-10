@@ -26,7 +26,7 @@ class AddColumnToContextMarathonStatistics extends Migration
      */
     public function down()
     {
-        Schema::table('users', function($table) {
+        Schema::connection('pgsql')->table('context_marathon_statistics', function($table) {
             $table->dropColumn('win_in_a_row');
             $table->dropColumn('hint_in_a_row');
         });

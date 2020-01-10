@@ -26,14 +26,14 @@ class MarathonStatisticService extends BaseService implements IService
                     $check_if_exist = UnlockedRoom::where([
                         'user_id' => auth()->id(),
                         'room_id' => $unlocked_room['room_id'],
-                        'door_id' => $unlocked_room['door_id'],
+                        'door_id' => array_key_exists('door_id', $unlocked_room) ? $unlocked_room['door_id'] : null
                     ])->exists();
 
                     if (!$check_if_exist) {
                         $unlocked_room_data[] = [
                             'user_id' => auth()->id(),
                             'room_id' => $unlocked_room['room_id'],
-                            'door_id' => $unlocked_room['door_id']
+                            'door_id' => array_key_exists('door_id', $unlocked_room) ? $unlocked_room['door_id'] : null
                         ];
                     }
                 }
