@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Services\UserRecordService;
 use App\SuperSprint;
 use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
@@ -10,6 +11,13 @@ use Illuminate\Support\Facades\Validator;
 
 class SuperSprintController extends Controller
 {
+
+    public $userrecordservice;
+    public function __construct()
+    {
+        $this->userrecordservice = new UserRecordService();
+    }
+
     public function superSprint(Request $request)
     {
         $validate = Validator::make($request->all(), [
@@ -31,7 +39,10 @@ class SuperSprintController extends Controller
         $super = SuperSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $super_sprints = $super->with(['topic', 'wrong_phrase_id', 'phrase'])->get();
 
+        $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
+
         $batch = [];
+        $batch['sprint_cups'] = $sprintCups['sprint_cups'];
 
         foreach ($super_sprints as $key => $data) {
 

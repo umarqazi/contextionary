@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\ClueSprint;
+use App\Services\UserRecordService;
 use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,6 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 class ClueController extends Controller
 {
+
+    private $userrecordservice;
+    public function __construct()
+    {
+        $this->userrecordservice = new UserRecordService();
+    }
+
     /**
      *
     @SWG\Post(
@@ -58,8 +66,10 @@ class ClueController extends Controller
         }
         $clues = ClueSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
         $clues_sprints = $clues->with(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3'])->get();
+        $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
 
         $batch = [];
+        $batch['sprint_cups'] = $sprintCups['sprint_cups'];
 
         foreach ($clues_sprints as $key => $data) {
             //($key == 0) ? $batch['has_more'] = $clues_sprints->hasMorePages() : false;

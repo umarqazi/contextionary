@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\ContextTopic;
+use App\Services\UserRecordService;
 use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,6 +13,11 @@ use Illuminate\Support\Facades\Validator;
 class TopicController extends Controller
 {
 
+    private $userrecordservice;
+    public function __construct()
+    {
+        $this->userrecordservice = new UserRecordService();
+    }
     /**
      *
     @SWG\Post(
@@ -83,7 +89,10 @@ class TopicController extends Controller
         $length = $this->percentage($topics->count());
         $context_topics = $topics->with(['context', 'solPhrase', 'wrongPhrase'])->get();
         //$context_topics = new Paginator($context_topics, $length);
+        $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
+
         $batch = [];
+        $batch['sprint_cups'] = $sprintCups['sprint_cups'];
 
         foreach ($context_topics as $key => $data) {
             //($key == 0) ? $batch['has_more'] = $context_topics->hasMorePages() : false;
@@ -124,7 +133,10 @@ class TopicController extends Controller
         $length = $this->percentage($topics->count());
         $phrase_topics = $topics->with(['phrase', 'solContext', 'wrongContext'])->get();
         //$phrase_topics = new Paginator($phrase_topics, $length);
+        $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
+
         $batch = [];
+        $batch['sprint_cups'] = $sprintCups['sprint_cups'];
 
         foreach ($phrase_topics as $key => $data) {
             //($key == 0) ? $batch['has_more'] = $phrase_topics->hasMorePages() : false;

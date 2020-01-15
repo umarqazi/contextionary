@@ -305,6 +305,15 @@ class UserRecordService extends BaseService implements IService
             ->get()->toArray();
         return $sprints_statistics;
     }
+    public function SprintHasCups($game_id){
+
+        $sprints_statistics = SprintStatistic::select('game_id', DB::raw('count(*) as total'))
+            ->where(['user_id' => auth()->id(), 'game_id' => $game_id, 'has_cup' => 1])
+            ->groupBy('game_id')
+            ->orderBy('total', 'desc')
+            ->get()->toArray();
+        return $sprints_statistics;
+    }
 
     public function SprintsRecords(){
 
