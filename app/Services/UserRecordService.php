@@ -46,6 +46,7 @@ class UserRecordService extends BaseService implements IService
             $update_info->coins_earned     = $update_user_info['coins_earned'] ?? $update_info->coins_earned;
             $update_info->coins_purchased  = $update_user_info['coins_purchased'] ?? $update_info->coins_purchased;
             $update_info->coins_used       = $update_user_info['coins_used'] ?? $update_info->coins_used;
+            $update_info->crystal_ball     = $update_user_info['crystal_ball'] ?? $update_info->crystal_ball;
 
             $updated = $update_info->save();
             if($updated){
@@ -210,7 +211,8 @@ class UserRecordService extends BaseService implements IService
             'honour_badge' => $user_info->honour_badge,
             'coins_earned' => $user_info->coins_earned,
             'coins_purchased' => $user_info->coins_purchased,
-            'coins_used' => $user_info->coins_used
+            'coins_used' => $user_info->coins_used,
+            'crystal_ball' => $user_info->crystal_ball
         ];
         return $data;
     }
