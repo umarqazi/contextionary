@@ -47,6 +47,10 @@ class UserRecordService extends BaseService implements IService
             $update_info->coins_purchased  = $update_user_info['coins_purchased'] ?? $update_info->coins_purchased;
             $update_info->coins_used       = $update_user_info['coins_used'] ?? $update_info->coins_used;
             $update_info->crystal_ball     = $update_user_info['crystal_ball'] ?? $update_info->crystal_ball;
+            $update_info->sound            = $update_user_info['sound'] ?? $update_info->sound;
+            $update_info->cheering_voice   = $update_user_info['cheering_voice'] ?? $update_info->cheering_voice;
+            $update_info->lamp_genie       = $update_user_info['lamp_genie'] ?? $update_info->lamp_genie;
+            $update_info->my_gender        = $update_user_info['my_gender'] ?? $update_info->my_gender;
 
             $updated = $update_info->save();
             if($updated){
@@ -159,6 +163,7 @@ class UserRecordService extends BaseService implements IService
 
         $version = Setting::where('keys', 'app_version')->orWhere('keys', 'android_link')->orWhere('keys', 'ios_link')->get();
 
+        $batch = [];
         foreach ($version as $item) {
             $batch[$item->keys] = $item->values;
         }
@@ -212,7 +217,11 @@ class UserRecordService extends BaseService implements IService
             'coins_earned' => $user_info->coins_earned,
             'coins_purchased' => $user_info->coins_purchased,
             'coins_used' => $user_info->coins_used,
-            'crystal_ball' => $user_info->crystal_ball
+            'crystal_ball' => $user_info->crystal_ball,
+            'sound' => $user_info->sound,
+            'cheering_voice' => $user_info->cheering_voice,
+            'lamp_genie' => $user_info->lamp_genie,
+            'my_gender' => $user_info->my_gender
         ];
         return $data;
     }
