@@ -86,6 +86,7 @@ class RegisterController extends Controller
             'api_token' => str_random(60),
             'coins' => 100,
             'game_coins' => 1000,
+            'coins_earned' => 1000,
             'status' => 1,
             'signup_from' => 0
         ]);
@@ -94,7 +95,8 @@ class RegisterController extends Controller
             $data = [
                 'user_id' => $user->id,
                 'api_token' => $user->api_token,
-                'game_coins' => $user->game_coins
+                'game_coins' => $user->game_coins,
+                'coins_earned' => $user->coins_earned
             ];
             return json('You have successfully registered.', 200, $data);
         } else{

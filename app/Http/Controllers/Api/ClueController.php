@@ -56,8 +56,13 @@ class ClueController extends Controller
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
         }
-        $clues = ClueSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
-        $clues_sprints = $clues->with(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3'])->get();
+        $clues1 = ClueSprint::where(['topic_id' => $request->topic_id, 'bucket' => 1])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $clues2 = ClueSprint::where(['topic_id' => $request->topic_id, 'bucket' => 2])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $clues3 = ClueSprint::where(['topic_id' => $request->topic_id, 'bucket' => 3])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $clues4 = ClueSprint::where(['topic_id' => $request->topic_id, 'bucket' => 4])->whereNotIn('id', $attempt_question)->limit(75)->get();
+
+        $clues = $clues1->merge($clues2)->merge($clues3)->merge($clues4);
+        $clues_sprints = $clues->load(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3']);
 
         $batch = [];
 
