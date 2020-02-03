@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\ClueSprint;
+use App\Services\UserRecordService;
 use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,6 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 class ClueController extends Controller
 {
+
+    private $userrecordservice;
+    public function __construct()
+    {
+        $this->userrecordservice = new UserRecordService();
+    }
+
     /**
      *
     @SWG\Post(
@@ -56,6 +64,7 @@ class ClueController extends Controller
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
         }
+
         $clues1 = ClueSprint::where(['topic_id' => $request->topic_id, 'bucket' => 1])->whereNotIn('id', $attempt_question)->limit(75)->get();
         $clues2 = ClueSprint::where(['topic_id' => $request->topic_id, 'bucket' => 2])->whereNotIn('id', $attempt_question)->limit(75)->get();
         $clues3 = ClueSprint::where(['topic_id' => $request->topic_id, 'bucket' => 3])->whereNotIn('id', $attempt_question)->limit(75)->get();
@@ -63,8 +72,10 @@ class ClueController extends Controller
 
         $clues = $clues1->merge($clues2)->merge($clues3)->merge($clues4);
         $clues_sprints = $clues->load(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3']);
+        $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
 
         $batch = [];
+        $batch['sprint_cups'] = $sprintCups['sprint_cups'];
 
         foreach ($clues_sprints as $key => $data) {
             //($key == 0) ? $batch['has_more'] = $clues_sprints->hasMorePages() : false;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\CrossSprint;
+use App\Services\UserRecordService;
 use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,13 @@ use Illuminate\Support\Facades\Validator;
 
 class CrossSprintController extends Controller
 {
+
+    public $userrecordservice;
+    public function __construct()
+    {
+        $this->userrecordservice = new UserRecordService();
+    }
+
     public function cross_sprint_game(Request $request){
 
         $validate = Validator::make($request->all(), [
@@ -33,8 +41,10 @@ class CrossSprintController extends Controller
 
         $cross_sprint = $cross_sprints1->merge($cross_sprints2)->merge($cross_sprints3)->merge($cross_sprints4);
         $cross_sprints = $cross_sprint->load(['hint_phrase_1', 'hint_phrase_2', 'hint_phrase_3', 'hint_phrase_4']);
+        $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
 
         $batch = [];
+        $batch['sprint_cups'] = $sprintCups['sprint_cups'];
 
         foreach ($cross_sprints as $key => $data) {
             //($key == 0) ? $batch['has_more'] = $cross_sprints->hasMorePages() : false;
