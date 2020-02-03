@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\ContextTopic;
 use App\Services\UserRecordService;
+use App\PhraseSprint;
+use App\ContextSprint;
 use App\UserAttemptedQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -85,9 +87,14 @@ class TopicController extends Controller
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
         }
-        $topics = \App\ContextSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
+        $topics1 = ContextSprint::where(['topic_id' => $request->topic_id, 'bucket' => 1])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $topics2 = ContextSprint::where(['topic_id' => $request->topic_id, 'bucket' => 2])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $topics3 = ContextSprint::where(['topic_id' => $request->topic_id, 'bucket' => 3])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $topics4 = ContextSprint::where(['topic_id' => $request->topic_id, 'bucket' => 4])->whereNotIn('id', $attempt_question)->limit(75)->get();
+
+        $topics = $topics1->merge($topics2)->merge($topics3)->merge($topics4);
         $length = $this->percentage($topics->count());
-        $context_topics = $topics->with(['context', 'solPhrase', 'wrongPhrase'])->get();
+        $context_topics = $topics->load(['context', 'solPhrase', 'wrongPhrase']);
         //$context_topics = new Paginator($context_topics, $length);
         $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
 
@@ -129,9 +136,14 @@ class TopicController extends Controller
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
         }
-        $topics = \App\PhraseSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
+        $topics1 = PhraseSprint::where(['topic_id' => $request->topic_id, 'bucket' => 1])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $topics2 = PhraseSprint::where(['topic_id' => $request->topic_id, 'bucket' => 2])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $topics3 = PhraseSprint::where(['topic_id' => $request->topic_id, 'bucket' => 3])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $topics4 = PhraseSprint::where(['topic_id' => $request->topic_id, 'bucket' => 4])->whereNotIn('id', $attempt_question)->limit(75)->get();
+
+        $topics = $topics1->merge($topics2)->merge($topics3)->merge($topics4);
         $length = $this->percentage($topics->count());
-        $phrase_topics = $topics->with(['phrase', 'solContext', 'wrongContext'])->get();
+        $phrase_topics = $topics->load(['phrase', 'solContext', 'wrongContext']);
         //$phrase_topics = new Paginator($phrase_topics, $length);
         $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
 

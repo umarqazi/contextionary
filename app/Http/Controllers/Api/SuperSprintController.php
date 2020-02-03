@@ -36,8 +36,13 @@ class SuperSprintController extends Controller
         }
 
         //get super sprint questions
-        $super = SuperSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question);
-        $super_sprints = $super->with(['topic', 'wrong_phrase_id', 'phrase'])->get();
+        $super1 = SuperSprint::where(['topic_id' => $request->topic_id, 'bucket' => 1])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $super2 = SuperSprint::where(['topic_id' => $request->topic_id, 'bucket' => 2])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $super3 = SuperSprint::where(['topic_id' => $request->topic_id, 'bucket' => 3])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $super4 = SuperSprint::where(['topic_id' => $request->topic_id, 'bucket' => 4])->whereNotIn('id', $attempt_question)->limit(75)->get();
+
+        $super = $super1->merge($super2)->merge($super3)->merge($super4);
+        $super_sprints = $super->load(['topic', 'wrong_phrase_id', 'phrase']);
 
         $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
 

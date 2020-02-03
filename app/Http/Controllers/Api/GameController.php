@@ -62,4 +62,17 @@ class GameController extends Controller
         $app_puchases = InAppPurchase::select('*')->get()->groupBy('type');
         return json('In App purchases shown as:', 200, $app_puchases);
     }
+
+    public function gameVideos()
+    {
+        $videos = [
+            'video1' => 'http://52.43.120.48/assets/game-videos/1.mp4',
+            'video2' => 'http://52.43.120.48/assets/game-videos/3.mp4',
+            'video3' => 'http://52.43.120.48/assets/game-videos/9.mp4',
+            'video4' => 'http://52.43.120.48/assets/game-videos/10.mp4',
+            'video5' => 'http://52.43.120.48/assets/game-videos/clueSprint.mp4',
+            'video6' => 'http://52.43.120.48/assets/game-videos/contextSprint.mp4',
+        ];
+        return json('Videos urls shown as:', 200, $videos);
+    }
 }

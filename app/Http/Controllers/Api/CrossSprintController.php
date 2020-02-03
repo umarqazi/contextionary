@@ -34,8 +34,13 @@ class CrossSprintController extends Controller
         foreach ($attempted as $attempt) {
             $attempt_question[] = $attempt->question_id;
         }
-        $cross_sprints = CrossSprint::where(['topic_id' => $request->topic_id])->whereNotIn('id', $attempt_question)
-            ->with(['hint_phrase_1', 'hint_phrase_2', 'hint_phrase_3', 'hint_phrase_4'])->get();
+        $cross_sprints1 = CrossSprint::where(['topic_id' => $request->topic_id, 'bucket' => 1])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $cross_sprints2 = CrossSprint::where(['topic_id' => $request->topic_id, 'bucket' => 2])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $cross_sprints3 = CrossSprint::where(['topic_id' => $request->topic_id, 'bucket' => 3])->whereNotIn('id', $attempt_question)->limit(75)->get();
+        $cross_sprints4 = CrossSprint::where(['topic_id' => $request->topic_id, 'bucket' => 4])->whereNotIn('id', $attempt_question)->limit(75)->get();
+
+        $cross_sprint = $cross_sprints1->merge($cross_sprints2)->merge($cross_sprints3)->merge($cross_sprints4);
+        $cross_sprints = $cross_sprint->load(['hint_phrase_1', 'hint_phrase_2', 'hint_phrase_3', 'hint_phrase_4']);
         $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
 
         $batch = [];
