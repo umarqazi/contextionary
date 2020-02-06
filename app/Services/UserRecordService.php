@@ -508,8 +508,8 @@ class UserRecordService extends BaseService implements IService
     // Game videos data
     public function gameVideosData()
     {
-        $data['videos_name'] = $this->videoNames();
-        $data['videos_urls'] = $this->videoUrls();
+        $data['video_names'] = $this->videoNames();
+        $data['video_urls'] = $this->videoUrls();
         return $data;
     }
 }
