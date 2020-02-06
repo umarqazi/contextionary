@@ -24,6 +24,7 @@ Route::get('/contexts', 'Api\ContextController@contexts');
 Route::get('/coffee_break', 'Api\CoffeeController@coffee_quotes');
 Route::get('/app_version', 'Api\AppVersionController@app_version');
 Route::get('/games', 'Api\GameController@games');
+Route::get('/game_videos', 'Api\GameController@gameVideos');
 Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/current_user', function() {
         return json('User details shown as:', 200, auth()->user());
@@ -48,5 +49,4 @@ Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/user_sprint_statistics', 'Api\UserRecordController@UserSprintStatistics');
     Route::get('/user_game_load', 'Api\UserRecordController@UserGameLoad');
     Route::get('/super_sprint', 'Api\SuperSprintController@superSprint');
-    Route::get('/game_videos', 'Api\GameController@gameVideos');
 });
