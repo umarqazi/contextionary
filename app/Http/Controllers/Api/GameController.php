@@ -65,23 +65,10 @@ class GameController extends Controller
 
     public function gameVideos()
     {
-        $videos = [];
-        $videos['videos_names'] = [
-            'video1' => '1',
-            'video2' => '9',
-            'video3' => '10',
-            'video4' => 'clueSprint',
-            'video5' => 'contextSprint',
-            'video6' => 'crossSprint',
-        ];
-        $videos['videos_urls'] = [
-            'video1' => 'http://52.43.120.48/assets/game-videos/1.mp4',
-            'video2' => 'http://52.43.120.48/assets/game-videos/9.mp4',
-            'video3' => 'http://52.43.120.48/assets/game-videos/10.mp4',
-            'video4' => 'http://52.43.120.48/assets/game-videos/clueSprint.mp4',
-            'video5' => 'http://52.43.120.48/assets/game-videos/contextSprint.mp4',
-            'video6' => 'http://52.43.120.48/assets/game-videos/crossSprint.mp4',
-        ];
-        return json('Videos urls shown as:', 200, $videos);
+        $game_videos = $this->userrecordservice->gameVideosData();
+        if($game_videos){
+
+            return json('Videos urls shown as:', 200, $game_videos);
+        }
     }
 }

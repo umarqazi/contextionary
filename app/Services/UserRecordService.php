@@ -476,4 +476,40 @@ class UserRecordService extends BaseService implements IService
         $data['contexts'] = $this->contexts();
         return $data;
     }
+
+    // Game videos urls
+    public function videoUrls()
+    {
+        $videoUrls[] = [
+            'video1' => 'http://52.43.120.48/assets/game-videos/1.mp4',
+            'video2' => 'http://52.43.120.48/assets/game-videos/9.mp4',
+            'video3' => 'http://52.43.120.48/assets/game-videos/10.mp4',
+            'video4' => 'http://52.43.120.48/assets/game-videos/clueSprint.mp4',
+            'video5' => 'http://52.43.120.48/assets/game-videos/contextSprint.mp4',
+            'video6' => 'http://52.43.120.48/assets/game-videos/crossSprint.mp4',
+        ];
+        return $videoUrls;
+    }
+
+    // Game videos names
+    public function videoNames()
+    {
+        $videoNames[] = [
+            'video1' => '1',
+            'video2' => '9',
+            'video3' => '10',
+            'video4' => 'clueSprint',
+            'video5' => 'contextSprint',
+            'video6' => 'crossSprint',
+        ];
+        return $videoNames;
+    }
+
+    // Game videos data
+    public function gameVideosData()
+    {
+        $data['videos_name'] = $this->videoNames();
+        $data['videos_urls'] = $this->videoUrls();
+        return $data;
+    }
 }
