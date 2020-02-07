@@ -73,6 +73,7 @@ class MarathonController extends Controller
                 'context_id' => $data->context_id ?? null,
                 'phrase_id' => $data->phrase_id ?? null,
                 'phrase_text' => $data->phrase->phrase_text ?? null,
+                'manual_shuffle' => $data->manual_shuffle,
                 'bucket' => $data->bucket,
                 'hint_1' => $data->hint_1,
                 'hint_2' => $data->hint_2,
