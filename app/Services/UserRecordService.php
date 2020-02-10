@@ -80,7 +80,7 @@ class UserRecordService extends BaseService implements IService
 
                 $update_statistics->best_time = $data['best_time'];
 
-            }elseif($data['best_time'] < $update_statistics->best_time){
+            }elseif($data['best_time'] > $update_statistics->best_time){
 
                 $update_statistics->best_time = $data['best_time'];
             }
