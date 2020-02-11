@@ -4,10 +4,10 @@
             <button class="icon comment-icon"></button>
             <div class="box">
                 <h3>User Feedback</h3>
-                <p>{{$settings->where('keys', 'Feedback Question')->first()->values}}</p>
+                <p>{{$settings->where('keys', 'Feedback Question')->first() ? $settings->where('keys', 'Feedback Question')->first()->values : ''}}</p>
                 <form onsubmit="submit_feedback();">
                     <input type="email" class="fld" id="feed_email" placeholder="Your Email">
-                    <input type="hidden" id="feed_ques" value="{{$settings->where('keys', 'Feedback Question')->first()->values}}">
+                    <input type="hidden" id="feed_ques" value="{{$settings->where('keys', 'Feedback Question')->first() ? $settings->where('keys', 'Feedback Question')->first()->values : ''}}">
                     <textarea class="fld text-area msg" id="feed_msg" placeholder="Your Message"></textarea>
                     <button type="submit" class="orangeBtn">Submit</button>
                 </form>

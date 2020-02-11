@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTranslationTable extends Migration
+class AddColumnButterflyAvailableToContextMarathonStatistics extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AlterTranslationTable extends Migration
      */
     public function up()
     {
-        Schema::table('translations', function($table) {
-            $table->text('old_translation')->nullable();
+        Schema::connection('pgsql')->table('context_marathon_statistics', function (Blueprint $table){
+            $table->integer('butterfly_available');
         });
     }
 
@@ -25,9 +25,8 @@ class AlterTranslationTable extends Migration
      */
     public function down()
     {
-
-        Schema::table('translations', function($table) {
-            $table->dropColumn('old_translation');
+        Schema::table('context_marathon_statistics', function($table) {
+            $table->dropColumn('butterfly_available');
         });
     }
 }
