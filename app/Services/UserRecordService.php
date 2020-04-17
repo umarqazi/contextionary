@@ -51,6 +51,11 @@ class UserRecordService extends BaseService implements IService
             $update_info->cheering_voice   = $update_user_info['cheering_voice'] ?? $update_info->cheering_voice;
             $update_info->lamp_genie       = $update_user_info['lamp_genie'] ?? $update_info->lamp_genie;
             $update_info->my_gender        = $update_user_info['my_gender'] ?? $update_info->my_gender;
+            $update_info->last_shown_medal = $update_user_info['last_shown_medal'] ?? $update_info->last_shown_medal;
+            if(array_key_exists('best_time_addition', $update_user_info)){
+
+                $update_info->no_of_best_times = $update_info->no_of_best_times + 1;
+            }
 
             $updated = $update_info->save();
             if($updated){
@@ -82,6 +87,8 @@ class UserRecordService extends BaseService implements IService
 
             }elseif($data['best_time'] > $update_statistics->best_time){
 
+                $data['best_time_addition'] = true;
+                $this->UpdateUserInfo($data);
                 $update_statistics->best_time = $data['best_time'];
             }
 
@@ -224,7 +231,9 @@ class UserRecordService extends BaseService implements IService
             'sound' => $user_info->sound,
             'cheering_voice' => $user_info->cheering_voice,
             'lamp_genie' => $user_info->lamp_genie,
-            'my_gender' => $user_info->my_gender
+            'my_gender' => $user_info->my_gender,
+            'last_shown_medal' => $user_info->last_shown_medal,
+            'no_of_best_times' => $user_info->no_of_best_times
         ];
         return $data;
     }
