@@ -161,7 +161,10 @@ class MarathonStatisticService extends BaseService implements IService
 
     public function LastPlayedMarathonRecord($last_played_marathon_record){
 
-        $update = UserCurrentContext::where('user_id', auth()->id())->first();
+        $update = UserCurrentContext::where([
+            'user_id' => auth()->id(),
+            'current_context_id' => $last_played_marathon_record['current_context_id']
+        ])->first();
         if($update){
 
             $update->current_context_id = $last_played_marathon_record['current_context_id'];
@@ -169,6 +172,8 @@ class MarathonStatisticService extends BaseService implements IService
             $update->last_played_cell = $last_played_marathon_record['last_played_cell'];
             $update->unlocked_context = $last_played_marathon_record['max_unlocked_context'];
             $update->top_maze_level = $last_played_marathon_record['top_maze_level'];
+            $update->no_of_hints_used = $last_played_marathon_record['no_of_hints_used'];
+            $update->crystal_ball_used = $last_played_marathon_record['crystal_ball_used'];
             $updated = $update->save();
             if($updated){
                 return json('User last played record updated', 200);
@@ -183,7 +188,9 @@ class MarathonStatisticService extends BaseService implements IService
                 'last_played_phrase_id' => $last_played_marathon_record['last_played_phrase_id'],
                 'last_played_cell' => $last_played_marathon_record['last_played_cell'],
                 'unlocked_context' => $last_played_marathon_record['max_unlocked_context'],
-                'top_maze_level' => $last_played_marathon_record['top_maze_level']
+                'top_maze_level' => $last_played_marathon_record['top_maze_level'],
+                'no_of_hints_used' => $last_played_marathon_record['no_of_hints_used'],
+                'crystal_ball_used' => $last_played_marathon_record['crystal_ball_used']
             ]);
             if($add_last_played_marathon){
 

@@ -260,6 +260,7 @@ class UserRecordService extends BaseService implements IService
         $data['marathon_records'] = $this->MarathonStatistics($context_id);
         $data['user_info'] = $this->UserInfo();
         $data['sprint_records'] = $this->SprintStatistics($game_id, $topic_id);
+        $data['last_played_context'] = $this->CurrentContextMarathon($context_id);
         return $data;
     }
 
@@ -286,9 +287,15 @@ class UserRecordService extends BaseService implements IService
         }
     }
 
-    public function CurrentContextMarathon(){
+    public function CurrentContextMarathon($context_id=null){
 
-        $user_context = UserCurrentContext::where('user_id', auth()->id())->first();
+        if(!empty($context_id)){
+
+            $user_context = UserCurrentContext::where(['user_id' => auth()->id(), 'current_context_id' => $context_id])->first();
+        } else {
+
+            $user_context = UserCurrentContext::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->first();
+        }
         $user_regions = UnlockedRegionContext::select('region_id', DB::raw('count(*) as total'))->where('user_id', auth()->id())->groupBy('region_id')->orderBy('total', 'desc')->pluck('region_id');
         $user_regions_1 = 0;
         $user_regions_2 = 0;
@@ -311,6 +318,8 @@ class UserRecordService extends BaseService implements IService
                 'last_played_cell' => $user_context->last_played_cell,
                 'top_maze_level' => $user_context->top_maze_level,
                 'max_unlocked_context' => $user_context->unlocked_context,
+                'no_of_hints_used' => $user_context->no_of_hints_used,
+                'crystal_ball_used' => $user_context->crystal_ball_used,
                 'First_region' => $user_regions_1,
                 'Second_region' => $user_regions_2,
                 'Third_region' => $user_regions_3
