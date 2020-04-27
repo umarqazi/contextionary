@@ -112,7 +112,7 @@ class UserRecordController extends Controller
         $data = App::make(TutorialListService::class)->tutorialsList(auth()->id());
         if($data){
 
-            return json('Watched tutorials saved successfully!', 200, $data);
+            return json('Tutorials list shown as:!', 200, $data);
         }else{
 
             return json('Something wrong here!', 400);
