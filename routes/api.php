@@ -49,4 +49,6 @@ Route::group(['middleware' => 'auth:api'], function (){
     Route::post('/user_sprint_statistics', 'Api\UserRecordController@UserSprintStatistics');
     Route::get('/user_game_load', 'Api\UserRecordController@UserGameLoad');
     Route::get('/super_sprint', 'Api\SuperSprintController@superSprint');
+    Route::post('watched_tutorials', 'Api\UserRecordController@watchedTutorials');
+    Route::get('tutorials_list', 'Api\UserRecordController@tutorialsList');
 });
