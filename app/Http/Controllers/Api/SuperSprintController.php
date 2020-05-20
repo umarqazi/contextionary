@@ -45,9 +45,13 @@ class SuperSprintController extends Controller
         $super_sprints = $super->load(['topic', 'wrong_phrase_id', 'phrase']);
 
         $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
+        $sprintCups['sprint_records'] = $this->userrecordservice->sprintTopicRecords($request->topic_id, $request->game_id);
+        $sprintCups['user_info'] = $this->userrecordservice->UserInfo();
 
         $batch = [];
         $batch['sprint_cups'] = $sprintCups['sprint_cups'];
+        $batch['sprint_records'] = $sprintCups['sprint_records'];
+        $batch['user_info'] = $sprintCups['user_info'];
 
         foreach ($super_sprints as $key => $data) {
 
@@ -62,7 +66,7 @@ class SuperSprintController extends Controller
         }
         if($batch) {
 
-            $batch['super_sprint'] = array_values($batch['super_sprint']);
+            $batch['super_sprint'] = (!$super_sprints->isEmpt()) ? array_values($batch['super_sprint']) : [];
             return json('Super Sprints are:', 200, $batch);
         } else{
 
