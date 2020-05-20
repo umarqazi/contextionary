@@ -349,6 +349,34 @@ class UserRecordService extends BaseService implements IService
         return $sprints_statistics;
     }
 
+    /**
+     * Method: sprintTopicRecords
+     *
+     * @param $topicId
+     * @param $gameId
+     *
+     * @return mixed
+     */
+    public function sprintTopicRecords($topicId, $gameId)
+    {
+        $sprintTopicRecords = SprintStatistic::select('no_of_correct_answers', 'best_time')->where([
+            'user_id' => auth()->id(),
+            'game_id' => $gameId,
+            'topic_id' => $topicId
+        ])->get();
+        if(!$sprintTopicRecords->isEmpty()){
+
+            $data = $sprintTopicRecords;
+        } else {
+
+            $data[] = [
+                'no_of_correct_answers' => 0,
+                'best_time' => 0,
+            ];
+        }
+        return $data;
+    }
+
     public function SprintsRecords(){
 
         $max_points = SprintStatistic::select('points', 'game_id')->where('user_id', auth()->id())->get()->groupBy('game_id')->toArray();
@@ -366,7 +394,7 @@ class UserRecordService extends BaseService implements IService
             });
 
             $results['best_time'] = collect($best_time)->map(function($result, $index) {
-                return collect($result)->min('best_time');
+                return collect($result)->max('best_time');
             });
         } else{
 

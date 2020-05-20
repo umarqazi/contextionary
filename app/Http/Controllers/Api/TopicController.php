@@ -97,9 +97,13 @@ class TopicController extends Controller
         $context_topics = $topics->load(['context', 'solPhrase', 'wrongPhrase']);
         //$context_topics = new Paginator($context_topics, $length);
         $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
+        $sprintCups['sprint_records'] = $this->userrecordservice->sprintTopicRecords($request->topic_id, $request->game_id);
+        $sprintCups['user_info'] = $this->userrecordservice->UserInfo();
 
         $batch = [];
         $batch['sprint_cups'] = $sprintCups['sprint_cups'];
+        $batch['sprint_records'] = $sprintCups['sprint_records'];
+        $batch['user_info'] = $sprintCups['user_info'];
 
         foreach ($context_topics as $key => $data) {
             //($key == 0) ? $batch['has_more'] = $context_topics->hasMorePages() : false;
@@ -113,7 +117,7 @@ class TopicController extends Controller
             ];
         }
         if($batch){
-            $batch['context_sprint'] = array_values($batch['context_sprint']);
+            $batch['context_sprint'] = (!$context_topics->isEmpty()) ? array_values($batch['context_sprint']) : [];
             return json('Data found:', 200, $batch);
         } else{
             return json('Data not found!', 400);
@@ -146,9 +150,13 @@ class TopicController extends Controller
         $phrase_topics = $topics->load(['phrase', 'solContext', 'wrongContext']);
         //$phrase_topics = new Paginator($phrase_topics, $length);
         $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
+        $sprintCups['sprint_records'] = $this->userrecordservice->sprintTopicRecords($request->topic_id, $request->game_id);
+        $sprintCups['user_info'] = $this->userrecordservice->UserInfo();
 
         $batch = [];
         $batch['sprint_cups'] = $sprintCups['sprint_cups'];
+        $batch['sprint_records'] = $sprintCups['sprint_records'];
+        $batch['user_info'] = $sprintCups['user_info'];
 
         foreach ($phrase_topics as $key => $data) {
             //($key == 0) ? $batch['has_more'] = $phrase_topics->hasMorePages() : false;
@@ -162,7 +170,7 @@ class TopicController extends Controller
             ];
         }
         if($batch){
-            $batch['phrase_sprint'] = array_values($batch['phrase_sprint']);
+            $batch['phrase_sprint'] = (!$phrase_topics->isEmpty()) ? array_values($batch['phrase_sprint']) : [];
             return json('Data found:', 200, $batch);
         } else{
             return json('Data not found!', 400);
