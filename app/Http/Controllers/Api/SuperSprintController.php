@@ -66,7 +66,7 @@ class SuperSprintController extends Controller
         }
         if($batch) {
 
-            $batch['super_sprint'] = (!$super_sprints->isEmpt()) ? array_values($batch['super_sprint']) : [];
+            $batch['super_sprint'] = (!$super_sprints->isEmpty()) ? array_values($batch['super_sprint']) : [];
             return json('Super Sprints are:', 200, $batch);
         } else{
 

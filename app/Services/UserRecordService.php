@@ -53,6 +53,7 @@ class UserRecordService extends BaseService implements IService
             $update_info->my_gender        = $update_user_info['my_gender'] ?? $update_info->my_gender;
             $update_info->last_shown_medal = $update_user_info['last_shown_medal'] ?? $update_info->last_shown_medal;
             $update_info->tutorial         = $update_user_info['tutorial'] ?? $update_info->tutorial;
+            $update_info->coffee_break_count = $update_user_info['coffee_break_count'] ?? $update_info->coffee_break_count;
             if(array_key_exists('best_time_addition', $update_user_info)){
 
                 $update_info->no_of_best_times = $update_info->no_of_best_times + 1;
@@ -235,7 +236,8 @@ class UserRecordService extends BaseService implements IService
             'my_gender' => $user_info->my_gender,
             'last_shown_medal' => $user_info->last_shown_medal,
             'no_of_best_times' => $user_info->no_of_best_times,
-            'tutorial' => $user_info->tutorial
+            'tutorial' => $user_info->tutorial,
+            'coffee_break_count' => $user_info->coffee_break_count,
         ];
         return $data;
     }
