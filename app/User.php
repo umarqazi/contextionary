@@ -27,7 +27,8 @@ class User extends Authenticatable
         'coins', 'provider', 'provider_id', 'signup_from', 'api_token', 'game_coins','aladdin_lamp','butterfly_effect',
         'stopwatch', 'time_traveller', 'learning_center', 'game_session', 'honour_badge', 'coins_earned',
         'coins_purchased', 'coins_used', 'crystal_ball', 'sound', 'cheering_voice', 'lamp_genie', 'my_gender',
-        'no_of_best_times', 'last_shown_medal', 'tutorial', 'coffee_break_count'
+        'no_of_best_times', 'last_shown_medal', 'tutorial', 'coffee_break_count', 'finish_all_hot_context', 'need_to_show_again',
+        'previous_target_word', 'top_maze_level'
     ];
 
     /**

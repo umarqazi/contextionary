@@ -87,7 +87,7 @@ class MarathonController extends Controller
 
             if(!empty($request->context_id)){
 
-                $batch['marathon_records'] = $this->userrecordservice->UserGameRecords(null, null, $request->context_id)['marathon_records'];
+                $batch['marathon_records'] = $this->userrecordservice->UserGameRecords(null, null, $request->context_id);
             }
             $batch['context_marathon'] = array_values($batch['context_marathon']);
             return json('Context marathon shown as:', 200, $batch);
