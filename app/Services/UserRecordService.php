@@ -54,6 +54,10 @@ class UserRecordService extends BaseService implements IService
             $update_info->last_shown_medal = $update_user_info['last_shown_medal'] ?? $update_info->last_shown_medal;
             $update_info->tutorial         = $update_user_info['tutorial'] ?? $update_info->tutorial;
             $update_info->coffee_break_count = $update_user_info['coffee_break_count'] ?? $update_info->coffee_break_count;
+            $update_info->finish_all_hot_context = $update_user_info['finish_all_hot_context'] ?? $update_info->finish_all_hot_context;
+            $update_info->need_to_show_again = $update_user_info['need_to_show_again'] ?? $update_info->need_to_show_again;
+            $update_info->previous_target_word = $update_user_info['previous_target_word'] ?? $update_info->previous_target_word;
+            $update_info->top_maze_level = $update_user_info['top_maze_level'] ?? $update_info->top_maze_level;
             if(array_key_exists('best_time_addition', $update_user_info)){
 
                 $update_info->no_of_best_times = $update_info->no_of_best_times + 1;
@@ -238,6 +242,10 @@ class UserRecordService extends BaseService implements IService
             'no_of_best_times' => $user_info->no_of_best_times,
             'tutorial' => $user_info->tutorial,
             'coffee_break_count' => $user_info->coffee_break_count,
+            'finish_all_hot_context' => $user_info->finish_all_hot_context,
+            'need_to_show_again' => $user_info->need_to_show_again,
+            'previous_target_word' => $user_info->previous_target_word,
+            'top_maze_level' => $user_info->top_maze_level,
         ];
         return $data;
     }
