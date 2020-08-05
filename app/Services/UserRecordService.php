@@ -130,7 +130,7 @@ class UserRecordService extends BaseService implements IService
             }
         }
 
-        $unlocked_sprint = SprintStatistic::where(['user_id' => auth()->id(), 'game_id' => $data['game_id'], 'has_cup' => 1])->first();
+        /*$unlocked_sprint = SprintStatistic::where(['user_id' => auth()->id(), 'game_id' => $data['game_id'], 'has_cup' => 1])->first();
 
         if($unlocked_sprint) {
 
@@ -145,7 +145,7 @@ class UserRecordService extends BaseService implements IService
                     'unlocked_sprint' => $unlocked_sprint_id
                 ]);
             }
-        }
+        }*/
         return json($msg, $code);
     }
 
@@ -248,6 +248,17 @@ class UserRecordService extends BaseService implements IService
             'top_maze_level' => $user_info->top_maze_level,
         ];
         return $data;
+    }
+
+    /**
+     * Method: topPlayers
+     * Get top 10 players based upon coins earned
+     * @return mixed
+     */
+    public function topPlayers()
+    {
+        $topPlayers = User::orderBy('coins_earned', 'desc')->select('first_name', 'last_name', 'coins_earned')->limit(10)->get();
+        return $topPlayers;
     }
 
     public function SprintStatistics($game_id, $topic_id){
@@ -476,6 +487,7 @@ class UserRecordService extends BaseService implements IService
     public function UserAllStatistics(){
 
         $data['user_info'] = $this->UserInfo();
+        $data['word_champions'] = $this->topPlayers();
         $data['context_marathon'] = $this->CurrentContextMarathon();
         $data['incomplete_max_points'] = $this->IncompleteMaxPoints();
         $data['sprint_cups'] = $this->SprintCups();
