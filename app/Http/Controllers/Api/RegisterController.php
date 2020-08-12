@@ -70,6 +70,7 @@ class RegisterController extends Controller
         $validate = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
+            'username' => 'required|unique:users',
             'email' => 'required|unique:users|email',
             'password' => 'required|confirmed|min:6'
         ]);
@@ -82,6 +83,7 @@ class RegisterController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
+            'username' => $request->username,
             'password' => bcrypt($request->password),
             'api_token' => str_random(60),
             'coins' => 100,

@@ -58,6 +58,9 @@ class UserRecordService extends BaseService implements IService
             $update_info->need_to_show_again = $update_user_info['need_to_show_again'] ?? $update_info->need_to_show_again;
             $update_info->previous_target_word = $update_user_info['previous_target_word'] ?? $update_info->previous_target_word;
             $update_info->top_maze_level = $update_user_info['top_maze_level'] ?? $update_info->top_maze_level;
+            $update_info->max_unlocked_context = $update_user_info['max_unlocked_context'] ?? $update_info->max_unlocked_context;
+            $update_info->result_hint_index = $update_user_info['result_hint_index'];
+            $update_info->current_letter_text = $update_user_info['current_letter_text'];
             if(array_key_exists('best_time_addition', $update_user_info)){
 
                 $update_info->no_of_best_times = $update_info->no_of_best_times + 1;
@@ -246,6 +249,9 @@ class UserRecordService extends BaseService implements IService
             'need_to_show_again' => $user_info->need_to_show_again,
             'previous_target_word' => $user_info->previous_target_word,
             'top_maze_level' => $user_info->top_maze_level,
+            'max_unlocked_context' => $user_info->max_unlocked_context,
+            'result_hint_index' => $user_info->result_hint_index,
+            'current_letter_text' => $user_info->current_letter_text,
         ];
         return $data;
     }
@@ -257,7 +263,7 @@ class UserRecordService extends BaseService implements IService
      */
     public function topPlayers()
     {
-        $topPlayers = User::orderBy('coins_earned', 'desc')->select('first_name', 'last_name', 'coins_earned')->limit(10)->get();
+        $topPlayers = User::orderBy('coins_earned', 'desc')->select('username', 'coins_earned')->limit(10)->get();
         return $topPlayers;
     }
 
