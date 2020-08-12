@@ -14,7 +14,6 @@ class AlterTableUsers1 extends Migration
     public function up()
     {
         Schema::table('users', function ($table) {
-
             $table->integer('max_unlocked_context')->nullable();
             $table->string('result_hint_index')->nullable();
             $table->string('current_letter_text')->nullable();
@@ -31,6 +30,10 @@ class AlterTableUsers1 extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('coffee_break_count');
+            $table->dropColumn('max_unlocked_context');
+            $table->dropColumn('result_hint_index');
+            $table->dropColumn('current_letter_text');
+            $table->dropColumn('username');
         });
     }
 }
