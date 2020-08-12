@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Validator;
 class LoginController extends Controller
 {
 
+    /**
+     * Property: userService
+     *
+     * @var UserService
+     */
+    private $userService;
+
     public function __construct()
     {
         $this->userService     =   new UserService();
@@ -72,6 +79,7 @@ class LoginController extends Controller
 
                 $data = [
                     'user_id' => $authUser->id,
+                    'username' => $authUser->username,
                     'api_token' => $authUser->api_token,
                     'game_coins' => $authUser->game_coins,
                     'game_points' => UserGamePoint::select('game_id', 'points')->where(['user_id' => $authUser->id])->get()
@@ -102,6 +110,7 @@ class LoginController extends Controller
 
                     $data = [
                         'user_id' => $getUser->id,
+                        'username' => $authUser->username,
                         'api_token' => $getUser->api_token,
                         'game_coins' => $getUser->game_coins,
                         'game_points' => UserGamePoint::select('game_id', 'points')->where(['user_id' => $getUser->id])->get()
@@ -130,6 +139,7 @@ class LoginController extends Controller
                 $authUser->refresh();
                 $data = [
                     'user_id' => $authUser->id,
+                    'username' => $authUser->username,
                     'api_token' => $authUser->api_token,
                     'game_coins' => $authUser->game_coins,
                     'game_points' => UserGamePoint::select('game_id', 'points')->where(['user_id' => $authUser->id])->get()
