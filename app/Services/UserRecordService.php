@@ -59,8 +59,12 @@ class UserRecordService extends BaseService implements IService
             $update_info->previous_target_word = $update_user_info['previous_target_word'] ?? $update_info->previous_target_word;
             $update_info->top_maze_level = $update_user_info['top_maze_level'] ?? $update_info->top_maze_level;
             $update_info->max_unlocked_context = $update_user_info['max_unlocked_context'] ?? $update_info->max_unlocked_context;
-            $update_info->result_hint_index = $update_user_info['result_hint_index'];
-            $update_info->current_letter_text = $update_user_info['current_letter_text'];
+            if (array_key_exists('result_hint_index', $update_user_info)
+                || array_key_exists('current_letter_text', $update_user_info)){
+
+                $update_info->result_hint_index = $update_user_info['result_hint_index'];
+                $update_info->current_letter_text = $update_user_info['current_letter_text'];
+            }
             if(array_key_exists('best_time_addition', $update_user_info)){
 
                 $update_info->no_of_best_times = $update_info->no_of_best_times + 1;
