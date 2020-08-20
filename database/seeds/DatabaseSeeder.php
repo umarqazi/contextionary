@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
          $this->call(TutorialsTableSeeder::class);
          $this->call(FunFactsTableSeeder::class);
          $this->call(GlossaryTableSeeder::class);
+         $this->call(TutorialListSeeder::class);
     }
 }

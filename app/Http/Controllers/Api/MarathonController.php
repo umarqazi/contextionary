@@ -63,7 +63,7 @@ class MarathonController extends Controller
             $attempt_question[] = $attempt->question_id;
         }
         $marathon = ContextMarathon::where(['bucket' => $request->bucket, 'context_id' => $request->context_id])->whereNotIn('id', $attempt_question);
-        $context_marathon = $marathon->with('phrase')->get();
+        $context_marathon = $marathon->with('phrase')->paginate(30);
         $batch = [];
 
         foreach ($context_marathon as $key => $data){
@@ -88,6 +88,8 @@ class MarathonController extends Controller
             if(!empty($request->context_id)){
 
                 $batch['marathon_records'] = $this->userrecordservice->UserGameRecords(null, null, $request->context_id)['marathon_records'];
+                $batch['user_info'] = $this->userrecordservice->UserGameRecords(null, null, $request->context_id)['user_info'];
+                $batch['last_played_context'] = $this->userrecordservice->UserGameRecords(null, null, $request->context_id)['last_played_context'];
             }
             $batch['context_marathon'] = array_values($batch['context_marathon']);
             return json('Context marathon shown as:', 200, $batch);

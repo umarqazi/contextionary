@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Services\MarathonStatisticService;
+use App\Services\TutorialListService;
 use App\Services\UserRecordService;
+use App\Services\WatchedTutorialService;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
 
 class UserRecordController extends Controller
 {
@@ -74,6 +77,42 @@ class UserRecordController extends Controller
         if($data){
 
             return json('Sprint Statistics has been saved successfully', 200);
+        }else{
+
+            return json('Something wrong here!', 400);
+        }
+    }
+
+    /**
+     * Method: watchedTutorials
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function watchedTutorials(Request $request)
+    {
+        $data = App::make(WatchedTutorialService::class)->watchedTutorials($request->all(), auth()->id());
+        if($data){
+
+            return json('Watched tutorials saved successfully!', 200);
+        }else{
+
+            return json('Something wrong here!', 400);
+        }
+    }
+
+    /**
+     * Method: tutorialsList
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function tutorialsList()
+    {
+        $data = App::make(TutorialListService::class)->tutorialsList(auth()->id());
+        if($data){
+
+            return json('Tutorials list shown as:!', 200, $data);
         }else{
 
             return json('Something wrong here!', 400);

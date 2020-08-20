@@ -73,9 +73,13 @@ class ClueController extends Controller
         $clues = $clues1->merge($clues2)->merge($clues3)->merge($clues4);
         $clues_sprints = $clues->load(['context', 'phrase', 'wrong_replacement_id_1', 'wrong_replacement_id_2', 'wrong_replacement_id_3']);
         $sprintCups['sprint_cups'] = $this->userrecordservice->SprintHasCups($request->game_id);
+        $sprintCups['sprint_records'] = $this->userrecordservice->sprintTopicRecords($request->topic_id, $request->game_id);
+        $sprintCups['user_info'] = $this->userrecordservice->UserInfo();
 
         $batch = [];
         $batch['sprint_cups'] = $sprintCups['sprint_cups'];
+        $batch['sprint_records'] = $sprintCups['sprint_records'];
+        $batch['user_info'] = $sprintCups['user_info'];
 
         foreach ($clues_sprints as $key => $data) {
             //($key == 0) ? $batch['has_more'] = $clues_sprints->hasMorePages() : false;
@@ -92,7 +96,7 @@ class ClueController extends Controller
             ];
         }
         if($batch) {
-            $batch['clue_sprint'] = array_values($batch['clue_sprint']);
+            $batch['clue_sprint'] = (!$clues_sprints->isEmpty()) ? array_values($batch['clue_sprint']) : [];
             return json('Clue Sprints are:', 200, $batch);
         } else{
 

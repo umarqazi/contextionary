@@ -51,6 +51,24 @@ class UserRecordService extends BaseService implements IService
             $update_info->cheering_voice   = $update_user_info['cheering_voice'] ?? $update_info->cheering_voice;
             $update_info->lamp_genie       = $update_user_info['lamp_genie'] ?? $update_info->lamp_genie;
             $update_info->my_gender        = $update_user_info['my_gender'] ?? $update_info->my_gender;
+            $update_info->last_shown_medal = $update_user_info['last_shown_medal'] ?? $update_info->last_shown_medal;
+            $update_info->tutorial         = $update_user_info['tutorial'] ?? $update_info->tutorial;
+            $update_info->coffee_break_count = $update_user_info['coffee_break_count'] ?? $update_info->coffee_break_count;
+            $update_info->finish_all_hot_context = $update_user_info['finish_all_hot_context'] ?? $update_info->finish_all_hot_context;
+            $update_info->need_to_show_again = $update_user_info['need_to_show_again'] ?? $update_info->need_to_show_again;
+            $update_info->previous_target_word = $update_user_info['previous_target_word'] ?? $update_info->previous_target_word;
+            $update_info->top_maze_level = $update_user_info['top_maze_level'] ?? $update_info->top_maze_level;
+            $update_info->max_unlocked_context = $update_user_info['max_unlocked_context'] ?? $update_info->max_unlocked_context;
+            if (array_key_exists('result_hint_index', $update_user_info)
+                || array_key_exists('current_letter_text', $update_user_info)){
+
+                $update_info->result_hint_index = $update_user_info['result_hint_index'];
+                $update_info->current_letter_text = $update_user_info['current_letter_text'];
+            }
+            if(array_key_exists('best_time_addition', $update_user_info)){
+
+                $update_info->no_of_best_times = $update_info->no_of_best_times + 1;
+            }
 
             $updated = $update_info->save();
             if($updated){
@@ -82,6 +100,8 @@ class UserRecordService extends BaseService implements IService
 
             }elseif($data['best_time'] > $update_statistics->best_time){
 
+                $data['best_time_addition'] = true;
+                $this->UpdateUserInfo($data);
                 $update_statistics->best_time = $data['best_time'];
             }
 
@@ -117,7 +137,7 @@ class UserRecordService extends BaseService implements IService
             }
         }
 
-        $unlocked_sprint = SprintStatistic::where(['user_id' => auth()->id(), 'game_id' => $data['game_id'], 'has_cup' => 1])->first();
+        /*$unlocked_sprint = SprintStatistic::where(['user_id' => auth()->id(), 'game_id' => $data['game_id'], 'has_cup' => 1])->first();
 
         if($unlocked_sprint) {
 
@@ -132,7 +152,7 @@ class UserRecordService extends BaseService implements IService
                     'unlocked_sprint' => $unlocked_sprint_id
                 ]);
             }
-        }
+        }*/
         return json($msg, $code);
     }
 
@@ -224,9 +244,31 @@ class UserRecordService extends BaseService implements IService
             'sound' => $user_info->sound,
             'cheering_voice' => $user_info->cheering_voice,
             'lamp_genie' => $user_info->lamp_genie,
-            'my_gender' => $user_info->my_gender
+            'my_gender' => $user_info->my_gender,
+            'last_shown_medal' => $user_info->last_shown_medal,
+            'no_of_best_times' => $user_info->no_of_best_times,
+            'tutorial' => $user_info->tutorial,
+            'coffee_break_count' => $user_info->coffee_break_count,
+            'finish_all_hot_context' => $user_info->finish_all_hot_context,
+            'need_to_show_again' => $user_info->need_to_show_again,
+            'previous_target_word' => $user_info->previous_target_word,
+            'top_maze_level' => $user_info->top_maze_level,
+            'max_unlocked_context' => $user_info->max_unlocked_context,
+            'result_hint_index' => $user_info->result_hint_index,
+            'current_letter_text' => $user_info->current_letter_text,
         ];
         return $data;
+    }
+
+    /**
+     * Method: topPlayers
+     * Get top 10 players based upon coins earned
+     * @return mixed
+     */
+    public function topPlayers()
+    {
+        $topPlayers = User::orderBy('coins_earned', 'desc')->select('username', 'coins_earned')->limit(10)->get();
+        return $topPlayers;
     }
 
     public function SprintStatistics($game_id, $topic_id){
@@ -251,6 +293,7 @@ class UserRecordService extends BaseService implements IService
         $data['marathon_records'] = $this->MarathonStatistics($context_id);
         $data['user_info'] = $this->UserInfo();
         $data['sprint_records'] = $this->SprintStatistics($game_id, $topic_id);
+        $data['last_played_context'] = $this->CurrentContextMarathon($context_id);
         return $data;
     }
 
@@ -277,9 +320,15 @@ class UserRecordService extends BaseService implements IService
         }
     }
 
-    public function CurrentContextMarathon(){
+    public function CurrentContextMarathon($context_id=null){
 
-        $user_context = UserCurrentContext::where('user_id', auth()->id())->first();
+        if(!empty($context_id)){
+
+            $user_context = UserCurrentContext::where(['user_id' => auth()->id(), 'current_context_id' => $context_id])->first();
+        } else {
+
+            $user_context = UserCurrentContext::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->first();
+        }
         $user_regions = UnlockedRegionContext::select('region_id', DB::raw('count(*) as total'))->where('user_id', auth()->id())->groupBy('region_id')->orderBy('total', 'desc')->pluck('region_id');
         $user_regions_1 = 0;
         $user_regions_2 = 0;
@@ -302,6 +351,8 @@ class UserRecordService extends BaseService implements IService
                 'last_played_cell' => $user_context->last_played_cell,
                 'top_maze_level' => $user_context->top_maze_level,
                 'max_unlocked_context' => $user_context->unlocked_context,
+                'no_of_hints_used' => $user_context->no_of_hints_used,
+                'crystal_ball_used' => $user_context->crystal_ball_used,
                 'First_region' => $user_regions_1,
                 'Second_region' => $user_regions_2,
                 'Third_region' => $user_regions_3
@@ -329,6 +380,34 @@ class UserRecordService extends BaseService implements IService
         return $sprints_statistics;
     }
 
+    /**
+     * Method: sprintTopicRecords
+     *
+     * @param $topicId
+     * @param $gameId
+     *
+     * @return mixed
+     */
+    public function sprintTopicRecords($topicId, $gameId)
+    {
+        $sprintTopicRecords = SprintStatistic::select('no_of_correct_answers', 'best_time')->where([
+            'user_id' => auth()->id(),
+            'game_id' => $gameId,
+            'topic_id' => $topicId
+        ])->get();
+        if(!$sprintTopicRecords->isEmpty()){
+
+            $data = $sprintTopicRecords;
+        } else {
+
+            $data[] = [
+                'no_of_correct_answers' => 0,
+                'best_time' => 0,
+            ];
+        }
+        return $data;
+    }
+
     public function SprintsRecords(){
 
         $max_points = SprintStatistic::select('points', 'game_id')->where('user_id', auth()->id())->get()->groupBy('game_id')->toArray();
@@ -346,7 +425,7 @@ class UserRecordService extends BaseService implements IService
             });
 
             $results['best_time'] = collect($best_time)->map(function($result, $index) {
-                return collect($result)->min('best_time');
+                return collect($result)->max('best_time');
             });
         } else{
 
@@ -418,6 +497,7 @@ class UserRecordService extends BaseService implements IService
     public function UserAllStatistics(){
 
         $data['user_info'] = $this->UserInfo();
+        $data['word_champions'] = $this->topPlayers();
         $data['context_marathon'] = $this->CurrentContextMarathon();
         $data['incomplete_max_points'] = $this->IncompleteMaxPoints();
         $data['sprint_cups'] = $this->SprintCups();
