@@ -267,7 +267,7 @@ class UserRecordService extends BaseService implements IService
      */
     public function topPlayers()
     {
-        $topPlayers = User::orderBy('coins_earned', 'desc')->select('username', 'coins_earned')->limit(10)->get();
+        $topPlayers = User::orderBy('coins_earned', 'desc')->select('username', 'coins_earned')->limit(20)->get();
         return $topPlayers;
     }
 
