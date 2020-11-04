@@ -353,6 +353,13 @@ class UserRecordService extends BaseService implements IService
                 'max_unlocked_context' => $user_context->unlocked_context,
                 'no_of_hints_used' => $user_context->no_of_hints_used,
                 'crystal_ball_used' => $user_context->crystal_ball_used,
+                'current_context_normal_hint_count' => $user_context->normal_hint_count,
+                'current_context_golden_revealer' => $user_context->golden_revealer,
+                'current_context_golden_revealer_count' => $user_context->golden_revealer_count,
+                'current_context_diamond_revealer' => $user_context->diamond_revealer,
+                'current_context_golden_hints' => $user_context->golden_hints,
+                'current_context_diamond_hints' => $user_context->diamond_hints,
+                'current_context_normal_revealer_usage_count' => $user_context->normal_revealer_usage_count,
                 'First_region' => $user_regions_1,
                 'Second_region' => $user_regions_2,
                 'Third_region' => $user_regions_3
