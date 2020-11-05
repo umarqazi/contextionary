@@ -178,15 +178,15 @@ class MarathonStatisticService extends BaseService implements IService
                 'normal_hint_count' =>
                     $last_played_marathon_record['current_context_normal_hint_count'] ?? $update->normal_hint_count,
                 'golden_revealer' =>
-                    $last_played_marathon_record['current_context_golden_revealer'] ?? $update->normal_hint_count,
+                    $last_played_marathon_record['current_context_golden_revealer'] ?? $update->golden_revealer,
                 'golden_revealer_count' =>
-                    $last_played_marathon_record['current_context_golden_revealer_count'] ?? $update->normal_hint_count,
+                    $last_played_marathon_record['current_context_golden_revealer_count'] ?? $update->golden_revealer_count,
                 'diamond_revealer' =>
-                    $last_played_marathon_record['current_context_diamond_revealer'] ?? $update->normal_hint_count,
+                    $last_played_marathon_record['current_context_diamond_revealer'] ?? $update->diamond_revealer,
                 'golden_hints' =>
-                    $last_played_marathon_record['current_context_golden_hints'] ?? $update->normal_hint_count,
+                    $last_played_marathon_record['current_context_golden_hints'] ?? $update->golden_hints,
                 'diamond_hints' =>
-                    $last_played_marathon_record['current_context_diamond_hints'] ?? $update->normal_hint_count,
+                    $last_played_marathon_record['current_context_diamond_hints'] ?? $update->diamond_hints,
                 'normal_revealer_usage_count' =>
                     $last_played_marathon_record['current_context_normal_revealer_usage_count'] ?? $update->normal_revealer_usage_count,
             ];

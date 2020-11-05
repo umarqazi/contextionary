@@ -208,6 +208,7 @@ class UserRecordService extends BaseService implements IService
     public function MarathonStatistics($context_id){
 
         $marathon_statistics = ContextMarathonStatistic::where(['user_id' => auth()->id(), 'context_id' => $context_id])->first();
+        $user_context = UserCurrentContext::where(['user_id' => auth()->id(), 'current_context_id' => $context_id])->first();
 
         if($marathon_statistics){
 
@@ -219,7 +220,14 @@ class UserRecordService extends BaseService implements IService
                 'is_clear' => $marathon_statistics->is_clear,
                 'butterfly_available' => $marathon_statistics->butterfly_available,
                 'win_in_a_row' => (is_null($marathon_statistics->win_in_a_row) ? 0 : $marathon_statistics->win_in_a_row),
-                'hint_in_a_row' => (is_null($marathon_statistics->hint_in_a_row) ? 0 : $marathon_statistics->hint_in_a_row)
+                'hint_in_a_row' => (is_null($marathon_statistics->hint_in_a_row) ? 0 : $marathon_statistics->hint_in_a_row),
+                'current_context_normal_hint_count' => $user_context->normal_hint_count ?? 0,
+                'current_context_golden_revealer' => $user_context->golden_revealer ?? 0,
+                'current_context_golden_revealer_count' => $user_context->golden_revealer_count ?? 0,
+                'current_context_diamond_revealer' => $user_context->diamond_revealer ?? 0,
+                'current_context_golden_hints' => $user_context->golden_hints ?? 0,
+                'current_context_diamond_hints' => $user_context->diamond_hints ?? 0,
+                'current_context_normal_revealer_usage_count' => $user_context->normal_revealer_usage_count ?? 0,
             ];
             return $data;
         }
@@ -353,13 +361,6 @@ class UserRecordService extends BaseService implements IService
                 'max_unlocked_context' => $user_context->unlocked_context,
                 'no_of_hints_used' => $user_context->no_of_hints_used,
                 'crystal_ball_used' => $user_context->crystal_ball_used,
-                'current_context_normal_hint_count' => $user_context->normal_hint_count,
-                'current_context_golden_revealer' => $user_context->golden_revealer,
-                'current_context_golden_revealer_count' => $user_context->golden_revealer_count,
-                'current_context_diamond_revealer' => $user_context->diamond_revealer,
-                'current_context_golden_hints' => $user_context->golden_hints,
-                'current_context_diamond_hints' => $user_context->diamond_hints,
-                'current_context_normal_revealer_usage_count' => $user_context->normal_revealer_usage_count,
                 'First_region' => $user_regions_1,
                 'Second_region' => $user_regions_2,
                 'Third_region' => $user_regions_3
